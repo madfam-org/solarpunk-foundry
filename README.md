@@ -11,9 +11,9 @@
 ## 📖 About This Document
 This is the **Single Source of Truth** for Innovaciones MADFAM SAS de CV. It untangles our ecosystem, defines our strategy, and serves as the operating manual for our vision.
 
-**For the Team:** This is what we are building and why.
-**For the Investor:** This is how we capture the entire manufacturing value chain.
-**For the World:** This is our roadmap to a sustainable future.
+> **For the Team:** This is what we are building and why.
+> **For the Investor:** This is how we capture the entire manufacturing value chain.
+> **For the World:** This is our roadmap to a sustainable future.
 
 ---
 
