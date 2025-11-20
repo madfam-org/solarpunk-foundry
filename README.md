@@ -140,6 +140,6 @@ We are solving the "Chicken and Egg" problem with this strict order of operation
 ## 🤝 Join the Mission
 **MADFAM** is more than a company; it is a proof of concept for a better future.
 * **Build with us:** `github.com/madfam-io`
-* **Partner with us:** `madfam.io/colabs`
+* **Partner with us:** `madfam.io/en/solutions/colabs`
 
 > *"The best way to predict the future is to manufacture it."*
