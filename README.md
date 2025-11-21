@@ -1,144 +1,144 @@
+You are absolutely right. In the previous version, I grouped some tools for brevity, but for a **Single Source of Truth**, ambiguity is a bug. If it has a repo, it needs a slot in the timeline.
+
+Here is the **Definitive v0.1.0 Manifesto**. The Roadmap (Section V) has been expanded to rigorously sequence **all 14 distinct products/repos** based on their logical dependencies (Infrastructure → Data → Science → Commerce).
+
+***
+
 # 🌞 MADFAM: The Solarpunk Foundry
 ### *From Bits to Atoms. High Tech, Deep Roots.*
 
 * **Version:** 0.1.0 (The Blueprint)
 * **The Mission:** To construct the operating system for a sustainable, sovereign future.
-* **The Method:** Vertical integration from the Cloud (Enclii) to the Factory (Primavera3D).
+* **The Scope:** Manufacturing, Finance, Education, & Science.
 * **The Status:** 🟢 Active Execution
 
 ---
 
 ## 📖 About This Document
-This is the **Single Source of Truth** for Innovaciones MADFAM SAS de CV. It untangles our ecosystem, defines our strategy, and serves as the operating manual for our vision.
+This is the **Single Source of Truth** for Innovaciones MADFAM SAS de CV. It defines our ecosystem, our strategy, and our philosophy.
 
-* **For the Team:** This is what we are building and why.
-* **For the Investor:** This is how we capture the entire manufacturing value chain.
-* **For the World:** This is our roadmap to a sustainable future.
+* **For the Team:** This is the order of operations.
+* **For the Investor:** This is how we capture value across the entire lifecycle of a product and a business.
+* **For the World:** This is our roadmap to a future that makes its own things and owns its own truth.
 
 ---
 
 ## 🌍 I. The Vision
-**"We are building the operating system for a world that makes its own things."**
+**"Sovereignty is not just about owning your server; it's about owning your supply chain, your money, and your mind."**
 
-We are not just a software company. We are a **Vertically Integrated Venture Studio** bridging the gap between Digital (Software) and Physical (Manufacturing).
+We are a **Vertically Integrated Venture Studio** bridging the gap between the Digital (Software) and the Physical (Real World).
 
-### The Problem: The "Rented" Future
-Currently, if you want to manufacture a product, you are forced to rent your future. You rent design software from one giant corp, rent cloud hosting from another, and buy materials from opaque supply chains. The tools don't talk to each other, leading to waste—waste of money, waste of time, and waste of carbon.
+### The Problem: The "Rented" Existence
+Today, a founder is a tenant in their own business. They rent their design tools, their infrastructure, their audience, and their financial insights. A change in API pricing or a platform ban can kill a business overnight.
 
 ### The MADFAM Solution: The Sovereign Loop
-We are building a "Solarpunk Foundry." We own the **Infrastructure**, the **Data**, the **Design Tools**, and the **Factory**.
-* **Aureo Labs** 💻 builds the software.
-* **Primavera3D** 🏭 uses the software to make real things.
-* **MADFAM Co-labs** 🤝 shares the core science with the world.
+We are building the **Solarpunk Foundry**. A closed-loop ecosystem where the tools support each other to create resilience.
 
 ---
 
 ## ⚙️ II. The Architecture: The "Solarpunk Stack"
 
-Our ecosystem is organized into four biological layers. Each layer supports the one above it.
+Our ecosystem is organized into four biological layers. Every tool has a specific organ function.
 
 ### 🪨 Layer 1: The Soil (Infrastructure)
-*Managed by Aureo Labs*
-* **🛡️ Enclii:** Our Sovereign PaaS. We host our own cloud because AWS is too expensive and restrictive ($100/mo vs $2k/mo).
-* **🔑 Plinto:** Our Gatekeeper. Identity, SSO, and Revenue Management. It secures every app we build.
+*The bedrock. Without this, we are tenants.*
+* **🛡️ Enclii:** Our Sovereign PaaS. Bare-metal hosting. Maximum independence, minimum cost.
+* **🔑 Plinto:** The Gatekeeper. Identity, SSO, and Revenue Management. One key for the whole city.
 
-### 🌿 Layer 2: The Roots (Data Intelligence)
-*Managed by Aureo Labs*
-* **📡 ForgeSight:** The Pricer. Continuously scrapes global material and machine data. It knows the real cost of manufacturing.
-* **📚 BlueprintTube:** The Librarian. Indexes, rates, and organizes 3D models based on printability.
-* **🧭 Fortuna:** The Navigator. Analyzes problem data to tell us what to build next.
+### 🌿 Layer 2: The Roots (Sensing & Input)
+*Absorbing nutrients (data and truth) from the outside world.*
+* **🔮 Fortuna:** The Problem Hunter. Scrapes multilingual signals to find market gaps (Problem Intelligence).
+* **📡 ForgeSight:** The Pricer. Scrapes global material and machine data for real-time manufacturing costs.
+* **📚 BlueprintTube:** The Librarian. Indexes and rates 3D models for printability.
+* **🧘 BloomScroll:** The Filter. A "Slow Web" content aggregator. 20 items/day. Serendipity over engagement.
 
-### 🪵 Layer 3: The Stem (Core Science)
-*Managed by MADFAM Co-labs (Open Source)*
-* **📐 geom-core:** The Shared Brain. A high-performance C++ library (WASM/Python) that analyzes geometry for printability. We give this math away to set the industry standard.
+### 🪵 Layer 3: The Stem (Core Standards & Verification)
+*The structural logic that holds the system up.*
+* **📐 geom-core:** The Physics Standard. C++ geometry analysis library (WASM/Python).
+* **🎓 AVALA:** The Human Standard. Verification engine for applied learning (Mexico EC/CONOCER). Issues Open Badges and DC-3 forms.
 
-### 🍎 Layer 4: The Fruit (User Tools)
-*Managed by Aureo Labs & Primavera3D*
-* **🎨 Sim4D:** The Creator. Web-based CAD that uses `geom-core` and `ForgeSight` to guide the user in real-time.
-* **🏷️ Cotiza Studio:** The Merchant. Automated quoting engine. It connects the customer's file to the factory's pricing logic.
-* **👂 Coforma Studio:** The Evolution. Customer Advisory Board management. It keeps us listening to our users.
+### 🍎 Layer 4: The Fruit (User Platforms)
+*The applications where value is created and captured.*
+* **🎨 Sim4D:** The Creator. Web-based CAD guided by `geom-core`.
+* **🛍️ Forj:** The Bazaar. Decentralized fabrication storefronts with NFT integration.
+* **🏷️ Cotiza Studio:** The Merchant. Automated quoting engine connecting design to factory.
+* **💰 Dhanam:** The Treasury. Unified budgeting and wealth tracking (Personal + Business) with ESG insights.
+* **👂 Coforma Studio:** The Ear. Customer Advisory Board and feedback management.
+* **⚡ Galvana:** The Reactor. Phygital Electrochemistry Platform for scientific simulation.
 
 ---
 
 ## 🔄 III. The "Primavera Mandate" (Dogfooding)
 **"We trust it because we survive on it."**
 
-Our unfair advantage is **Authenticity**. Most SaaS companies guess what manufacturers need. We **know** because we run **Primavera3D**.
-
-1.  **The Rule:** Primavera3D is "Customer Zero."
-2.  **The Test:** If **Enclii** goes down, our factory stops. If **Cotiza** calculates wrong, we lose money.
-3.  **The Result:** When we sell these tools to the public, they are battle-tested, not just beta-tested.
-
----
-
-## 🗣️ IV. The Narrative (Storytelling)
-
-| Audience | The Pitch |
-| :--- | :--- |
-| **Startups & Devs** | **"Sovereignty as a Service."** Stop overpaying Big Tech. Build on Enclii and Plinto—the same affordable, open infrastructure that powers a real manufacturing ecosystem. |
-| **Designers & Makers** | **"Design with Intelligence."** Sim4D isn't just a drawing tool; it has a brain. It tells you if your part is printable and how much it costs *while* you draw it. |
-| **Fabricators** | **"Factory Manager in a Box."** You like making things, not quoting emails. Cotiza Studio automates your business using the same logic that runs Primavera3D. |
-| **Investors** | **"The Flywheel."** We capture the value at every step. Every part we print makes our data smarter. Every software update makes our factory more profitable. |
+We do not build "SaaS"; we build tools to run our own operations first.
+1.  **Finance:** MADFAM runs on **Dhanam**.
+2.  **Strategy:** We build what **Fortuna** validates.
+3.  **Factory:** Primavera3D quotes via **Cotiza**.
+4.  **Hiring:** Staff is certified via **AVALA**.
 
 ---
 
-## 🏰 V. Governance: Church & State (Repo Strategy)
+## 🏰 IV. Governance: The Repo Strategy
 
-We split our code to protect our business while honoring our ethos.
-
-### 🏛️ Organization A: `madfam-io` (The Public Commons)
-* **Goal:** Community, Standards, Trust.
-* **License:** MPL 2.0 (Weak Copyleft) & AGPL v3.
-
-### 🏢 Organization B: `aureo-labs` (The Private Engine)
-* **Goal:** Revenue, IP Protection, Data Privacy.
-* **License:** Proprietary.
-
-#### 📦 The Repository Matrix
-
-| Solution | GitHub Org | Visibility | License | Purpose |
+| Solution | Domain | GitHub Org | License | Strategic Purpose |
 | :--- | :--- | :--- | :--- | :--- |
-| **geom-core** | `madfam-io` | 🌐 **Public** | **MPL 2.0** | The Science. Open for all, but improvements must be shared. |
-| **Enclii (Core)** | `madfam-io` | 🌐 **Public** | **AGPL v3** | The Infra. Prevents cloud providers from stealing our code. |
-| **Plinto (Core)** | `madfam-io` | 🌐 **Public** | **AGPL v3** | The Auth. Transparency builds trust in identity handling. |
-| **Sim4D (Community)**| `madfam-io` | 🌐 **Public** | **MPL 2.0** | The Tool. Free editor, but connects to no marketplace. |
-| **Sim4D (Official)** | `aureo-labs` | 🔒 **Private** | **Proprietary**| The Product. Injects our Marketplace & API keys. |
-| **Cotiza Studio** | `aureo-labs` | 🔒 **Private** | **Proprietary**| The Cash Register. Secret pricing algorithms. |
-| **ForgeSight** | `aureo-labs` | 🔒 **Private** | **Proprietary**| The Data Mine. The value is in the database, not just the script. |
-| **BlueprintTube** | `aureo-labs` | 🔒 **Private** | **Proprietary**| The Index. Proprietary search algorithms. |
+| **Enclii** | Infra | `madfam-io` | **AGPL v3** | Prevents cloud capture. |
+| **Plinto** | Auth | `madfam-io` | **AGPL v3** | Identity Trust. |
+| **Dhanam** | Finance | `madfam-io` | **MPL 2.0** | Trust in financial code. |
+| **BloomScroll**| Media | `madfam-io` | **MPL 2.0** | Ethos & Community building. |
+| **AVALA** | EdTech | `madfam-io` | **AGPL v3** | Transparent verification. |
+| **geom-core** | Science | `madfam-io` | **MPL 2.0** | The geometry standard. |
+| **Galvana** | Science | `madfam-io` | **MPL 2.0** | Open Science collaboration. |
+| **Sim4D (Community)**| Making | `madfam-io` | **MPL 2.0** | The tool (without the market). |
+| **Fortuna** | Intel | `aureo-labs` | **Proprietary**| The "Edge" (Market Gaps). |
+| **ForgeSight** | Intel | `aureo-labs` | **Proprietary**| The Cost Database. |
+| **BlueprintTube**| Intel | `aureo-labs` | **Proprietary**| The Model Index. |
+| **Forj** | Commerce | `aureo-labs` | **Proprietary**| The Revenue Engine. |
+| **Cotiza Studio**| Making | `aureo-labs` | **Proprietary**| The Pricing Logic. |
+| **Coforma Studio**| Ops | `aureo-labs` | **Proprietary**| The Customer Data. |
 
 ---
 
-## 🗺️ VI. The Roadmap (Bootstrap Sequence)
+## 🗺️ V. The Roadmap (Bootstrap Sequence)
 
-We are solving the "Chicken and Egg" problem with this strict order of operations.
+We strictly follow this order. We do not build the roof before the walls.
 
-### 🏗️ Phase 1: The Foundation (Weeks 1-4)
-* **Goal:** Sovereign Cloud & First Signals.
-* ✅ Deploy **Enclii** (Bootstrap Mode).
-* ✅ Deploy **Plinto** (Auth) on Enclii.
-* ✅ Deploy **Coforma Studio** to start capturing user feedback immediately.
+### 🏗️ Phase 1: The Foundation (Survival Mode)
+* **Goal:** Sovereign Hosting, Financial Clarity, and Identity.
+* 1. **Enclii:** Deploy bare-metal infrastructure.
+* 2. **Plinto:** Establish Single Sign-On (SSO).
+* 3. **Dhanam:** Deploy internally to manage MADFAM's burn rate and runway.
+* 4. **Coforma Studio:** Deploy to start capturing early user interest/waitlists.
 
-### 🧠 Phase 2: The Brain (Weeks 5-12)
-* **Goal:** Data Harvesting & Core Science.
-* 🚀 Release **geom-core** (Open Source) to GitHub.
-* 🚀 Deploy **ForgeSight** (Backend) to start scraping pricing data.
-* 🚀 Deploy **BlueprintTube** (Backend) to start indexing models.
+### 🧠 Phase 2: The Intelligence (Data Harvesting)
+* **Goal:** Gathering the raw materials (Data) to make the tools smart.
+* 5. **Fortuna:** Begin scraping signals to validate market needs.
+* 6. **ForgeSight:** Begin scraping material costs to feed the future Cotiza engine.
+* 7. **BlueprintTube:** Begin indexing 3D models to feed the future Sim4D engine.
+* 8. **BloomScroll:** Launch publicly to build a "Slow Web" audience/community.
 
-### 🏭 Phase 3: The Pivot (Weeks 13-20)
-* **Goal:** Internal stability (Dogfooding).
-* 🚀 Deploy **Cotiza Studio** connected to ForgeSight.
-* 🛑 **MANDATE:** Primavera3D stops using spreadsheets. All quotes must go through Cotiza.
+### 📐 Phase 3: The Engines (Core Logic)
+* **Goal:** Converting Data into Logic.
+* 9. **geom-core:** Publish the math library.
+* 10. **AVALA:** Codify our internal hiring standards into the platform.
+* 11. **Sim4D (Alpha):** Release the editor (powered by geom-core) for internal testing.
 
-### 🚀 Phase 4: The Launch (Months 6+)
-* **Goal:** Public Beta.
-* 🚀 Release **Sim4D** (Official Build) with Marketplace integration.
-* 🚀 Open the doors to external customers.
+### 🏭 Phase 4: The Application (Commerce)
+* **Goal:** Monetization and Physical Production.
+* 12. **Cotiza Studio:** Connect ForgeSight data + geom-core logic to price parts.
+* 13. **Forj:** Launch the storefront builder for external creators.
+* **Sim4D (Beta):** Connect to Cotiza for real-time pricing.
+
+### 🔬 Phase 5: The Frontier (Deep Tech)
+* **Goal:** Scientific Expansion.
+* 14. **Galvana:** Begin development of the electrochemical simulation engine once the revenue from Phase 4 stabilizes the studio.
 
 ---
 
 ## 🤝 Join the Mission
-**MADFAM** is more than a company; it is a proof of concept for a better future.
+**MADFAM** is proof that high tech can have deep roots.
+
 * **Build with us:** `github.com/madfam-io`
 * **Partner with us:** `madfam.io/en/solutions/colabs`
 
