@@ -78,15 +78,15 @@ We do not build "SaaS"; we build tools to run our own operations first.
 | Solution | Domain | GitHub Org | Website | Repository | License | Strategic Purpose |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Enclii** | Infra | `madfam-io` | [enclii.dev](https://enclii.dev) | [enclii](https://github.com/madfam-io/enclii) | **AGPL v3** | Prevents cloud capture. |
-| **Plinto** | Auth | `madfam-io` | [plinto.dev](https://plinto.dev) | [plinto](https://github.com/madfam-io/plinto) | **AGPL v3** | Identity Trust. |
+| **Janua** | Auth | `madfam-io` | [janua.dev](https://janua.dev) | [janua](https://github.com/madfam-io/janua) | **AGPL v3** | Identity Trust. |
 | **Dhanam** | Finance | `madfam-io` | [dhan.am](https://dhan.am) | [dhanam](https://github.com/madfam-io/dhanam) | **MPL 2.0** | Trust in financial code. |
 | **BloomScroll**| Media | `madfam-io` | TBD | [bloom-scroll](https://github.com/madfam-io/bloom-scroll) | **MPL 2.0** | Ethos & Community building. |
 | **AVALA** | EdTech | `madfam-io` | TBD | [avala](https://github.com/madfam-io/avala) | **AGPL v3** | Transparent verification. |
 | **geom-core** | Science | `madfam-io` | TBD | [geom-core](https://github.com/madfam-io/geom-core) | **MPL 2.0** | The geometry standard. |
 | **Galvana** | Science | `madfam-io` | TBD | [electrochem-sim](https://github.com/madfam-io/electrochem-sim) | **MPL 2.0** | Open Science collaboration. |
-| **Sim4D (Community)**| Making | `madfam-io` | [sim4d.io](https://sim4d.io) | [brepflow](https://github.com/madfam-io/brepflow) | **MPL 2.0** | The tool (without the market). |
+| **Sim4D (Community)**| Making | `madfam-io` | [sim4d.io](https://sim4d.io) | [sim4d](https://github.com/madfam-io/sim4d) | **MPL 2.0** | The tool (without the market). |
 | **Fortuna** | Intel | `aureo-labs` | [fortuna.tube](https://fortuna.tube) | [fortuna](https://github.com/madfam-io/fortuna) | **Proprietary**| The "Edge" (Market Gaps). |
-| **ForgeSight** | Intel | `aureo-labs` | [forgesight.quest](https://forgesight.quest) | [digifab-harvest-benchmark](https://github.com/madfam-io/digifab-harvest-benchmark) | **Proprietary**| The Cost Database. |
+| **ForgeSight** | Intel | `aureo-labs` | [forgesight.quest](https://forgesight.quest) | [forgesight](https://github.com/madfam-io/forgesight) | **Proprietary**| The Cost Database. |
 | **BlueprintTube**| Intel | `aureo-labs` | [blueprint.tube](https://blueprint.tube) | [blueprint-harvester](https://github.com/madfam-io/blueprint-harvester) | **Proprietary**| The Model Index. |
 | **Forj** | Commerce | `aureo-labs` | [forj.design](https://forj.design) | [forj](https://github.com/madfam-io/forj) | **Proprietary**| The Revenue Engine. |
 | **Cotiza Studio**| Making | `aureo-labs` | [cotiza.studio](https://cotiza.studio) | [digifab-quoting](https://github.com/madfam-io/digifab-quoting) | **Proprietary**| The Pricing Logic. |
