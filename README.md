@@ -79,7 +79,7 @@ We do not build "SaaS"; we build tools to run our own operations first.
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Enclii** | Infra | `madfam-io` | [enclii.dev](https://enclii.dev) | [enclii](https://github.com/madfam-io/enclii) | **AGPL v3** | Prevents cloud capture. |
 | **Janua** | Auth | `madfam-io` | [janua.dev](https://janua.dev) | [janua](https://github.com/madfam-io/janua) | **AGPL v3** | Identity Trust. |
-| **Dhanam** | Finance | `madfam-io` | [dhan.am](https://dhan.am) | [dhanam](https://github.com/madfam-io/dhanam) | **MPL 2.0** | Trust in financial code. |
+| **Dhanam** | Finance | `madfam-io` | [dhan.am](https://dhan.am) | [dhanam](https://github.com/madfam-io/dhanam) | **AGPL v3** | Trust in financial code. Open Core protects connectors. |
 | **BloomScroll**| Media | `madfam-io` | TBD | [bloom-scroll](https://github.com/madfam-io/bloom-scroll) | **MPL 2.0** | Ethos & Community building. |
 | **AVALA** | EdTech | `madfam-io` | TBD | [avala](https://github.com/madfam-io/avala) | **AGPL v3** | Transparent verification. |
 | **geom-core** | Science | `madfam-io` | TBD | [geom-core](https://github.com/madfam-io/geom-core) | **MPL 2.0** | The geometry standard. |
