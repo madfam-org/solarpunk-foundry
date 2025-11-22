@@ -37,7 +37,7 @@ Our ecosystem is organized into four biological layers. Every tool has a specifi
 ### 🪨 Layer 1: The Soil (Infrastructure)
 *The bedrock. Without this, we are tenants.*
 * **🛡️ Enclii:** Our Sovereign PaaS. Bare-metal hosting. Maximum independence, minimum cost.
-* **🔑 Plinto:** The Gatekeeper. Identity, SSO, and Revenue Management. One key for the whole city.
+* **🔑 Janua:** The Gatekeeper. Identity, SSO, and Revenue Management. One key for the whole city.
 
 ### 🌿 Layer 2: The Roots (Sensing & Input)
 *Absorbing nutrients (data and truth) from the outside world.*
@@ -101,7 +101,7 @@ We strictly follow this order. We do not build the roof before the walls.
 ### 🏗️ Phase 1: The Foundation (Survival Mode)
 * **Goal:** Sovereign Hosting, Financial Clarity, and Identity.
 * 1. **Enclii:** Deploy bare-metal infrastructure.
-* 2. **Plinto:** Establish Single Sign-On (SSO).
+* 2. **Janua:** Establish Single Sign-On (SSO).
 * 3. **Dhanam:** Deploy internally to manage MADFAM's burn rate and runway.
 * 4. **Coforma Studio:** Deploy to start capturing early user interest/waitlists.
 
