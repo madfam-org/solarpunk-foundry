@@ -137,3 +137,54 @@ We strictly follow this order. We do not build the roof before the walls.
 * **Partner with us:** `madfam.io/en/solutions/colabs`
 
 > *"The best way to predict the future is to manufacture it."*
+
+---
+
+## 🛠️ VI. Operations & Development
+
+### Quick Start (Local Development)
+
+```bash
+# From labspace root
+cd ~/labspace
+
+# Start core ecosystem (infrastructure + auth + revenue apps + site)
+./madfam start
+
+# Start FULL ecosystem (includes portfolio, platform, utilities)
+./madfam full
+
+# Check status
+./madfam status
+
+# View logs
+./madfam logs janua
+./madfam logs forgesight
+
+# Stop everything
+./madfam stop
+
+# Stop and clean volumes
+./madfam stop --clean
+```
+
+### Documentation
+- **Port Allocation:** `solarpunk-foundry/docs/PORT_ALLOCATION.md`
+- **Dogfooding Guide:** `solarpunk-foundry/docs/DOGFOODING_GUIDE.md`
+- **Debugging Notes:** `solarpunk-foundry/docs/DELIVERABLES.md`
+
+### Shared Infrastructure
+All services connect to shared PostgreSQL, Redis, and MinIO via `madfam-shared-network`:
+- PostgreSQL: `localhost:5432`
+- Redis: `localhost:6379`
+- MinIO: `localhost:9000` (API) / `localhost:9001` (Console)
+
+### Service URLs (Local Development)
+| Service | URL |
+|---------|-----|
+| MADFAM Site | http://localhost:3000 |
+| Janua Auth | http://localhost:8001 |
+| Forgesight | http://localhost:8200 |
+| Digifab Quoting | http://localhost:8300 |
+| Dhanam | http://localhost:8500 |
+| BrepFlow Studio | http://localhost:5173 |
