@@ -1,0 +1,309 @@
+# =============================================================================
+# MADFAM ECOSYSTEM - UNIFIED PRODUCTION DOCKER COMPOSE
+# =============================================================================
+# Usage: docker compose -f docker-compose.production.yml --env-file .env.production up -d
+# =============================================================================
+
+services:
+  # ===========================================================================
+  # SHARED INFRASTRUCTURE
+  # ===========================================================================
+
+  postgres-shared:
+    image: postgres:16-alpine
+    container_name: madfam-postgres-shared
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_MULTIPLE_DATABASES: ${JANUA_DB_NAME},${FORGESIGHT_DB_NAME},${COTIZA_DB_NAME},${MADFAM_SITE_DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-multiple-dbs.sh:/docker-entrypoint-initdb.d/init-multiple-dbs.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - madfam-network
+
+  redis-shared:
+    image: redis:7-alpine
+    container_name: madfam-redis-shared
+    restart: always
+    command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - madfam-network
+
+  minio-shared:
+    image: minio/minio:latest
+    container_name: madfam-minio-shared
+    restart: always
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - madfam-network
+
+  # ===========================================================================
+  # JANUA - Authentication Infrastructure
+  # ===========================================================================
+
+  janua-api:
+    image: ${DOCKER_REGISTRY}/janua-api:${IMAGE_TAG:-latest}
+    container_name: janua-api
+    restart: always
+    ports:
+      - "${JANUA_PORT}:8000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${JANUA_DATABASE_URL}
+      REDIS_URL: ${JANUA_REDIS_URL}
+      JWT_SECRET: ${JANUA_JWT_SECRET}
+      JWT_EXPIRY: ${JANUA_JWT_EXPIRY}
+      REFRESH_TOKEN_EXPIRY: ${JANUA_REFRESH_TOKEN_EXPIRY}
+      GOOGLE_CLIENT_ID: ${JANUA_GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${JANUA_GOOGLE_CLIENT_SECRET}
+      GITHUB_CLIENT_ID: ${JANUA_GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${JANUA_GITHUB_CLIENT_SECRET}
+      LOG_LEVEL: ${LOG_LEVEL}
+      SENTRY_DSN: ${SENTRY_DSN}
+    depends_on:
+      postgres-shared:
+        condition: service_healthy
+      redis-shared:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - madfam-network
+
+  # ===========================================================================
+  # FORGESIGHT - Vendor Intelligence
+  # ===========================================================================
+
+  forgesight-opensearch:
+    image: opensearchproject/opensearch:2.11.0
+    container_name: forgesight-opensearch
+    restart: always
+    environment:
+      - discovery.type=single-node
+      - plugins.security.disabled=false
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_PASSWORD}
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - madfam-network
+
+  forgesight-api:
+    image: ${DOCKER_REGISTRY}/forgesight-api:${IMAGE_TAG:-latest}
+    container_name: forgesight-api
+    restart: always
+    ports:
+      - "${FORGESIGHT_PORT}:8000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${FORGESIGHT_DATABASE_URL}
+      REDIS_URL: ${FORGESIGHT_REDIS_URL}
+      OPENSEARCH_HOST: ${OPENSEARCH_HOST}
+      OPENSEARCH_PORT: ${OPENSEARCH_PORT}
+      OPENSEARCH_USER: ${OPENSEARCH_USER}
+      OPENSEARCH_PASSWORD: ${OPENSEARCH_PASSWORD}
+      API_KEY: ${FORGESIGHT_API_KEY}
+      LOG_LEVEL: ${LOG_LEVEL}
+      SENTRY_DSN: ${SENTRY_DSN}
+    depends_on:
+      postgres-shared:
+        condition: service_healthy
+      redis-shared:
+        condition: service_healthy
+      forgesight-opensearch:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - madfam-network
+
+  forgesight-crawler:
+    image: ${DOCKER_REGISTRY}/forgesight-crawler:${IMAGE_TAG:-latest}
+    container_name: forgesight-crawler
+    restart: always
+    deploy:
+      replicas: 2
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${FORGESIGHT_DATABASE_URL}
+      REDIS_URL: ${FORGESIGHT_REDIS_URL}
+      OPENSEARCH_HOST: ${OPENSEARCH_HOST}
+      OPENSEARCH_PASSWORD: ${OPENSEARCH_PASSWORD}
+    depends_on:
+      - forgesight-api
+    networks:
+      - madfam-network
+
+  forgesight-normalizer:
+    image: ${DOCKER_REGISTRY}/forgesight-normalizer:${IMAGE_TAG:-latest}
+    container_name: forgesight-normalizer
+    restart: always
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${FORGESIGHT_DATABASE_URL}
+      REDIS_URL: ${FORGESIGHT_REDIS_URL}
+      OPENSEARCH_HOST: ${OPENSEARCH_HOST}
+      OPENSEARCH_PASSWORD: ${OPENSEARCH_PASSWORD}
+    depends_on:
+      - forgesight-api
+    networks:
+      - madfam-network
+
+  # ===========================================================================
+  # COTIZA - Quoting Engine
+  # ===========================================================================
+
+  cotiza-api:
+    image: ${DOCKER_REGISTRY}/cotiza-api:${IMAGE_TAG:-latest}
+    container_name: cotiza-api
+    restart: always
+    ports:
+      - "${COTIZA_API_PORT}:4000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${COTIZA_DATABASE_URL}
+      REDIS_URL: ${COTIZA_REDIS_URL}
+      JWT_SECRET: ${JANUA_JWT_SECRET}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      S3_BUCKET: ${COTIZA_S3_BUCKET}
+      AWS_REGION: ${COTIZA_S3_REGION}
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT}
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_FROM: ${SMTP_FROM}
+      LOG_LEVEL: ${LOG_LEVEL}
+      SENTRY_DSN: ${SENTRY_DSN}
+      # Cross-service URLs
+      JANUA_API_URL: http://janua-api:8001
+      FORGESIGHT_API_URL: http://forgesight-api:8100
+    depends_on:
+      postgres-shared:
+        condition: service_healthy
+      redis-shared:
+        condition: service_healthy
+      minio-shared:
+        condition: service_healthy
+      janua-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/api/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - madfam-network
+
+  cotiza-web:
+    image: ${DOCKER_REGISTRY}/cotiza-web:${IMAGE_TAG:-latest}
+    container_name: cotiza-web
+    restart: always
+    ports:
+      - "${COTIZA_WEB_PORT}:3000"
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: https://api.cotiza.yourdomain.com
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY}
+    depends_on:
+      - cotiza-api
+    networks:
+      - madfam-network
+
+  cotiza-worker:
+    image: ${DOCKER_REGISTRY}/cotiza-worker:${IMAGE_TAG:-latest}
+    container_name: cotiza-worker
+    restart: always
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${COTIZA_DATABASE_URL}
+      REDIS_URL: ${COTIZA_REDIS_URL}
+    depends_on:
+      - cotiza-api
+    networks:
+      - madfam-network
+
+  # ===========================================================================
+  # MADFAM SITE - Marketing Website
+  # ===========================================================================
+
+  madfam-site:
+    image: ${DOCKER_REGISTRY}/madfam-site:${IMAGE_TAG:-latest}
+    container_name: madfam-site
+    restart: always
+    ports:
+      - "${MADFAM_SITE_PORT}:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${MADFAM_SITE_DATABASE_URL}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      NEXTAUTH_URL: ${NEXTAUTH_URL}
+      JANUA_API_URL: ${JANUA_API_URL}
+      FORGESIGHT_API_URL: ${FORGESIGHT_API_URL}
+      COTIZA_API_URL: ${COTIZA_API_URL}
+    depends_on:
+      postgres-shared:
+        condition: service_healthy
+      janua-api:
+        condition: service_healthy
+    networks:
+      - madfam-network
+
+# =============================================================================
+# NETWORKS
+# =============================================================================
+networks:
+  madfam-network:
+    name: madfam-production-network
+    driver: bridge
+
+# =============================================================================
+# VOLUMES
+# =============================================================================
+volumes:
+  postgres_data:
+    name: madfam-postgres-data
+  redis_data:
+    name: madfam-redis-data
+  minio_data:
+    name: madfam-minio-data
+  opensearch_data:
+    name: madfam-opensearch-data
