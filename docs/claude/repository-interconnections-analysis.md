@@ -323,29 +323,29 @@ apps/marketing → @janua/react-sdk, @janua/ui
 
 **Workspaces:**
 - **Apps (2):**
-  - `apps/studio` (@brepflow/studio)
-  - `apps/marketing` (@brepflow/marketing)
+  - `apps/studio` (@sim4d/studio)
+  - `apps/marketing` (@sim4d/marketing)
 
 - **Packages (8):**
-  - `@brepflow/engine-core` - Core geometry engine
-  - `@brepflow/engine-occt` - OCCT.wasm bindings
-  - `@brepflow/nodes-core` - Geometry nodes library
-  - `@brepflow/types` - TypeScript types
-  - `@brepflow/viewport` - 3D viewport component
-  - `@brepflow/collaboration` - Collaboration features
-  - `@brepflow/constraint-solver` - Constraint solver
-  - `@brepflow/schemas` - Data schemas
-  - `@brepflow/sdk` - Developer SDK
-  - `@brepflow/examples` - Example projects
-  - `@brepflow/cli` - Command-line interface
+  - `@sim4d/engine-core` - Core geometry engine
+  - `@sim4d/engine-occt` - OCCT.wasm bindings
+  - `@sim4d/nodes-core` - Geometry nodes library
+  - `@sim4d/types` - TypeScript types
+  - `@sim4d/viewport` - 3D viewport component
+  - `@sim4d/collaboration` - Collaboration features
+  - `@sim4d/constraint-solver` - Constraint solver
+  - `@sim4d/schemas` - Data schemas
+  - `@sim4d/sdk` - Developer SDK
+  - `@sim4d/examples` - Example projects
+  - `@sim4d/cli` - Command-line interface
 
 **Internal Dependencies:**
 ```
-@brepflow/engine-occt → @brepflow/engine-core, @brepflow/types
-@brepflow/nodes-core → @brepflow/engine-core, @brepflow/types
-@brepflow/studio → @brepflow/collaboration, @brepflow/engine-core,
-                   @brepflow/engine-occt, @brepflow/nodes-core,
-                   @brepflow/types, @brepflow/viewport
+@sim4d/engine-occt → @sim4d/engine-core, @sim4d/types
+@sim4d/nodes-core → @sim4d/engine-core, @sim4d/types
+@sim4d/studio → @sim4d/collaboration, @sim4d/engine-core,
+                   @sim4d/engine-occt, @sim4d/nodes-core,
+                   @sim4d/types, @sim4d/viewport
 ```
 
 **External Dependencies:** ✅

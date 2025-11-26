@@ -465,13 +465,13 @@ COPY --from=deps /app/apps/studio ./apps/studio
 COPY . .
 
 # Build all dependencies and studio app
-RUN pnpm --filter @brepflow/types run build && \
-    pnpm --filter @brepflow/schemas run build && \
-    pnpm --filter @brepflow/engine-core run build && \
-    pnpm --filter @brepflow/engine-occt run build && \
-    pnpm --filter @brepflow/nodes-core run build && \
-    pnpm --filter @brepflow/viewport run build && \
-    pnpm --filter @brepflow/studio run build
+RUN pnpm --filter @sim4d/types run build && \
+    pnpm --filter @sim4d/schemas run build && \
+    pnpm --filter @sim4d/engine-core run build && \
+    pnpm --filter @sim4d/engine-occt run build && \
+    pnpm --filter @sim4d/nodes-core run build && \
+    pnpm --filter @sim4d/viewport run build && \
+    pnpm --filter @sim4d/studio run build
 
 # ============================================
 # STAGE 3: Runner (nginx to serve static build)

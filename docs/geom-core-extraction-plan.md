@@ -195,7 +195,7 @@ This document outlines the plan to consolidate geometry processing code into `ge
 
 ### Phase 4: SDK & Integration (Week 6)
 1. **Create @madfam/geom-core TypeScript SDK**
-   - Type definitions from existing `@brepflow/types`
+   - Type definitions from existing `@sim4d/types`
    - Worker pool integration
    - Error recovery
 
