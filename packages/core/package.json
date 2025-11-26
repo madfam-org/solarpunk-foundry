@@ -1,0 +1,90 @@
+{
+  "name": "@solarpunk/core",
+  "version": "1.0.0",
+  "description": "Authoritative organizational constants for the MADFAM/Solarpunk ecosystem",
+  "author": "MADFAM <tech@madfam.io>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madfam-io/solarpunk-foundry.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://madfam.io",
+  "bugs": {
+    "url": "https://github.com/madfam-io/solarpunk-foundry/issues"
+  },
+  "keywords": [
+    "madfam",
+    "solarpunk",
+    "design-system",
+    "brand",
+    "tokens",
+    "constants",
+    "ecosystem"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./brand": {
+      "types": "./dist/brand.d.ts",
+      "import": "./dist/brand.js",
+      "require": "./dist/brand.cjs"
+    },
+    "./locales": {
+      "types": "./dist/locales.d.ts",
+      "import": "./dist/locales.js",
+      "require": "./dist/locales.cjs"
+    },
+    "./currencies": {
+      "types": "./dist/currencies.d.ts",
+      "import": "./dist/currencies.js",
+      "require": "./dist/currencies.cjs"
+    },
+    "./events": {
+      "types": "./dist/events.d.ts",
+      "import": "./dist/events.js",
+      "require": "./dist/events.cjs"
+    },
+    "./products": {
+      "types": "./dist/products.d.ts",
+      "import": "./dist/products.js",
+      "require": "./dist/products.cjs"
+    },
+    "./legal": {
+      "types": "./dist/legal.d.ts",
+      "import": "./dist/legal.js",
+      "require": "./dist/legal.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo node_modules",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

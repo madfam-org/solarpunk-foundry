@@ -75,6 +75,16 @@ We do not build "SaaS"; we build tools to run our own operations first.
 
 ## 🏰 IV. Governance: The Repo Strategy
 
+### Core Packages (Published to npm)
+
+| Package | Purpose | License | Location |
+| :--- | :--- | :--- | :--- |
+| **@solarpunk/core** | Authoritative organizational constants (brand, locales, currencies, events, legal, products) | **MIT** | `solarpunk-foundry/packages/core` |
+
+> **Note:** `@solarpunk/core` contains organizational **decisions**, not implementations. Apps import it for brand consistency, supported locales/currencies, and analytics event taxonomy. See `packages/core/README.md` for usage.
+
+### Repositories
+
 | Solution | Domain | GitHub Org | Website | Repository | License | Strategic Purpose |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Enclii** | Infra | `madfam-io` | [enclii.dev](https://enclii.dev) | [enclii](https://github.com/madfam-io/enclii) | **AGPL v3** | Prevents cloud capture. |
