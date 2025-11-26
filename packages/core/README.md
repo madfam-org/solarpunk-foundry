@@ -1,4 +1,4 @@
-# @solarpunk/core
+# @madfam/core
 
 > Authoritative organizational constants for the MADFAM/Solarpunk ecosystem
 
@@ -18,9 +18,9 @@ This is fundamentally different from "shared utility code" - these are **organiz
 ## Installation
 
 ```bash
-pnpm add @solarpunk/core
+pnpm add @madfam/core
 # or
-npm install @solarpunk/core
+npm install @madfam/core
 ```
 
 ## Usage
@@ -28,7 +28,7 @@ npm install @solarpunk/core
 ### Brand Identity
 
 ```typescript
-import { brand, colors, typography, spacing } from '@solarpunk/core';
+import { brand, colors, typography, spacing } from '@madfam/core';
 
 // Use in Tailwind config
 module.exports = {
@@ -57,7 +57,7 @@ import {
   parseLocale, 
   getLocaleMetadata,
   type Locale 
-} from '@solarpunk/core';
+} from '@madfam/core';
 
 // Type-safe locale handling
 function setUserLocale(locale: string): Locale {
@@ -78,7 +78,7 @@ import {
   formatCurrency, 
   getCurrencyMetadata,
   type Currency 
-} from '@solarpunk/core';
+} from '@madfam/core';
 
 // Format amounts
 formatCurrency(1234.56, 'MXN'); // "$1,234.56"
@@ -96,7 +96,7 @@ import {
   analyticsEvents,
   type AnalyticsEventName,
   type UserSignedUpProps 
-} from '@solarpunk/core';
+} from '@madfam/core';
 
 // Type-safe event tracking (you implement the tracker)
 function track<T extends AnalyticsEventName>(
@@ -124,7 +124,7 @@ import {
   getProductsByLayer,
   getProductGitHubUrl,
   type ProductId 
-} from '@solarpunk/core';
+} from '@madfam/core';
 
 // Get product info
 const janua = getProduct('janua');
@@ -147,7 +147,7 @@ import {
   legalUrls, 
   getCopyrightNotice, 
   footerLinks 
-} from '@solarpunk/core';
+} from '@madfam/core';
 
 // Footer component
 function Footer() {

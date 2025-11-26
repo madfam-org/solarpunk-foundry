@@ -4,11 +4,11 @@
  * This is a TEMPLATE - copy to your app's tailwind.config.ts
  * Each app owns its Tailwind configuration.
  *
- * Uses @solarpunk/core for brand colors and design tokens.
+ * Uses @madfam/core for brand colors and design tokens.
  *
  * Usage:
  *   1. Copy this file to your app: cp tailwind.config.ts ~/your-app/tailwind.config.ts
- *   2. Install @solarpunk/core: pnpm add @solarpunk/core
+ *   2. Install @madfam/core: pnpm add @madfam/core
  *   3. Adjust content paths for your app structure
  *   4. Add app-specific customizations as needed
  */
@@ -21,7 +21,7 @@ import {
   breakpoints,
   shadows,
   radii,
-} from '@solarpunk/core';
+} from '@madfam/core';
 
 const config: Config = {
   // Adjust these paths for your app structure
@@ -36,7 +36,7 @@ const config: Config = {
 
   theme: {
     // ─────────────────────────────────────────────────────────────────────────
-    // COLORS (from @solarpunk/core)
+    // COLORS (from @madfam/core)
     // ─────────────────────────────────────────────────────────────────────────
     colors: {
       // Transparent & current
@@ -123,7 +123,7 @@ const config: Config = {
     },
 
     // ─────────────────────────────────────────────────────────────────────────
-    // TYPOGRAPHY (from @solarpunk/core)
+    // TYPOGRAPHY (from @madfam/core)
     // ─────────────────────────────────────────────────────────────────────────
     fontFamily: {
       sans: [typography.fonts.body, 'system-ui', 'sans-serif'],
@@ -153,22 +153,22 @@ const config: Config = {
     },
 
     // ─────────────────────────────────────────────────────────────────────────
-    // SPACING (from @solarpunk/core)
+    // SPACING (from @madfam/core)
     // ─────────────────────────────────────────────────────────────────────────
     spacing: spacing,
 
     // ─────────────────────────────────────────────────────────────────────────
-    // BREAKPOINTS (from @solarpunk/core)
+    // BREAKPOINTS (from @madfam/core)
     // ─────────────────────────────────────────────────────────────────────────
     screens: breakpoints,
 
     // ─────────────────────────────────────────────────────────────────────────
-    // SHADOWS (from @solarpunk/core)
+    // SHADOWS (from @madfam/core)
     // ─────────────────────────────────────────────────────────────────────────
     boxShadow: shadows,
 
     // ─────────────────────────────────────────────────────────────────────────
-    // BORDER RADIUS (from @solarpunk/core)
+    // BORDER RADIUS (from @madfam/core)
     // ─────────────────────────────────────────────────────────────────────────
     borderRadius: radii,
 

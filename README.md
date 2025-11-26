@@ -79,9 +79,9 @@ We do not build "SaaS"; we build tools to run our own operations first.
 
 | Package | Purpose | License | Location |
 | :--- | :--- | :--- | :--- |
-| **@solarpunk/core** | Authoritative organizational constants (brand, locales, currencies, events, legal, products) | **MIT** | `solarpunk-foundry/packages/core` |
+| **@madfam/core** | Authoritative organizational constants (brand, locales, currencies, events, legal, products) | **MIT** | `solarpunk-foundry/packages/core` |
 
-> **Note:** `@solarpunk/core` contains organizational **decisions**, not implementations. Apps import it for brand consistency, supported locales/currencies, and analytics event taxonomy. See `packages/core/README.md` for usage.
+> **Note:** `@madfam/core` contains organizational **decisions**, not implementations. Apps import it for brand consistency, supported locales/currencies, and analytics event taxonomy. See `packages/core/README.md` for usage.
 
 ### Repositories
 

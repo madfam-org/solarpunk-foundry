@@ -5,12 +5,12 @@
  * Each app owns its analytics implementation.
  *
  * Uses Plausible for privacy-first tracking.
- * Event names follow @solarpunk/core taxonomy.
+ * Event names follow @madfam/core taxonomy.
  *
  * Usage:
  *   1. Copy this file to your app: cp analytics.ts ~/your-app/src/lib/analytics.ts
  *   2. Install dependency: pnpm add plausible-tracker
- *   3. Install @solarpunk/core: pnpm add @solarpunk/core
+ *   3. Install @madfam/core: pnpm add @madfam/core
  *   4. Initialize in your app entry point
  *   5. Use throughout your app
  */
@@ -21,7 +21,7 @@ import type {
   EventProps,
   ProductId,
   BaseEventProps,
-} from '@solarpunk/core';
+} from '@madfam/core';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CONFIGURATION
@@ -34,7 +34,7 @@ export interface AnalyticsConfig {
   apiHost?: string;
   /** Track localhost for development (default: false) */
   trackLocalhost?: boolean;
-  /** Your app's product ID from @solarpunk/core */
+  /** Your app's product ID from @madfam/core */
   appId: ProductId;
 }
 
@@ -101,7 +101,7 @@ class Analytics {
   }
 
   /**
-   * Track an event from the @solarpunk/core taxonomy
+   * Track an event from the @madfam/core taxonomy
    * Type-safe: only accepts valid event names and their required props
    */
   track<T extends AnalyticsEventName>(
@@ -157,7 +157,7 @@ class Analytics {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // CONVENIENCE METHODS (following @solarpunk/core event taxonomy)
+  // CONVENIENCE METHODS (following @madfam/core event taxonomy)
   // ─────────────────────────────────────────────────────────────────────────────
 
   /** User signed up */
