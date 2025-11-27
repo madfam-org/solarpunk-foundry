@@ -1,0 +1,122 @@
+version: "3.8"
+
+# Solarpunk Foundry - Ecosystem Orchestration
+# This docker-compose is for local development of the MADFAM ecosystem
+# Use ./madfam script for production-like orchestration
+
+services:
+  # Core Infrastructure Services
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=madfam
+      - POSTGRES_PASSWORD=madfam_dev
+      - POSTGRES_DB=madfam_dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-databases.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U madfam"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - madfam-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - madfam-network
+
+  # Janua Authentication (Core Dependency)
+  janua:
+    build:
+      context: ../janua
+      dockerfile: apps/api/Dockerfile
+      target: development
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=development
+      - PORT=8000
+      - DATABASE_URL=postgresql://madfam:madfam_dev@postgres:5432/janua_dev
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET=dev-jwt-secret
+      - COOKIE_SECRET=dev-cookie-secret
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - madfam-network
+
+  # Enclii Platform (Local Dev)
+  enclii-api:
+    build:
+      context: ../enclii
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "8080:8080"
+    environment:
+      - ENVIRONMENT=development
+      - DATABASE_URL=postgresql://madfam:madfam_dev@postgres:5432/enclii_dev
+      - REDIS_URL=redis://redis:6379/1
+      - JANUA_URL=http://janua:8000
+    depends_on:
+      - janua
+      - postgres
+      - redis
+    networks:
+      - madfam-network
+
+  # MinIO (S3-compatible storage for all services)
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - madfam-network
+
+  # MailHog for email testing
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - madfam-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+
+networks:
+  madfam-network:
+    driver: bridge
+    name: madfam-network
