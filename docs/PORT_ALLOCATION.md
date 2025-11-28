@@ -16,6 +16,7 @@ Standardized port assignments for all services to prevent conflicts during local
 | 8500-8599 | Finance APIs | Dhanam |
 | 8600-8699 | Analytics APIs | Fortuna |
 | 8700-8799 | Simulation APIs | Galvana/Electrochem-sim |
+| 8800-8899 | Education APIs | AVALA |
 | 9000-9099 | Object Storage | MinIO |
 | 9200-9299 | Search | OpenSearch |
 
@@ -105,6 +106,14 @@ Standardized port assignments for all services to prevent conflicts during local
 | 8700 | Galvana API | galvana-api |
 | 3050 | Galvana Web | galvana-web |
 
+### Education Apps
+
+#### AVALA (Competency Certification)
+| Port | Service | Container |
+|------|---------|-----------|
+| 8800 | AVALA API | avala-api |
+| 3060 | AVALA Web | avala-web |
+
 ## Redis Database Allocation
 
 | DB | Service | Purpose |
@@ -117,6 +126,7 @@ Standardized port assignments for all services to prevent conflicts during local
 | 5 | Digifab | Manufacturing queue |
 | 6 | Sim4D | Collaboration sessions |
 | 7 | Galvana | Simulation jobs |
+| 8 | AVALA | Training sessions, quiz state |
 
 ## Environment Variables Reference
 
