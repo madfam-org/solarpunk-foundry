@@ -1,0 +1,56 @@
+{
+  "name": "@madfam/auth-resilience",
+  "version": "0.1.0",
+  "description": "Resilient authentication client for MADFAM ecosystem with circuit breaker pattern and graceful degradation when Janua is unavailable",
+  "author": "MADFAM <tech@madfam.io>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madfam-io/solarpunk-foundry.git",
+    "directory": "packages/auth-resilience"
+  },
+  "homepage": "https://madfam.io",
+  "keywords": [
+    "madfam",
+    "authentication",
+    "resilience",
+    "circuit-breaker",
+    "janua",
+    "auth",
+    "fallback",
+    "caching"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo node_modules"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.7.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

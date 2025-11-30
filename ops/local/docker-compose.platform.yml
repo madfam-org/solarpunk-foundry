@@ -1,0 +1,264 @@
+version: "3.8"
+
+# =============================================================================
+# MADFAM Platform - Unified Local Development Stack
+# =============================================================================
+# This docker-compose runs the core platform services (Janua, Enclii, Avala)
+# with shared infrastructure, mirroring production deployment via Enclii.
+#
+# Ports follow PORT_REGISTRY.md:
+#   - Janua API: 8000
+#   - Janua Web: 3001
+#   - Enclii API: 8001
+#   - Enclii UI: 8030
+#   - Avala API: 4000
+#   - Avala Web: 3010
+# =============================================================================
+
+services:
+  # ===========================================================================
+  # SHARED INFRASTRUCTURE
+  # ===========================================================================
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: platform-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: platform
+      POSTGRES_PASSWORD: platform_dev
+      POSTGRES_DB: platform_dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-databases.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U platform -d platform_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - platform-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: platform-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - platform-network
+
+  minio:
+    image: minio/minio:latest
+    container_name: platform-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - platform-network
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: platform-mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - platform-network
+
+  # ===========================================================================
+  # JANUA - Authentication Platform (Port 8000)
+  # ===========================================================================
+
+  janua-api:
+    build:
+      context: ../../../janua/apps/api
+      dockerfile: Dockerfile
+    container_name: janua-api
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=true
+      - PORT=8000
+      - DATABASE_URL=postgresql://janua:janua_dev@postgres:5432/janua_dev
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET_KEY=dev-jwt-secret-key-change-in-production-minimum-32-chars
+      - JWT_ALGORITHM=HS256
+      - SECRET_KEY=dev-secret-key-change-in-production-minimum-32-chars
+      - CORS_ORIGINS=http://localhost:3001,http://localhost:3010,http://localhost:8030
+      - EMAIL_ENABLED=false
+      - EMAIL_PROVIDER=smtp
+      - SMTP_HOST=mailhog
+      - SMTP_PORT=1025
+      - SMTP_TLS=false
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - platform-network
+
+  janua-web:
+    build:
+      context: ../../../janua
+      dockerfile: Dockerfile.dashboard
+    container_name: janua-web
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_JANUA_URL=http://localhost:8000
+    depends_on:
+      - janua-api
+    networks:
+      - platform-network
+
+  # ===========================================================================
+  # ENCLII - Platform-as-a-Service (Port 8001)
+  # ===========================================================================
+
+  enclii-api:
+    build:
+      context: ../../../enclii
+      dockerfile: apps/switchyard-api/Dockerfile
+    container_name: enclii-api
+    ports:
+      - "8001:8001"
+    environment:
+      - ENCLII_ENVIRONMENT=development
+      - ENCLII_PORT=8001
+      - ENCLII_DATABASE_URL=postgresql://enclii:enclii_dev@postgres:5432/enclii_dev?sslmode=disable
+      - ENCLII_REDIS_HOST=redis
+      - ENCLII_REDIS_PORT=6379
+      - ENCLII_JANUA_URL=http://janua-api:8000
+      - ENCLII_JWT_SECRET=dev-jwt-secret-key-change-in-production-minimum-32-chars
+      - ENCLII_KUBE_CONFIG=/root/.kube/config
+      - ENCLII_KUBE_CONTEXT=kind-platform
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/.kube/config:/root/.kube/config:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - platform-network
+
+  enclii-ui:
+    build:
+      context: ../../../enclii/apps/switchyard-ui
+      dockerfile: Dockerfile
+    container_name: enclii-ui
+    ports:
+      - "8030:8030"
+    environment:
+      - NODE_ENV=development
+      - PORT=8030
+      - NEXT_PUBLIC_API_URL=http://localhost:8001
+      - NEXT_PUBLIC_JANUA_URL=http://localhost:8000
+    depends_on:
+      - enclii-api
+    networks:
+      - platform-network
+
+  # ===========================================================================
+  # AVALA - Learning Management System (Port 4000)
+  # ===========================================================================
+
+  avala-api:
+    build:
+      context: ../../../avala
+      dockerfile: apps/api/Dockerfile
+    container_name: avala-api
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+      - PORT=4000
+      - API_PORT=4000
+      - DATABASE_URL=postgresql://avala:avala_dev@postgres:5432/avala_dev
+      - REDIS_URL=redis://redis:6379/2
+      - JANUA_BASE_URL=http://janua-api:8000
+      - JANUA_CLIENT_ID=avala-local-dev
+      - JANUA_CLIENT_SECRET=avala-local-dev-secret
+      - JANUA_REDIRECT_URI=http://localhost:3010/auth/callback
+      - JWT_SECRET=dev-jwt-secret-key-change-in-production-minimum-32-chars
+      - S3_ENDPOINT=http://minio:9000
+      - S3_ACCESS_KEY=minioadmin
+      - S3_SECRET_KEY=minioadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - platform-network
+
+  avala-web:
+    build:
+      context: ../../../avala
+      dockerfile: apps/web/Dockerfile
+    container_name: avala-web
+    ports:
+      - "3010:3010"
+    environment:
+      - NODE_ENV=development
+      - PORT=3010
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+      - NEXT_PUBLIC_JANUA_URL=http://localhost:8000
+    depends_on:
+      - avala-api
+    networks:
+      - platform-network
+
+# =============================================================================
+# VOLUMES & NETWORKS
+# =============================================================================
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+
+networks:
+  platform-network:
+    driver: bridge
+    name: madfam-platform

@@ -1,0 +1,53 @@
+{
+  "name": "solarpunk-foundry",
+  "version": "0.1.0",
+  "description": "MADFAM Solarpunk Foundry - Monorepo for shared infrastructure, SDKs, and developer tools",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.15.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "build": "pnpm -r build",
+    "build:core": "pnpm -C packages/core build",
+    "build:ui": "pnpm -C packages/ui build",
+    "build:analytics": "pnpm -C packages/analytics build",
+    "dev": "pnpm -r dev",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "clean": "pnpm -r clean && rm -rf node_modules .turbo",
+    "test": "pnpm -r test",
+    "publish:all": "scripts/publish-all-sdks.sh"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.54.0",
+    "prettier": "^3.1.0",
+    "typescript": "^5.7.2",
+    "tsup": "^8.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madfam-io/solarpunk-foundry.git"
+  },
+  "homepage": "https://madfam.io",
+  "bugs": {
+    "url": "https://github.com/madfam-io/solarpunk-foundry/issues"
+  },
+  "author": "MADFAM <tech@madfam.io>",
+  "license": "MIT",
+  "keywords": [
+    "madfam",
+    "solarpunk",
+    "monorepo",
+    "shared-infrastructure",
+    "sdks",
+    "developer-tools"
+  ]
+}
