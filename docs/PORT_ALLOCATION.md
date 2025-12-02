@@ -1,159 +1,358 @@
 # MADFAM Ecosystem Port Allocation
 
-Standardized port assignments for all services to prevent conflicts during local development.
+> **Single Source of Truth** for all port assignments across the Solarpunk Stack.
+
+---
+
+## Design Principles
+
+1. **100 Ports Per Service**: Each service gets a dedicated 100-port block
+2. **Layer-Based Grouping**: Ports organized by Solarpunk Stack layer
+3. **Predictable Offsets**: API at +00, Web at +01, Admin at +02, etc.
+4. **Collision Avoidance**: Avoids 3000, 5000, 8000, 8080 (common tool conflicts)
+5. **Scalability**: Supports 30+ services with room for expansion
+
+---
 
 ## Port Range Strategy
 
-| Range | Category | Services |
-|-------|----------|----------|
-| 3000-3099 | Web Frontends | All Next.js/React/Vue web apps |
-| 5173 | Vite Dev | Sim4D Studio |
-| 8000-8099 | Auth & Core | Janua, Core platform APIs |
-| 8100-8199 | Revenue APIs | Forgesight |
-| 8200-8299 | Revenue APIs | Forgesight extensions |
-| 8300-8399 | Quote APIs | Digifab Quoting |
-| 8400-8499 | CAD APIs | Sim4D/Sim4D |
-| 8500-8599 | Finance APIs | Dhanam |
-| 8600-8699 | Analytics APIs | Fortuna |
-| 8700-8799 | Simulation APIs | Galvana/Electrochem-sim |
-| 8800-8899 | Education APIs | AVALA |
-| 9000-9099 | Object Storage | MinIO |
-| 9200-9299 | Search | OpenSearch |
+| Range | Layer | Services |
+|-------|-------|----------|
+| 4100-4299 | Soil (Infrastructure) | Janua, Enclii |
+| 4300-4499 | Roots (Data/Sensing) | ForgeSight, Fortuna |
+| 4500-4699 | Stem (Standards) | Cotiza, AVALA |
+| 4700-5199 | Fruit (Platforms) | Dhanam, Sim4D, Forj, Coforma, Galvana |
+| 5200-5499 | Content (Publishing) | BloomScroll, Solarpunk Compendium, Blueprint |
+| 5500-5799 | Corporate (Sites) | madfam-site, aureo-labs, primavera3d |
+| 5800-6999 | Reserved | Future expansion (12 service slots) |
+
+**Reserved Ranges (NEVER USE):**
+- `4000-4099`: Too close to Webpack HMR (4000)
+- `5000-5049`: Flask default port conflict
+- `3000-3999`: React/Next.js defaults, high collision risk
+- `8000-8999`: Django/Python defaults, high collision risk
+
+---
 
 ## Complete Port Map
 
-### Shared Infrastructure (solarpunk-foundry)
-| Port | Service | Container |
-|------|---------|-----------|
-| 5432 | PostgreSQL | madfam-postgres-shared |
-| 6379 | Redis | madfam-redis-shared |
-| 9000 | MinIO API | madfam-minio-shared |
-| 9001 | MinIO Console | madfam-minio-shared |
+### Shared Infrastructure
 
-### Authentication (janua)
-| Port | Service | Container |
-|------|---------|-----------|
-| 8001 | Janua API | janua-api |
-| 3005 | Janua Admin UI | janua-admin |
+| Port | Service | Container | Notes |
+|------|---------|-----------|-------|
+| 5432 | PostgreSQL | madfam-postgres | Shared database |
+| 6379 | Redis | madfam-redis | Shared cache |
+| 9000 | MinIO API | madfam-minio | Object storage |
+| 9001 | MinIO Console | madfam-minio | MinIO web UI |
+| 1025 | MailHog SMTP | madfam-mailhog | Dev email capture |
+| 8025 | MailHog UI | madfam-mailhog | Email viewer |
 
-### Business Site (madfam-site)
-| Port | Service | Container |
-|------|---------|-----------|
-| 3000 | MADFAM Site (prod) | madfam-site-web |
-| 3001 | MADFAM Site (dev) | madfam-site-web-dev |
+---
 
-### Revenue Apps
+### Layer 1: Soil (Infrastructure) — 4100-4299
 
-#### Forgesight
-| Port | Service | Container |
-|------|---------|-----------|
-| 8200 | Forgesight API | forgesight-api |
-| 3002 | Forgesight Web | forgesight-web |
-| 9200 | OpenSearch | forgesight-opensearch |
-| 9600 | OpenSearch Perf | forgesight-opensearch |
+#### Janua (Identity & Auth) — 4100-4199
 
-#### Digifab Quoting
-| Port | Service | Container |
-|------|---------|-----------|
-| 8300 | Digifab API | digifab-api |
-| 3003 | Digifab Web | digifab-web |
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 4100 | API | janua-api | FastAPI backend |
+| 4101 | Dashboard | janua-dashboard | User management UI (app.janua.dev) |
+| 4102 | Admin | janua-admin | Admin console |
+| 4103 | Docs | janua-docs | Documentation site (docs.janua.dev) |
+| 4104 | Website | janua-website | Marketing site (janua.dev) |
+| 4105 | Demo | janua-demo | Interactive demos |
+| 4110 | Email Worker | janua-worker-email | Background email jobs |
+| 4111 | Audit Worker | janua-worker-audit | Audit log processing |
+| 4120 | WebSocket | janua-ws | Real-time events |
+| 4150 | API (Dev) | janua-api-dev | Development variant |
+| 4190 | Metrics | janua-metrics | Prometheus endpoint |
 
-### Portfolio Sites
+#### Enclii (PaaS) — 4200-4299
 
-#### Aureo Labs
-| Port | Service | Container |
-|------|---------|-----------|
-| 3010 | Aureo Labs (prod) | aureo-labs-web |
-| 3011 | Aureo Labs (dev) | aureo-labs-web-dev |
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 4200 | Switchyard API | enclii-api | Control plane |
+| 4201 | UI | enclii-ui | Management console |
+| 4202 | Agent API | enclii-agent | Node agent |
+| 4210 | Registry | enclii-registry | Container registry |
+| 4220 | WebSocket | enclii-ws | Live logs/status |
+| 4250 | API (Dev) | enclii-api-dev | Development variant |
+| 4290 | Metrics | enclii-metrics | Prometheus endpoint |
 
-#### Primavera3D
-| Port | Service | Container |
-|------|---------|-----------|
-| 3020 | Primavera3D (prod) | primavera3d-web |
-| 3021 | Primavera3D (dev) | primavera3d-web-dev |
+---
 
-### Platform Apps
+### Layer 2: Roots (Data/Sensing) — 4300-4499
 
-#### Dhanam (Finance)
-| Port | Service | Container |
-|------|---------|-----------|
-| 8500 | Dhanam API | dhanam-api |
-| 3030 | Dhanam Web | dhanam-web |
-| 1025 | MailHog SMTP | dhanam-mailhog |
-| 8025 | MailHog UI | dhanam-mailhog |
-| 4566 | LocalStack | dhanam-localstack |
+#### ForgeSight (Manufacturing Data) — 4300-4399
 
-#### Fortuna (Analytics)
-| Port | Service | Container |
-|------|---------|-----------|
-| 8600 | Fortuna API | fortuna-api |
-| 3004 | Fortuna Web | fortuna-web |
-| 9201 | OpenSearch | fortuna-opensearch |
-| 9601 | OpenSearch Perf | fortuna-opensearch |
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 4300 | API | forgesight-api | Data API |
+| 4301 | Web | forgesight-web | Dashboard |
+| 4310 | Crawler | forgesight-crawler | Data collection |
+| 4320 | OpenSearch | forgesight-search | Search engine |
+| 4390 | Metrics | forgesight-metrics | Prometheus endpoint |
 
-#### Sim4D/Sim4D (CAD)
-| Port | Service | Container |
-|------|---------|-----------|
-| 5173 | Sim4D Studio | sim4d-studio |
-| 3040 | Sim4D Marketing | sim4d-marketing |
-| 8081 | Collaboration WS | sim4d-collaboration |
+#### Fortuna (Market Intelligence) — 4400-4499
 
-### Utilities
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 4400 | API | fortuna-api | Intelligence API |
+| 4401 | Web | fortuna-web | Dashboard |
+| 4410 | Analyzer | fortuna-analyzer | ML processing |
+| 4420 | OpenSearch | fortuna-search | Search engine |
+| 4490 | Metrics | fortuna-metrics | Prometheus endpoint |
 
-#### Galvana/Electrochem-sim
-| Port | Service | Container |
-|------|---------|-----------|
-| 8700 | Galvana API | galvana-api |
-| 3050 | Galvana Web | galvana-web |
+---
 
-### Education Apps
+### Layer 3: Stem (Standards) — 4500-4699
 
-#### AVALA (Competency Certification)
-| Port | Service | Container |
-|------|---------|-----------|
-| 8800 | AVALA API | avala-api |
-| 3060 | AVALA Web | avala-web |
+#### Cotiza (Quoting Engine) — 4500-4599
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 4500 | API | cotiza-api | Quoting API |
+| 4501 | Web | cotiza-web | Quote builder UI |
+| 4502 | Admin | cotiza-admin | Admin panel |
+| 4510 | Calculator | cotiza-calc | Price calculation |
+| 4590 | Metrics | cotiza-metrics | Prometheus endpoint |
+
+#### AVALA (Education) — 4600-4699
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 4600 | API | avala-api | NestJS backend |
+| 4601 | Web | avala-web | Learning platform |
+| 4602 | Admin | avala-admin | Admin console |
+| 4603 | Assess | avala-assess | Evaluation engine |
+| 4610 | Worker | avala-worker | Background jobs |
+| 4690 | Metrics | avala-metrics | Prometheus endpoint |
+
+**Migration Note**: AVALA currently uses 4900/3060. Migrate to 4600/4601.
+
+---
+
+### Layer 4: Fruit (Platforms) — 4700-5199
+
+#### Dhanam (Finance) — 4700-4799
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 4700 | API | dhanam-api | Finance API |
+| 4701 | Web | dhanam-web | Budget dashboard |
+| 4702 | Admin | dhanam-admin | Admin panel |
+| 4710 | Sync | dhanam-sync | Bank sync service |
+| 4720 | LocalStack | dhanam-localstack | AWS mock (dev) |
+| 4790 | Metrics | dhanam-metrics | Prometheus endpoint |
+
+#### Sim4D (CAD) — 4800-4899
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 4800 | API | sim4d-api | CAD API |
+| 4801 | Studio | sim4d-studio | Web CAD (Vite) |
+| 4802 | Marketing | sim4d-marketing | Landing page |
+| 4820 | Collaboration | sim4d-collab | WebSocket for collab |
+| 4830 | Geometry | sim4d-geom | geom-core WASM |
+| 4890 | Metrics | sim4d-metrics | Prometheus endpoint |
+
+#### Forj (Marketplace) — 4900-4999
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 4900 | API | forj-api | Marketplace API |
+| 4901 | Web | forj-web | Storefront |
+| 4902 | Admin | forj-admin | Seller dashboard |
+| 4910 | Order Worker | forj-worker | Order processing |
+| 4990 | Metrics | forj-metrics | Prometheus endpoint |
+
+**Note**: Skips 5000-5049 to avoid Flask conflict.
+
+#### Coforma (Feedback) — 5050-5149
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 5050 | API | coforma-api | Feedback API |
+| 5051 | Web | coforma-web | CAB platform |
+| 5052 | Admin | coforma-admin | Admin console |
+| 5060 | Meilisearch | coforma-search | Search engine |
+| 5090 | Metrics | coforma-metrics | Prometheus endpoint |
+
+**Migration Note**: Coforma currently uses 5100. Keep at 5050+ to avoid Flask.
+
+#### Galvana (Simulation) — 5150-5199
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 5150 | API | galvana-api | Simulation API |
+| 5151 | Web | galvana-web | Visualization UI |
+| 5160 | Compute | galvana-compute | Simulation engine |
+| 5190 | Metrics | galvana-metrics | Prometheus endpoint |
+
+---
+
+### Layer 5: Content (Publishing) — 5200-5499
+
+#### BloomScroll (Slow Web) — 5200-5299
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 5200 | API | bloomscroll-api | Content API |
+| 5201 | Web | bloomscroll-web | Reader UI |
+| 5202 | Admin | bloomscroll-admin | Curation console |
+| 5210 | Crawler | bloomscroll-crawler | Content fetcher |
+| 5290 | Metrics | bloomscroll-metrics | Prometheus endpoint |
+
+#### Solarpunk Compendium (Almanac) — 5300-5399
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 5300 | API | compendium-api | Content API |
+| 5301 | Web | compendium-web | Almanac site (almanac.solar) |
+| 5302 | Preview | compendium-preview | Draft preview |
+| 5310 | Search | compendium-search | Content search |
+| 5390 | Metrics | compendium-metrics | Prometheus endpoint |
+
+#### Blueprint Harvester (3D Index) — 5400-5499
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 5400 | API | blueprint-api | Index API |
+| 5401 | Web | blueprint-web | Search UI |
+| 5410 | Indexer | blueprint-indexer | 3D model crawler |
+| 5420 | Renderer | blueprint-renderer | Thumbnail generator |
+| 5490 | Metrics | blueprint-metrics | Prometheus endpoint |
+
+---
+
+### Layer 6: Corporate (Sites) — 5500-5799
+
+#### MADFAM Site — 5500-5599
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 5500 | Web | madfam-site | Corporate website |
+| 5501 | Dev | madfam-site-dev | Development server |
+| 5590 | Metrics | madfam-metrics | Prometheus endpoint |
+
+#### Aureo Labs — 5600-5699
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 5600 | Web | aureo-web | Product showcase |
+| 5601 | Dev | aureo-web-dev | Development server |
+| 5690 | Metrics | aureo-metrics | Prometheus endpoint |
+
+#### Primavera3D — 5700-5799
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 5700 | Web | primavera3d-web | Factory portfolio |
+| 5701 | Dev | primavera3d-dev | Development server |
+| 5790 | Metrics | primavera3d-metrics | Prometheus endpoint |
+
+---
+
+### Layer 7: Reserved — 5800-6999
+
+Reserved for future services. Each 100-port block can accommodate one service.
+
+Available slots: **12 services** (5800, 5900, 6000, 6100, 6200, 6300, 6400, 6500, 6600, 6700, 6800, 6900)
+
+---
+
+## Sub-Port Allocation Schema
+
+Every service follows this internal structure within its 100-port block:
+
+| Offset | Purpose | Example (Janua = 4100) |
+|--------|---------|------------------------|
+| +00 | Primary API | 4100 → janua-api |
+| +01 | Primary Web UI | 4101 → janua-dashboard |
+| +02 | Admin UI | 4102 → janua-admin |
+| +03 | Documentation | 4103 → janua-docs |
+| +04 | Marketing/Landing | 4104 → janua-website |
+| +05 | Demo Application | 4105 → janua-demo |
+| +06-09 | Reserved UI slots | 4106-4109 |
+| +10-19 | Background Workers | 4110 → email-worker |
+| +20-29 | Real-time (WS/SSE) | 4120 → websocket |
+| +30-39 | Internal Services | 4130 → grpc-service |
+| +40-49 | Edge/CDN Services | 4140 → edge-verify |
+| +50-59 | Development Only | 4150 → api-dev |
+| +60-69 | Testing | 4160 → api-test |
+| +70-79 | Staging | 4170 → api-staging |
+| +80-89 | Feature Flags/A-B | 4180 → feature-api |
+| +90-99 | Observability | 4190 → metrics |
+
+---
 
 ## Redis Database Allocation
 
 | DB | Service | Purpose |
 |----|---------|---------|
-| 0 | Janua | Auth sessions, tokens |
-| 1 | Reserved | Future use |
-| 2 | Forgesight | Document processing cache |
-| 3 | Dhanam | Financial data cache |
-| 4 | Fortuna | Analytics cache |
-| 5 | Digifab | Manufacturing queue |
-| 6 | Sim4D | Collaboration sessions |
-| 7 | Galvana | Simulation jobs |
-| 8 | AVALA | Training sessions, quiz state |
+| 0 | Janua | Auth sessions, tokens, rate limiting |
+| 1 | Enclii | Deployment state, job queues |
+| 2 | ForgeSight | Document processing cache |
+| 3 | Fortuna | Analytics cache |
+| 4 | Cotiza | Quote calculation cache |
+| 5 | AVALA | Training sessions, quiz state |
+| 6 | Dhanam | Financial data cache |
+| 7 | Sim4D | Collaboration sessions |
+| 8 | Forj | Order queue, cart state |
+| 9 | Coforma | Feedback aggregation |
+| 10 | Galvana | Simulation job queue |
+| 11 | BloomScroll | Content cache |
+| 12 | Compendium | Search cache |
+| 13 | Blueprint | Index cache |
+| 14-15 | Reserved | Future use |
 
-## Environment Variables Reference
+---
 
-All services should use these standardized environment variables:
+## Environment Variables
+
+All services should use these standardized variables:
 
 ```bash
 # Shared Infrastructure
-DATABASE_HOST=madfam-postgres-shared
+DATABASE_HOST=madfam-postgres
 DATABASE_PORT=5432
-REDIS_HOST=madfam-redis-shared
+REDIS_HOST=madfam-redis
 REDIS_PORT=6379
-MINIO_HOST=madfam-minio-shared
+MINIO_HOST=madfam-minio
 MINIO_PORT=9000
 
-# Janua Auth (all services)
+# Janua Auth (for all services)
 JANUA_ENABLED=true
-JANUA_JWT_SECRET=dev-shared-janua-secret-32chars!!
-JANUA_API_URL=http://janua-api:8001
+JANUA_API_URL=http://janua-api:4100
+JANUA_INTERNAL_KEY=${JANUA_INTERNAL_KEY}
 ```
 
-## Conflict Prevention Rules
+---
 
-1. **Web frontends**: Always use 3xxx ports
-2. **APIs**: Always use 8xxx ports
-3. **Infrastructure**: Reserved 5432, 6379, 9000-9001
-4. **Search**: Use 9200+ range (increment by 1 for each service)
-5. **Dev servers**: Use base port + 1 (e.g., 3010 prod → 3011 dev)
+## Migration Guide
+
+### Priority Order
+
+1. **Janua** (Infrastructure - blocks all other services)
+2. **Enclii** (Infrastructure - deployment target)
+3. **AVALA** (4900 → 4600)
+4. **Dhanam** (4000 → 4700)
+5. **Coforma** (5100 → 5050)
+6. **Remaining services** (as they come online)
+
+### Migration Steps Per Service
+
+```bash
+# 1. Update docker-compose.yml
+# 2. Update .env files
+# 3. Update CLAUDE.md port references
+# 4. Update Cloudflare tunnel config (if applicable)
+# 5. Update any hardcoded URLs in code
+# 6. Test locally
+# 7. Deploy to production
+```
+
+---
 
 ## Verification Commands
 
@@ -162,8 +361,30 @@ JANUA_API_URL=http://janua-api:8001
 docker ps --format "table {{.Names}}\t{{.Ports}}" | sort
 
 # Check specific port
-lsof -i :3000
+lsof -i :4100
 
 # List all MADFAM containers
-docker ps --filter "network=madfam-shared-network"
+docker ps --filter "network=madfam-network"
+
+# Verify no conflicts with common tools
+for port in 3000 5000 8000 8080; do
+  lsof -i :$port && echo "WARNING: $port in use"
+done
+
+# Test service connectivity
+curl http://localhost:4100/health  # Janua API
+curl http://localhost:4200/health  # Enclii API
 ```
+
+---
+
+## Changelog
+
+| Date | Change | Author |
+|------|--------|--------|
+| 2025-12-02 | Complete rewrite: Unified 4xxx-5xxx scheme replacing 8xxx/3xxx split | Claude |
+| - | Previous: Mixed 8xxx APIs + 3xxx Webs | - |
+
+---
+
+*This document is the single source of truth for port allocation. All repos must conform to this standard.*

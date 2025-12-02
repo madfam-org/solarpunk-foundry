@@ -124,24 +124,31 @@ cd ops/bin
 
 ## Port Allocation (Quick Reference)
 
-| Service | API Port | Web Port |
-|---------|----------|----------|
-| Janua | 4100 | 4101 |
-| Enclii | 4200 | 4201 |
-| ForgeSight | 4300 | 4301 |
-| Cotiza Studio | 4400 | 4401 |
-| Dhanam | 4500 | 4501 |
-| Galvana | 4600 | 4601 |
-| Fortuna | 4700 | 4701 |
-| Sim4D | 4800 | 4801 |
-| AVALA | 4900 | 4901 |
-| Forj | 5000 | 5001 |
-| Coforma | 5100 | 5101 |
-| BloomScroll | 5200 | 5201 |
+Each service gets a 100-port block. Pattern: API at +00, Web at +01, Admin at +02.
 
-**Databases**: PostgreSQL (5432), Redis (6379), MinIO (9000/9001)
+| Layer | Service | API | Web | Notes |
+|-------|---------|-----|-----|-------|
+| **Soil** | Janua | 4100 | 4101 | +02 Admin, +03 Docs, +04 Website |
+| | Enclii | 4200 | 4201 | +02 Agent |
+| **Roots** | ForgeSight | 4300 | 4301 | +10 Crawler |
+| | Fortuna | 4400 | 4401 | +10 Analyzer |
+| **Stem** | Cotiza | 4500 | 4501 | +02 Admin |
+| | AVALA | 4600 | 4601 | +02 Admin, +03 Assess |
+| **Fruit** | Dhanam | 4700 | 4701 | +02 Admin |
+| | Sim4D | 4800 | 4801 | +20 Collaboration WS |
+| | Forj | 4900 | 4901 | +02 Admin |
+| | Coforma | 5050 | 5051 | Skips 5000 (Flask conflict) |
+| | Galvana | 5150 | 5151 | +60 Compute |
+| **Content** | BloomScroll | 5200 | 5201 | +10 Crawler |
+| | Compendium | 5300 | 5301 | almanac.solar |
+| | Blueprint | 5400 | 5401 | +10 Indexer |
+| **Sites** | madfam-site | 5500 | 5501 | |
+| | aureo-labs | 5600 | 5601 | |
+| | primavera3d | 5700 | 5701 | |
 
-See `docs/PORT_ALLOCATION.md` for complete registry.
+**Infrastructure**: PostgreSQL (5432), Redis (6379), MinIO (9000/9001), MailHog (1025/8025)
+
+See `docs/PORT_ALLOCATION.md` for complete registry with sub-port schema.
 
 ---
 
