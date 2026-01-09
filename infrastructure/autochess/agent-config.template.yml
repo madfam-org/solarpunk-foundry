@@ -1,0 +1,164 @@
+# Autochess Agent Configuration Template
+# This template defines how Claude agents operate within the MADFAM ecosystem
+
+version: "1.0"
+kind: AgentConfig
+
+metadata:
+  name: "example-agent"
+  description: "Template for autochess agent configuration"
+
+# Agent identification and capabilities
+agent:
+  # Agent type determines behavior patterns
+  # Types: planner, implementer, reviewer, qa, architect
+  type: "implementer"
+
+  # Human-readable name shown in dashboards
+  display_name: "Feature Builder Agent"
+
+  # Maximum parallel tasks this agent can handle
+  max_parallel_tasks: 3
+
+  # Claude model to use (requires Claude Pro/Max subscription)
+  model: "claude-sonnet-4-20250514"  # or claude-opus-4-20250514 for complex tasks
+
+# Git isolation settings
+isolation:
+  # Method for isolating agent work
+  # Options: git-worktree (recommended), branch, fork
+  method: "git-worktree"
+
+  # Base branch to create worktrees from
+  base_branch: "main"
+
+  # Directory for worktrees
+  worktree_base: "/tmp/autochess-worktrees"
+
+  # Clean up worktree after successful merge
+  cleanup_on_complete: true
+
+  # Protect these branches from direct modification
+  protected_branches:
+    - "main"
+    - "master"
+    - "production"
+
+# Quality assurance settings
+quality_assurance:
+  enabled: true
+
+  # Run linter before commits
+  lint_on_commit: true
+
+  # Run tests before merge
+  test_before_merge: true
+
+  # Type checking (for TypeScript/Python projects)
+  type_check: true
+
+  # Security scanning
+  security_scan: true
+
+  # Minimum test coverage for new code
+  min_coverage: 80
+
+# Repository integrations
+integrations:
+  github:
+    enabled: true
+    # Automatically create PRs for completed work
+    auto_pr: true
+    # Require human review before merge
+    require_review: true
+    # PR template to use
+    pr_template: ".github/PULL_REQUEST_TEMPLATE.md"
+    # Labels to apply to agent-created PRs
+    labels:
+      - "autochess"
+      - "ai-generated"
+
+  linear:
+    enabled: false
+    # Sync task status with Linear issues
+    sync_status: true
+    # Team ID for issue creation
+    team_id: ""
+
+  gitlab:
+    enabled: false
+
+# Authentication with MADFAM ecosystem
+auth:
+  # Janua OAuth configuration
+  janua:
+    issuer: "https://auth.madfam.io"
+    client_id: "jnc_lSGMbQtCGdHSctd4mEQoaklLBCv7xXhe"
+
+  # Service token for API calls (set via environment)
+  service_token_env: "AUTOCHESS_SERVICE_TOKEN"
+
+# Deployment triggers
+deployment:
+  # Trigger Enclii deployment on successful merge
+  auto_deploy: false
+
+  # Enclii API endpoint
+  enclii_api: "https://api.enclii.dev"
+
+  # Environment to deploy to
+  target_environment: "staging"
+
+  # Wait for deployment health check
+  wait_for_healthy: true
+
+# Resource limits
+resources:
+  # Maximum execution time per task (minutes)
+  max_task_duration: 60
+
+  # Maximum files an agent can modify in one PR
+  max_files_per_pr: 50
+
+  # Maximum lines of code per PR
+  max_lines_per_pr: 2000
+
+# Logging and monitoring
+observability:
+  # Log level: debug, info, warn, error
+  log_level: "info"
+
+  # Send metrics to autochess-metrics
+  metrics_enabled: true
+  metrics_endpoint: "http://localhost:5990/metrics"
+
+  # Webhook for status updates
+  webhook_url: ""
+
+# Allowed commands for sandboxed execution
+sandbox:
+  # Commands allowed without confirmation
+  allowed_commands:
+    - "npm"
+    - "pnpm"
+    - "yarn"
+    - "go"
+    - "python"
+    - "pip"
+    - "pytest"
+    - "make"
+    - "git"
+    - "curl"
+    - "jq"
+
+  # Commands that require confirmation
+  confirm_commands:
+    - "rm"
+    - "docker"
+    - "kubectl"
+
+  # Commands never allowed
+  blocked_commands:
+    - "sudo"
+    - "chmod 777"
+    - "curl | sh"

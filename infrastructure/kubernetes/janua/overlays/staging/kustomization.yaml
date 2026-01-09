@@ -1,0 +1,47 @@
+# Staging Overlay Kustomization
+# =============================
+# Staging environment for testing before production
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: janua-staging
+
+# Namespace (separate from production)
+namespace: janua-staging
+
+# Inherit from base
+resources:
+  - ../../base
+
+# Staging-specific patches
+patches:
+  - patch: |-
+      - op: replace
+        path: /data/BASE_URL
+        value: "https://auth-staging.madfam.io"
+      - op: replace
+        path: /data/JWT_ISSUER
+        value: "https://auth-staging.madfam.io"
+      - op: replace
+        path: /data/ENVIRONMENT
+        value: "staging"
+      - op: replace
+        path: /data/LOG_LEVEL
+        value: "DEBUG"
+    target:
+      kind: ConfigMap
+      name: janua-config
+
+# Use latest for staging (faster iteration)
+images:
+  - name: ghcr.io/madfam-io/janua-api
+    newTag: latest
+
+# Common labels
+commonLabels:
+  environment: staging
+  app.kubernetes.io/instance: staging
+
+# Lower resources for staging
+# (Resource patches would go here if needed)

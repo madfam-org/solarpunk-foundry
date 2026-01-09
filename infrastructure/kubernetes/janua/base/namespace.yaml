@@ -1,0 +1,11 @@
+# Janua Namespace
+# ===============
+# Isolated namespace for Janua authentication services
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: janua
+  labels:
+    app.kubernetes.io/name: janua
+    app.kubernetes.io/part-of: madfam-ecosystem
+    app.kubernetes.io/managed-by: kustomize

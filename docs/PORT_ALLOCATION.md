@@ -24,7 +24,9 @@
 | 4700-5199 | Fruit (Platforms) | Dhanam, Sim4D, Forj, Coforma, Galvana |
 | 5200-5499 | Content (Publishing) | BloomScroll, Solarpunk Compendium, Blueprint |
 | 5500-5799 | Corporate (Sites) | madfam-site, aureo-labs, primavera3d |
-| 5800-6999 | Reserved | Future expansion (12 service slots) |
+| 5800-5899 | Creative (GPU) | ceq |
+| 5900-5999 | AI Agents | Autochess |
+| 6000-6999 | Reserved | Future expansion (10 service slots) |
 
 **Reserved Ranges (NEVER USE):**
 - `4000-4099`: Too close to Webpack HMR (4000)
@@ -285,6 +287,28 @@
 | 4215 | Metrics | furnace-metrics | GPU metrics endpoint |
 
 **Note**: Workers run on GPU nodes as Kubernetes deployments, not fixed ports.
+
+---
+
+#### Autochess (Claude Agent Orchestration) — 5900-5999
+
+> *Autonomous Multi-Agent Development Infrastructure*
+> **UI**: agents.madfam.io (via ClaudeCodeUI)
+> **Engine**: [Auto-Claude](https://github.com/AndyMik90/Auto-Claude)
+
+| Port | Service | Container | Purpose |
+|------|---------|-----------|---------|
+| 5900 | API | autochess-api | Agent coordination API |
+| 5901 | Dashboard | autochess-dashboard | Web control center |
+| 5902 | Admin | autochess-admin | Agent configuration |
+| 5910 | WebSocket | autochess-ws | Real-time agent communication |
+| 5920 | Executor | autochess-executor | Task execution engine |
+| 5990 | Metrics | autochess-metrics | Prometheus endpoint |
+
+**Integration Points**:
+- Auth via Janua (OAuth client: `jnc_lSGMbQtCGdHSctd4mEQoaklLBCv7xXhe`)
+- Deployment triggers via Enclii API
+- Git operations via isolated worktrees
 
 ---
 
