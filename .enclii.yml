@@ -17,7 +17,7 @@ spec:
     context: .
     source:
       git:
-        repository: https://github.com/madfam-io/solarpunk-foundry
+        repository: https://github.com/madfam-org/solarpunk-foundry
         branch: main
         autoDeploy: true
 

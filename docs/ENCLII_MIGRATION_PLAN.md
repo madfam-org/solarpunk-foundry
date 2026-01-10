@@ -187,7 +187,7 @@ metadata:
 spec:
   build:
     source:
-      repo: github.com/madfam-io/repo-name
+      repo: github.com/madfam-org/repo-name
       branch: main
       path: services/api  # if monorepo
     builder: dockerfile|nixpacks

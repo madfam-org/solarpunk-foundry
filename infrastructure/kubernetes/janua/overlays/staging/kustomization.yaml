@@ -35,7 +35,7 @@ patches:
 
 # Use latest for staging (faster iteration)
 images:
-  - name: ghcr.io/madfam-io/janua-api
+  - name: ghcr.io/madfam-org/janua-api
     newTag: latest
 
 # Common labels

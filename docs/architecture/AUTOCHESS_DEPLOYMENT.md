@@ -94,12 +94,12 @@ enclii/k8s/
 cd /Users/aldoruizluna/labspace/janua-auth-proxy
 
 # Build and push to GitHub Container Registry
-docker build -t ghcr.io/madfam-io/janua-auth-proxy:latest .
-echo $GITHUB_TOKEN | docker login ghcr.io -u madfam-io --password-stdin
-docker push ghcr.io/madfam-io/janua-auth-proxy:latest
+docker build -t ghcr.io/madfam-org/janua-auth-proxy:latest .
+echo $GITHUB_TOKEN | docker login ghcr.io -u madfam-org --password-stdin
+docker push ghcr.io/madfam-org/janua-auth-proxy:latest
 
 # Verify image is available
-docker pull ghcr.io/madfam-io/janua-auth-proxy:latest
+docker pull ghcr.io/madfam-org/janua-auth-proxy:latest
 ```
 
 ### Step 2: Create Kubernetes Secrets
@@ -172,7 +172,7 @@ kubectl get pods -n keda
 **Option 1: GitHub UI** (Recommended)
 1. Go to https://github.com/siteboon/claudecodeui
 2. Click "Fork" button
-3. Select "madfam-io" organization
+3. Select "madfam-org" organization
 4. Name it `claudecodeui`
 
 **Option 2: Command Line**
@@ -180,12 +180,12 @@ kubectl get pods -n keda
 cd /tmp
 git clone https://github.com/siteboon/claudecodeui.git
 cd claudecodeui
-gh repo create madfam-io/claudecodeui --public --source=. --push
+gh repo create madfam-org/claudecodeui --public --source=. --push
 ```
 
 ### Step 7: Add Janua Integration to ClaudeCodeUI Fork
 
-After forking, add these files to `madfam-io/claudecodeui`:
+After forking, add these files to `madfam-org/claudecodeui`:
 
 **`src/routes/auth.ts`** - OAuth2 flow implementation
 **`src/middleware/auth.ts`** - JWT verification middleware
@@ -272,7 +272,7 @@ source:
     repository: https://github.com/AndyMik90/Auto-Claude  # Upstream!
 sidecars:
   - name: auth-proxy
-    image: ghcr.io/madfam-io/janua-auth-proxy:latest
+    image: ghcr.io/madfam-org/janua-auth-proxy:latest
 ```
 
 **Example 2: Cursor CLI (future)**
@@ -282,7 +282,7 @@ source:
     repository: https://github.com/getcursor/cursor  # Upstream!
 sidecars:
   - name: auth-proxy
-    image: ghcr.io/madfam-io/janua-auth-proxy:latest
+    image: ghcr.io/madfam-org/janua-auth-proxy:latest
     env:
       - name: REQUIRED_SCOPES
         value: code:edit
@@ -295,7 +295,7 @@ source:
     repository: https://github.com/paul-gauthier/aider  # Upstream!
 sidecars:
   - name: auth-proxy
-    image: ghcr.io/madfam-io/janua-auth-proxy:latest
+    image: ghcr.io/madfam-org/janua-auth-proxy:latest
 ```
 
 ### ✅ Zero Fork Maintenance

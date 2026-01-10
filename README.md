@@ -87,28 +87,28 @@ We do not build "SaaS"; we build tools to run our own operations first.
 
 | Solution | Domain | GitHub Org | Website | Repository | License | Strategic Purpose |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Enclii** | Infra | `madfam-io` | [enclii.dev](https://enclii.dev) | [enclii](https://github.com/madfam-io/enclii) | **AGPL v3** | Prevents cloud capture. |
-| **Janua** | Auth | `madfam-io` | [janua.dev](https://janua.dev) | [janua](https://github.com/madfam-io/janua) | **AGPL v3** | Identity Trust. |
-| **Dhanam** | Finance | `madfam-io` | [dhan.am](https://dhan.am) | [dhanam](https://github.com/madfam-io/dhanam) | **AGPL v3** | Trust in financial code. Open Core protects connectors. |
-| **BloomScroll**| Media | `madfam-io` | TBD | [bloom-scroll](https://github.com/madfam-io/bloom-scroll) | **MPL 2.0** | Ethos & Community building. |
-| **AVALA** | EdTech | `madfam-io` | TBD | [avala](https://github.com/madfam-io/avala) | **AGPL v3** | Transparent verification. |
-| **geom-core** | Science | `madfam-io` | TBD | [geom-core](https://github.com/madfam-io/geom-core) | **Apache 2.0** | The geometry standard. |
-| **Galvana** | Science | `madfam-io` | TBD | [electrochem-sim](https://github.com/madfam-io/electrochem-sim) | **MPL 2.0** | Open Science collaboration. |
-| **Sim4D (Community)**| Making | `madfam-io` | [sim4d.io](https://sim4d.io) | [sim4d](https://github.com/madfam-io/sim4d) | **MPL 2.0** | The tool (without the market). |
-| **Fortuna** | Intel | `aureo-labs` | [fortuna.tube](https://fortuna.tube) | [fortuna](https://github.com/madfam-io/fortuna) | **Proprietary**| The "Edge" (Market Gaps). |
-| **ForgeSight** | Intel | `aureo-labs` | [forgesight.quest](https://forgesight.quest) | [forgesight](https://github.com/madfam-io/forgesight) | **Proprietary**| The Cost Database. |
-| **BlueprintTube**| Intel | `aureo-labs` | [blueprint.tube](https://blueprint.tube) | [blueprint-harvester](https://github.com/madfam-io/blueprint-harvester) | **Proprietary**| The Model Index. |
-| **Forj** | Commerce | `aureo-labs` | [forj.design](https://forj.design) | [forj](https://github.com/madfam-io/forj) | **Proprietary**| The Revenue Engine. |
-| **Cotiza Studio**| Making | `aureo-labs` | [cotiza.studio](https://cotiza.studio) | [digifab-quoting](https://github.com/madfam-io/digifab-quoting) | **Proprietary**| The Pricing Logic. |
-| **Coforma Studio**| Ops | `aureo-labs` | [coforma.studio](https://coforma.studio) | [coforma-studio](https://github.com/madfam-io/coforma-studio) | **Proprietary**| The Customer Data. |
+| **Enclii** | Infra | `madfam-org` | [enclii.dev](https://enclii.dev) | [enclii](https://github.com/madfam-org/enclii) | **AGPL v3** | Prevents cloud capture. |
+| **Janua** | Auth | `madfam-org` | [janua.dev](https://janua.dev) | [janua](https://github.com/madfam-org/janua) | **AGPL v3** | Identity Trust. |
+| **Dhanam** | Finance | `madfam-org` | [dhan.am](https://dhan.am) | [dhanam](https://github.com/madfam-org/dhanam) | **AGPL v3** | Trust in financial code. Open Core protects connectors. |
+| **BloomScroll**| Media | `madfam-org` | TBD | [bloom-scroll](https://github.com/madfam-org/bloom-scroll) | **MPL 2.0** | Ethos & Community building. |
+| **AVALA** | EdTech | `madfam-org` | TBD | [avala](https://github.com/madfam-org/avala) | **AGPL v3** | Transparent verification. |
+| **geom-core** | Science | `madfam-org` | TBD | [geom-core](https://github.com/madfam-org/geom-core) | **Apache 2.0** | The geometry standard. |
+| **Galvana** | Science | `madfam-org` | TBD | [electrochem-sim](https://github.com/madfam-org/electrochem-sim) | **MPL 2.0** | Open Science collaboration. |
+| **Sim4D (Community)**| Making | `madfam-org` | [sim4d.io](https://sim4d.io) | [sim4d](https://github.com/madfam-org/sim4d) | **MPL 2.0** | The tool (without the market). |
+| **Fortuna** | Intel | `aureo-labs` | [fortuna.tube](https://fortuna.tube) | [fortuna](https://github.com/madfam-org/fortuna) | **Proprietary**| The "Edge" (Market Gaps). |
+| **ForgeSight** | Intel | `aureo-labs` | [forgesight.quest](https://forgesight.quest) | [forgesight](https://github.com/madfam-org/forgesight) | **Proprietary**| The Cost Database. |
+| **BlueprintTube**| Intel | `aureo-labs` | [blueprint.tube](https://blueprint.tube) | [blueprint-harvester](https://github.com/madfam-org/blueprint-harvester) | **Proprietary**| The Model Index. |
+| **Forj** | Commerce | `aureo-labs` | [forj.design](https://forj.design) | [forj](https://github.com/madfam-org/forj) | **Proprietary**| The Revenue Engine. |
+| **Cotiza Studio**| Making | `aureo-labs` | [cotiza.studio](https://cotiza.studio) | [digifab-quoting](https://github.com/madfam-org/digifab-quoting) | **Proprietary**| The Pricing Logic. |
+| **Coforma Studio**| Ops | `aureo-labs` | [coforma.studio](https://coforma.studio) | [coforma-studio](https://github.com/madfam-org/coforma-studio) | **Proprietary**| The Customer Data. |
 
 ### Business & Corporate Websites
 
 | Solution | Domain | GitHub Org | Website | Repository | License | Strategic Purpose |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **MADFAM Site** | Corp | `madfam-io` | [madfam.io](https://madfam.io) | [madfam-site](https://github.com/madfam-io/madfam-site) | **Proprietary** | Corporate presence & brand. |
-| **Aureo Labs** | Corp | `madfam-io` | [aureolabs.dev](https://aureolabs.dev) | [aureo-labs](https://github.com/madfam-io/aureo-labs) | **Proprietary** | Product showcase & demos. |
-| **Primavera3D** | Corp | `madfam-io` | [primavera3d.com](https://primavera3d.com) | [primavera3d](https://github.com/madfam-io/primavera3d) | **Proprietary** | Factory portfolio & services. |
+| **MADFAM Site** | Corp | `madfam-org` | [madfam.io](https://madfam.io) | [madfam-site](https://github.com/madfam-org/madfam-site) | **Proprietary** | Corporate presence & brand. |
+| **Aureo Labs** | Corp | `madfam-org` | [aureolabs.dev](https://aureolabs.dev) | [aureo-labs](https://github.com/madfam-org/aureo-labs) | **Proprietary** | Product showcase & demos. |
+| **Primavera3D** | Corp | `madfam-org` | [primavera3d.com](https://primavera3d.com) | [primavera3d](https://github.com/madfam-org/primavera3d) | **Proprietary** | Factory portfolio & services. |
 
 ---
 
@@ -151,7 +151,7 @@ We strictly follow this order. We do not build the roof before the walls.
 ## 🤝 Join the Mission
 **MADFAM** is proof that high tech can have deep roots.
 
-* **Build with us:** `github.com/madfam-io`
+* **Build with us:** `github.com/madfam-org`
 * **Partner with us:** `madfam.io/en/solutions/colabs`
 
 > *"The best way to predict the future is to manufacture it."*

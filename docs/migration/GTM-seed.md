@@ -6,13 +6,13 @@ Here is the **Master Execution Sequence**. It maps every single one of our 18 re
 **Goal:** Establish the digital territory where Aureo Labs builds and MADFAM lives.
 **Revenue:** $0 (Investment phase).
 
-1.  **Infrastructure Deployment (`madfam-io/enclii`):**
+1.  **Infrastructure Deployment (`madfam-org/enclii`):**
     * **Action:** Provision Hetzner AX41. Run Ansible playbooks.
     * **Result:** A working Kubernetes cluster.
-2.  **Identity Ignition (`madfam-io/janua`):**
+2.  **Identity Ignition (`madfam-org/janua`):**
     * **Action:** Deploy Janua (Auth/Billing). Connect Stripe & Polar.sh keys.
     * **Result:** The ability to create users and accept money.
-3.  **Brand Flag Planting (`madfam-io/madfam-site`, `aureo-labs`):**
+3.  **Brand Flag Planting (`madfam-org/madfam-site`, `aureo-labs`):**
     * **Action:** Dockerize and deploy the corporate landing pages to Enclii.
     * **Result:** Legitimacy. "We exist."
 
@@ -22,10 +22,10 @@ Here is the **Master Execution Sequence**. It maps every single one of our 18 re
 **Goal:** Fix Primavera3D’s cash flow by automating sales.
 **Revenue:** High-margin service revenue (Primavera3D).
 
-4.  **Data Seeding (`madfam-io/digifab-harvest-benchmark` - *ForgeSight*):**
+4.  **Data Seeding (`madfam-org/digifab-harvest-benchmark` - *ForgeSight*):**
     * **Action:** Deploy the API with a manual SQL seed of local material/machine costs (MXN).
     * **Result:** A "Brain" that knows what printing costs.
-5.  **The Merchant (`madfam-io/digifab-quoting` - *Cotiza*):**
+5.  **The Merchant (`madfam-org/digifab-quoting` - *Cotiza*):**
     * **Action:** Deploy Cotiza Studio. Connect it to ForgeSight (Data) and Janua (Auth).
     * **Result:** An automated quoting tool.
 6.  **The Hard Gate (`primavera3d` - *Site*):**
@@ -38,7 +38,7 @@ Here is the **Master Execution Sequence**. It maps every single one of our 18 re
 **Goal:** Validate the software with experts (The Board).
 **Revenue:** "Ramen Profitability" via Enclii hosting.
 
-7.  **The Governance Portal (`madfam-io/coforma-studio`):**
+7.  **The Governance Portal (`madfam-org/coforma-studio`):**
     * **Action:** Deploy Coforma. Setup "Roadmap Voting" and "Bug Reporting."
     * **Result:** A place to host your Board of Directors.
 8.  **Recruitment (Sales Motion):**
@@ -54,15 +54,15 @@ Here is the **Master Execution Sequence**. It maps every single one of our 18 re
 **Goal:** **MADFAM Co-Labs** activates. We stop "Marketing" and start "Educating."
 **Revenue:** Donations (Polar) + Workshop Tickets.
 
-10. **The Curator (`madfam-io/bloom-scroll`):**
+10. **The Curator (`madfam-org/bloom-scroll`):**
     * **Action:** Deploy BloomScroll as the "Co-Labs Reader."
     * **Content:** Curate "Slow Web" articles on Sovereignty, 3D Printing, and Solarpunk.
     * **Result:** A magnet for your specific tribe (Designers/Engineers).
-11. **The Standard (`madfam-io/geom-core`):**
+11. **The Standard (`madfam-org/geom-core`):**
     * **Action:** Release `geom-core` on NPM/PyPI (MPL 2.0).
     * **Co-Labs Content:** Host a "Town Hall" teaching how to use it.
     * **Result:** Developers start trusting Aureo Labs as a technical authority.
-12. **The Creator Tool (`madfam-io/sim4d` - *Sim4D*):**
+12. **The Creator Tool (`madfam-org/sim4d` - *Sim4D*):**
     * **Action:** Deploy the Alpha editor.
     * **Co-Labs Content:** "Intro to Parametric Design" workshop using Sim4D.
 
@@ -72,14 +72,14 @@ Here is the **Master Execution Sequence**. It maps every single one of our 18 re
 **Goal:** Institutionalize the knowledge.
 **Revenue:** SaaS Subscriptions + Certification Fees.
 
-13. **The Credential (`madfam-io/avala`):**
+13. **The Credential (`madfam-org/avala`):**
     * **Action:** Deploy AVALA.
     * **Use Case:** Certify "Primavera3D Operators" or "Co-Labs Graduates."
     * **Result:** You build a workforce that knows *your* tools.
-14. **The Intelligence (`madfam-io/fortuna`):**
+14. **The Intelligence (`madfam-org/fortuna`):**
     * **Action:** Turn on the AI scrapers.
     * **Result:** Automated "Trend Reports" for Co-Labs members.
-15. **The Library (`madfam-io/blueprint-harvester`):**
+15. **The Library (`madfam-org/blueprint-harvester`):**
     * **Action:** Start indexing tested 3D models.
     * **Result:** Feed high-quality data into Sim4D/Cotiza.
 
@@ -89,13 +89,13 @@ Here is the **Master Execution Sequence**. It maps every single one of our 18 re
 **Goal:** Expansion.
 **Revenue:** Enterprise SaaS + Marketplace Commissions.
 
-16. **The CFO (`madfam-io/dhanam`):**
+16. **The CFO (`madfam-org/dhanam`):**
     * **Action:** Open Dhanam to the public.
     * **Target:** Founders who want "Sovereign Wealth Management."
-17. **The Marketplace (`madfam-io/forj`):**
+17. **The Marketplace (`madfam-org/forj`):**
     * **Action:** Launch Forj.
     * **The Loop:** Sim4D designers sell files $\to$ Primavera3D (and other nodes) print them $\to$ Janua handles the split payments.
-18. **The Moonshot (`madfam-io/electrochem-sim` - *Galvana*):**
+18. **The Moonshot (`madfam-org/electrochem-sim` - *Galvana*):**
     * **Action:** Partner with universities via Co-Labs to use Galvana for research.
 
 ---

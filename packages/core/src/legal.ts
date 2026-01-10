@@ -174,7 +174,7 @@ export const licenseHeaders = {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const socialLinks = {
-  github: 'https://github.com/madfam-io',
+  github: 'https://github.com/madfam-org',
   twitter: 'https://twitter.com/madfam_io',
   linkedin: 'https://linkedin.com/company/madfam',
   // Add more as needed

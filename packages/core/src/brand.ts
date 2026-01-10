@@ -28,7 +28,7 @@ export const brand = {
   website: 'https://madfam.io',
 
   /** GitHub organization */
-  github: 'https://github.com/madfam-io',
+  github: 'https://github.com/madfam-org',
 } as const;
 
 // ═══════════════════════════════════════════════════════════════════════════════

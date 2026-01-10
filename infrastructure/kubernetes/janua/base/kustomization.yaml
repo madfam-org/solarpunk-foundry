@@ -23,5 +23,5 @@ resources:
 
 # Images can be overridden by overlays
 images:
-  - name: ghcr.io/madfam-io/janua-api
+  - name: ghcr.io/madfam-org/janua-api
     newTag: latest

@@ -136,7 +136,7 @@ const infrastructure = getProductsByLayer('soil');
 // [enclii, janua]
 
 // Generate URLs
-getProductGitHubUrl('sim4d'); // "https://github.com/madfam-io/sim4d"
+getProductGitHubUrl('sim4d'); // "https://github.com/madfam-org/sim4d"
 ```
 
 ### Legal Information
@@ -189,7 +189,7 @@ Changes to this package require governance approval because they affect the enti
 
 **To propose changes:**
 
-1. Open an issue in [solarpunk-foundry](https://github.com/madfam-io/solarpunk-foundry)
+1. Open an issue in [solarpunk-foundry](https://github.com/madfam-org/solarpunk-foundry)
 2. Discuss with stakeholders
 3. Submit PR with governance approval
 4. Package is versioned with semver

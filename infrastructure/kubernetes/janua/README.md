@@ -266,7 +266,7 @@ Until Enclii supports custom deployment templates:
 
 ## Related Documentation
 
-- [Janua Repository](https://github.com/madfam-io/janua)
+- [Janua Repository](https://github.com/madfam-org/janua)
 - [Enclii CLAUDE.md](../../enclii/CLAUDE.md)
 - [Port Allocation](../../docs/PORT_ALLOCATION.md)
 - [Cloudflare Tunnel Config](../production/cloudflared.yaml)

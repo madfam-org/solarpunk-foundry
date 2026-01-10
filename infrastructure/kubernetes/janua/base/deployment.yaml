@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
         - name: janua-api
-          image: ghcr.io/madfam-io/janua-api:latest
+          image: ghcr.io/madfam-org/janua-api:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

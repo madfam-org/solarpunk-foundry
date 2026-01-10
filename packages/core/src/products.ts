@@ -81,7 +81,7 @@ export interface Product {
   /** GitHub repository name */
   repo: string;
   /** GitHub organization */
-  githubOrg: "madfam-io" | "aureo-labs";
+  githubOrg: "madfam-org" | "aureo-labs";
   /** License type */
   license: LicenseType;
   /** Default port for local development */
@@ -107,7 +107,7 @@ export const products = {
     layer: "soil",
     domain: "enclii.dev",
     repo: "enclii",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "AGPL-3.0",
     defaultPort: 4200,
     isPublic: true,
@@ -120,7 +120,7 @@ export const products = {
     layer: "soil",
     domain: "janua.dev",
     repo: "janua",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "AGPL-3.0",
     defaultPort: 4100,
     isPublic: true,
@@ -175,7 +175,7 @@ export const products = {
     layer: "roots",
     domain: "bloomscroll.app",
     repo: "bloom-scroll",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "MPL-2.0",
     isPublic: true,
     phase: 2,
@@ -191,7 +191,7 @@ export const products = {
     layer: "stem",
     domain: "geom-core.dev",
     repo: "geom-core",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "MPL-2.0",
     isPublic: true,
     phase: 3,
@@ -203,7 +203,7 @@ export const products = {
     layer: "stem",
     domain: "avala.studio",
     repo: "avala",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "AGPL-3.0",
     isPublic: true,
     phase: 3,
@@ -219,7 +219,7 @@ export const products = {
     layer: "fruit",
     domain: "sim4d.io",
     repo: "sim4d",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "MPL-2.0",
     defaultPort: 5173,
     isPublic: true,
@@ -257,7 +257,7 @@ export const products = {
     layer: "fruit",
     domain: "dhan.am",
     repo: "dhanam",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "AGPL-3.0",
     defaultPort: 4700,
     isPublic: true,
@@ -282,7 +282,7 @@ export const products = {
     layer: "fruit",
     domain: "galvana.io",
     repo: "electrochem-sim",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "MPL-2.0",
     isPublic: true,
     phase: 5,
@@ -298,7 +298,7 @@ export const products = {
     layer: "fruit",
     domain: "primavera3d.com",
     repo: "primavera3d",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "Proprietary",
     isPublic: false,
     phase: 4,

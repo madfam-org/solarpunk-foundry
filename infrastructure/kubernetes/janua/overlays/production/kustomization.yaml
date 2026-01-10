@@ -30,7 +30,7 @@ patches:
 
 # Image configuration - pin to specific version in production
 images:
-  - name: ghcr.io/madfam-io/janua-api
+  - name: ghcr.io/madfam-org/janua-api
     # Use specific version tag, not 'latest'
     # Update this when deploying new versions
     newTag: v20260109-053146-d15e420
