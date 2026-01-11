@@ -447,4 +447,76 @@ curl http://localhost:4200/health  # Enclii API
 
 ---
 
+## Production Ingress: Cloudflare Tunnel
+
+> **As of January 2026**: All production services route through Cloudflare Tunnel, eliminating hostPort conflicts.
+
+### Architecture
+
+```
+External Traffic → Cloudflare Edge → Cloudflare Tunnel → ClusterIP Services
+                    (DDoS protection)   (cloudflared pod)   (internal networking)
+```
+
+### Key Benefits
+
+| Feature | Before (hostPort) | After (Cloudflare Tunnel) |
+|---------|-------------------|---------------------------|
+| **Deployment** | Recreate only (port conflicts) | RollingUpdate (zero-downtime) |
+| **Port Exposure** | Direct node port binding | Zero exposed ports |
+| **Security** | Firewall rules required | Zero-trust by default |
+| **TLS** | Manual cert-manager | Automatic at Cloudflare edge |
+| **Scaling** | Limited by node ports | Unlimited (internal routing) |
+
+### Production Service Routing
+
+| Hostname | Internal Service | Port |
+|----------|------------------|------|
+| api.enclii.dev | switchyard-api.enclii.svc.cluster.local | 80→4200 |
+| app.enclii.dev | switchyard-ui.enclii.svc.cluster.local | 80→4201 |
+| enclii.dev | landing-page.enclii.svc.cluster.local | 4204 |
+| docs.enclii.dev | docs-site.enclii.svc.cluster.local | 80→4203 |
+| auth.madfam.io | janua-api.janua.svc.cluster.local | 4100 |
+| dashboard.madfam.io | janua-dashboard.janua.svc.cluster.local | 4101 |
+| admin.madfam.io | janua-admin.janua.svc.cluster.local | 4102 |
+| madfam.io | janua-website.janua.svc.cluster.local | 4104 |
+
+### Configuration Files
+
+- **Tunnel Manifest**: `enclii/infra/k8s/production/cloudflared-unified.yaml`
+- **Migration Script**: `enclii/scripts/migrate-to-cloudflare-tunnel.sh`
+- **NetworkPolicy**: Required `allow-cloudflared-ingress` policy per namespace
+
+### NetworkPolicy Requirement
+
+Each namespace needs a policy allowing traffic from cloudflared:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-cloudflared-ingress
+  namespace: <your-namespace>
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: cloudflare-tunnel
+```
+
+### Local Development
+
+Ports remain the same for local development. The 4xxx port scheme applies to:
+- Local docker-compose environments
+- Local kind/minikube clusters
+- CI/CD test environments
+
+Only production uses Cloudflare Tunnel routing.
+
+---
+
 *This document is the single source of truth for port allocation. All repos must conform to this standard.*

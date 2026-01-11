@@ -247,10 +247,11 @@ echo ""
 echo "✅ MADFAM Ecosystem Started!"
 echo ""
 echo "Services available at:"
-echo "  - Janua API:     http://localhost:8001"
-echo "  - Cotiza Web:    http://localhost:3030"
-echo "  - Forgesight:    http://localhost:8100"
-echo "  - MADFAM Site:   http://localhost:3001"
+echo "  - Janua API:     http://localhost:4100"
+echo "  - Janua Dashboard: http://localhost:4101"
+echo "  - Enclii API:    http://localhost:4200"
+echo "  - Enclii UI:     http://localhost:4201"
+echo "  - ForgeSight:    http://localhost:4300"
 echo "  - MinIO Console: http://localhost:9001"
 ```
 
@@ -260,13 +261,30 @@ echo "  - MinIO Console: http://localhost:9001"
 
 | Service | Health Endpoint |
 |---------|-----------------|
-| Janua API | http://localhost:8001/health |
-| Cotiza API | http://localhost:8200/health |
-| Cotiza Worker | http://localhost:8201/health |
-| Forgesight API | http://localhost:8100/health |
-| Fortuna API | http://localhost:8110/health |
-| MADFAM Site | http://localhost:3001/api/health |
+| Janua API | http://localhost:4100/health |
+| Janua Dashboard | http://localhost:4101 |
+| Enclii API | http://localhost:4200/health |
+| Enclii UI | http://localhost:4201 |
+| Cotiza API | http://localhost:4500/health |
+| ForgeSight API | http://localhost:4300/health |
+| Fortuna API | http://localhost:4400/health |
+| Dhanam API | http://localhost:4700/health |
 
 ---
 
-*Last Updated: November 25, 2025*
+## Production Ingress
+
+> **Note**: Production services use Cloudflare Tunnel instead of direct port exposure.
+
+| Service | Production URL |
+|---------|----------------|
+| Enclii API | https://api.enclii.dev |
+| Enclii UI | https://app.enclii.dev |
+| Janua API | https://auth.madfam.io |
+| Janua Dashboard | https://dashboard.madfam.io |
+
+See `PORT_ALLOCATION.md` for complete production routing via Cloudflare Tunnel.
+
+---
+
+*Last Updated: January 2026*
