@@ -1,6 +1,6 @@
 # MADFAM Ecosystem Status
 
-> **Live Infrastructure Status** - Last updated: January 10, 2026 (21:55 CST)
+> **Live Infrastructure Status** - Last updated: January 11, 2026
 
 ---
 
@@ -94,9 +94,12 @@
 
 ## Domain Routing
 
+> **Note**: Janua uses both `*.janua.dev` (product branding) and `*.madfam.io` (MADFAM ecosystem) domains.
+
 | Domain | Service | Status |
 |--------|---------|--------|
 | auth.madfam.io | janua-api | 🟢 |
+| api.janua.dev | janua-api | 🟢 (alias) |
 | app.janua.dev | janua-dashboard | 🟢 |
 | admin.janua.dev | janua-admin | 🟢 |
 | docs.janua.dev | janua-docs | 🟢 |
@@ -104,7 +107,7 @@
 | api.enclii.dev | switchyard-api | 🟢 |
 | app.enclii.dev | switchyard-ui | 🟢 |
 | enclii.dev | landing-page | 🟢 |
-| docs.enclii.dev | docs-site | 🟡 |
+| docs.enclii.dev | docs-site | 🟢 |
 
 ---
 

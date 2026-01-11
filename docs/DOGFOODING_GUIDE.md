@@ -79,16 +79,26 @@ cd ~/labspace/solarpunk-foundry/ops/bin
 
 ## Redis Database Allocation
 
+> **Source of Truth**: `PORT_ALLOCATION.md`
+
 | DB | Service | Purpose |
 |----|---------|---------|
-| 0 | Janua | Sessions, tokens |
-| 1 | Cotiza | Cache, queues |
-| 2 | Forgesight | Crawler cache |
-| 3 | Dhanam | Financial cache |
-| 4 | Fortuna | API/Jobs cache |
-| 5 | Fortuna | NLP model cache |
-| 6 | Sim4D | Collaboration |
-| 7-15 | Reserved | Future services |
+| 0 | Janua | Auth sessions, tokens, rate limiting |
+| 1 | Enclii | Deployment state, job queues |
+| 2 | ForgeSight | Document processing cache |
+| 3 | Fortuna | Analytics cache |
+| 4 | Cotiza | Quote calculation cache |
+| 5 | AVALA | Training sessions, quiz state |
+| 6 | Dhanam | Financial data cache |
+| 7 | Sim4D | Collaboration sessions |
+| 8 | Forj | Order queue, cart state |
+| 9 | Coforma | Feedback aggregation |
+| 10 | Galvana | Simulation job queue |
+| 11 | BloomScroll | Content cache |
+| 12 | Compendium | Search cache |
+| 13 | Blueprint | Index cache |
+| 14 | ceq | Workflow queue, job state |
+| 15 | Furnace | GPU job queue (Enclii extension) |
 
 ---
 

@@ -16,7 +16,7 @@ Janua is the unified authentication infrastructure for all MADFAM ecosystem appl
 │   │   Auth      │                   │   (NestJS)  │                        │
 │   │   (FastAPI) │    JWT Tokens     ├─────────────┤                        │
 │   │             │◄─────────────────►│  Forgesight │                        │
-│   │   :8001     │                   │  (FastAPI)  │                        │
+│   │   :4100     │                   │  (FastAPI)  │                        │
 │   │             │    JWT Tokens     ├─────────────┤                        │
 │   │             │◄─────────────────►│ MADFAM Site │                        │
 │   └─────────────┘                   │  (Next.js)  │                        │

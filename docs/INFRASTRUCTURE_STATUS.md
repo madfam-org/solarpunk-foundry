@@ -1,6 +1,6 @@
 # MADFAM Infrastructure Status
 
-> **Last Verified**: December 9, 2025
+> **Last Verified**: January 11, 2026
 > **Environment**: Local + Production (foundry-core)
 
 ## Quick Reference
@@ -107,9 +107,11 @@ http://localhost:8025 (Web UI)
 
 | Service | URL | Status |
 |---------|-----|--------|
-| API | https://api.janua.dev/health | ✅ `{"status":"healthy","version":"0.1.0"}` |
+| API | https://api.janua.dev/health | ✅ Healthy |
 | Website | https://janua.dev | ✅ HTTP 200 |
-| Dashboard | https://dashboard.janua.dev | ⚠️ Not responding (tunnel issue) |
+| Dashboard | https://app.janua.dev | ✅ HTTP 200 |
+| Admin | https://admin.janua.dev | ✅ HTTP 200 |
+| Docs | https://docs.janua.dev | ✅ HTTP 200 |
 | Auth Alias | https://auth.madfam.io | ✅ Same as API |
 
 ---
@@ -294,4 +296,4 @@ kill -9 <PID>
 
 ---
 
-*Last updated: December 9, 2025*
+*Last updated: January 11, 2026*

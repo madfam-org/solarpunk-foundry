@@ -1,7 +1,7 @@
 # MADFAM Ecosystem Migration Plan: Vercel/Railway → Enclii
 
-**Date**: November 27, 2025  
-**Status**: Planning Phase  
+**Date**: November 27, 2025 (Updated: January 11, 2026)
+**Status**: Active Execution - Phases 0-1 Complete
 **Target**: All MADFAM services on Enclii by Q1 2026
 
 ---
@@ -53,56 +53,56 @@ This document outlines the migration strategy for moving all MADFAM ecosystem se
 
 ## Migration Phases
 
-### Phase 0: Enclii Production Readiness (Current → Week 2)
+### Phase 0: Enclii Production Readiness ✅ COMPLETE (December 2025)
 **Goal**: Get Enclii to 100% production-ready
 
-**Remaining Tasks**:
-- [ ] Run `terraform init && terraform plan` ✅ Script created
-- [ ] Create Hetzner API token
-- [ ] Create Cloudflare API token (Zone:Edit, Tunnel:Edit, R2:Edit)
-- [ ] Create R2 API credentials
-- [ ] Generate JWT signing keys for Janua
-- [ ] Configure SMTP for Janua email
-- [ ] Run `terraform apply` to provision infrastructure
-- [ ] Deploy k8s resources: `kubectl apply -k infra/k8s/production`
-- [ ] Verify all health checks pass
+**Completed Tasks**:
+- [x] Run `terraform init && terraform plan`
+- [x] Create Hetzner API token
+- [x] Create Cloudflare API token (Zone:Edit, Tunnel:Edit, R2:Edit)
+- [x] Create R2 API credentials
+- [x] Generate JWT signing keys for Janua
+- [x] Configure SMTP for Janua email
+- [x] Run `terraform apply` to provision infrastructure
+- [x] Deploy k8s resources: `kubectl apply -k infra/k8s/production`
+- [x] Verify all health checks pass
 
-**Validation Criteria**:
-- Switchyard API responding at api.enclii.dev
-- Switchyard UI accessible at app.enclii.dev
-- Janua OAuth flow working at auth.enclii.dev
-- Redis Sentinel failover tested
-- R2 storage accessible
+**Validation Status**:
+- ✅ Switchyard API responding at api.enclii.dev
+- ✅ Switchyard UI accessible at app.enclii.dev
+- ✅ Janua OAuth flow working at auth.madfam.io
+- ✅ Redis operational
+- ✅ R2 storage accessible
 
 ---
 
-### Phase 1: Dogfooding Services (Weeks 3-4)
+### Phase 1: Dogfooding Services ✅ COMPLETE (January 2026)
 **Goal**: Deploy Enclii's own services on Enclii
 
 **Services**:
-1. **switchyard-api** → api.enclii.dev ✅ Spec exists
-2. **switchyard-ui** → app.enclii.dev ✅ Spec exists
-3. **janua** → auth.enclii.dev ✅ Spec exists
-4. **landing-page** → enclii.dev ✅ Spec exists
-5. **docs-site** → docs.enclii.dev ✅ Spec exists
-6. **status-page** → status.enclii.dev ✅ Spec exists
+1. **switchyard-api** → api.enclii.dev ✅ DEPLOYED
+2. **switchyard-ui** → app.enclii.dev ✅ DEPLOYED
+3. **janua** → auth.madfam.io ✅ DEPLOYED (5 services)
+4. **landing-page** → enclii.dev ✅ DEPLOYED
+5. **docs-site** → docs.enclii.dev ✅ DEPLOYED
+6. **status-page** → status.enclii.dev ⏳ PENDING
 
-**Validation Criteria**:
-- All 6 services deployed and healthy
-- OAuth login working end-to-end
-- Metrics visible in Grafana
-- Alerts configured and tested
+**Validation Status**:
+- ✅ 11/12 services deployed and healthy
+- ✅ OAuth login working end-to-end (SSO logout fixed Jan 2026)
+- ⚠️ Grafana dashboards pending configuration
+- ⚠️ Alerts pending configuration
 
 ---
 
-### Phase 2: Low-Risk Migrations (Weeks 5-6)
+### Phase 2: Low-Risk Migrations 🔄 IN PROGRESS (January 2026)
 **Goal**: Migrate non-critical and new services
 
 **Services** (in order):
-1. **forgesight-api** → api.forgesight.quest ✅ Spec created
-2. **forgesight-web** → www.forgesight.quest ✅ Spec created
-3. **electrochem-sim** → galvana.io (new deployment)
-4. **primavera3d** → primavera3d.com (new deployment)
+1. **forgesight-api** → api.forgesight.quest ⏳ Ready for deployment
+2. **forgesight-web** → www.forgesight.quest ⏳ Ready for deployment
+3. **electrochem-sim** → galvana.io ⏳ Ready for deployment
+4. **primavera3d** → primavera3d.com ⏳ Ready for deployment
 
 **Migration Pattern**:
 ```
@@ -367,28 +367,28 @@ For isolation requirements:
 
 ## Appendix: Service Specs Status
 
-| Service | Spec Location | Status |
-|---------|---------------|--------|
-| switchyard-api | `dogfooding/switchyard-api.yaml` | ✅ Complete |
-| switchyard-ui | `dogfooding/switchyard-ui.yaml` | ✅ Complete |
-| janua | `dogfooding/janua.yaml` | ✅ Complete |
-| landing-page | `dogfooding/landing-page.yaml` | ✅ Complete |
-| docs-site | `dogfooding/docs-site.yaml` | ✅ Complete |
-| status-page | `dogfooding/status-page.yaml` | ✅ Complete |
-| forgesight-api | `dogfooding/forgesight.yaml` | ✅ Complete |
-| forgesight-web | `dogfooding/forgesight.yaml` | ✅ Complete |
-| madfam-site | `dogfooding/madfam-site.yaml` | ❌ TODO |
-| aureo-labs | `dogfooding/aureo-labs.yaml` | ❌ TODO |
-| digifab-quoting | `dogfooding/cotiza-studio.yaml` | ❌ TODO |
-| sim4d | `dogfooding/sim4d.yaml` | ❌ TODO |
-| dhanam | `dogfooding/dhanam.yaml` | ❌ TODO |
-| electrochem-sim | `dogfooding/galvana.yaml` | ❌ TODO |
-| fortuna | `dogfooding/fortuna.yaml` | ❌ TODO |
-| primavera3d | `dogfooding/primavera3d.yaml` | ❌ TODO |
-| forj | `dogfooding/forj.yaml` | ❌ TODO |
+| Service | Spec Location | Status | Deployed |
+|---------|---------------|--------|----------|
+| switchyard-api | `dogfooding/switchyard-api.yaml` | ✅ Complete | ✅ Yes |
+| switchyard-ui | `dogfooding/switchyard-ui.yaml` | ✅ Complete | ✅ Yes |
+| janua | `dogfooding/janua.yaml` | ✅ Complete | ✅ Yes (5 services) |
+| landing-page | `dogfooding/landing-page.yaml` | ✅ Complete | ✅ Yes |
+| docs-site | `dogfooding/docs-site.yaml` | ✅ Complete | ✅ Yes |
+| status-page | `dogfooding/status-page.yaml` | ✅ Complete | ⏳ Pending |
+| forgesight-api | `dogfooding/forgesight.yaml` | ✅ Complete | ⏳ Phase 2 |
+| forgesight-web | `dogfooding/forgesight.yaml` | ✅ Complete | ⏳ Phase 2 |
+| madfam-site | `dogfooding/madfam-site.yaml` | ❌ TODO | ⏳ Phase 3 |
+| aureo-labs | `dogfooding/aureo-labs.yaml` | ❌ TODO | ⏳ Phase 3 |
+| digifab-quoting | `dogfooding/cotiza-studio.yaml` | ❌ TODO | ⏳ Phase 3 |
+| sim4d | `dogfooding/sim4d.yaml` | ❌ TODO | ⏳ Phase 3 |
+| dhanam | `dogfooding/dhanam.yaml` | ❌ TODO | ⏳ Phase 4 |
+| electrochem-sim | `dogfooding/galvana.yaml` | ❌ TODO | ⏳ Phase 2 |
+| fortuna | `dogfooding/fortuna.yaml` | ❌ TODO | ⏳ Phase 4 |
+| primavera3d | `dogfooding/primavera3d.yaml` | ❌ TODO | ⏳ Phase 2 |
+| forj | `dogfooding/forj.yaml` | ❌ TODO | ⏳ Phase 4 |
 
 ---
 
-**Document Owner**: Platform Team  
-**Last Updated**: November 27, 2025  
-**Next Review**: After Phase 0 completion
+**Document Owner**: Platform Team
+**Last Updated**: January 11, 2026
+**Next Review**: After Phase 2 completion
