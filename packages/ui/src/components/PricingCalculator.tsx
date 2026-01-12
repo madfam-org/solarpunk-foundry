@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import { cn } from '../lib/utils';
 
 // ============================================
 // Types
@@ -172,7 +173,7 @@ export function PricingCalculator({
   const mutedClasses = darkMode ? 'text-gray-400' : 'text-gray-500';
 
   return (
-    <div className={`rounded-2xl border p-6 ${baseClasses} ${className}`}>
+    <div className={cn('rounded-2xl border p-6', baseClasses, className)}>
       <h3 className="text-xl font-bold mb-6">Calculate Your Savings</h3>
 
       {/* Inputs */}
