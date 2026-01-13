@@ -454,8 +454,8 @@ curl http://localhost:4200/health  # Enclii API
 ### Architecture
 
 ```
-External Traffic → Cloudflare Edge → Cloudflare Tunnel → ClusterIP Services
-                    (DDoS protection)   (cloudflared pod)   (internal networking)
+External Traffic → Cloudflare Edge → Cloudflare Tunnel → K8s Service:80 → Container:4xxx
+                    (DDoS protection)   (cloudflared pod)    (ClusterIP)     (targetPort)
 ```
 
 ### Key Benefits
@@ -468,18 +468,34 @@ External Traffic → Cloudflare Edge → Cloudflare Tunnel → ClusterIP Service
 | **TLS** | Manual cert-manager | Automatic at Cloudflare edge |
 | **Scaling** | Limited by node ports | Unlimited (internal routing) |
 
+### Port Mapping Hierarchy
+
+**Critical for Cloudflare Tunnel Configuration:**
+
+1. **Container Port**: What the application listens on internally (e.g., 4100, 4200, 4204)
+2. **K8s Service Port**: What the Kubernetes service exposes (typically port 80)
+3. **Cloudflare Tunnel Route**: Must point to K8s Service port (80), NOT container port
+
+```
+Cloudflare Edge → cloudflared pods → K8s Service:80 → Container:4xxx
+                                       (ClusterIP)      (targetPort)
+```
+
+> **Important**: Always configure Cloudflare tunnel routes to use K8s Service ports (80). The K8s Service `targetPort` handles the mapping to container ports internally.
+
 ### Production Service Routing
 
-| Hostname | Internal Service | Port |
-|----------|------------------|------|
-| api.enclii.dev | switchyard-api.enclii.svc.cluster.local | 80→4200 |
-| app.enclii.dev | switchyard-ui.enclii.svc.cluster.local | 80→4201 |
-| enclii.dev | landing-page.enclii.svc.cluster.local | 4204 |
-| docs.enclii.dev | docs-site.enclii.svc.cluster.local | 80→4203 |
-| auth.madfam.io | janua-api.janua.svc.cluster.local | 4100 |
-| dashboard.madfam.io | janua-dashboard.janua.svc.cluster.local | 4101 |
-| admin.madfam.io | janua-admin.janua.svc.cluster.local | 4102 |
-| madfam.io | janua-website.janua.svc.cluster.local | 4104 |
+| Hostname | K8s Service (Port 80) | Container Port |
+|----------|----------------------|----------------|
+| api.enclii.dev | switchyard-api.enclii.svc.cluster.local:80 | 4200 |
+| app.enclii.dev | switchyard-ui.enclii.svc.cluster.local:80 | 4201 |
+| enclii.dev | landing-page.enclii.svc.cluster.local:80 | 4204 |
+| docs.enclii.dev | docs-site.enclii.svc.cluster.local:80 | 4203 |
+| api.janua.dev / auth.madfam.io | janua-api.janua.svc.cluster.local:80 | 4100 |
+| app.janua.dev / dashboard.janua.dev | janua-dashboard.janua.svc.cluster.local:80 | 4101 |
+| admin.janua.dev | janua-admin.janua.svc.cluster.local:80 | 4102 |
+| docs.janua.dev | janua-docs.janua.svc.cluster.local:80 | 4103 |
+| janua.dev / www.janua.dev | janua-website.janua.svc.cluster.local:80 | 4104 |
 
 ### Configuration Files
 

@@ -60,6 +60,20 @@ infrastructure/
 
 See `docs/PORT_ALLOCATION.md` for complete registry.
 
+### Port Mapping Hierarchy (Cloudflare Tunnel)
+
+When configuring Cloudflare Tunnel routes, understand the three-layer port mapping:
+
+1. **Container Port**: What the application listens on internally (e.g., 4100, 4200)
+2. **K8s Service Port**: What the Kubernetes service exposes (typically port 80)
+3. **Cloudflare Tunnel Route**: Should point to K8s Service port (80), NOT container port
+
+```
+Cloudflare Edge → cloudflared pods → K8s Service:80 → Container:4xxx
+```
+
+> **Critical**: Always configure Cloudflare tunnel routes to use K8s Service ports (80), not container ports. The K8s Service `targetPort` handles the mapping to container ports internally.
+
 ## Usage
 
 ### Terraform Provisioning
