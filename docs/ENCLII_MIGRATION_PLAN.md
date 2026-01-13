@@ -1,7 +1,7 @@
 # MADFAM Ecosystem Migration Plan: Vercel/Railway → Enclii
 
-**Date**: November 27, 2025 (Updated: January 11, 2026)
-**Status**: Active Execution - Phases 0-1 Complete
+**Date**: November 27, 2025 (Updated: January 12, 2026)
+**Status**: Active Execution - Phases 0-1 Complete, GitOps Foundation Deployed
 **Target**: All MADFAM services on Enclii by Q1 2026
 
 ---
@@ -92,6 +92,57 @@ This document outlines the migration strategy for moving all MADFAM ecosystem se
 - ✅ OAuth login working end-to-end (SSO logout fixed Jan 2026)
 - ⚠️ Grafana dashboards pending configuration
 - ⚠️ Alerts pending configuration
+
+---
+
+### Infrastructure Improvements: GitOps Foundation ✅ COMPLETE (January 12, 2026)
+**Goal**: Achieve GitOps maturity Level 4/5 for scalable multi-node operations
+
+**GitOps Maturity Progression**:
+| Level | Capability | Before | After |
+|-------|-----------|--------|-------|
+| 1 | Version Control | ✅ | ✅ |
+| 2 | Declarative Config | ✅ | ✅ |
+| 3 | Automated Deployment | 🟡 CI-triggered | ✅ ArgoCD |
+| 4 | Pull-based Sync | ❌ | ✅ ArgoCD |
+| 5 | Continuous Reconciliation | ❌ | ✅ Self-heal |
+
+**Components Deployed**:
+
+1. **ArgoCD GitOps Engine** ✅ OPERATIONAL
+   - App-of-Apps pattern for recursive self-deployment
+   - 7 ArgoCD pods running in production
+   - Child applications: core-services, monitoring, ingress, storage, arc-runners
+   - Location: `infra/argocd/`
+   - Access: `kubectl port-forward svc/argocd-server -n argocd 8080:443`
+
+2. **Longhorn CSI Storage** ✅ OPERATIONAL
+   - Replicated storage for multi-node deployments
+   - 19 Longhorn pods running in production
+   - StorageClasses: `longhorn-replicated` (2 replicas), `longhorn-fast` (1 replica)
+   - Location: `infra/helm/longhorn/`
+
+3. **GPU Node Preparation** ✅ READY (manifests staged)
+   - NVIDIA device plugin DaemonSet prepared
+   - GPU tolerations and node affinity configured
+   - GPU-avoiding affinity patches for web workloads
+   - Location: `infra/k8s/base/gpu/`
+
+4. **Kaniko Secure Builds** ✅ READY (manifests staged)
+   - Replaces Docker-in-Docker (removes Docker socket exposure)
+   - Rootless container builds with Pod Security restricted
+   - NetworkPolicy isolation for build pods
+   - Location: `apps/roundhouse/k8s/kaniko-job-template.yaml`
+
+**Roadmap Items (Pending)**:
+- [ ] Configure ArgoCD repo credentials for private repos (OCI charts from ghcr.io)
+- [ ] Add Cloudflare tunnel ingress for ArgoCD UI (argocd.enclii.dev)
+- [ ] Migrate existing PVCs to `longhorn-replicated` when adding second node
+
+**Impact on Migration**:
+- All future service deployments will auto-sync via ArgoCD
+- Multi-node scaling now possible with replicated storage
+- GPU workloads can be isolated when adding compute nodes
 
 ---
 
@@ -390,5 +441,5 @@ For isolation requirements:
 ---
 
 **Document Owner**: Platform Team
-**Last Updated**: January 11, 2026
+**Last Updated**: January 12, 2026
 **Next Review**: After Phase 2 completion
