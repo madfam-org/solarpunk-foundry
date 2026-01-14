@@ -153,7 +153,7 @@ build:
 
 ### Shared Packages Status
 
-**Source**: `docs/claude/ecosystem-alignment/ECOSYSTEM_ALIGNMENT_STATUS.md`
+**Source**: (archived to git history, data extracted below)
 
 | Package | Version | Status |
 |---------|---------|--------|
@@ -269,7 +269,7 @@ build:
 | P2 | `docs/INFRASTRUCTURE_STATUS.md` | Update timestamp, verify status |
 | P2 | `docs/ECOSYSTEM_STATUS.md` | Update timestamp |
 | P3 | `.enclii.yml` | Remove or fix |
-| P3 | `docs/claude/ecosystem-alignment/ECOSYSTEM_ALIGNMENT_STATUS.md` | Update timestamp |
+| P3 | - | (File archived to git history) |
 
 ---
 
