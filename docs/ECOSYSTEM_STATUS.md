@@ -10,9 +10,9 @@
 |----------|-------|
 | **Cluster Type** | K3s (lightweight Kubernetes) |
 | **Node** | `foundry-core` (95.217.198.239) |
-| **Provider** | Hetzner Cloud |
+| **Server** | Hetzner AX41-NVME (single-node) |
 | **Ingress** | Cloudflare Tunnel (zero-trust) |
-| **Cost** | ~$100/month |
+| **Cost** | ~$55/month |
 
 ---
 
@@ -50,7 +50,7 @@
 
 | Service | Status | Port | Notes |
 |---------|--------|------|-------|
-| postgres-0 | 🟢 Running | 5432 | Ubicloud managed |
+| postgres-0 | 🟢 Running | 5432 | Self-hosted in-cluster |
 | redis | 🟢 Running | 6379 | Session cache |
 
 ---

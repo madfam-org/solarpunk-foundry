@@ -132,8 +132,8 @@ Analysis of 19 repositories reveals a modular ecosystem with **one critical shar
 
 ### 9. **enclii** (Non-Node Project)
 - **Package:** N/A (Infrastructure)
-- **Purpose:** Railway-style platform with $100/month production infrastructure
-- **Type:** Kubernetes orchestration (Hetzner + Cloudflare)
+- **Purpose:** Railway-style platform with ~$55/month production infrastructure
+- **Type:** Kubernetes orchestration (Hetzner AX41-NVME + Cloudflare)
 - **Tech Stack:** Infrastructure/DevOps (no package.json)
 - **Dependencies:** N/A (infrastructure project)
 - **Dependents:** None

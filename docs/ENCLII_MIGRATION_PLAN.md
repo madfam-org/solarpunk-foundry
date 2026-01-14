@@ -1,8 +1,11 @@
 # MADFAM Ecosystem Migration Plan: Vercel/Railway → Enclii
 
-**Date**: November 27, 2025 (Updated: January 12, 2026)
+**Date**: November 27, 2025 (Updated: January 14, 2026)
 **Status**: Active Execution - Phases 0-1 Complete, GitOps Foundation Deployed
 **Target**: All MADFAM services on Enclii by Q1 2026
+
+> ⚠️ **Infrastructure Update (Jan 2026):**
+> Current production runs on a **single Hetzner AX41-NVME dedicated server** (~$55/mo) with **self-hosted PostgreSQL/Redis** in-cluster. The multi-node estimates below reflect planned future scaling, not current state.
 
 ---
 
@@ -14,8 +17,8 @@ This document outlines the migration strategy for moving all MADFAM ecosystem se
 
 | Factor | Current (Vercel + Railway) | Target (Enclii) |
 |--------|---------------------------|-----------------|
-| **Monthly Cost** | ~$2,220 | ~$100 |
-| **5-Year Savings** | - | **$127,200** |
+| **Monthly Cost** | ~$2,220 | ~$55 |
+| **5-Year Savings** | - | **$129,900** |
 | **Vendor Lock-in** | High | None |
 | **Data Sovereignty** | US-based | EU (Hetzner) |
 | **Auth Costs** | Auth0/Clerk fees | $0 (Janua) |
@@ -302,11 +305,13 @@ For each domain migration:
 
 ## Database Strategy
 
-### Shared PostgreSQL (Recommended for MVP)
-All services share single Ubicloud PostgreSQL instance with:
+### Shared PostgreSQL (Current - MVP)
+All services share single **self-hosted PostgreSQL instance** in-cluster with:
 - Separate databases per service
 - Connection pooling via PgBouncer
-- Automatic backups to R2
+- Automatic daily backups to R2
+
+> **Note (Jan 2026):** Originally planned Ubicloud managed PostgreSQL, but self-hosted meets 99.5% SLA / 24hr RPO requirements at $0 additional cost.
 
 ### Per-Service Databases (Enterprise)
 For isolation requirements:
@@ -316,7 +321,7 @@ For isolation requirements:
 
 ### Migration Steps
 1. Services already use Railway PostgreSQL → Export data
-2. Import to Ubicloud PostgreSQL
+2. Import to self-hosted PostgreSQL in-cluster
 3. Update DATABASE_URL secret in Enclii
 4. Verify connectivity and performance
 5. Deprecate Railway database
@@ -355,21 +360,22 @@ For isolation requirements:
 | Auth0 (if used) | Auth0 | $220+ |
 | **Estimated Total** | | **$265+** |
 
-### After Migration (Monthly)
+### After Migration (Monthly) - Current State
 | Component | Cost |
 |-----------|------|
-| Hetzner (3x CPX31) | $45 |
-| Ubicloud PostgreSQL | $50 |
+| Hetzner AX41-NVME (dedicated) | ~$50 |
+| Self-hosted PostgreSQL | $0 |
+| Self-hosted Redis | $0 |
 | Cloudflare R2 | $5 |
 | Cloudflare (tunnel, DNS) | $0 |
-| **Total** | **$100** |
+| **Total** | **~$55** |
 
 ### Savings
-- **Monthly**: $165+ (62% reduction)
-- **Annual**: $1,980+
-- **5-Year**: $9,900+ (conservative)
+- **Monthly**: $2,165+ (97% reduction)
+- **Annual**: $25,980+
+- **5-Year**: $129,900+
 
-*Note: With Railway Pro + Auth0, savings are $127,200+ over 5 years*
+*Note: With Railway Pro + Auth0, savings are $129,900+ over 5 years vs ~$55/month self-hosted*
 
 ---
 
