@@ -1,5 +1,8 @@
 # Federated Architecture Implementation Complete
 
+> **Note:** This document describes the "Federated Architecture" for application services.
+> For the core platform architecture (Substrate, Trellis, Membrane), see [SYMBIOSIS.md](./SYMBIOSIS.md).
+
 ## Overview
 The MADFAM Revenue Shield has been refactored from a **monolithic docker-compose** to a **federated architecture** where each repository uses its own docker-compose.yml file, all sharing common infrastructure.
 

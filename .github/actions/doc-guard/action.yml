@@ -1,0 +1,70 @@
+name: 'DocGuard'
+description: 'Documentation quality enforcement for MADFAM ecosystem'
+author: 'MADFAM Engineering'
+
+branding:
+  icon: 'shield'
+  color: 'green'
+
+inputs:
+  doc-path:
+    description: 'Path to documentation directory'
+    required: false
+    default: './docs'
+  strict:
+    description: 'Fail on warnings (not just errors)'
+    required: false
+    default: 'false'
+  check-env-vars:
+    description: 'Audit environment variables against README'
+    required: false
+    default: 'true'
+  check-links:
+    description: 'Verify all markdown links return 200'
+    required: false
+    default: 'true'
+  check-terminology:
+    description: 'Enforce brand-safe terminology'
+    required: false
+    default: 'true'
+  banned-terms-file:
+    description: 'Custom banned terms file (JSON)'
+    required: false
+    default: ''
+
+outputs:
+  errors:
+    description: 'Number of errors found'
+    value: ${{ steps.lint.outputs.errors }}
+  warnings:
+    description: 'Number of warnings found'
+    value: ${{ steps.lint.outputs.warnings }}
+  report:
+    description: 'Full lint report (JSON)'
+    value: ${{ steps.lint.outputs.report }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        pip install -r ${{ github.action_path }}/requirements.txt
+
+    - name: Run DocGuard
+      id: lint
+      shell: bash
+      env:
+        DOC_PATH: ${{ inputs.doc-path }}
+        STRICT: ${{ inputs.strict }}
+        CHECK_ENV_VARS: ${{ inputs.check-env-vars }}
+        CHECK_LINKS: ${{ inputs.check-links }}
+        CHECK_TERMINOLOGY: ${{ inputs.check-terminology }}
+        BANNED_TERMS_FILE: ${{ inputs.banned-terms-file }}
+      run: |
+        python ${{ github.action_path }}/doc-guard.py

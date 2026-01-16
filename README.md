@@ -32,7 +32,9 @@ We are building the **Solarpunk Foundry**. A closed-loop ecosystem where the too
 
 ## ⚙️ II. The Architecture: The "Solarpunk Stack"
 
-Our ecosystem is organized into four biological layers. Every tool has a specific organ function.
+Our ecosystem grows as a **living system**, not a machine. Every tool has a specific organ function, cultivated in symbiotic relationship with the others.
+
+> 📐 **For the detailed architecture of our core platform (Substrate, Trellis, Membrane), see [SYMBIOSIS.md](docs/architecture/SYMBIOSIS.md)**
 
 ### 🪨 Layer 1: The Soil (Infrastructure)
 *The bedrock. Without this, we are tenants.*
@@ -187,6 +189,7 @@ cd ~/labspace
 ```
 
 ### Documentation
+- **Symbiosis Architecture:** `solarpunk-foundry/docs/architecture/SYMBIOSIS.md` — Core platform relationships (Substrate, Trellis, Membrane)
 - **Port Allocation:** `solarpunk-foundry/docs/PORT_ALLOCATION.md`
 - **Dogfooding Guide:** `solarpunk-foundry/docs/DOGFOODING_GUIDE.md`
 - **Debugging Notes:** `solarpunk-foundry/docs/DELIVERABLES.md`
