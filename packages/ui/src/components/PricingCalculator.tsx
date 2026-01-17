@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { cn } from '../lib/utils';
 
 // ============================================
@@ -164,10 +164,6 @@ export function PricingCalculator({
   const baseClasses = darkMode
     ? 'bg-gray-800 text-white border-gray-700'
     : 'bg-white text-gray-900 border-gray-200';
-
-  const inputClasses = darkMode
-    ? 'bg-gray-700 border-gray-600 text-white'
-    : 'bg-gray-50 border-gray-300 text-gray-900';
 
   const labelClasses = darkMode ? 'text-gray-300' : 'text-gray-600';
   const mutedClasses = darkMode ? 'text-gray-400' : 'text-gray-500';

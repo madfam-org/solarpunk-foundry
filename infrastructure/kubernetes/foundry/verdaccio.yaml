@@ -1,0 +1,214 @@
+# Verdaccio Private NPM Registry
+# Deploy with: kubectl apply -f verdaccio.yaml
+# Access: npm.madfam.io (via Cloudflare Tunnel)
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: foundry
+  labels:
+    app.kubernetes.io/part-of: solarpunk-foundry
+    app.kubernetes.io/managed-by: madfam
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: verdaccio-storage
+  namespace: foundry
+  labels:
+    app: verdaccio
+    app.kubernetes.io/part-of: solarpunk-foundry
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: longhorn
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: verdaccio-config
+  namespace: foundry
+  labels:
+    app: verdaccio
+    app.kubernetes.io/part-of: solarpunk-foundry
+data:
+  config.yaml: |
+    # Verdaccio configuration for MADFAM ecosystem
+    storage: /verdaccio/storage/data
+
+    # Authentication
+    auth:
+      htpasswd:
+        file: /verdaccio/storage/htpasswd
+        max_users: 100
+
+    # Uplinks (proxy to public registries)
+    uplinks:
+      npmjs:
+        url: https://registry.npmjs.org/
+        cache: true
+        maxage: 30m
+
+    # Package access rules
+    packages:
+      # MADFAM ecosystem scopes - private
+      '@madfam/*':
+        access: $authenticated
+        publish: $authenticated
+        unpublish: $authenticated
+
+      '@dhanam/*':
+        access: $authenticated
+        publish: $authenticated
+
+      '@janua/*':
+        access: $authenticated
+        publish: $authenticated
+
+      '@enclii/*':
+        access: $authenticated
+        publish: $authenticated
+
+      '@cotiza/*':
+        access: $authenticated
+        publish: $authenticated
+
+      '@fortuna/*':
+        access: $authenticated
+        publish: $authenticated
+
+      '@avala/*':
+        access: $authenticated
+        publish: $authenticated
+
+      '@forgesight/*':
+        access: $authenticated
+        publish: $authenticated
+
+      '@coforma/*':
+        access: $authenticated
+        publish: $authenticated
+
+      '@forj/*':
+        access: $authenticated
+        publish: $authenticated
+
+      # Public packages - proxy to npmjs
+      '**':
+        access: $all
+        publish: $authenticated
+        proxy: npmjs
+
+    # Server configuration
+    server:
+      keepAliveTimeout: 60
+
+    # Web interface
+    web:
+      enable: true
+      title: MADFAM NPM Registry
+      logo: ''
+      primary_color: '#00ff9d'
+      scope: '@madfam'
+
+    # Logs
+    logs:
+      - { type: stdout, format: pretty, level: warn }
+
+    # Security
+    security:
+      api:
+        legacy: true
+        jwt:
+          sign:
+            expiresIn: 7d
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: verdaccio
+  namespace: foundry
+  labels:
+    app: verdaccio
+    app.kubernetes.io/name: verdaccio
+    app.kubernetes.io/part-of: solarpunk-foundry
+    app.kubernetes.io/component: registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: verdaccio
+  template:
+    metadata:
+      labels:
+        app: verdaccio
+        app.kubernetes.io/name: verdaccio
+        app.kubernetes.io/part-of: solarpunk-foundry
+    spec:
+      containers:
+        - name: verdaccio
+          image: verdaccio/verdaccio:5
+          ports:
+            - containerPort: 4873
+              name: http
+          env:
+            - name: VERDACCIO_PORT
+              value: "4873"
+            - name: VERDACCIO_PROTOCOL
+              value: "http"
+          volumeMounts:
+            - name: storage
+              mountPath: /verdaccio/storage
+            - name: config
+              mountPath: /verdaccio/conf
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /-/ping
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /-/ping
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: verdaccio-storage
+        - name: config
+          configMap:
+            name: verdaccio-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: verdaccio
+  namespace: foundry
+  labels:
+    app: verdaccio
+    app.kubernetes.io/part-of: solarpunk-foundry
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 4873
+      name: http
+  selector:
+    app: verdaccio
+---
+# Cloudflare Tunnel will route npm.madfam.io to this service
+# Add to cloudflared config:
+#   - hostname: npm.madfam.io
+#     service: http://verdaccio.foundry.svc.cluster.local:80
