@@ -37,13 +37,13 @@ The MADFAM platform runs on a **2-Node Hetzner Cluster** with dedicated roles fo
 | Attribute | Value |
 |-----------|-------|
 | **Role** | CI/CD Builder Node |
-| **Hardware** | Hetzner VPS (CX41) |
-| **CPU** | 4 vCPUs |
-| **RAM** | 16GB |
-| **Storage** | 160GB NVMe |
+| **Hardware** | Hetzner Cloud CPX11 |
+| **CPU** | 2 AMD vCPUs |
+| **RAM** | 2GB |
+| **Storage** | 40GB NVMe |
 | **Network** | 1 Gbit/s |
 | **Hostname** | `forge-builder` |
-| **Cost** | ~$15/month |
+| **Cost** | ~$5/month |
 
 **Workloads:**
 - ✅ Roundhouse Build Workers (Kaniko)
@@ -192,9 +192,9 @@ User → app.enclii.dev → auth.madfam.io (Janua)
 | Component | Monthly Cost |
 |-----------|--------------|
 | The Sanctuary (AX41-NVMe) | $50 |
-| The Forge (CX41 VPS) | $15 |
+| The Forge (CPX11) | $5 |
 | Cloudflare (Tunnel, R2) | $5 |
-| **Total** | **~$70/month** |
+| **Total** | **~$60/month** |
 
 ## Scaling Path
 
