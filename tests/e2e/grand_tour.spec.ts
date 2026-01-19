@@ -57,15 +57,60 @@ test.describe('Suite 2: App Authentication', () => {
 });
 
 test.describe('Suite 3: SSO API Health', () => {
-  test('auth.madfam.io API should return healthy status', async ({ request }) => {
-    // Janua SSO is an API-first service, verify it responds
-    const response = await request.get('https://auth.madfam.io');
-    // API returns 405 for root (method not allowed) but with valid JSON
-    expect([200, 405]).toContain(response.status());
+  test('auth.madfam.io health endpoint should return healthy status', async ({ request }) => {
+    const response = await request.get('https://auth.madfam.io/health');
+    expect(response.status()).toBe(200);
 
     const body = await response.json();
-    expect(body.status).toBe('ok');
+    expect(body.status).toBe('healthy');
     expect(body.version).toBeDefined();
+  });
+});
+
+test.describe('Suite 3b: Full SSO Login Flow', () => {
+  test('complete SSO authentication on app.enclii.dev', async ({ page }) => {
+    test.setTimeout(60000);
+
+    // Navigate to app
+    await page.goto('https://app.enclii.dev');
+
+    // Wait for session check to complete
+    await page.waitForFunction(
+      () => !document.body.textContent?.includes('Checking session'),
+      { timeout: 30000 }
+    );
+
+    // Click SSO button
+    const ssoButton = page.locator('button').filter({ hasText: /sign in|janua|sso/i }).first();
+    await ssoButton.waitFor({ state: 'visible', timeout: 15000 });
+    await ssoButton.click();
+
+    // Wait for redirect to Janua
+    await page.waitForURL(/auth\.madfam\.io/, { timeout: 20000 });
+
+    // Fill login form
+    const emailInput = page.locator('input[type="email"], input[name="email"]').first();
+    await emailInput.waitFor({ state: 'visible', timeout: 15000 });
+    await emailInput.fill('admin@madfam.io');
+
+    const passwordInput = page.locator('input[type="password"]').first();
+    await passwordInput.fill(process.env.E2E_TEST_PASSWORD || '');
+
+    // Submit
+    const submitButton = page.locator('button[type="submit"]').first();
+    await submitButton.click();
+
+    // Handle consent if shown
+    const allowButton = page.locator('button').filter({ hasText: /^Allow$/i }).first();
+    if (await allowButton.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await allowButton.click();
+    }
+
+    // Wait for redirect back to Enclii
+    await page.waitForURL(/app\.enclii\.dev/, { timeout: 20000 });
+
+    // Verify logged in
+    expect(page.url()).toMatch(/app\.enclii\.dev/);
   });
 });
 
