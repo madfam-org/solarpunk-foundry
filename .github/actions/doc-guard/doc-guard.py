@@ -45,17 +45,56 @@ DEFAULT_BANNED_TERMS = {
 
 # URLs to skip (not real external links)
 SKIP_URL_PATTERNS = [
+    # Internal/local services
     r'\.svc\.cluster\.local',      # K8s internal services
     r'localhost[:/]',               # Local development
     r'127\.0\.0\.1',               # Loopback
-    r'\{[^}]+\}',                   # Template placeholders {var}
-    r'\$\{[^}]+\}',                # Shell-style ${VAR}
-    r'<[^>]+>',                     # Angle bracket placeholders <var>
-    r'example\.(com|org|net)',      # RFC 2606 example domains
-    r'your-[a-z-]+\.',             # "your-domain.com" patterns
-    r'myapp\.',                     # Common doc example
-    r'foo\.',                       # Test domains
     r'0\.0\.0\.0',                 # Bind-all address
+    r'\.internal[:/]',             # Internal domains
+    r'\.local[:/]',                # Local domains
+
+    # Template placeholders
+    r'\{[^}]+\}',                   # {var} placeholders
+    r'\$\{[^}]+\}',                # ${VAR} shell-style
+    r'<[^>]+>',                     # <var> angle bracket
+    r'\$[A-Z_]+',                   # $PROJECT_ID style
+    r'%[sd]',                       # %s, %d format strings
+    r'YOUR_[A-Z_]+',               # YOUR_ACCOUNT_ID style placeholders
+
+    # Example/test domains (RFC 2606 + common patterns)
+    r'example\.(com|org|net)',      # RFC 2606
+    r'your-[a-z-]+\.',             # your-domain.com
+    r'myapp\.',                     # myapp.example.com
+    r'foo\.',                       # foo.bar.com
+    r'acme\.',                      # acme.com (common example)
+    r'my-app\.',                    # my-app.example.com
+    r'my-project\.',                # my-project.example.com
+
+    # Example GitHub URLs
+    r'github\.com/example/',        # github.com/example/repo
+    r'github\.com/user/',           # github.com/user/repo
+    r'github\.com/test/',           # github.com/test/repo
+    r'github\.com/org/',            # github.com/org/repo
+    r'github\.com/madfam/',         # github.com/madfam/ (typo, should be madfam-org)
+
+    # URLs that are clearly incomplete or malformed
+    r'^https?://$',                 # Just protocol
+    r'^https?://\*',                # Wildcards
+    r'\*\*$',                       # Glob patterns at end
+    r'\|',                          # Pipe char (markdown table artifact)
+
+    # Internal dev/staging domains that may not resolve publicly
+    r'\.enclii\.local',             # Local dev
+    r'\.fn\.enclii\.dev',           # Functions subdomain (may not exist)
+    r'\.preview\.enclii',           # Preview environments
+    r'\.staging\.',                 # Staging environments
+    r'\.madfam\.io',                # MADFAM internal services (npm, etc.)
+    r'links\.suluna\.mx',           # Internal link shortener
+
+    # API endpoints that require parameters or auth
+    r'/range/$',                    # pwnedpasswords API requires hash prefix
+    r'/graphql',                    # GraphQL endpoints need POST
+    r'api\.enclii\.dev',            # Our API (routes may not exist yet)
 ]
 
 
@@ -207,6 +246,14 @@ async def check_link(session, url: str, file: str, line: int, report: LintReport
                     line=line,
                     message=f"Server error: {url} (HTTP {resp.status})"
                 ))
+            # 400 = bad request (often means requires parameters - warning)
+            elif resp.status == 400:
+                report.add(LintIssue(
+                    severity="warning",
+                    file=file,
+                    line=line,
+                    message=f"API requires parameters: {url} (HTTP 400)"
+                ))
             # Other 4xx = broken (error)
             elif resp.status >= 400:
                 report.add(LintIssue(
@@ -250,8 +297,10 @@ async def check_links(doc_path: Path, report: LintReport):
             for i, line in enumerate(lines, 1):
                 urls = url_pattern.findall(line)
                 for url in urls:
-                    # Clean URL (remove trailing punctuation)
-                    url = url.rstrip(".,;:!?")
+                    # Clean URL (remove trailing punctuation and markdown artifacts)
+                    url = url.rstrip(".,;:!?`'\"")
+                    # Remove backticks that may be inside the URL (from markdown `code` blocks)
+                    url = url.replace('`', '')
                     # Skip internal/placeholder URLs
                     if should_skip_url(url):
                         continue
