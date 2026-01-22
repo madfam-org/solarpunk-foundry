@@ -43,6 +43,29 @@ DEFAULT_BANNED_TERMS = {
     "heroku": "PaaS (or Enclii)",
 }
 
+# URLs to skip (not real external links)
+SKIP_URL_PATTERNS = [
+    r'\.svc\.cluster\.local',      # K8s internal services
+    r'localhost[:/]',               # Local development
+    r'127\.0\.0\.1',               # Loopback
+    r'\{[^}]+\}',                   # Template placeholders {var}
+    r'\$\{[^}]+\}',                # Shell-style ${VAR}
+    r'<[^>]+>',                     # Angle bracket placeholders <var>
+    r'example\.(com|org|net)',      # RFC 2606 example domains
+    r'your-[a-z-]+\.',             # "your-domain.com" patterns
+    r'myapp\.',                     # Common doc example
+    r'foo\.',                       # Test domains
+    r'0\.0\.0\.0',                 # Bind-all address
+]
+
+
+def should_skip_url(url: str) -> bool:
+    """Check if URL should be skipped (internal/placeholder)"""
+    for pattern in SKIP_URL_PATTERNS:
+        if re.search(pattern, url, re.IGNORECASE):
+            return True
+    return False
+
 # ============================================================================
 # DATA CLASSES
 # ============================================================================
@@ -160,7 +183,32 @@ async def check_link(session, url: str, file: str, line: int, report: LintReport
             timeout=aiohttp.ClientTimeout(total=10),
             allow_redirects=True
         ) as resp:
-            if resp.status >= 400:
+            # 404 = genuinely broken (error)
+            if resp.status == 404:
+                report.add(LintIssue(
+                    severity="error",
+                    file=file,
+                    line=line,
+                    message=f"Dead link: {url} (HTTP 404 Not Found)"
+                ))
+            # 401/403 = auth-protected (warning, not error)
+            elif resp.status in (401, 403):
+                report.add(LintIssue(
+                    severity="warning",
+                    file=file,
+                    line=line,
+                    message=f"Auth-protected link: {url} (HTTP {resp.status})"
+                ))
+            # 5xx = server issues (warning, may be temporary)
+            elif resp.status >= 500:
+                report.add(LintIssue(
+                    severity="warning",
+                    file=file,
+                    line=line,
+                    message=f"Server error: {url} (HTTP {resp.status})"
+                ))
+            # Other 4xx = broken (error)
+            elif resp.status >= 400:
                 report.add(LintIssue(
                     severity="error",
                     file=file,
@@ -204,6 +252,9 @@ async def check_links(doc_path: Path, report: LintReport):
                 for url in urls:
                     # Clean URL (remove trailing punctuation)
                     url = url.rstrip(".,;:!?")
+                    # Skip internal/placeholder URLs
+                    if should_skip_url(url):
+                        continue
                     links_to_check.append((url, str(md_file), i))
         except Exception:
             pass
