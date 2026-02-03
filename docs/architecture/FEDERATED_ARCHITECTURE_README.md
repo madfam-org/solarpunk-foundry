@@ -32,21 +32,21 @@ Starts: PostgreSQL, Redis, MinIO
 cd janua/deployment
 docker compose up -d api admin docs  # Skip postgres/redis
 ```
-Ports: 8001 (API), 3004 (Admin), 3005 (Docs)
+Ports: 4100 (API), 4102 (Admin), 4103 (Docs)
 
 #### Phase 2: Data Zone (Forgesight)
 ```bash
 cd forgesight
 docker compose up -d api crawler discovery extractor normalizer admin-ui
 ```
-Ports: 8100 (API), 3012 (Admin)
+Ports: 4300 (API), 4302 (Admin)
 
 #### Phase 3: Business Zone (Cotiza)
 ```bash
 cd digifab-quoting
 docker compose up -d api web worker  # Skip postgres/redis
 ```
-Ports: 8200 (API), 3030 (Web), 8201 (Worker)
+Ports: 4500 (API), 4501 (Web), 4510 (Worker)
 
 ### 3. Connection String Updates Required
 
@@ -154,9 +154,9 @@ networks:
 ./madfam.sh status
 
 # Check health endpoints
-curl http://localhost:8001/health    # Janua
-curl http://localhost:8100/health    # Forgesight
-curl http://localhost:8200/api/v1/health  # Cotiza
+curl http://localhost:4100/health    # Janua
+curl http://localhost:4300/health    # Forgesight
+curl http://localhost:4500/api/v1/health  # Cotiza
 ```
 
 ## Benefits of Federated Architecture
@@ -185,9 +185,9 @@ curl http://localhost:8200/api/v1/health  # Cotiza
 │ Janua           │ │ Forgesight   │ │ Cotiza        │
 │ (Infra Zone)    │ │ (Data Zone)  │ │ (Business)    │
 │                 │ │              │ │               │
-│ API: 8001       │ │ API: 8100    │ │ API: 8200     │
-│ Admin: 3004     │ │ Admin: 3012  │ │ Web: 3030     │
-│ Docs: 3005      │ │ Workers: N/A │ │ Worker: 8201  │
+│ API: 4100       │ │ API: 4300    │ │ API: 4500     │
+│ Admin: 4102     │ │ Admin: 4302  │ │ Web: 4501     │
+│ Docs: 4103      │ │ Workers: N/A │ │ Worker: 4510  │
 └─────────────────┘ └──────────────┘ └───────────────┘
 ```
 
