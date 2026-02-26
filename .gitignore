@@ -18,6 +18,7 @@ yarn.lock
 # IDE
 .idea/
 .vscode/
+.serena/
 *.swp
 *.swo
 
