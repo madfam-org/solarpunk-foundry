@@ -183,7 +183,7 @@ All screenshots saved to:
 | 4200 | Switchyard API | enclii-switchyard |
 
 ### Production Infrastructure
-- **Server**: foundry-core (95.217.198.239)
+- **Server**: foundry-core (<CONTROL_PLANE_IP>)
 - **Access**: Cloudflare Tunnel via ssh.madfam.io
 - **Cluster**: K3s single-node
 - **Namespace**: janua

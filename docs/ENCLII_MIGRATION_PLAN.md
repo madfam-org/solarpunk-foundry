@@ -5,7 +5,7 @@
 **Target**: All MADFAM services on Enclii by Q1 2026
 
 > ⚠️ **Infrastructure Update (Jan 2026):**
-> Current production runs on a **single Hetzner AX41-NVME dedicated server** (~$55/mo) with **self-hosted PostgreSQL/Redis** in-cluster. The multi-node estimates below reflect planned future scaling, not current state.
+> Current production runs on a **single Hetzner dedicated server dedicated server** (see internal-devops/mo) with **self-hosted PostgreSQL/Redis** in-cluster. The multi-node estimates below reflect planned future scaling, not current state.
 
 ---
 
@@ -17,8 +17,8 @@ This document outlines the migration strategy for moving all MADFAM ecosystem se
 
 | Factor | Current (Vercel + Railway) | Target (Enclii) |
 |--------|---------------------------|-----------------|
-| **Monthly Cost** | ~$2,220 | ~$55 |
-| **5-Year Savings** | - | **$129,900** |
+| **Monthly Cost** | ~[SaaS equivalent] | see internal-devops |
+| **5-Year Savings** | - | **[see internal-devops]** |
 | **Vendor Lock-in** | High | None |
 | **Data Sovereignty** | US-based | EU (Hetzner) |
 | **Auth Costs** | Auth0/Clerk fees | $0 (Janua) |
@@ -363,19 +363,19 @@ For isolation requirements:
 ### After Migration (Monthly) - Current State
 | Component | Cost |
 |-----------|------|
-| Hetzner AX41-NVME (dedicated) | ~$50 |
+| Hetzner dedicated server (dedicated) | ~$50 |
 | Self-hosted PostgreSQL | $0 |
 | Self-hosted Redis | $0 |
 | Cloudflare R2 | $5 |
 | Cloudflare (tunnel, DNS) | $0 |
-| **Total** | **~$55** |
+| **Total** | **see internal-devops** |
 
 ### Savings
 - **Monthly**: $2,165+ (97% reduction)
 - **Annual**: $25,980+
-- **5-Year**: $129,900+
+- **5-Year**: [see internal-devops]+
 
-*Note: With Railway Pro + Auth0, savings are $129,900+ over 5 years vs ~$55/month self-hosted*
+*Note: With Railway Pro + Auth0, savings are [see internal-devops]+ over 5 years vs see internal-devops self-hosted*
 
 ---
 

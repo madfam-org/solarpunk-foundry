@@ -7,7 +7,7 @@ Here is the **Master Execution Sequence**. It maps every single one of our 18 re
 **Revenue:** $0 (Investment phase).
 
 1.  **Infrastructure Deployment (`madfam-org/enclii`):**
-    * **Action:** Provision Hetzner AX41. Run Ansible playbooks.
+    * **Action:** Provision Hetzner dedicated server. Run Ansible playbooks.
     * **Result:** A working Kubernetes cluster.
 2.  **Identity Ignition (`madfam-org/janua`):**
     * **Action:** Deploy Janua (Auth/Billing). Connect Stripe & Polar.sh keys.

@@ -17,7 +17,7 @@ MADFAM is a Mexican tech holding company (Innovaciones MADFAM SAS de CV) operati
 | Total repositories | 31 | `ls /Users/aldoruizluna/labspace/` |
 | Production platforms | 5 (Enclii, Janua, Dhanam, Tezca, Yantra4D) | ArgoCD projects (`infra/argocd/projects/`) |
 | Running pods | 82 (0 errors, last audit Feb 6) | `docs/infrastructure/INFRA_ANATOMY.md` |
-| Monthly infrastructure cost | ~$55 (Hetzner $50 + R2 $5) | `docs/production/PRODUCTION_CHECKLIST.md` |
+| Monthly infrastructure cost | see internal-devops (Hetzner $50 + R2 $5) | `docs/production/PRODUCTION_CHECKLIST.md` |
 | Monthly revenue | $0 | No payment flows exist in any deployed product |
 | External paying customers | 0 | No sign-up or checkout flow exists |
 | Contributors | 1 (single developer + AI agents) | Git commit authors |
@@ -103,8 +103,8 @@ cloudflared pods (2 replicas, zero-trust tunnel)
     ▼
 2-Node k3s Cluster (v1.33.6+k3s1)
     │
-    ├─── foundry-core (Hetzner AX41-NVME)
-    │    Ryzen 5 3600, 64GB RAM, 2x512GB NVMe
+    ├─── foundry-core (Hetzner dedicated server)
+    │    server CPU, server storage
     │    CPU: 12% used (1504m), Memory: 27% used (17.7GB/64GB)
     │    Roles: control-plane, all workloads except builds
     │

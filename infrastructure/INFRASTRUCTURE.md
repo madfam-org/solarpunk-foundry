@@ -26,18 +26,18 @@
 
 | Specification | Value | Rationale |
 |---------------|-------|-----------|
-| **Model** | Hetzner AX41-NVMe | Optimal cost-to-performance ratio |
+| **Model** | Hetzner dedicated server | Optimal cost-to-performance ratio |
 | **Location** | Finland (HEL1) | Green energy profile, EU data residency |
 | **Hostname** | `enclii-core` | Primary infrastructure node |
-| **IP Address** | `95.217.198.239` | Static IPv4 |
+| **IP Address** | `<CONTROL_PLANE_IP>` | Static IPv4 |
 
 ### Compute Resources
 
 | Component | Specification | Selection Rationale |
 |-----------|---------------|---------------------|
-| **CPU** | AMD Ryzen 5 3600 (Hexa-Core) | High single-core performance for auth handshakes |
+| **CPU** | server CPU (Hexa-Core) | High single-core performance for auth handshakes |
 | **RAM** | 64 GB ECC DDR4 | ECC prevents bit-rot/corruption in treasury ledger and identity tables |
-| **Storage** | 2x 512 GB NVMe SSD | High IOPS for container builds |
+| **Storage** | server storage SSD | High IOPS for container builds |
 
 > **Critical Note**: ECC memory was specifically chosen to ensure data integrity for:
 > - Dhanam treasury ledger transactions

@@ -9,10 +9,10 @@
 | Property | Value |
 |----------|-------|
 | **Cluster Type** | K3s (lightweight Kubernetes) |
-| **Node** | `foundry-core` (95.217.198.239) |
-| **Server** | Hetzner AX41-NVME (single-node) |
+| **Node** | `foundry-core` (<CONTROL_PLANE_IP>) |
+| **Server** | Hetzner dedicated server (single-node) |
 | **Ingress** | Cloudflare Tunnel (zero-trust) |
-| **Cost** | ~$55/month |
+| **Cost** | see internal-devops |
 
 ---
 

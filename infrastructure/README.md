@@ -39,9 +39,9 @@ infrastructure/
 
 | Property | Value |
 |----------|-------|
-| Provider | Hetzner (AX41-NVMe) |
+| Provider | Hetzner (dedicated server) |
 | Location | Finland (HEL1) |
-| IP | `95.217.198.239` |
+| IP | `<CONTROL_PLANE_IP>` |
 | Hostname | `enclii-core` |
 | OS | Ubuntu 24.04 LTS |
 | Storage | ZFS Mirror (rpool) |

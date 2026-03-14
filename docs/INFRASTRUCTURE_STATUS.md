@@ -142,7 +142,7 @@ http://localhost:8025 (Web UI)
 | Property | Value |
 |----------|-------|
 | Hostname | foundry-core |
-| IP | 95.217.198.239 |
+| IP | <CONTROL_PLANE_IP> |
 | SSH Access | ssh.madfam.io |
 | Provider | Hetzner Cloud |
 | K8s Distribution | K3s (single-node) |

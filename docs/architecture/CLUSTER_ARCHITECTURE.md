@@ -14,9 +14,9 @@ The MADFAM platform runs on a **2-Node Hetzner Cluster** with dedicated roles fo
 | Attribute | Value |
 |-----------|-------|
 | **Role** | Production Workloads (Apps/DBs) |
-| **Hardware** | Hetzner AX41-NVMe |
-| **CPU** | AMD Ryzen 5 3600 (6 cores/12 threads) |
-| **RAM** | 64GB DDR4 ECC |
+| **Hardware** | Hetzner dedicated server |
+| **CPU** | server CPU (6 cores/12 threads) |
+| **RAM** | server RAM |
 | **Storage** | 2x 512GB NVMe SSD |
 | **Network** | 1 Gbit/s |
 | **Hostname** | `foundry-core` |
@@ -191,7 +191,7 @@ User → app.enclii.dev → auth.madfam.io (Janua)
 
 | Component | Monthly Cost |
 |-----------|--------------|
-| The Sanctuary (AX41-NVMe) | $50 |
+| The Sanctuary (dedicated server) | $50 |
 | The Forge (CPX11) | $5 |
 | Cloudflare (Tunnel, R2) | $5 |
 | **Total** | **~$60/month** |
