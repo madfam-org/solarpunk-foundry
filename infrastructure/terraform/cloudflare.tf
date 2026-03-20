@@ -24,21 +24,75 @@ resource "cloudflare_tunnel_config" "janua" {
   tunnel_id  = cloudflare_tunnel.janua.id
 
   config {
-    # Main auth API
+    # ==========================================================================
+    # SSH ACCESS (Zero Trust - Requires WARP client or cloudflared ProxyCommand)
+    # ==========================================================================
     ingress_rule {
-      hostname = "auth.${var.domain}"
-      service  = "http://10.1.1.10:8000"
+      hostname = "ssh.${var.ssh_domain}"
+      service  = "ssh://localhost:22"
+      origin_request {
+        connect_timeout = "30s"
+      }
+    }
+
+    # ==========================================================================
+    # JANUA SERVICES
+    # ==========================================================================
+
+    # Main auth API (port 4100 externally, 8000 internally)
+    ingress_rule {
+      hostname = "api.${var.domain}"
+      service  = "http://localhost:4100"
       origin_request {
         connect_timeout = "30s"
         no_tls_verify   = true
       }
     }
 
-    # Admin dashboard
+    # Dashboard (port 4101)
     ingress_rule {
-      hostname = "auth-admin.${var.domain}"
-      service  = "http://10.1.1.10:8000"
-      path     = "/admin/*"
+      hostname = "app.${var.domain}"
+      service  = "http://localhost:4101"
+      origin_request {
+        connect_timeout = "30s"
+        no_tls_verify   = true
+      }
+    }
+
+    # Admin dashboard (port 4102)
+    ingress_rule {
+      hostname = "admin.${var.domain}"
+      service  = "http://localhost:4102"
+      origin_request {
+        connect_timeout = "30s"
+        no_tls_verify   = true
+      }
+    }
+
+    # Documentation (port 4103)
+    ingress_rule {
+      hostname = "docs.${var.domain}"
+      service  = "http://localhost:4103"
+      origin_request {
+        connect_timeout = "30s"
+        no_tls_verify   = true
+      }
+    }
+
+    # Website (port 4104)
+    ingress_rule {
+      hostname = "${var.domain}"
+      service  = "http://localhost:4104"
+      origin_request {
+        connect_timeout = "30s"
+        no_tls_verify   = true
+      }
+    }
+
+    # Legacy auth endpoint (for backward compatibility)
+    ingress_rule {
+      hostname = "auth.${var.domain}"
+      service  = "http://localhost:4100"
       origin_request {
         connect_timeout = "30s"
         no_tls_verify   = true
@@ -47,9 +101,9 @@ resource "cloudflare_tunnel_config" "janua" {
 
     # Health checks
     ingress_rule {
-      hostname = "auth.${var.domain}"
+      hostname = "api.${var.domain}"
       path     = "/health"
-      service  = "http://10.1.1.10:8000"
+      service  = "http://localhost:4100"
     }
 
     # Catch-all (required by Cloudflare)
@@ -103,14 +157,58 @@ resource "cloudflare_zone_settings_override" "ssl" {
 }
 
 # =============================================================================
+# SSH DNS RECORD (for ssh.madfam.io)
+# =============================================================================
+
+# DNS record for SSH access via tunnel
+# NOTE: This requires the zone to be managed by Cloudflare
+# If using external DNS (e.g., Porkbun), create a CNAME manually:
+#   ssh -> <tunnel-id>.cfargotunnel.com (Proxied)
+resource "cloudflare_record" "ssh" {
+  count   = var.ssh_zone_id != "" ? 1 : 0
+  zone_id = var.ssh_zone_id
+  name    = "ssh"
+  value   = "${cloudflare_tunnel.janua.id}.cfargotunnel.com"
+  type    = "CNAME"
+  proxied = true
+  comment = "SSH access via Cloudflare Zero Trust Tunnel"
+}
+
+# =============================================================================
 # ZERO TRUST ACCESS (Admin Protection)
 # =============================================================================
+
+# Access application for SSH (Zero Trust)
+resource "cloudflare_access_application" "ssh" {
+  count            = var.ssh_zone_id != "" ? 1 : 0
+  zone_id          = var.ssh_zone_id
+  name             = "Server SSH Access"
+  domain           = "ssh.${var.ssh_domain}"
+  type             = "ssh"
+  session_duration = "1h"  # Short sessions for SSH security
+
+  allowed_idps = [cloudflare_access_identity_provider.github.id]
+}
+
+# Access policy for SSH - only allowed team members
+resource "cloudflare_access_policy" "ssh_policy" {
+  count          = var.ssh_zone_id != "" ? 1 : 0
+  zone_id        = var.ssh_zone_id
+  application_id = cloudflare_access_application.ssh[0].id
+  name           = "SSH Access - Team Members"
+  precedence     = 1
+  decision       = "allow"
+
+  include {
+    email = var.ssh_allowed_emails
+  }
+}
 
 # Access application for admin dashboard
 resource "cloudflare_access_application" "admin" {
   zone_id          = data.cloudflare_zone.main.id
   name             = "Janua Admin Dashboard"
-  domain           = "auth-admin.${var.domain}"
+  domain           = "admin.${var.domain}"
   type             = "self_hosted"
   session_duration = "24h"
 
@@ -175,6 +273,28 @@ variable "admin_emails" {
 }
 
 # =============================================================================
+# SSH ZERO TRUST VARIABLES
+# =============================================================================
+
+variable "ssh_domain" {
+  description = "Domain for SSH access (e.g., madfam.io for ssh.madfam.io)"
+  type        = string
+  default     = "madfam.io"
+}
+
+variable "ssh_zone_id" {
+  description = "Cloudflare Zone ID for SSH domain. Leave empty if DNS is managed externally (e.g., Porkbun)"
+  type        = string
+  default     = ""
+}
+
+variable "ssh_allowed_emails" {
+  description = "Email addresses allowed SSH access via Zero Trust"
+  type        = list(string)
+  default     = []
+}
+
+# =============================================================================
 # OUTPUTS
 # =============================================================================
 
@@ -202,4 +322,23 @@ output "admin_url" {
 output "r2_bucket_name" {
   description = "R2 bucket name for backups"
   value       = cloudflare_r2_bucket.backups.name
+}
+
+# =============================================================================
+# SSH ACCESS OUTPUTS
+# =============================================================================
+
+output "ssh_hostname" {
+  description = "SSH hostname for Zero Trust access"
+  value       = "ssh.${var.ssh_domain}"
+}
+
+output "ssh_cname_target" {
+  description = "CNAME target for SSH DNS record (use if DNS managed externally)"
+  value       = "${cloudflare_tunnel.janua.id}.cfargotunnel.com"
+}
+
+output "ssh_connection_command" {
+  description = "SSH connection command (requires WARP client or cloudflared)"
+  value       = "ssh -o ProxyCommand='cloudflared access ssh --hostname ssh.${var.ssh_domain}' solarpunk@ssh.${var.ssh_domain}"
 }

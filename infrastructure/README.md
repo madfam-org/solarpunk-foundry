@@ -7,6 +7,12 @@
 ```
 infrastructure/
 ├── INFRASTRUCTURE.md      # Layer 1 "Soil" reference guide (Hetzner, ZFS, Docker)
+├── bootstrap/             # Initial bare-metal server setup scripts
+│   ├── README.md          # Complete deployment guide
+│   ├── 01-system-bootstrap.sh    # Server hardening, Docker, ZFS
+│   ├── 02-enclii-deployment.sh   # Enclii PaaS deployment
+│   ├── 03-janua-deployment.sh    # Janua Auth + shared services
+│   └── 04-start-services.sh      # Service orchestration
 ├── terraform/             # Hetzner + Cloudflare provisioning
 │   ├── main.tf
 │   ├── cloudflare.tf
@@ -120,8 +126,32 @@ Each project maintains its own deployment configs:
 
 Shared infrastructure patterns live here in foundry.
 
+## Initial Server Bootstrap
+
+For provisioning a new bare-metal Hetzner server from scratch, see the `bootstrap/` directory:
+
+```bash
+# On a fresh Ubuntu 24.04 server:
+cd infrastructure/bootstrap
+
+# 1. System hardening + Docker with ZFS
+./01-system-bootstrap.sh
+
+# 2. Deploy Enclii PaaS
+./02-enclii-deployment.sh
+
+# 3. Deploy Janua Auth + shared PostgreSQL/Redis
+./03-janua-deployment.sh
+
+# 4. Start services and configure integration
+./04-start-services.sh
+```
+
+See `bootstrap/README.md` for the complete deployment guide.
+
 ## Related Documentation
 
+- [bootstrap/README.md](./bootstrap/README.md) - Initial server setup guide
 - [INFRASTRUCTURE.md](./INFRASTRUCTURE.md) - Complete server setup reference
 - [PORT_ALLOCATION.md](../docs/PORT_ALLOCATION.md) - Service port registry
 - [DOGFOODING_GUIDE.md](../docs/DOGFOODING_GUIDE.md) - Local development setup

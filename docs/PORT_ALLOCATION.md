@@ -438,10 +438,44 @@ curl http://localhost:4200/health  # Enclii API
 
 ---
 
+## Production Verification (2025-12-07)
+
+Current production state verified on `ssh.madfam.io`:
+
+| Port | Service | Container/Process | Status |
+|------|---------|-------------------|--------|
+| 4100 | Janua API | Port forward to 8000 | ✅ Active |
+| 4101 | Janua Dashboard | Static nginx | ✅ Active |
+| 4102 | Janua Admin | Static nginx | ✅ Active |
+| 4103 | Janua Docs | Static nginx | ✅ Active |
+| 4104 | Janua Website | Static nginx | ✅ Active |
+| 4200 | Enclii Switchyard API | k3s pod | ✅ Active |
+| 4201 | Enclii UI | k3s pod | ✅ Active |
+| 4202 | Enclii Agent | k3s pod | ✅ Active |
+| 5432 | PostgreSQL | postgres-shared | ✅ Active |
+| 6379 | Redis | redis-shared | ✅ Active |
+| 8000 | Janua API | janua-api container | ✅ Active |
+| 9090 | Prometheus | k3s pod | ✅ Active |
+
+### Cloudflare Tunnel Routes
+
+| Public URL | Target Port | Service |
+|------------|-------------|---------|
+| api.janua.dev | 8000 | Janua API |
+| app.janua.dev | 4101 | Janua Dashboard |
+| admin.janua.dev | 4102 | Janua Admin |
+| docs.janua.dev | 4103 | Janua Docs |
+| janua.dev | 4104 | Janua Website |
+| api.enclii.dev | 4200 | Enclii API |
+| app.enclii.dev | 4201 | Enclii UI |
+
+---
+
 ## Changelog
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2025-12-07 | Added production verification section with actual running services | Claude |
 | 2025-12-02 | Complete rewrite: Unified 4xxx-5xxx scheme replacing 8xxx/3xxx split | Claude |
 | - | Previous: Mixed 8xxx APIs + 3xxx Webs | - |
 
