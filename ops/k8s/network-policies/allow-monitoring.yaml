@@ -1,0 +1,14 @@
+# Monitoring Namespace Network Policy
+# Allow all ingress to monitoring components
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-monitoring-ingress
+  namespace: monitoring
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+  ingress:
+    - {}
