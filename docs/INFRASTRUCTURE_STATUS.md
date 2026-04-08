@@ -1,7 +1,7 @@
 # MADFAM Infrastructure Status
 
 > **Last Verified**: January 11, 2026
-> **Environment**: Local + Production (foundry-core)
+> **Environment**: Local + Production (foundry-cp / foundry-worker-01 / foundry-builder-01)
 
 ## Quick Reference
 
@@ -139,13 +139,19 @@ http://localhost:8025 (Web UI)
 
 ### Server Details
 
+| Node | Hostname | IP | Role | Specs |
+|------|----------|----|------|-------|
+| Control Plane | foundry-cp | 37.27.235.104 | CP (server) | EX44, i5-13500 14C/20T, 128GB |
+| Worker | foundry-worker-01 | 95.217.198.239 | Worker (agent) | AX41 |
+| Builder | foundry-builder-01 | - | Builder (agent) | - |
+
 | Property | Value |
 |----------|-------|
-| Hostname | foundry-core |
-| IP | <CONTROL_PLANE_IP> |
+| K3s API | 37.27.235.104:6443 |
+| Topology | 3-node cluster (CP + worker + builder) |
 | SSH Access | ssh.madfam.io |
-| Provider | Hetzner Cloud |
-| K8s Distribution | K3s (single-node) |
+| Provider | Hetzner Dedicated |
+| K8s Distribution | K3s (multi-node) |
 
 ### Cloudflare Tunnel
 

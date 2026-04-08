@@ -7,7 +7,10 @@
 ## Current State Summary
 
 ### Production (ssh.madfam.io)
-- **K3s Cluster**: Single-node at 95.217.198.239 (Hetzner CPX31)
+- **K3s Cluster**: 3-node cluster (K3s API at 37.27.235.104:6443)
+  - `foundry-cp` (EX44, 37.27.235.104, i5-13500 14C/20T, 128GB) -- control plane
+  - `foundry-worker-01` (AX41, 95.217.198.239) -- worker node (formerly foundry-core)
+  - `foundry-builder-01` -- builder node
 - **Namespaces**: enclii, janua, monitoring, data, kube-system
 - **Pods**: 16 running (all healthy)
 - **Network Policies**: 8 applied (default-deny with specific allows)

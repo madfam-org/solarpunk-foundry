@@ -39,8 +39,15 @@ Host ssh.madfam.io
     ProxyCommand /usr/local/bin/cloudflared access ssh --hostname %h
     IdentityFile ~/.ssh/id_ed25519
 
-# Optional alias
-Host foundry-core
+# Control plane (EX44, 37.27.235.104)
+Host foundry-cp
+    HostName ssh.madfam.io
+    User solarpunk
+    ProxyCommand /usr/local/bin/cloudflared access ssh --hostname %h
+    IdentityFile ~/.ssh/id_ed25519
+
+# Worker node (AX41, 95.217.198.239) - formerly foundry-core
+Host foundry-worker-01
     HostName ssh.madfam.io
     User solarpunk
     ProxyCommand /usr/local/bin/cloudflared access ssh --hostname %h
@@ -81,7 +88,11 @@ cloudflared access login ssh.madfam.io
 |----------|-------|
 | SSH Host | `ssh.madfam.io` |
 | User | `solarpunk` |
-| Server | foundry-core |
+| Control Plane | foundry-cp (EX44, 37.27.235.104, i5-13500 14C/20T, 128GB) |
+| Worker Node | foundry-worker-01 (AX41, 95.217.198.239) -- formerly foundry-core |
+| Builder Node | foundry-builder-01 |
+| K3s API | 37.27.235.104:6443 |
+| Topology | 3-node K3s cluster |
 | Location | Hetzner HEL1 (Helsinki, Finland) |
 | Access Method | Cloudflare Zero Trust Tunnel |
 
