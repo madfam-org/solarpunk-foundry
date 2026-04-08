@@ -15,12 +15,13 @@ The MADFAM platform runs on a **2-Node Hetzner Cluster** with dedicated roles fo
 |-----------|-------|
 | **Role** | Production Workloads (Apps/DBs) |
 | **Hardware** | Hetzner dedicated server |
-| **CPU** | server CPU (6 cores/12 threads) |
-| **RAM** | server RAM |
-| **Storage** | 2x 512GB NVMe SSD |
+| **CPU** | Intel i5-13500 (14 cores/20 threads) |
+| **RAM** | 128GB DDR4 |
+| **Storage** | 2x 512GB NVMe Gen4 SSD (RAID1) |
 | **Network** | 1 Gbit/s |
-| **Hostname** | `foundry-core` |
-| **Cost** | ~$50/month |
+| **Control Plane** | `foundry-cp` (37.27.235.104) |
+| **Worker** | `foundry-worker-01` (95.217.198.239, AX41, 64GB) |
+| **Cost** | ~$120/month (3-node cluster) |
 
 **Workloads:**
 - ✅ Enclii Control Plane (`api.enclii.dev`, `app.enclii.dev`)
@@ -133,7 +134,7 @@ Internet
                   │ Cloudflare Tunnel (Encrypted)
                   ▼
 ┌─────────────────────────────────────────────┐
-│  The Sanctuary (foundry-core)               │
+│  The Sanctuary (foundry-cp + foundry-worker-01) │
 │  ┌─────────────────────────────────────┐    │
 │  │ cloudflared (2 replicas)            │    │
 │  │ • auth.madfam.io → janua-api:80     │    │
