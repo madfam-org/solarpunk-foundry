@@ -1,0 +1,69 @@
+{
+  "name": "@madfam/env",
+  "version": "0.1.0",
+  "description": "Zod-based environment variable validation factory for the MADFAM/Solarpunk ecosystem",
+  "author": "MADFAM <tech@madfam.io>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madfam-org/solarpunk-foundry.git",
+    "directory": "packages/env"
+  },
+  "homepage": "https://madfam.io",
+  "bugs": {
+    "url": "https://github.com/madfam-org/solarpunk-foundry/issues"
+  },
+  "keywords": [
+    "madfam",
+    "solarpunk",
+    "env",
+    "environment",
+    "validation",
+    "zod",
+    "config"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./common": {
+      "types": "./dist/common.d.ts",
+      "import": "./dist/common.js",
+      "require": "./dist/common.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo node_modules",
+    "prepublishOnly": "pnpm build"
+  },
+  "peerDependencies": {
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.7.2",
+    "zod": "^3.23.8"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

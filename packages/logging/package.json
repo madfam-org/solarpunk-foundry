@@ -1,0 +1,73 @@
+{
+  "name": "@madfam/logging",
+  "version": "0.1.0",
+  "description": "Structured logging for the MADFAM/Solarpunk ecosystem (pino-based)",
+  "author": "MADFAM <tech@madfam.io>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madfam-org/solarpunk-foundry.git",
+    "directory": "packages/logging"
+  },
+  "homepage": "https://madfam.io",
+  "bugs": {
+    "url": "https://github.com/madfam-org/solarpunk-foundry/issues"
+  },
+  "keywords": [
+    "madfam",
+    "solarpunk",
+    "logging",
+    "pino",
+    "structured-logging",
+    "observability"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.js",
+      "require": "./dist/browser.cjs"
+    },
+    "./middleware": {
+      "types": "./dist/middleware.d.ts",
+      "import": "./dist/middleware.js",
+      "require": "./dist/middleware.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo node_modules",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "pino": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.7.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

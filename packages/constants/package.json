@@ -1,0 +1,76 @@
+{
+  "name": "@madfam/constants",
+  "version": "0.1.0",
+  "description": "Ecosystem-wide operational constants for the MADFAM/Solarpunk ecosystem",
+  "author": "MADFAM <tech@madfam.io>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madfam-org/solarpunk-foundry.git",
+    "directory": "packages/constants"
+  },
+  "homepage": "https://madfam.io",
+  "bugs": {
+    "url": "https://github.com/madfam-org/solarpunk-foundry/issues"
+  },
+  "keywords": [
+    "madfam",
+    "solarpunk",
+    "constants",
+    "configuration"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./timing": {
+      "types": "./dist/timing.d.ts",
+      "import": "./dist/timing.js",
+      "require": "./dist/timing.cjs"
+    },
+    "./queue": {
+      "types": "./dist/queue.d.ts",
+      "import": "./dist/queue.js",
+      "require": "./dist/queue.cjs"
+    },
+    "./pagination": {
+      "types": "./dist/pagination.d.ts",
+      "import": "./dist/pagination.js",
+      "require": "./dist/pagination.cjs"
+    },
+    "./retry": {
+      "types": "./dist/retry.d.ts",
+      "import": "./dist/retry.js",
+      "require": "./dist/retry.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo node_modules",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.7.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@9.15.0"
+}
