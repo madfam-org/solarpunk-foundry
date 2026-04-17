@@ -9,14 +9,10 @@
 | Property | Value |
 |----------|-------|
 | **Cluster Type** | K3s (lightweight Kubernetes) |
-| **Control Plane** | `foundry-cp` (EX44, 37.27.235.104, i5-13500 14C/20T, 128GB) |
-| **Worker Node** | `foundry-worker-01` (AX41, 95.217.198.239) |
-| **Builder Node** | `foundry-builder-01` |
-| **K3s API** | 37.27.235.104:6443 |
-| **Topology** | 3-node cluster (CP + worker + builder) |
-| **Server** | Hetzner dedicated servers |
-| **Ingress** | Cloudflare Tunnel (zero-trust) |
-| **Cost** | see internal-devops |
+| **Topology** | 3-node cluster (1 control plane + 1 worker + 1 builder, bare-metal) |
+| **Provider** | Hetzner dedicated + 1 VPS builder |
+| **Ingress** | Cloudflare Tunnel (zero-trust, no exposed node ports) |
+| **Node inventory + IPs + hardware specs + costs** | See `internal-devops/infrastructure/nodes.md` (private) |
 
 ---
 

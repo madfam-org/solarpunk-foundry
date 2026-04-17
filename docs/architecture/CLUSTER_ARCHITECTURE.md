@@ -5,7 +5,10 @@
 
 ## Overview
 
-The MADFAM platform runs on a **2-Node Hetzner Cluster** with dedicated roles for workloads and CI/CD builds.
+The MADFAM platform runs on a **3-node K3s cluster** with dedicated
+roles for workloads and CI/CD builds. Hardware specs, IPs, hostnames,
+and costs are in the private `internal-devops/infrastructure/nodes.md`
+registry.
 
 ## Node Architecture
 
@@ -13,15 +16,10 @@ The MADFAM platform runs on a **2-Node Hetzner Cluster** with dedicated roles fo
 
 | Attribute | Value |
 |-----------|-------|
-| **Role** | Production Workloads (Apps/DBs) |
-| **Hardware** | Hetzner dedicated server |
-| **CPU** | Intel i5-13500 (14 cores/20 threads) |
-| **RAM** | 128GB DDR4 |
-| **Storage** | 2x 512GB NVMe Gen4 SSD (RAID1) |
+| **Role** | Production Workloads (Apps/DBs) — control plane + 1 worker |
+| **Hardware** | Hetzner dedicated (see `internal-devops`) |
+| **Storage** | NVMe SSD with RAID1 |
 | **Network** | 1 Gbit/s |
-| **Control Plane** | `foundry-cp` (37.27.235.104) |
-| **Worker** | `foundry-worker-01` (95.217.198.239, AX41, 64GB) |
-| **Cost** | ~$120/month (3-node cluster) |
 
 **Workloads:**
 - ✅ Enclii Control Plane (`api.enclii.dev`, `app.enclii.dev`)
@@ -134,7 +132,7 @@ Internet
                   │ Cloudflare Tunnel (Encrypted)
                   ▼
 ┌─────────────────────────────────────────────┐
-│  The Sanctuary (foundry-cp + foundry-worker-01) │
+│  The Sanctuary (control plane + worker)     │
 │  ┌─────────────────────────────────────┐    │
 │  │ cloudflared (2 replicas)            │    │
 │  │ • auth.madfam.io → janua-api:80     │    │
