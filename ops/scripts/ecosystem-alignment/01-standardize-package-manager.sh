@@ -21,7 +21,7 @@ echo -e "${YELLOW}========================================${NC}"
 
 # Repos with package.json that need migration
 REPOS=(
-  "aureo-labs"
+  "madfam"
   "avala"
   "brepflow"
   "coforma-studio"

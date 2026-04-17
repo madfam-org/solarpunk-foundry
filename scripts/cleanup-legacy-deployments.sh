@@ -66,7 +66,7 @@ LEGACY_FILES=(
     "$LABSPACE/janua/apps/marketing/vercel.json"
 
     # Simple sites
-    "$LABSPACE/aureo-labs/vercel.json"
+    "$LABSPACE/madfam/vercel.json"
     "$LABSPACE/madfam-site/vercel.json"
     "$LABSPACE/primavera3d/vercel.json"
 

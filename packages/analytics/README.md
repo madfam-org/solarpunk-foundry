@@ -25,7 +25,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       config={{
         apiKey: process.env.NEXT_PUBLIC_POSTHOG_KEY!,
         apiHost: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-        siteId: 'madfam', // or 'aureo-labs' or 'primavera3d'
+        siteId: 'madfam', // or 'madfam' or 'primavera3d'
         environment: process.env.NODE_ENV as 'development' | 'production',
       }}
     >

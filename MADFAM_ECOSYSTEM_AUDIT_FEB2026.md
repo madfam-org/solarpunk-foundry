@@ -67,7 +67,7 @@ MADFAM is a Mexican tech holding company (Innovaciones MADFAM SAS de CV) operati
 | 12 | coforma-studio | Extended | Next.js + NestJS | 15% | Not deployed | C+ | Nov 28, 2025 | SaaS pricing defined ($500-5k/mo) |
 | 13 | stratum-tcg | Extended | Python + React | 40% | Not deployed | C | Feb 25 | Card game sales (aspirational) |
 | 14 | bloom-scroll | Extended | Markdown/HTML | 10% | Not deployed | D | Nov 27, 2025 | None |
-| 15 | aureo-labs | Extended | TypeScript | 15% | Not deployed | D+ | Nov 27, 2025 | None |
+| 15 | madfam | Extended | TypeScript | 15% | Not deployed | D+ | Nov 27, 2025 | None |
 | 16 | Auto-Claude | Tool | TypeScript | 30% | N/A (dev tool) | C | Jan 11 | None |
 | 17 | blueprint-harvester | Tool | TypeScript | 25% | Not deployed | C | Jan 12 | None |
 | 18 | ceq | Tool | TypeScript | 20% | N/A | D | Jan 10 | None |
@@ -510,7 +510,7 @@ The "Agent" on port 4202 does not exist as a deployed component.
 | **coforma-studio** | Customer Advisory Board SaaS | Foundation (15%) | Low — needs 6+ months to MVP | **Pause** |
 | **stratum-tcg** | Hybrid TCG + Eurogame engine | Alpha (40%) | None — entertainment, not revenue path | **Pause** (hobby project) |
 | **bloom-scroll** | Slow Web aggregator (20 items/day) | Scaffold (10%) | None | **Archive** |
-| **aureo-labs** | Innovation lab hub | Scaffold (15%) | None | **Archive** |
+| **madfam** | Innovation lab hub | Scaffold (15%) | None | **Archive** |
 | **Auto-Claude** | Claude Code automation tool | Tool (30%) | Internal — productivity tool | **Continue** |
 | **blueprint-harvester** | Blueprint extraction tool | Tool (25%) | Low — feeds forgesight | **Pause** |
 | **ceq** | Unknown TypeScript project | Scaffold (20%) | None | **Archive** |
@@ -784,7 +784,7 @@ Missing llms.txt on 25 repos means AI agents (Claude, GPT, Cursor) get less cont
 | **coforma-studio** | — | — | Pause |
 | **stratum-tcg** | — | — | Hobby project, deprioritize |
 | **bloom-scroll** | Archive | — | — |
-| **aureo-labs** | Archive | — | — |
+| **madfam** | Archive | — | — |
 | **ceq** | Archive, add LICENSE | — | — |
 | **legal-ops** | Archive, add LICENSE | — | — |
 | **tablaco** | Archive, add LICENSE | — | — |

@@ -69,9 +69,9 @@ module.exports = {
 
       // Custom shadows for glassmorphism
       boxShadow: {
-        'aureo-1': '0 4px 12px rgba(0,0,0,.25), 0 0 8px rgba(245,158,11,.05)',
-        'aureo-2': '0 8px 24px rgba(0,0,0,.35), 0 0 16px rgba(245,158,11,.08)',
-        'aureo-3': '0 12px 36px rgba(0,0,0,.45), 0 0 24px rgba(245,158,11,.12)',
+        'amber-1': '0 4px 12px rgba(0,0,0,.25), 0 0 8px rgba(245,158,11,.05)',
+        'amber-2': '0 8px 24px rgba(0,0,0,.35), 0 0 16px rgba(245,158,11,.08)',
+        'amber-3': '0 12px 36px rgba(0,0,0,.45), 0 0 24px rgba(245,158,11,.12)',
         'glass': '0 8px 32px rgba(0,0,0,.3)',
         'glass-lg': '0 16px 48px rgba(0,0,0,.4)',
       },

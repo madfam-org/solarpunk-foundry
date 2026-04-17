@@ -27,7 +27,7 @@ echo -e "${YELLOW}Ecosystem Alignment Verification${NC}"
 echo -e "${YELLOW}========================================${NC}"
 
 REPOS=(
-  "aureo-labs"
+  "madfam"
   "avala"
   "brepflow"
   "coforma-studio"

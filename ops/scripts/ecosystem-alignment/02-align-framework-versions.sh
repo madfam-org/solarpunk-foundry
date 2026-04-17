@@ -38,7 +38,7 @@ echo -e "${YELLOW}========================================${NC}"
 
 # Repos that use these frameworks
 NEXTJS_REPOS=(
-  "aureo-labs"
+  "madfam"
   "avala"
   "coforma-studio"
   "dhanam"
@@ -153,7 +153,7 @@ process_repo() {
 
 # Get all repos with package.json
 ALL_REPOS=(
-  "aureo-labs"
+  "madfam"
   "avala"
   "brepflow"
   "coforma-studio"
