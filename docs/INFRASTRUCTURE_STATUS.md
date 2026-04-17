@@ -1,7 +1,7 @@
 # MADFAM Infrastructure Status
 
 > **Last Verified**: January 11, 2026
-> **Environment**: Local + Production (foundry-cp / foundry-worker-01 / foundry-builder-01)
+> **Environment**: Local + Production (3-node K3s cluster — node inventory in `internal-devops`)
 
 ## Quick Reference
 
@@ -139,18 +139,15 @@ http://localhost:8025 (Web UI)
 
 ### Server Details
 
-| Node | Hostname | IP | Role | Specs |
-|------|----------|----|------|-------|
-| Control Plane | foundry-cp | 37.27.235.104 | CP (server) | EX44, i5-13500 14C/20T, 128GB |
-| Worker | foundry-worker-01 | 95.217.198.239 | Worker (agent) | AX41 |
-| Builder | foundry-builder-01 | - | Builder (agent) | - |
+> Node hostnames, IPs, hardware specs, and SSH targets are documented
+> in the **private** `internal-devops/infrastructure/nodes.md` registry.
+> This public doc intentionally keeps only non-sensitive shape data.
 
 | Property | Value |
 |----------|-------|
-| K3s API | 37.27.235.104:6443 |
-| Topology | 3-node cluster (CP + worker + builder) |
-| SSH Access | ssh.madfam.io |
-| Provider | Hetzner Dedicated |
+| Topology | 3-node cluster (1 control plane + 1 worker + 1 builder) |
+| SSH Access | `ssh.madfam.io` via Cloudflare Zero Trust Tunnel |
+| Provider | Hetzner Dedicated (primary) + VPS (builder) |
 | K8s Distribution | K3s (multi-node) |
 
 ### Cloudflare Tunnel
