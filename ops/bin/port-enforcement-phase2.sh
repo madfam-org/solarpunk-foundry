@@ -62,12 +62,12 @@ if [ -f "primavera3d/.env.example" ]; then
     rm primavera3d/.env.example.bak 2>/dev/null || true
 fi
 
-# Aureo Labs
-if [ -f "aureo-labs/.env.example" ]; then
-    sed -i.bak 's/:3000/:3092/g' aureo-labs/.env.example
-    sed -i.bak 's/PORT=3000/PORT=3092/g' aureo-labs/.env.example
-    echo "✓ Updated aureo-labs/.env.example"
-    rm aureo-labs/.env.example.bak 2>/dev/null || true
+# Innovaciones MADFAM
+if [ -f "madfam/.env.example" ]; then
+    sed -i.bak 's/:3000/:3092/g' madfam/.env.example
+    sed -i.bak 's/PORT=3000/PORT=3092/g' madfam/.env.example
+    echo "✓ Updated madfam/.env.example"
+    rm madfam/.env.example.bak 2>/dev/null || true
 fi
 
 # Update NEXT_PUBLIC_API_URL in all frontend .env.example files

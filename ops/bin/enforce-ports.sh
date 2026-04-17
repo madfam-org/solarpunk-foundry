@@ -148,9 +148,9 @@ echo "-----------------------------------------"
 # MADFAM Site
 update_env_file "madfam-site/apps/web/.env.example" "PORT" "3000" "3090"
 
-# Aureo Labs
-if [ -f "aureo-labs/.env.example" ]; then
-    update_env_file "aureo-labs/.env.example" "PORT" "3000" "3092"
+# Innovaciones MADFAM
+if [ -f "madfam/.env.example" ]; then
+    update_env_file "madfam/.env.example" "PORT" "3000" "3092"
 fi
 
 # Primavera3D

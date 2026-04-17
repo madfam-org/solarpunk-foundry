@@ -23,7 +23,7 @@
 | 4500-4699 | Stem (Standards) | Cotiza, AVALA |
 | 4700-5199 | Fruit (Platforms) | Dhanam, Sim4D, Forj, Coforma, Galvana |
 | 5200-5499 | Content (Publishing) | BloomScroll, Solarpunk Compendium, Blueprint |
-| 5500-5799 | Corporate (Sites) | madfam-site, aureo-labs, primavera3d |
+| 5500-5799 | Corporate (Sites) | madfam-site, madfam, primavera3d |
 | 5800-5899 | Creative (GPU) | ceq |
 | 5900-5999 | AI Agents | Autochess |
 | 6000-6999 | Reserved | Future expansion (10 service slots) |
@@ -237,13 +237,13 @@
 | 5501 | Dev | madfam-site-dev | Development server |
 | 5590 | Metrics | madfam-metrics | Prometheus endpoint |
 
-#### Aureo Labs — 5600-5699
+#### Innovaciones MADFAM — 5600-5699
 
 | Port | Service | Container | Purpose |
 |------|---------|-----------|---------|
-| 5600 | Web | aureo-web | Product showcase |
-| 5601 | Dev | aureo-web-dev | Development server |
-| 5690 | Metrics | aureo-metrics | Prometheus endpoint |
+| 5600 | Web | madfam-web | Product showcase |
+| 5601 | Dev | madfam-web-dev | Development server |
+| 5690 | Metrics | madfam-metrics | Prometheus endpoint |
 
 #### Primavera3D — 5700-5799
 

@@ -149,7 +149,7 @@ Each service gets a 100-port block. Pattern: API at +00, Web at +01, Admin at +0
 | | Compendium | 5300 | 5301 | almanac.solar |
 | | Blueprint | 5400 | 5401 | +10 Indexer |
 | **Sites** | madfam-site | 5500 | 5501 | |
-| | aureo-labs | 5600 | 5601 | |
+| | madfam | 5600 | 5601 | |
 | | primavera3d | 5700 | 5701 | |
 
 **Infrastructure**: PostgreSQL (5432), Redis (6379), MinIO (9000/9001), MailHog (1025/8025)

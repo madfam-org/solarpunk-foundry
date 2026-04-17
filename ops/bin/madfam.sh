@@ -42,7 +42,7 @@ CORE_SERVICES=(
 
 # Extended services (included with 'full' command)
 PORTFOLIO_SERVICES=(
-    "aureo-labs:docker-compose.yml"
+    "madfam:docker-compose.yml"
     "primavera3d:docker-compose.yml"
 )
 
@@ -292,7 +292,7 @@ print_summary() {
     echo "  🔧 Sim4D Studio:       http://localhost:4800 (4800-4899)"
     echo ""
     echo -e "${MAGENTA}Portfolio Sites${NC}"
-    echo "  🎨 Aureo Labs:         http://localhost:3010"
+    echo "  🎨 Innovaciones MADFAM:         http://localhost:3010"
     echo "  🌱 Primavera3D:        http://localhost:3020"
     echo ""
     echo -e "${MAGENTA}Utilities${NC}"
@@ -484,7 +484,7 @@ cmd_help() {
     echo "  - MADFAM Site"
     echo ""
     echo -e "${CYAN}Additional Services with 'full':${NC}"
-    echo "  - Aureo Labs, Primavera3D (Portfolio)"
+    echo "  - Innovaciones MADFAM, Primavera3D (Portfolio)"
     echo "  - Dhanam, Fortuna, BrepFlow (Platform)"
     echo "  - Galvana (Utilities)"
     echo ""

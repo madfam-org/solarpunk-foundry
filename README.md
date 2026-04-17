@@ -97,19 +97,19 @@ We do not build "SaaS"; we build tools to run our own operations first.
 | **geom-core** | Science | `madfam-org` | TBD | [geom-core](https://github.com/madfam-org/geom-core) | **Apache 2.0** | The geometry standard. |
 | **Galvana** | Science | `madfam-org` | TBD | [electrochem-sim](https://github.com/madfam-org/electrochem-sim) | **MPL 2.0** | Open Science collaboration. |
 | **Sim4D (Community)**| Making | `madfam-org` | [sim4d.io](https://sim4d.io) | [sim4d](https://github.com/madfam-org/sim4d) | **MPL 2.0** | The tool (without the market). |
-| **Fortuna** | Intel | `aureo-labs` | [fortuna.tube](https://fortuna.tube) | [fortuna](https://github.com/madfam-org/fortuna) | **Proprietary**| The "Edge" (Market Gaps). |
-| **ForgeSight** | Intel | `aureo-labs` | [forgesight.quest](https://forgesight.quest) | [forgesight](https://github.com/madfam-org/forgesight) | **Proprietary**| The Cost Database. |
-| **BlueprintTube**| Intel | `aureo-labs` | [blueprint.tube](https://blueprint.tube) | [blueprint-harvester](https://github.com/madfam-org/blueprint-harvester) | **Proprietary**| The Model Index. |
-| **Forj** | Commerce | `aureo-labs` | [forj.design](https://forj.design) | [forj](https://github.com/madfam-org/forj) | **Proprietary**| The Revenue Engine. |
-| **Cotiza Studio**| Making | `aureo-labs` | [cotiza.studio](https://cotiza.studio) | [digifab-quoting](https://github.com/madfam-org/digifab-quoting) | **Proprietary**| The Pricing Logic. |
-| **Coforma Studio**| Ops | `aureo-labs` | [coforma.studio](https://coforma.studio) | [coforma-studio](https://github.com/madfam-org/coforma-studio) | **Proprietary**| The Customer Data. |
+| **Fortuna** | Intel | `madfam` | [fortuna.tube](https://fortuna.tube) | [fortuna](https://github.com/madfam-org/fortuna) | **Proprietary**| The "Edge" (Market Gaps). |
+| **ForgeSight** | Intel | `madfam` | [forgesight.quest](https://forgesight.quest) | [forgesight](https://github.com/madfam-org/forgesight) | **Proprietary**| The Cost Database. |
+| **BlueprintTube**| Intel | `madfam` | [blueprint.tube](https://blueprint.tube) | [blueprint-harvester](https://github.com/madfam-org/blueprint-harvester) | **Proprietary**| The Model Index. |
+| **Forj** | Commerce | `madfam` | [forj.design](https://forj.design) | [forj](https://github.com/madfam-org/forj) | **Proprietary**| The Revenue Engine. |
+| **Cotiza Studio**| Making | `madfam` | [cotiza.studio](https://cotiza.studio) | [digifab-quoting](https://github.com/madfam-org/digifab-quoting) | **Proprietary**| The Pricing Logic. |
+| **Coforma Studio**| Ops | `madfam` | [coforma.studio](https://coforma.studio) | [coforma-studio](https://github.com/madfam-org/coforma-studio) | **Proprietary**| The Customer Data. |
 
 ### Business & Corporate Websites
 
 | Solution | Domain | GitHub Org | Website | Repository | License | Strategic Purpose |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **MADFAM Site** | Corp | `madfam-org` | [madfam.io](https://madfam.io) | [madfam-site](https://github.com/madfam-org/madfam-site) | **Proprietary** | Corporate presence & brand. |
-| **Aureo Labs** | Corp | `madfam-org` | [aureolabs.dev](https://aureolabs.dev) | [aureo-labs](https://github.com/madfam-org/aureo-labs) | **Proprietary** | Product showcase & demos. |
+| **Innovaciones MADFAM** | Corp | `madfam-org` | [innovacionesmadfam.dev](https://innovacionesmadfam.dev) | [madfam](https://github.com/madfam-org/madfam) | **Proprietary** | Product showcase & demos. |
 | **Primavera3D** | Corp | `madfam-org` | [primavera3d.com](https://primavera3d.com) | [primavera3d](https://github.com/madfam-org/primavera3d) | **Proprietary** | Factory portfolio & services. |
 
 ---

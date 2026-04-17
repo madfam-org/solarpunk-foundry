@@ -81,7 +81,7 @@ export interface Product {
   /** GitHub repository name */
   repo: string;
   /** GitHub organization */
-  githubOrg: "madfam-org" | "aureo-labs";
+  githubOrg: "madfam-org" | "madfam";
   /** License type */
   license: LicenseType;
   /** Default port for local development */
@@ -137,7 +137,7 @@ export const products = {
     layer: "roots",
     domain: "fortuna.tube",
     repo: "fortuna",
-    githubOrg: "aureo-labs",
+    githubOrg: "madfam",
     license: "Proprietary",
     defaultPort: 4400,
     isPublic: false,
@@ -150,7 +150,7 @@ export const products = {
     layer: "roots",
     domain: "forgesight.quest",
     repo: "forgesight",
-    githubOrg: "aureo-labs",
+    githubOrg: "madfam",
     license: "Proprietary",
     defaultPort: 4300,
     isPublic: false,
@@ -163,7 +163,7 @@ export const products = {
     layer: "roots",
     domain: "blueprint.tube",
     repo: "blueprint-harvester",
-    githubOrg: "aureo-labs",
+    githubOrg: "madfam",
     license: "Proprietary",
     isPublic: false,
     phase: 2,
@@ -232,7 +232,7 @@ export const products = {
     layer: "fruit",
     domain: "forj.design",
     repo: "forj",
-    githubOrg: "aureo-labs",
+    githubOrg: "madfam",
     license: "Proprietary",
     isPublic: false,
     phase: 4,
@@ -244,7 +244,7 @@ export const products = {
     layer: "fruit",
     domain: "cotiza.studio",
     repo: "digifab-quoting",
-    githubOrg: "aureo-labs",
+    githubOrg: "madfam",
     license: "Proprietary",
     defaultPort: 4500,
     isPublic: false,
@@ -270,7 +270,7 @@ export const products = {
     layer: "fruit",
     domain: "coforma.studio",
     repo: "coforma-studio",
-    githubOrg: "aureo-labs",
+    githubOrg: "madfam",
     license: "Proprietary",
     isPublic: false,
     phase: 1,

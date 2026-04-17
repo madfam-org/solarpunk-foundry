@@ -64,7 +64,7 @@ Our licensing follows a **tiered openness model**:
 **Repositories:** 
 - **Intelligence:** `fortuna`, `forgesight`, `blueprint-harvester`
 - **Commerce:** `forj`, `digifab-quoting` (Cotiza), `coforma-studio`
-- **Business Sites:** `madfam-site`, `aureo-labs`, `primavera3d`
+- **Business Sites:** `madfam-site`, `madfam`, `primavera3d`
 
 **Rationale:**
 - **Trade Secrets**: Market intelligence algorithms, pricing logic
@@ -107,7 +107,7 @@ Our licensing follows a **tiered openness model**:
 | **digifab-quoting** | Proprietary | Revenue | Pricing logic (trade secret) |
 | **coforma-studio** | Proprietary | Revenue | Customer data platform |
 | **madfam-site** | Proprietary | Business | Corporate brand protection |
-| **aureo-labs** | Proprietary | Business | Product showcase brand |
+| **madfam** | Proprietary | Business | Product showcase brand |
 | **primavera3d** | Proprietary | Business | Factory portfolio brand |
 | **solarpunk-foundry** | MIT | Packages | Maximum adoption for shared code |
 

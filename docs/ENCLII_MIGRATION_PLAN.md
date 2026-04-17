@@ -32,7 +32,7 @@ This document outlines the migration strategy for moving all MADFAM ecosystem se
 | Service | Domain | Status |
 |---------|--------|--------|
 | madfam-site | madfam.io | Production |
-| aureo-labs | aureo.labs | Production |
+| madfam | madfam | Production |
 | forgesight-web | www.forgesight.quest | Production |
 | primavera3d | primavera3d.com | Spec Phase |
 | sim4d-web | sim4d.io | Production |
@@ -179,7 +179,7 @@ This document outlines the migration strategy for moving all MADFAM ecosystem se
 **Goal**: Migrate production revenue-generating services
 
 **Services** (in order of risk):
-1. **aureo-labs** → aureo.labs (business site, low traffic)
+1. **madfam** → madfam (business site, low traffic)
 2. **madfam-site** → madfam.io (corporate site)
 3. **digifab-quoting** → api.cotiza.studio (production SaaS)
 4. **sim4d** → sim4d.io (CAD app)
@@ -232,7 +232,7 @@ apiVersion: enclii.dev/v1
 kind: Service
 metadata:
   name: service-name
-  project: aureo-labs  # or madfam, primavera3d
+  project: madfam  # or madfam, primavera3d
   labels:
     app: app-name
     component: api|web|worker
@@ -435,7 +435,7 @@ For isolation requirements:
 | forgesight-api | `dogfooding/forgesight.yaml` | ✅ Complete | ⏳ Phase 2 |
 | forgesight-web | `dogfooding/forgesight.yaml` | ✅ Complete | ⏳ Phase 2 |
 | madfam-site | `dogfooding/madfam-site.yaml` | ❌ TODO | ⏳ Phase 3 |
-| aureo-labs | `dogfooding/aureo-labs.yaml` | ❌ TODO | ⏳ Phase 3 |
+| madfam | `dogfooding/madfam.yaml` | ❌ TODO | ⏳ Phase 3 |
 | digifab-quoting | `dogfooding/cotiza-studio.yaml` | ❌ TODO | ⏳ Phase 3 |
 | sim4d | `dogfooding/sim4d.yaml` | ❌ TODO | ⏳ Phase 3 |
 | dhanam | `dogfooding/dhanam.yaml` | ❌ TODO | ⏳ Phase 4 |

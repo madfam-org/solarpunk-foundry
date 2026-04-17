@@ -3,7 +3,7 @@ Here is the **Master Execution Sequence**. It maps every single one of our 18 re
 ---
 
 ### 🏁 Phase 1: The Sovereign Soil (Days 1-3)
-**Goal:** Establish the digital territory where Aureo Labs builds and MADFAM lives.
+**Goal:** Establish the digital territory where Innovaciones MADFAM builds and MADFAM lives.
 **Revenue:** $0 (Investment phase).
 
 1.  **Infrastructure Deployment (`madfam-org/enclii`):**
@@ -12,7 +12,7 @@ Here is the **Master Execution Sequence**. It maps every single one of our 18 re
 2.  **Identity Ignition (`madfam-org/janua`):**
     * **Action:** Deploy Janua (Auth/Billing). Connect Stripe & Polar.sh keys.
     * **Result:** The ability to create users and accept money.
-3.  **Brand Flag Planting (`madfam-org/madfam-site`, `aureo-labs`):**
+3.  **Brand Flag Planting (`madfam-org/madfam-site`, `madfam`):**
     * **Action:** Dockerize and deploy the corporate landing pages to Enclii.
     * **Result:** Legitimacy. "We exist."
 
@@ -43,7 +43,7 @@ Here is the **Master Execution Sequence**. It maps every single one of our 18 re
     * **Result:** A place to host your Board of Directors.
 8.  **Recruitment (Sales Motion):**
     * **Action:** Invite 10 experts (Founding Members).
-    * **Value Prop:** "Lifetime access to Aureo tools + Sovereign Hosting."
+    * **Value Prop:** "Lifetime access to MADFAM tools + Sovereign Hosting."
 9.  **Tenant Onboarding (Enclii):**
     * **Action:** Host the side-projects of 3-5 Board Members on Enclii.
     * **Result:** Server costs ($42/mo) are neutralized.
@@ -61,7 +61,7 @@ Here is the **Master Execution Sequence**. It maps every single one of our 18 re
 11. **The Standard (`madfam-org/geom-core`):**
     * **Action:** Release `geom-core` on NPM/PyPI (MPL 2.0).
     * **Co-Labs Content:** Host a "Town Hall" teaching how to use it.
-    * **Result:** Developers start trusting Aureo Labs as a technical authority.
+    * **Result:** Developers start trusting Innovaciones MADFAM as a technical authority.
 12. **The Creator Tool (`madfam-org/sim4d` - *Sim4D*):**
     * **Action:** Deploy the Alpha editor.
     * **Co-Labs Content:** "Intro to Parametric Design" workshop using Sim4D.
@@ -102,7 +102,7 @@ Here is the **Master Execution Sequence**. It maps every single one of our 18 re
 
 ### Summary of Operations
 
-* **Aureo Labs** builds the code (Enclii, Janua, Cotiza).
+* **Innovaciones MADFAM** builds the code (Enclii, Janua, Cotiza).
 * **Primavera3D** makes the money (using Cotiza).
 * **MADFAM Co-Labs** builds the tribe (using BloomScroll, AVALA, and Town Halls).
 * **Innovaciones MADFAM** owns the assets (Enclii Server).

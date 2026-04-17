@@ -48,9 +48,9 @@ update_env_var "blueprint-harvester/.env.example" "API_PORT" "8120"
 update_env_var "blueprint-harvester/apps/web/.env.example" "PORT" "3020"
 update_env_var "blueprint-harvester/apps/web/.env.example" "NEXT_PUBLIC_API_URL" "http://localhost:8120"
 
-# AUREO LABS - Frontend Zone (3092)
-echo "✨ AUREO LABS"
-update_env_var "aureo-labs/.env.example" "PORT" "3092"
+# INNOVACIONES MADFAM - Frontend Zone (3092)
+echo "✨ INNOVACIONES MADFAM"
+update_env_var "madfam/.env.example" "PORT" "3092"
 
 # PRIMAVERA3D - Frontend Zone (3093, 3094)
 echo "🎨 PRIMAVERA3D"

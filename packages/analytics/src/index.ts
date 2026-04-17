@@ -19,7 +19,7 @@ export interface AnalyticsConfig {
   /** Enable debug mode */
   debug?: boolean;
   /** Site identifier for multi-site analytics */
-  siteId: 'madfam' | 'aureo-labs' | 'primavera3d';
+  siteId: 'madfam' | 'madfam' | 'primavera3d';
   /** Environment */
   environment?: 'development' | 'staging' | 'production';
   /** Disable in certain environments */

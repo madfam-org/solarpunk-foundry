@@ -53,8 +53,8 @@ export const cssVars = {
   easeDecelerate: "--ease-decelerate",
   easeAccelerate: "--ease-accelerate",
 
-  // Shadows (aureo glow)
-  shadowAureo1: "--shadow-aureo-1",
-  shadowAureo2: "--shadow-aureo-2",
-  shadowAureo3: "--shadow-aureo-3",
+  // Shadows (amber glow)
+  shadowAmber1: "--shadow-amber-1",
+  shadowAmber2: "--shadow-amber-2",
+  shadowAmber3: "--shadow-amber-3",
 } as const;
