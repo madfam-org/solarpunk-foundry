@@ -87,11 +87,25 @@ Our ecosystem grows as a **living system**. Every tool has a specific organ func
 | **PhyneCRM** | "Synthetic Single Pane of Glass" — federates data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts the ecosystem attribution receiver. | [crm.madfam.io](https://crm.madfam.io) |
 | **Selva** *(née AutoSwarm Office, rename cutover pending)* | AI workforce + office simulator. Owns the `/v1/` OpenAI-compatible inference proxy every ecosystem service routes through. Hosts revenue-loop probe, HITL-confidence ledger, `nexus-api` orchestration. | `agents.madfam.io` → `selva.town` post-cutover |
 
-### Adjacent / supporting
+### Adjacent / supporting (public)
 
-`madfam-site` ([madfam.io](https://madfam.io)), `primavera3d` ([primavera3d.pro](https://primavera3d.pro) — our in-house factory portfolio), `ceq` ([ceq.lol](https://ceq.lol) — ComfyUI wrapper), `nuit-one` ([nuit.one](https://nuit.one)), `subtext` ([subtext.live](https://subtext.live)), `accionables-madlab` ([madlab.quest](https://madlab.quest)), `factlas` ([factlas.com](https://factlas.com)), `server-auction-tracker` ([sniper.madfam.io](https://sniper.madfam.io) — Hetzner auction intelligence), `turnbased-engine` + `stratum-tcg`, `gh-backups`, `proton-bridge-pipeline`.
+`madfam-site` ([madfam.io](https://madfam.io)), `primavera3d` ([primavera3d.pro](https://primavera3d.pro) — our in-house factory portfolio), `ceq` ([ceq.lol](https://ceq.lol) — ComfyUI wrapper), `nuit-one` ([nuit.one](https://nuit.one)), `subtext` ([subtext.live](https://subtext.live)), `accionables-madlab` ([madlab.quest](https://madlab.quest)), `server-auction-tracker` ([sniper.madfam.io](https://sniper.madfam.io) — Hetzner auction intelligence), `autoswarm-sandbox`, `kinship` (E2E-encrypted community logistics platform), `Auto-Claude` automation toolkit, `electrochem-sim` (Galvana simulator core).
 
-**Integration-path repos** (will fold into an existing platform rather than exist standalone long-term): `penny` → autoswarm-office, `zavlo` → karafiel, `panopticon-mx` → tezca, `social-sentiment-monitor` → fortuna.
+### Adjacent / supporting (private)
+
+`factlas` (geospatial facts, `factl.as`), `gh-backups`, `proton-bridge-pipeline`, `symbiosis-hcm` (HCM — Mexican payroll + Shapley compensation + ONA + wellbeing).
+
+### Integration-path repos (private)
+
+Will fold into an existing platform rather than exist standalone long-term: `penny` → autoswarm-office, `zavlo` → karafiel, `panopticon-mx` → tezca (public), `social-sentiment-monitor` → fortuna.
+
+### Repo visibility
+
+**19 madfam-org repos are currently PRIVATE** (verified 2026-04-17 via `gh repo list`): `blueprint-harvester`, `factlas`, `forgesight`, `forj`, `fortuna`, `gh-backups`, `internal-devops`, `karafiel`, `legal-ops`, `madfam-crawler`, `proton-bridge-pipeline`, `rondelio`, `routecraft`, `social-sentiment-monitor`, `stratum-tcg`, `symbiosis-hcm`, `tablaco`, `turnbased-engine`, `zavlo`. Their GitHub URLs in this README will 404 unless you have org access.
+
+**~74 are PUBLIC** — everything else referenced in this doc plus the 39-repo Yantra4D-commons parametric-design library.
+
+The legacy `aureo-labs` repo is PUBLIC but ARCHIVED (retired 2026-04-08).
 
 ---
 
