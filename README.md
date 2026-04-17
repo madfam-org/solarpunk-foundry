@@ -1,211 +1,282 @@
 # 🌞 MADFAM: The Solarpunk Foundry
-### *From Bits to Atoms. High Tech, Deep Roots.*
+### *From Bits to Atoms. High tech, deep roots.*
 
-* **Version:** 0.1.0 (The Blueprint)
-* **The Mission:** To construct the operating system for a sustainable, sovereign future.
-* **The Scope:** Manufacturing, Finance, Education, & Science.
-* **The Status:** 🟢 Active Execution
-
----
-
-## 📖 About This Document
-This is the **Single Source of Truth** for Innovaciones MADFAM SAS de CV. It defines our ecosystem, our strategy, and our philosophy.
-
-* **For the Team:** This is the order of operations.
-* **For the Investor:** This is how we capture value across the entire lifecycle of a product and a business.
-* **For the World:** This is our roadmap to a future that makes its own things and owns its own truth.
+- **Organization:** Innovaciones MADFAM S.A.S. de C.V. (Cuernavaca, Morelos, MX)
+- **Canonical domain:** [madfam.io](https://madfam.io)
+- **GitHub:** [`madfam-org`](https://github.com/madfam-org) + [`legal-ops`](https://github.com/legal-ops)
+- **Status board:** [status.madfam.io](https://status.madfam.io)
+- **This repo's role:** Ecosystem orchestration hub — port registry, `@madfam/*` shared packages, local dogfooding scaffolds, public-safe architecture narrative. This README is the **public-facing single source of truth** for the MADFAM vision, platform map, and development contract.
 
 ---
 
-## 🌍 I. The Vision
-**"Sovereignty is not just about owning your server; it's about owning your supply chain, your money, and your mind."**
+## 🌍 I. Vision
 
-We are a **Vertically Integrated Venture Studio** bridging the gap between the Digital (Software) and the Physical (Real World).
+> **"Sovereignty is not just about owning your server; it's about owning your supply chain, your money, and your mind."**
 
-### The Problem: The "Rented" Existence
-Today, a founder is a tenant in their own business. They rent their design tools, their infrastructure, their audience, and their financial insights. A change in API pricing or a platform ban can kill a business overnight.
+MADFAM is a **vertically-integrated venture studio** operating at the seam between the digital (software) and the physical (real-world fabrication, finance, and compliance), with a **LATAM-first, Mexico-rooted** posture.
 
-### The MADFAM Solution: The Sovereign Loop
-We are building the **Solarpunk Foundry**. A closed-loop ecosystem where the tools support each other to create resilience.
+### The problem — the "rented" existence
+
+Today, a founder is a tenant in their own business. They rent their design tools, their cloud, their audience, their payment rails, and their compliance infrastructure. A change in API pricing, a platform ban, a SAT reform, or a venture cycle can kill a business overnight.
+
+### The MADFAM answer — the sovereign loop
+
+We build a **closed-loop ecosystem** where each tool supports the others. Every layer can be swapped for a competitor without toppling the rest — but because every layer is ours, the economics keep compounding inside the loop. The tools eat our own food first ("Primavera Mandate") and only then face outward.
 
 ---
 
-## ⚙️ II. The Architecture: The "Solarpunk Stack"
+## ⚙️ II. Architecture — the Solarpunk Stack
 
-Our ecosystem grows as a **living system**, not a machine. Every tool has a specific organ function, cultivated in symbiotic relationship with the others.
+Our ecosystem grows as a **living system**. Every tool has a specific organ function, in symbiotic relationship with the others.
 
-> 📐 **For the detailed architecture of our core platform (Substrate, Trellis, Membrane), see [SYMBIOSIS.md](docs/architecture/SYMBIOSIS.md)**
+> For the core platform-relationship contract (Substrate · Trellis · Membrane), see [`docs/architecture/SYMBIOSIS.md`](docs/architecture/SYMBIOSIS.md).
 
-### 🪨 Layer 1: The Soil (Infrastructure)
+### 🪨 Layer 1 — Soil (infrastructure)
+
 *The bedrock. Without this, we are tenants.*
-* **🛡️ Enclii:** Our Sovereign PaaS. Bare-metal hosting. Maximum independence, minimum cost.
-* **🔑 Janua:** The Gatekeeper. Identity, SSO, and Revenue Management. One key for the whole city.
 
-### 🌿 Layer 2: The Roots (Sensing & Input)
+| Platform | Role | Domain |
+|---|---|---|
+| **Enclii** | Sovereign PaaS (Go Switchyard API + Next.js UI + ArgoCD GitOps + Roundhouse builders). Handles build, deploy, domain provisioning, NetworkPolicy generation, lifecycle events. | [enclii.dev](https://enclii.dev) |
+| **Janua** | Identity, SSO, revenue management. OIDC + RS256 JWT via JWKS. **Every MADFAM service defers to Janua — no custom auth anywhere.** | [auth.madfam.io](https://auth.madfam.io) |
+
+### 🌿 Layer 2 — Roots (sensing & input)
+
 *Absorbing nutrients (data and truth) from the outside world.*
-* **🔮 Fortuna:** The Problem Hunter. Scrapes multilingual signals to find market gaps (Problem Intelligence).
-* **📡 ForgeSight:** The Pricer. Scrapes global material and machine data for real-time manufacturing costs.
-* **📚 BlueprintTube:** The Librarian. Indexes and rates 3D models for printability.
-* **🧘 BloomScroll:** The Filter. A "Slow Web" content aggregator. 20 items/day. Serendipity over engagement.
 
-### 🪵 Layer 3: The Stem (Core Standards & Verification)
+| Platform | Role | Domain |
+|---|---|---|
+| **Fortuna** | Problem Hunter — discovers + validates market gaps from multilingual signals. | [fortuna.tube](https://fortuna.tube) |
+| **ForgeSight** | The Pricer — global manufacturing pricing data. | [forgesight.quest](https://forgesight.quest) |
+| **BlueprintTube** | The Librarian — indexes and rates 3D models for printability. | [blueprint.tube](https://blueprint.tube) |
+| **BloomScroll** | The Filter — "Slow Web" content aggregator. Serendipity over engagement. | [almanac.solar](https://almanac.solar) |
+| **madfam-crawler** | Internal scraping-as-a-service (Crawl4AI + ScrapegraphAI). Feeds Tezca's fiscal monitoring and others. | — |
+
+### 🪵 Layer 3 — Stem (core standards & verification)
+
 *The structural logic that holds the system up.*
-* **📐 geom-core:** The Physics Standard. C++ geometry analysis library (WASM/Python).
-* **🎓 AVALA:** The Human Standard. Verification engine for applied learning (Mexico EC/CONOCER). Issues Open Badges and DC-3 forms.
 
-### 🍎 Layer 4: The Fruit (User Platforms)
-*The applications where value is created and captured.*
-* **🎨 Sim4D:** The Creator. Web-based CAD guided by `geom-core`.
-* **🛍️ Forj:** The Bazaar. Decentralized fabrication storefronts with NFT integration.
-* **🏷️ Cotiza Studio:** The Merchant. Automated quoting engine connecting design to factory.
-* **💰 Dhanam:** The Treasury. Unified budgeting and wealth tracking (Personal + Business) with ESG insights.
-* **👂 Coforma Studio:** The Ear. Customer Advisory Board and feedback management.
-* **⚡ Galvana:** The Reactor. Phygital Electrochemistry Platform for scientific simulation.
+| Platform | Role |
+|---|---|
+| **geom-core** | Physics standard — C++ geometry analysis exposed to WASM + Python. Backs Sim4D + Yantra4D. |
+| **AVALA** | Human standard — verification engine for applied learning (Mexico EC/CONOCER + DC-3). |
+| **routecraft** | Trip-engine SaaS. Its `@routecraft/payments::emitPaymentSucceeded` is the **canonical payment-event producer** that fans out to Dhanam + PhyneCRM (see §IV). |
 
----
+### 🍎 Layer 4 — Fruit (user platforms)
 
-## 🔄 III. The "Primavera Mandate" (Dogfooding)
-**"We trust it because we survive on it."**
+*Where value is created and captured.*
 
-We do not build "SaaS"; we build tools to run our own operations first.
-1.  **Finance:** MADFAM runs on **Dhanam**.
-2.  **Strategy:** We build what **Fortuna** validates.
-3.  **Factory:** Primavera3D quotes via **Cotiza**.
-4.  **Hiring:** Staff is certified via **AVALA**.
+| Platform | Role | Domain |
+|---|---|---|
+| **Sim4D** *(née BrepFlow, renamed 2026-04)* | Web-first parametric CAD with exact B-Rep / NURBS via OCCT.wasm. | — |
+| **Forj** | Decentralized fabrication storefronts with phygital NFT integration. | [forj.design](https://forj.design) |
+| **Cotiza Studio** | Automated quoting engine connecting design → factory. Emits signed billing events to Dhanam. | [cotiza.studio](https://cotiza.studio) |
+| **Dhanam** | Unified budgeting + wealth tracking + **ecosystem billing ledger**. Hosts `MadfamEventsController` receiver. | [dhan.am](https://dhan.am) |
+| **Coforma Studio** | Customer Advisory Boards as growth engine. | [coforma.studio](https://coforma.studio) |
+| **Galvana** | *(roadmap)* Phygital electrochemistry simulation. | — |
+| **Karafiel** | Combat-accounting for Mexican tax defense. Consumes Tezca + Dhanam data; never duplicates. | [karafiel.mx](https://karafiel.mx) |
+| **Tezca** | Legal-intelligence platform — authoritative source of Mexican law, changelog, and compliance rules. | [tezca.mx](https://tezca.mx) |
+| **Yantra4D** | Parametric-design platform + its commons of OpenSCAD/CadQuery projects. | [yantra4d.com](https://yantra4d.com) |
+| **Pravara MES** | Manufacturing-execution system. | [mes.madfam.io](https://mes.madfam.io) |
+| **Rondelio** | Tabletop / TCG game-intelligence cloud. | [rondel.io](https://rondel.io) |
 
----
+### 🤝 Layer 5 — Glue (cross-platform federation)
 
-## 🏰 IV. Governance: The Repo Strategy
+| Platform | Role | Domain |
+|---|---|---|
+| **PhyneCRM** | "Synthetic Single Pane of Glass" — federates data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts the ecosystem attribution receiver. | [crm.madfam.io](https://crm.madfam.io) |
+| **Selva** *(née AutoSwarm Office, rename cutover pending)* | AI workforce + office simulator. Owns the `/v1/` OpenAI-compatible inference proxy every ecosystem service routes through. Hosts revenue-loop probe, HITL-confidence ledger, `nexus-api` orchestration. | `agents.madfam.io` → `selva.town` post-cutover |
 
-### Core Packages (Published to npm)
+### Adjacent / supporting
 
-| Package | Purpose | License | Location |
-| :--- | :--- | :--- | :--- |
-| **@madfam/core** | Authoritative organizational constants (brand, locales, currencies, events, legal, products) | **MIT** | `solarpunk-foundry/packages/core` |
+`madfam-site` ([madfam.io](https://madfam.io)), `primavera3d` ([primavera3d.pro](https://primavera3d.pro) — our in-house factory portfolio), `ceq` ([ceq.lol](https://ceq.lol) — ComfyUI wrapper), `nuit-one` ([nuit.one](https://nuit.one)), `subtext` ([subtext.live](https://subtext.live)), `accionables-madlab` ([madlab.quest](https://madlab.quest)), `factlas` ([factlas.com](https://factlas.com)), `server-auction-tracker` ([sniper.madfam.io](https://sniper.madfam.io) — Hetzner auction intelligence), `turnbased-engine` + `stratum-tcg`, `gh-backups`, `proton-bridge-pipeline`.
 
-> **Note:** `@madfam/core` contains organizational **decisions**, not implementations. Apps import it for brand consistency, supported locales/currencies, and analytics event taxonomy. See `packages/core/README.md` for usage.
-
-### Repositories
-
-| Solution | Domain | GitHub Org | Website | Repository | License | Strategic Purpose |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Enclii** | Infra | `madfam-org` | [enclii.dev](https://enclii.dev) | [enclii](https://github.com/madfam-org/enclii) | **AGPL v3** | Prevents cloud capture. |
-| **Janua** | Auth | `madfam-org` | [janua.dev](https://janua.dev) | [janua](https://github.com/madfam-org/janua) | **AGPL v3** | Identity Trust. |
-| **Dhanam** | Finance | `madfam-org` | [dhan.am](https://dhan.am) | [dhanam](https://github.com/madfam-org/dhanam) | **AGPL v3** | Trust in financial code. Open Core protects connectors. |
-| **BloomScroll**| Media | `madfam-org` | TBD | [bloom-scroll](https://github.com/madfam-org/bloom-scroll) | **MPL 2.0** | Ethos & Community building. |
-| **AVALA** | EdTech | `madfam-org` | TBD | [avala](https://github.com/madfam-org/avala) | **AGPL v3** | Transparent verification. |
-| **geom-core** | Science | `madfam-org` | TBD | [geom-core](https://github.com/madfam-org/geom-core) | **Apache 2.0** | The geometry standard. |
-| **Galvana** | Science | `madfam-org` | TBD | [electrochem-sim](https://github.com/madfam-org/electrochem-sim) | **MPL 2.0** | Open Science collaboration. |
-| **Sim4D (Community)**| Making | `madfam-org` | [sim4d.io](https://sim4d.io) | [sim4d](https://github.com/madfam-org/sim4d) | **MPL 2.0** | The tool (without the market). |
-| **Fortuna** | Intel | `madfam` | [fortuna.tube](https://fortuna.tube) | [fortuna](https://github.com/madfam-org/fortuna) | **Proprietary**| The "Edge" (Market Gaps). |
-| **ForgeSight** | Intel | `madfam` | [forgesight.quest](https://forgesight.quest) | [forgesight](https://github.com/madfam-org/forgesight) | **Proprietary**| The Cost Database. |
-| **BlueprintTube**| Intel | `madfam` | [blueprint.tube](https://blueprint.tube) | [blueprint-harvester](https://github.com/madfam-org/blueprint-harvester) | **Proprietary**| The Model Index. |
-| **Forj** | Commerce | `madfam` | [forj.design](https://forj.design) | [forj](https://github.com/madfam-org/forj) | **Proprietary**| The Revenue Engine. |
-| **Cotiza Studio**| Making | `madfam` | [cotiza.studio](https://cotiza.studio) | [digifab-quoting](https://github.com/madfam-org/digifab-quoting) | **Proprietary**| The Pricing Logic. |
-| **Coforma Studio**| Ops | `madfam` | [coforma.studio](https://coforma.studio) | [coforma-studio](https://github.com/madfam-org/coforma-studio) | **Proprietary**| The Customer Data. |
-
-### Business & Corporate Websites
-
-| Solution | Domain | GitHub Org | Website | Repository | License | Strategic Purpose |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **MADFAM Site** | Corp | `madfam-org` | [madfam.io](https://madfam.io) | [madfam-site](https://github.com/madfam-org/madfam-site) | **Proprietary** | Corporate presence & brand. |
-| **Innovaciones MADFAM** | Corp | `madfam-org` | [innovacionesmadfam.dev](https://innovacionesmadfam.dev) | [madfam](https://github.com/madfam-org/madfam) | **Proprietary** | Product showcase & demos. |
-| **Primavera3D** | Corp | `madfam-org` | [primavera3d.com](https://primavera3d.com) | [primavera3d](https://github.com/madfam-org/primavera3d) | **Proprietary** | Factory portfolio & services. |
+**Integration-path repos** (will fold into an existing platform rather than exist standalone long-term): `penny` → autoswarm-office, `zavlo` → karafiel, `panopticon-mx` → tezca, `social-sentiment-monitor` → fortuna.
 
 ---
 
-## 🗺️ V. The Roadmap (Bootstrap Sequence)
+## 🔄 III. The Primavera Mandate (dogfooding)
 
-We strictly follow this order. We do not build the roof before the walls.
+> **"We trust it because we survive on it."**
 
-### 🏗️ Phase 1: The Foundation (Survival Mode)
-* **Goal:** Sovereign Hosting, Financial Clarity, and Identity.
-* 1. **Enclii:** Deploy bare-metal infrastructure.
-* 2. **Janua:** Establish Single Sign-On (SSO).
-* 3. **Dhanam:** Deploy internally to manage MADFAM's burn rate and runway.
-* 4. **Coforma Studio:** Deploy to start capturing early user interest/waitlists.
+We do not build SaaS. We build **tools to run our own operations first** — then face outward once they've survived contact with us.
 
-### 🧠 Phase 2: The Intelligence (Data Harvesting)
-* **Goal:** Gathering the raw materials (Data) to make the tools smart.
-* 5. **Fortuna:** Begin scraping signals to validate market needs.
-* 6. **ForgeSight:** Begin scraping material costs to feed the future Cotiza engine.
-* 7. **BlueprintTube:** Begin indexing 3D models to feed the future Sim4D engine.
-* 8. **BloomScroll:** Launch publicly to build a "Slow Web" audience/community.
+| Operational need | MADFAM tool |
+|---|---|
+| Finance & runway | **Dhanam** |
+| Strategy validation | **Fortuna** (what to build next) |
+| Factory quoting | **Cotiza** (Primavera3D quotes through it) |
+| Hiring / verification | **AVALA** |
+| Compliance | **Karafiel** + **Tezca** |
+| Customer discovery | **Coforma Studio** + **PhyneCRM** |
+| Revenue attribution | **RouteCraft emitter** → **Dhanam ledger** + **PhyneCRM conversions** |
 
-### 📐 Phase 3: The Engines (Core Logic)
-* **Goal:** Converting Data into Logic.
-* 9. **geom-core:** Publish the math library.
-* 10. **AVALA:** Codify our internal hiring standards into the platform.
-* 11. **Sim4D (Alpha):** Release the editor (powered by geom-core) for internal testing.
-
-### 🏭 Phase 4: The Application (Commerce)
-* **Goal:** Monetization and Physical Production.
-* 12. **Cotiza Studio:** Connect ForgeSight data + geom-core logic to price parts.
-* 13. **Forj:** Launch the storefront builder for external creators.
-* **Sim4D (Beta):** Connect to Cotiza for real-time pricing.
-
-### 🔬 Phase 5: The Frontier (Deep Tech)
-* **Goal:** Scientific Expansion.
-* 14. **Galvana:** Begin development of the electrochemical simulation engine once the revenue from Phase 4 stabilizes the studio.
+If it isn't good enough to run MADFAM on, it isn't good enough to sell.
 
 ---
 
-## 🤝 Join the Mission
-**MADFAM** is proof that high tech can have deep roots.
+## 🔌 IV. Ecosystem protocols (how the platforms actually talk)
 
-* **Build with us:** `github.com/madfam-org`
-* **Partner with us:** `madfam.io/en/solutions/colabs`
+These are the four load-bearing contracts that make the sovereign loop work. They are stable; platforms implement them the same way or they don't participate.
 
-> *"The best way to predict the future is to manufacture it."*
+### 1. Identity → every service uses Janua
 
----
+No custom auth anywhere. Every service verifies RS256 JWTs against `auth.madfam.io/.well-known/jwks.json`. `sub`, `email`, `roles`, `org_id`, and (where applicable) `rfc` claims flow through the token.
 
-## 🛠️ VI. Operations & Development
+### 2. Inference → every service routes through Selva's `/v1/` proxy
 
-### Quick Start (Local Development)
+Selva's `nexus-api` exposes an OpenAI-compatible `/v1/chat/completions` + `/v1/embeddings`. Fortuna, Yantra4D, PhyneCRM, and any future LLM consumer point their SDK `base_url` here. Provider credentials (Anthropic, OpenAI, DeepInfra, Together, Fireworks, SiliconFlow, Moonshot) live only on Selva's side, routed by `ModelRouter` per task-type. **No other MADFAM repo holds direct LLM provider credentials.**
 
-```bash
-# From labspace root
-cd ~/labspace
+### 3. Payment attribution → signed fan-out
 
-# Start core ecosystem (infrastructure + auth + revenue apps + site)
-./madfam start
-
-# Start FULL ecosystem (includes portfolio, platform, utilities)
-./madfam full
-
-# Check status
-./madfam status
-
-# View logs
-./madfam logs janua
-./madfam logs forgesight
-
-# Stop everything
-./madfam stop
-
-# Stop and clean volumes
-./madfam stop --clean
+```
+PhyneCRM lead → Selva drafter (LLM) → email (Resend) → PSP webhook →
+    RouteCraft emitPaymentSucceeded() fires a signed event in parallel to:
+        ├─ Dhanam   POST /v1/billing/madfam-events    → BillingEvent row
+        └─ PhyneCRM POST /api/webhooks/routecraft     → conversions row + agent credit
 ```
 
-### Documentation
-- **Symbiosis Architecture:** `solarpunk-foundry/docs/architecture/SYMBIOSIS.md` — Core platform relationships (Substrate, Trellis, Membrane)
-- **Port Allocation:** `solarpunk-foundry/docs/PORT_ALLOCATION.md`
-- **Dogfooding Guide:** `solarpunk-foundry/docs/DOGFOODING_GUIDE.md`
-- **Debugging Notes:** `solarpunk-foundry/docs/DELIVERABLES.md`
+Signature: `x-madfam-signature: t=<unix-seconds>,v1=<hex-hmac-sha256>` over `"${ts}.${raw-body}"`, per-target secret, 5-minute replay window. Both receivers are idempotent by the emitter's `event_id`. The revenue-loop-probe CronJob exercises this full chain hourly and pages if any stage breaks.
 
-### Shared Infrastructure
-All services connect to shared PostgreSQL, Redis, and MinIO via `madfam-shared-network`:
+### 4. Data boundaries → own once, query everywhere
+
+| Dataset | Owner | Everyone else |
+|---|---|---|
+| Identity / sessions / roles | Janua | Federate, never duplicate |
+| Bank transactions, wealth, **ecosystem billing ledger** | Dhanam | API read; no local mirror |
+| Mexican law + changelog + compliance rules | Tezca | Query `/api/v1/laws/...`; no local fork |
+| CFDI / SAT / tax filings | Karafiel | Single authority |
+| Fabrication node capacity + pricing | Forj | Consume ForgeSight |
+| Manufacturing execution telemetry | Pravara MES | Feed into PhyneCRM federation |
+| 3D geometry kernel | geom-core | Used by Sim4D + Yantra4D |
+
+---
+
+## 🏰 V. Repo & licensing strategy
+
+> *"Give away the roads, toll the destinations."*
+
+| Strategic class | What | Licensing |
+|---|---|---|
+| **Infrastructure** (Enclii, Janua) | Tools anyone should be able to self-host | **AGPL v3** — prevents cloud capture; anyone can run our infra, nobody can turn it into a closed service without contributing back |
+| **Standards** (geom-core) | Neutral shared standard we want the whole industry on | **Apache 2.0** |
+| **Community** (BloomScroll, Sim4D, Galvana, AVALA) | Open tool, commercial-friendly | **MPL 2.0** or **AGPL v3** |
+| **Edge** (Fortuna, ForgeSight, BlueprintTube, Forj, Cotiza, Coforma, Karafiel, Tezca, Yantra4D, Pravara, PhyneCRM, Selva) | Our IP — the market-gap intelligence, pricing logic, compliance, customer data, revenue engine | **Proprietary** |
+
+The public repos give the ecosystem something real to adopt. The proprietary ones are where we capture value. The licenses are the fence, not the wall — we want contributions flowing into the AGPL layer, we just don't want Amazon turning it into a managed service.
+
+See [`docs/LICENSING_STRATEGY.md`](docs/LICENSING_STRATEGY.md) for the per-repo table and the reasoning for each call.
+
+---
+
+## 🗺️ VI. Roadmap posture
+
+We have largely completed the bootstrap sequence. The current focus is **commercial activation** — turning architecturally-mature platforms into first paying customers.
+
+- **Phase 1 — Foundation.** ✅ Done. Enclii + Janua + Dhanam + Coforma all in production.
+- **Phase 2 — Intelligence.** ✅ Done for Fortuna + ForgeSight + BlueprintTube + BloomScroll (operational); data-collection ongoing.
+- **Phase 3 — Engines.** 🟡 In progress. `geom-core` published; AVALA in alpha; Sim4D renamed and stabilising.
+- **Phase 4 — Application.** 🟡 In progress. Cotiza live; Forj live; Karafiel + Tezca + Yantra4D + Pravara all in production. **Gap to revenue:** no production checkout UI on any platform yet — every product is one pricing decision from being revenue.
+- **Phase 5 — Frontier.** ⏳ Galvana on deck once Phase 4 produces stabilising revenue.
+- **Phase 6 — Horizontal integration.** 🟡 Active. PhyneCRM federating; RouteCraft attribution loop wired; revenue-loop probe running; Selva cutover staged and gated by a maintenance window.
+
+The strategic detail (catalog audits, competitor benchmarking, launch-wedge selection, secret-rotation schedules, Selva-cutover runbook) lives in the private `internal-devops` repo. The public repo holds the ecosystem shape.
+
+---
+
+## 🛠️ VII. How to run this ecosystem
+
+### Quickest path (using Enclii's local CLI)
+
+```bash
+cd ~/labspace
+enclii local up         # Infra + all services
+enclii local infra      # Only PostgreSQL, Redis, MinIO, MailHog
+enclii local status     # Which ports are up
+enclii local down       # Stop everything
+```
+
+### Fallback (legacy `madfam` script)
+
+```bash
+cd ~/labspace
+./madfam start          # Core ecosystem (Janua + Enclii + databases)
+./madfam full           # All 18 services
+./madfam status
+./madfam logs janua
+./madfam stop           # --clean to wipe volumes
+```
+
+### Shared infrastructure
+
+All services connect to shared `madfam-shared-network`:
 - PostgreSQL: `localhost:5432`
 - Redis: `localhost:6379`
-- MinIO: `localhost:9000` (API) / `localhost:9001` (Console)
+- MinIO: `localhost:9000` / `localhost:9001`
+- MailHog: `localhost:1025` / `localhost:8025`
+- Verdaccio (NPM): `localhost:4873` (public: `npm.madfam.io`)
 
-### Service URLs (Local Development)
-| Service | URL | Port Block |
-|---------|-----|------------|
-| MADFAM Site | http://localhost:3000 | Legacy |
-| Janua Auth | http://localhost:4100 | 4100-4199 |
-| Enclii PaaS | http://localhost:4200 | 4200-4299 |
-| ForgeSight | http://localhost:4300 | 4300-4399 |
-| Dhanam | http://localhost:4700 | 4700-4799 |
-| Sim4D Studio | http://localhost:4800 | 4800-4899 |
+### Port allocation
+
+The ecosystem-wide 4xxx/5xxx port scheme is **partially aspirational** — only Janua (4100-4104) and Enclii (4200-4201) fully follow it; every other service uses its framework default (usually `3000` for Next.js, `8000` for Django, `4200` for NestJS). **In production it doesn't matter** — K8s namespacing + Cloudflare Tunnel routing by hostname makes container ports invisible. It matters only for local multi-service dev. See [`docs/PORT_ALLOCATION.md`](docs/PORT_ALLOCATION.md) for the honest reality-vs-aspiration breakdown and per-repo declared ports.
+
+---
+
+## 📦 VIII. Shared packages (`@madfam/*`)
+
+Published to the private `npm.madfam.io` Verdaccio registry. Consumed by every ecosystem app.
+
+| Package | Purpose |
+|---|---|
+| `@madfam/core` | Brand, locales, currencies, event taxonomy, product definitions — **decisions, not implementations** |
+| `@madfam/ui` | Shared design system (shadcn/ui + Radix + Tailwind, φ-ratio tokens, glassmorphism primitives) |
+| `@madfam/analytics` | PostHog instrumentation + event-schema enforcement |
+| `@madfam/auth-resilience` | Circuit breaker + retry for Janua calls |
+| `@madfam/sentry` | Standardised Sentry init + context enrichment |
+| `@madfam/logging` | Structured pino logger config |
+| `@madfam/env` | Zod-validated env loading |
+| `@madfam/constants` | Compile-time-safe enums for shared constants |
+| `@madfam/error-boundary` | Next.js route boundary components |
+| `@madfam/types` | Cross-repo shared types (events, webhook schemas, attribution) |
+
+See `packages/<name>/README.md` for each. Publish with `./scripts/publish-ui.sh` (or per-package).
+
+---
+
+## 🔒 IX. What this repo does **NOT** contain
+
+Solarpunk Foundry is **public**. It deliberately does not hold:
+
+- Production IPs, hardware specs, hostnames, provider account numbers, costs, SSH targets → those live in the **private** `internal-devops` repo
+- Actual secrets, API keys, Vault tokens → ExternalSecret manifests + Vault (when deployed); literal secrets live nowhere
+- Strategic / competitive / pricing intelligence → `internal-devops/ecosystem/pricing-strategy-*.md`
+- Full ecosystem audits with revenue / customer / cost data → `internal-devops/audits/`
+- Per-session remediation plans, Selva-cutover runbooks, rotation schedules → `internal-devops/` under `runbooks/` and `ecosystem/`
+
+If you're looking for any of those and have operator access: see `internal-devops/README.md`. If you don't have access, email `admin@madfam.io`.
+
+---
+
+## 🤝 X. Contributing
+
+1. **One PR per concern.** Branch off `main`, target `main`.
+2. **Conventional commits** (`feat:`, `fix:`, `chore:`, `docs:`, …).
+3. **No custom auth** — use Janua.
+4. **No literal secrets** — ever.
+5. **No data duplication** — query the §IV.4 owner.
+6. **Update `docs/PORT_ALLOCATION.md`** if your service claims a port.
+7. **Run `./madfam status` or `enclii local status`** before asserting anything works.
+
+---
+
+## 🏛️ XI. License & attribution
+
+This repo's own content is covered by individual package licenses (see `packages/*/package.json`). The `@madfam/core` package ships as **MIT**. Non-code docs (this README, `docs/*.md`) are **CC-BY-SA 4.0** unless otherwise noted.
+
+Predecessor brand: **Aureo Labs** (`aureolabs.dev`) — retired 2026-04-17; every trace rebranded into **Innovaciones MADFAM**. The `aureo.studio` domain is held only for brand protection and redirects here.
+
+---
+
+> *"The best way to predict the future is to manufacture it."*
+>
+> **MADFAM** — High tech, deep roots. From bits to atoms.
