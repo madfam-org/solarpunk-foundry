@@ -31,3 +31,6 @@ Thumbs.db
 *.log
 logs/
 __pycache__/
+
+# Internal staffing docs (private)
+docs/staffing/
