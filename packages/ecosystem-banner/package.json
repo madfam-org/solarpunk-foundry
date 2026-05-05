@@ -1,0 +1,53 @@
+{
+  "name": "@madfam/ecosystem-banner",
+  "version": "0.1.0",
+  "description": "Dismissible scrolling stock-ticker banner that surfaces the MADFAM platform ecosystem at the bottom of every landing app.",
+  "license": "UNLICENSED",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.madfam.io/",
+    "access": "restricted"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "react": "^18 || ^19"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^16.0.0",
+    "@types/react": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "happy-dom": "^15.11.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.8"
+  },
+  "keywords": [
+    "madfam",
+    "banner",
+    "ticker",
+    "ecosystem",
+    "react"
+  ]
+}
