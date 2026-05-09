@@ -68,7 +68,7 @@ The ecosystem is organised into layers. Each platform has its own repo + domain.
 
 | Platform | Repo | Domain | Role |
 |---|---|---|---|
-| **PhyndCRM** | [`phynd-crm`](https://github.com/madfam-org/phynd-crm) | `crm.madfam.io` | Phygital CRM — "Synthetic Single Pane of Glass" federating data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts ecosystem-attribution receivers — see §3. |
+| **PhyndCRM** | [`phynd-crm`](https://github.com/madfam-org/phynd-crm) | `phynd.app` | Phygital CRM — "Synthetic Single Pane of Glass" federating data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts ecosystem-attribution receivers — see §3. |
 | **AutoSwarm Office** (→ **Selva**) | [`autoswarm-office`](https://github.com/madfam-org/autoswarm-office) | `agents.madfam.io` *(→ `selva.town` post-cutover)* | AI workforce / office simulator. Owns the `/v1/` OpenAI-compatible inference proxy that every ecosystem service routes its LLM calls through. Also hosts the revenue-loop probe, HITL-confidence ledger, and `nexus-api` orchestration engine. **Rename gated by `REBRAND_CUTOVER_RUNBOOK.md`.** |
 
 ### Other live platforms

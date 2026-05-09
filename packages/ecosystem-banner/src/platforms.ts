@@ -31,6 +31,6 @@ export const DEFAULT_ECOSYSTEM_PLATFORMS: readonly EcosystemPlatform[] = [
   { keyword: 'MANUFACTURING', name: 'Pravara', url: 'https://mes.madfam.io' },
   { keyword: 'GAMES', name: 'Rondelio', url: 'https://rondel.io' },
   { keyword: 'ROUTING & LOGISTICS', name: 'RouteCraft', url: 'https://routecraft.app' },
-  // { keyword: 'CLIENT PORTAL & CRM', name: 'PhyndCRM', url: 'https://phynd-crm.madfam.io' }, // 2026-05-04: connection refused
+  { keyword: 'CLIENT PORTAL & CRM', name: 'PhyndCRM', url: 'https://phynd.app' },
   // { keyword: 'PARAMETRIC CAD', name: 'Sim4D', url: 'https://sim4d.io' },                    // 2026-05-04: connection refused
 ] as const;

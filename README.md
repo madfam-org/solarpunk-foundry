@@ -84,7 +84,7 @@ Our ecosystem grows as a **living system**. Every tool has a specific organ func
 
 | Platform | Role | Domain |
 |---|---|---|
-| **PhyndCRM** | "Synthetic Single Pane of Glass" — federates data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts the ecosystem attribution receiver. | [crm.madfam.io](https://crm.madfam.io) |
+| **PhyndCRM** | "Synthetic Single Pane of Glass" — federates data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts the ecosystem attribution receiver. | [phynd.app](https://phynd.app) |
 | **Selva** *(née AutoSwarm Office, rename cutover pending)* | AI workforce + office simulator. Owns the `/v1/` OpenAI-compatible inference proxy every ecosystem service routes through. Hosts revenue-loop probe, HITL-confidence ledger, `nexus-api` orchestration. | `agents.madfam.io` → `selva.town` post-cutover |
 
 ### Adjacent / supporting (public)
