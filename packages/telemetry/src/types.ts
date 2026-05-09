@@ -5,7 +5,7 @@
 export interface TelemetryConfig {
   /**
    * Logical service name. Surfaces as `service.name` resource attribute.
-   * @example "phyne-crm-api", "fortuna-worker"
+   * @example "phynd-crm-api", "fortuna-worker"
    */
   serviceName: string;
 

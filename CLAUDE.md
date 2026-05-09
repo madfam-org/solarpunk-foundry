@@ -94,7 +94,7 @@ Every LLM-consuming service points its OpenAI SDK `base_url` at Selva's `nexus-a
 `routecraft` emits `payment.succeeded` via `@routecraft/payments::emitPaymentSucceeded`. Header `x-madfam-signature: t=<ts>,v1=<hex>` over `"${ts}.${body}"`. Two receivers:
 
 - `dhanam` `POST /v1/billing/madfam-events` → `BillingEvent` row
-- `phyne-crm` `POST /api/webhooks/routecraft` → `conversions` row + source-agent credit
+- `phynd-crm` `POST /api/webhooks/routecraft` → `conversions` row + source-agent credit
 
 Both idempotent by emitter `event_id`. 5-minute replay window.
 

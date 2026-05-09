@@ -9,7 +9,7 @@
  * import { initTelemetry } from '@madfam/telemetry';
  *
  * const t = await initTelemetry({
- *   serviceName: 'phyne-crm-api',
+ *   serviceName: 'phynd-crm-api',
  *   environment: process.env.NODE_ENV,
  *   otlpEndpoint: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
  * });

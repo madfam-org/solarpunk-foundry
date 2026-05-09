@@ -19,7 +19,7 @@ export interface ServiceEventEnvelope<T = unknown> {
 
 export type MadfamService =
   | 'dhanam'
-  | 'phyne-crm'
+  | 'phynd-crm'
   | 'autoswarm-office'
   | 'karafiel'
   | 'tezca'
@@ -89,7 +89,7 @@ export interface KycRejected {
   reason?: string;
 }
 
-// ─── CRM Events (published by PhyneCRM) ──────────────────────────────────────
+// ─── CRM Events (published by PhyndCRM) ──────────────────────────────────────
 
 export interface CrmLeadCreated {
   lead_id: string;
@@ -140,7 +140,7 @@ export interface HealthCheckResponse {
   version: string;
 }
 
-// ─── Federation (PhyneCRM ↔ Dhanam) ──────────────────────────────────────────
+// ─── Federation (PhyndCRM ↔ Dhanam) ──────────────────────────────────────────
 
 export interface FederatedCustomer {
   id: string;

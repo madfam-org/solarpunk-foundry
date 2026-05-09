@@ -60,7 +60,7 @@ Our ecosystem grows as a **living system**. Every tool has a specific organ func
 |---|---|
 | **geom-core** | Physics standard — C++ geometry analysis exposed to WASM + Python. Backs Sim4D + Yantra4D. |
 | **AVALA** | Human standard — verification engine for applied learning (Mexico EC/CONOCER + DC-3). |
-| **routecraft** | Trip-engine SaaS. Its `@routecraft/payments::emitPaymentSucceeded` is the **canonical payment-event producer** that fans out to Dhanam + PhyneCRM (see §IV). |
+| **routecraft** | Trip-engine SaaS. Its `@routecraft/payments::emitPaymentSucceeded` is the **canonical payment-event producer** that fans out to Dhanam + PhyndCRM (see §IV). |
 
 ### 🍎 Layer 4 — Fruit (user platforms)
 
@@ -84,7 +84,7 @@ Our ecosystem grows as a **living system**. Every tool has a specific organ func
 
 | Platform | Role | Domain |
 |---|---|---|
-| **PhyneCRM** | "Synthetic Single Pane of Glass" — federates data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts the ecosystem attribution receiver. | [crm.madfam.io](https://crm.madfam.io) |
+| **PhyndCRM** | "Synthetic Single Pane of Glass" — federates data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts the ecosystem attribution receiver. | [crm.madfam.io](https://crm.madfam.io) |
 | **Selva** *(née AutoSwarm Office, rename cutover pending)* | AI workforce + office simulator. Owns the `/v1/` OpenAI-compatible inference proxy every ecosystem service routes through. Hosts revenue-loop probe, HITL-confidence ledger, `nexus-api` orchestration. | `agents.madfam.io` → `selva.town` post-cutover |
 
 ### Adjacent / supporting (public)
@@ -122,8 +122,8 @@ We do not build SaaS. We build **tools to run our own operations first** — the
 | Factory quoting | **Cotiza** (Primavera3D quotes through it) |
 | Hiring / verification | **AVALA** |
 | Compliance | **Karafiel** + **Tezca** |
-| Customer discovery | **Coforma Studio** + **PhyneCRM** |
-| Revenue attribution | **RouteCraft emitter** → **Dhanam ledger** + **PhyneCRM conversions** |
+| Customer discovery | **Coforma Studio** + **PhyndCRM** |
+| Revenue attribution | **RouteCraft emitter** → **Dhanam ledger** + **PhyndCRM conversions** |
 
 If it isn't good enough to run MADFAM on, it isn't good enough to sell.
 
@@ -139,15 +139,15 @@ No custom auth anywhere. Every service verifies RS256 JWTs against `auth.madfam.
 
 ### 2. Inference → every service routes through Selva's `/v1/` proxy
 
-Selva's `nexus-api` exposes an OpenAI-compatible `/v1/chat/completions` + `/v1/embeddings`. Fortuna, Yantra4D, PhyneCRM, and any future LLM consumer point their SDK `base_url` here. Provider credentials (Anthropic, OpenAI, DeepInfra, Together, Fireworks, SiliconFlow, Moonshot) live only on Selva's side, routed by `ModelRouter` per task-type. **No other MADFAM repo holds direct LLM provider credentials.**
+Selva's `nexus-api` exposes an OpenAI-compatible `/v1/chat/completions` + `/v1/embeddings`. Fortuna, Yantra4D, PhyndCRM, and any future LLM consumer point their SDK `base_url` here. Provider credentials (Anthropic, OpenAI, DeepInfra, Together, Fireworks, SiliconFlow, Moonshot) live only on Selva's side, routed by `ModelRouter` per task-type. **No other MADFAM repo holds direct LLM provider credentials.**
 
 ### 3. Payment attribution → signed fan-out
 
 ```
-PhyneCRM lead → Selva drafter (LLM) → email (Resend) → PSP webhook →
+PhyndCRM lead → Selva drafter (LLM) → email (Resend) → PSP webhook →
     RouteCraft emitPaymentSucceeded() fires a signed event in parallel to:
         ├─ Dhanam   POST /v1/billing/madfam-events    → BillingEvent row
-        └─ PhyneCRM POST /api/webhooks/routecraft     → conversions row + agent credit
+        └─ PhyndCRM POST /api/webhooks/routecraft     → conversions row + agent credit
 ```
 
 Signature: `x-madfam-signature: t=<unix-seconds>,v1=<hex-hmac-sha256>` over `"${ts}.${raw-body}"`, per-target secret, 5-minute replay window. Both receivers are idempotent by the emitter's `event_id`. The revenue-loop-probe CronJob exercises this full chain hourly and pages if any stage breaks.
@@ -161,7 +161,7 @@ Signature: `x-madfam-signature: t=<unix-seconds>,v1=<hex-hmac-sha256>` over `"${
 | Mexican law + changelog + compliance rules | Tezca | Query `/api/v1/laws/...`; no local fork |
 | CFDI / SAT / tax filings | Karafiel | Single authority |
 | Fabrication node capacity + pricing | Forj | Consume ForgeSight |
-| Manufacturing execution telemetry | Pravara MES | Feed into PhyneCRM federation |
+| Manufacturing execution telemetry | Pravara MES | Feed into PhyndCRM federation |
 | 3D geometry kernel | geom-core | Used by Sim4D + Yantra4D |
 
 ---
@@ -175,7 +175,7 @@ Signature: `x-madfam-signature: t=<unix-seconds>,v1=<hex-hmac-sha256>` over `"${
 | **Infrastructure** (Enclii, Janua) | Tools anyone should be able to self-host | **AGPL v3** — prevents cloud capture; anyone can run our infra, nobody can turn it into a closed service without contributing back |
 | **Standards** (geom-core) | Neutral shared standard we want the whole industry on | **Apache 2.0** |
 | **Community** (BloomScroll, Sim4D, Galvana, AVALA) | Open tool, commercial-friendly | **MPL 2.0** or **AGPL v3** |
-| **Edge** (Fortuna, ForgeSight, BlueprintTube, Forj, Cotiza, Coforma, Karafiel, Tezca, Yantra4D, Pravara, PhyneCRM, Selva) | Our IP — the market-gap intelligence, pricing logic, compliance, customer data, revenue engine | **Proprietary** |
+| **Edge** (Fortuna, ForgeSight, BlueprintTube, Forj, Cotiza, Coforma, Karafiel, Tezca, Yantra4D, Pravara, PhyndCRM, Selva) | Our IP — the market-gap intelligence, pricing logic, compliance, customer data, revenue engine | **Proprietary** |
 
 The public repos give the ecosystem something real to adopt. The proprietary ones are where we capture value. The licenses are the fence, not the wall — we want contributions flowing into the AGPL layer, we just don't want Amazon turning it into a managed service.
 
@@ -192,7 +192,7 @@ We have largely completed the bootstrap sequence. The current focus is **commerc
 - **Phase 3 — Engines.** 🟡 In progress. `geom-core` published; AVALA in alpha; Sim4D renamed and stabilising.
 - **Phase 4 — Application.** 🟡 In progress. Cotiza live; Forj live; Karafiel + Tezca + Yantra4D + Pravara all in production. **Gap to revenue:** no production checkout UI on any platform yet — every product is one pricing decision from being revenue.
 - **Phase 5 — Frontier.** ⏳ Galvana on deck once Phase 4 produces stabilising revenue.
-- **Phase 6 — Horizontal integration.** 🟡 Active. PhyneCRM federating; RouteCraft attribution loop wired; revenue-loop probe running; Selva cutover staged and gated by a maintenance window.
+- **Phase 6 — Horizontal integration.** 🟡 Active. PhyndCRM federating; RouteCraft attribution loop wired; revenue-loop probe running; Selva cutover staged and gated by a maintenance window.
 
 The strategic detail (catalog audits, competitor benchmarking, launch-wedge selection, secret-rotation schedules, Selva-cutover runbook) lives in the private `internal-devops` repo. The public repo holds the ecosystem shape.
 

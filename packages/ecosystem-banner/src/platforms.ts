@@ -5,7 +5,7 @@
  * `EcosystemBanner` from `@dhanam/ui`.
  *
  * Verified live on 2026-05-04 via HEAD probe (200/301/302/405-method-allowed).
- * Two known-good platforms (sim4d.io, phyne-crm.madfam.io) were OMITTED from
+ * Two known-good platforms (sim4d.io, phynd-crm.madfam.io) were OMITTED from
  * the v1 default list because their apex domains were not resolving at audit
  * time. Re-add them once they're live by uncommenting the entries below.
  */
@@ -31,6 +31,6 @@ export const DEFAULT_ECOSYSTEM_PLATFORMS: readonly EcosystemPlatform[] = [
   { keyword: 'MANUFACTURING', name: 'Pravara', url: 'https://mes.madfam.io' },
   { keyword: 'GAMES', name: 'Rondelio', url: 'https://rondel.io' },
   { keyword: 'ROUTING & LOGISTICS', name: 'RouteCraft', url: 'https://routecraft.app' },
-  // { keyword: 'CLIENT PORTAL & CRM', name: 'PhyneCRM', url: 'https://phyne-crm.madfam.io' }, // 2026-05-04: connection refused
+  // { keyword: 'CLIENT PORTAL & CRM', name: 'PhyndCRM', url: 'https://phynd-crm.madfam.io' }, // 2026-05-04: connection refused
   // { keyword: 'PARAMETRIC CAD', name: 'Sim4D', url: 'https://sim4d.io' },                    // 2026-05-04: connection refused
 ] as const;

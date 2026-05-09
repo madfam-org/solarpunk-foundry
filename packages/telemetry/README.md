@@ -55,7 +55,7 @@ OpenTelemetry SDK packages **break across minor versions**. This package pins to
 import { initTelemetry } from '@madfam/telemetry';
 
 const telemetry = await initTelemetry({
-  serviceName: 'phyne-crm-api',
+  serviceName: 'phynd-crm-api',
   serviceVersion: process.env.GIT_SHA,
   environment: process.env.NODE_ENV,
   otlpEndpoint: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
@@ -114,7 +114,7 @@ const result = await withSpan(
 );
 
 // Or grab the tracer directly
-const tracer = trace.getTracer('phyne-crm-api');
+const tracer = trace.getTracer('phynd-crm-api');
 const span = tracer.startSpan('cleanup-task');
 // ... work ...
 span.end();

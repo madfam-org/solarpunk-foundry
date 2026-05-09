@@ -51,7 +51,7 @@ Two code paths today:
 | yantra4d | 3050 | No |
 | forgesight | 8000 | No (Django default) |
 | fortuna | 4700, 8000, 3000 | Fortuna-block claim matches (4700), APIs on 8000 |
-| phyne-crm | 4700, 8000, 3000 | Collides with Fortuna's 4700, but they're in different prod namespaces |
+| phynd-crm | 4700, 8000, 3000 | Collides with Fortuna's 4700, but they're in different prod namespaces |
 | rondelio | 4700, 8000, 3000 | Same |
 | routecraft | 3000, 3002, 8081 | No |
 | sim4d | 3000 | No |
@@ -137,7 +137,7 @@ happily live on `3000` because they're in their own namespace.
    dev port conventions" section in each repo's README, or
    **enforce the scheme** in `enclii local up` for all ecosystem
    services (not just Janua + Enclii).
-2. Fix the overlap between Fortuna / PhyneCRM / Rondelio all
+2. Fix the overlap between Fortuna / PhyndCRM / Rondelio all
    declaring `4700` in their `.enclii.yml` (no-op in prod because
    they're in different namespaces, but misleading to anyone
    reading the file).

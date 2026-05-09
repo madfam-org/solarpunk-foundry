@@ -68,7 +68,7 @@ The ecosystem is organised into layers. Each platform has its own repo + domain.
 
 | Platform | Repo | Domain | Role |
 |---|---|---|---|
-| **PhyneCRM** | [`phyne-crm`](https://github.com/madfam-org/phyne-crm) | `crm.madfam.io` | Phygital CRM — "Synthetic Single Pane of Glass" federating data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts ecosystem-attribution receivers — see §3. |
+| **PhyndCRM** | [`phynd-crm`](https://github.com/madfam-org/phynd-crm) | `crm.madfam.io` | Phygital CRM — "Synthetic Single Pane of Glass" federating data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts ecosystem-attribution receivers — see §3. |
 | **AutoSwarm Office** (→ **Selva**) | [`autoswarm-office`](https://github.com/madfam-org/autoswarm-office) | `agents.madfam.io` *(→ `selva.town` post-cutover)* | AI workforce / office simulator. Owns the `/v1/` OpenAI-compatible inference proxy that every ecosystem service routes its LLM calls through. Also hosts the revenue-loop probe, HITL-confidence ledger, and `nexus-api` orchestration engine. **Rename gated by `REBRAND_CUTOVER_RUNBOOK.md`.** |
 
 ### Other live platforms
@@ -125,22 +125,22 @@ Janua is the only auth. Every service verifies RS256 JWTs against `auth.madfam.i
 
 ### 3.2 Inference → Selva `/v1/` proxy
 
-`nexus-api` exposes an OpenAI-compatible `/v1/chat/completions` + `/v1/embeddings`. Fortuna, Yantra4D, PhyneCRM, and any future LLM-consuming service point their OpenAI SDK `base_url` at this proxy. Provider credentials (Anthropic, OpenAI, DeepInfra, Together, Fireworks, SiliconFlow, Moonshot) live only on Selva's side, routed by `ModelRouter` per task-type.
+`nexus-api` exposes an OpenAI-compatible `/v1/chat/completions` + `/v1/embeddings`. Fortuna, Yantra4D, PhyndCRM, and any future LLM-consuming service point their OpenAI SDK `base_url` at this proxy. Provider credentials (Anthropic, OpenAI, DeepInfra, Together, Fireworks, SiliconFlow, Moonshot) live only on Selva's side, routed by `ModelRouter` per task-type.
 
 ### 3.3 Revenue attribution loop (MXN flywheel)
 
 ```
-PhyneCRM lead → Nexus drafter (LLM) → email send (Resend) →
+PhyndCRM lead → Nexus drafter (LLM) → email send (Resend) →
   Stripe / Conekta / Mercado Pago webhook → RouteCraft payments module →
     emitPaymentSucceeded() fires signed events in parallel to:
       ├─ Dhanam   /v1/billing/madfam-events   (writes BillingEvent row)
-      └─ PhyneCRM /api/webhooks/routecraft     (writes conversions row,
+      └─ PhyndCRM /api/webhooks/routecraft     (writes conversions row,
                                                  credits source agent)
 ```
 
 Signature scheme: `x-madfam-signature: t=<unix-seconds>,v1=<hex-hmac-sha256>` over `"${ts}.${raw-body}"`, per-target secret, 5-min replay window. Both receivers are idempotent by the RouteCraft event_id.
 
-Revenue-loop probe synthesizes a hot lead every hour and exercises the full chain, failing loudly if any stage breaks. Probe endpoints: `POST /api/v1/probe/leads` + `GET /api/v1/probe/attribution` (PhyneCRM); `POST /v1/billing/madfam-events` + `GET /v1/probe/billing-events/:eventId` (Dhanam); `POST /api/v1/probe/draft` + `POST /api/v1/probe/email/send` (Selva).
+Revenue-loop probe synthesizes a hot lead every hour and exercises the full chain, failing loudly if any stage breaks. Probe endpoints: `POST /api/v1/probe/leads` + `GET /api/v1/probe/attribution` (PhyndCRM); `POST /v1/billing/madfam-events` + `GET /v1/probe/billing-events/:eventId` (Dhanam); `POST /api/v1/probe/draft` + `POST /api/v1/probe/email/send` (Selva).
 
 ### 3.4 Data boundaries (who owns what)
 
@@ -151,7 +151,7 @@ Revenue-loop probe synthesizes a hot lead every hour and exercises the full chai
 | Legal text, changelog, compliance rules | Tezca | Queries via `/api/v1/laws/...`; never forks |
 | CFDI / SAT / tax compliance | Karafiel | Consumes Dhanam + Tezca data |
 | Fabrication node capacity + pricing | Forj | Consumes ForgeSight pricing |
-| Manufacturing execution telemetry | Pravara MES | Feeds into PhyneCRM federation |
+| Manufacturing execution telemetry | Pravara MES | Feeds into PhyndCRM federation |
 | 3D geometry kernel | geom-core | Used by Sim4D + Yantra4D |
 
 ---
