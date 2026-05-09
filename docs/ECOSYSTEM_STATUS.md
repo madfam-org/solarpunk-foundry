@@ -1,6 +1,6 @@
 # MADFAM Ecosystem Status
 
-> **Live Infrastructure Status** - Last updated: January 11, 2026
+> **Live Infrastructure Status** - Last updated: May 9, 2026
 
 ---
 
@@ -78,7 +78,12 @@
 
 ## Known Issues
 
-**All issues resolved as of January 10, 2026 (21:55 CST)**
+**All issues resolved as of May 9, 2026**
+
+### Resolved: digifab-quoting Probe Mismatch
+- **Issue**: NestJS has no `/api` global prefix but `.enclii.yml` probed `/api/health` instead of `/health` (404/401 loop).
+- **Fix**: Patched `.enclii.yml` with correct path `/health` and added explicit `timeoutSeconds: 5`.
+- **Status**: 🟢 Resolved
 
 ### Resolved: docs-site Deployment
 - **Issue**: Deployment spec had wrong port (8080) vs container port (4203)
@@ -115,6 +120,9 @@
 
 | Date | Change | Impact |
 |------|--------|--------|
+| May 9, 2026 | digifab-quoting health probe fix | Corrects `/health` mismatch and prevents 401/404 restart loops |
+| May 9, 2026 | Monitoring platform & WAL rules restoration | RESTORED Prometheus rules and WAL archiving monitoring in kustomization |
+| May 9, 2026 | pgBackRest health alerting rules | SHIPPED custom alert rules covering check health, restore drills, and cronjob execution |
 | Jan 10, 2026 | SSO Logout fix deployed | Janua sessions now terminate on Enclii logout |
 | Jan 10, 2026 | switchyard-ui rebuilt with OIDC mode | UI properly redirects to IdP logout |
 | Jan 10, 2026 | Landing page redeployed | enclii.dev restored |
