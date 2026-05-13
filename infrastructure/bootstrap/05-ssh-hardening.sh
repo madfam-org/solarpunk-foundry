@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Solarpunk Foundry - SSH Hardening Script
-# Server: Hetzner AX41-NVMe (95.217.198.239)
+# Target node: see internal-devops for production SSH inventory
 # Purpose: Harden SSH access and prepare for Cloudflare Zero Trust migration
 
 echo "==============================================="
@@ -211,7 +211,7 @@ echo "  ✓ fail2ban configured (3 attempts = 1 hour ban)"
 echo ""
 echo -e "${YELLOW}IMPORTANT:${NC}"
 echo "  1. Test SSH access with solarpunk user BEFORE closing this session:"
-echo "     ssh -i ~/.ssh/id_ed25519 solarpunk@95.217.198.239"
+echo "     ssh -i ~/.ssh/id_ed25519 solarpunk@<BOOTSTRAP_HOST>"
 echo ""
 echo "  2. solarpunk user has sudo access - use 'sudo' for admin commands"
 echo ""
@@ -219,7 +219,7 @@ echo "  3. Once Cloudflare Zero Trust SSH is configured, close port 22:"
 echo "     ufw delete allow 22/tcp"
 echo ""
 echo -e "${GREEN}Next steps:${NC}"
-echo "  - Set up ssh.madfam.io DNS (CNAME to tunnel)"
+echo "  - Set up the Zero Trust SSH DNS record documented in internal-devops"
 echo "  - Configure Zero Trust Access policy"
 echo "  - Test SSH via Cloudflare Tunnel"
 echo "  - Close port 22"

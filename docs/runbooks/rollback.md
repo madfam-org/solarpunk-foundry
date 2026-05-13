@@ -13,23 +13,23 @@
 
 ```bash
 # View deployment history
-ssh ssh.madfam.io "sudo kubectl rollout history deployment/janua-api -n janua"
+ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl rollout history deployment/janua-api -n janua"
 
 # View specific revision details
-ssh ssh.madfam.io "sudo kubectl rollout history deployment/janua-api -n janua --revision=2"
+ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl rollout history deployment/janua-api -n janua --revision=2"
 ```
 
 ### Rollback to Previous Version
 
 ```bash
 # Rollback to previous revision
-ssh ssh.madfam.io "sudo kubectl rollout undo deployment/janua-api -n janua"
+ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl rollout undo deployment/janua-api -n janua"
 
 # Rollback to specific revision
-ssh ssh.madfam.io "sudo kubectl rollout undo deployment/janua-api -n janua --to-revision=2"
+ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl rollout undo deployment/janua-api -n janua --to-revision=2"
 
 # Monitor rollback progress
-ssh ssh.madfam.io "sudo kubectl rollout status deployment/janua-api -n janua"
+ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl rollout status deployment/janua-api -n janua"
 ```
 
 ### Rollback All Janua Services
@@ -37,7 +37,7 @@ ssh ssh.madfam.io "sudo kubectl rollout status deployment/janua-api -n janua"
 ```bash
 # Rollback all deployments in namespace
 for deploy in janua-api janua-dashboard janua-admin janua-docs; do
-  ssh ssh.madfam.io "sudo kubectl rollout undo deployment/$deploy -n janua"
+  ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl rollout undo deployment/$deploy -n janua"
 done
 ```
 
@@ -47,11 +47,11 @@ done
 
 ```bash
 # List available images
-ssh ssh.madfam.io "docker images | grep janua-api"
+ssh <SSH_ZERO_TRUST_HOST> "docker images | grep janua-api"
 
 # Rollback to specific SHA
-ssh ssh.madfam.io "docker stop janua-api && docker rm janua-api"
-ssh ssh.madfam.io "docker run -d --name janua-api janua-api:b657a88"  # Previous SHA
+ssh <SSH_ZERO_TRUST_HOST> "docker stop janua-api && docker rm janua-api"
+ssh <SSH_ZERO_TRUST_HOST> "docker run -d --name janua-api janua-api:b657a88"  # Previous SHA
 ```
 
 ### Using Docker Compose
@@ -59,7 +59,7 @@ ssh ssh.madfam.io "docker run -d --name janua-api janua-api:b657a88"  # Previous
 ```bash
 # Edit docker-compose.yml to use previous image tag
 # Then redeploy
-ssh ssh.madfam.io "cd /opt/solarpunk/janua/runtime && docker-compose -f docker-compose.prod.yml up -d janua-api"
+ssh <SSH_ZERO_TRUST_HOST> "cd /opt/solarpunk/janua/runtime && docker-compose -f docker-compose.prod.yml up -d janua-api"
 ```
 
 ## Identifying Version Information
@@ -68,23 +68,23 @@ ssh ssh.madfam.io "cd /opt/solarpunk/janua/runtime && docker-compose -f docker-c
 
 ```bash
 # Get current image and labels
-ssh ssh.madfam.io "sudo kubectl get deployment/janua-api -n janua -o jsonpath='{.spec.template.spec.containers[0].image}'"
+ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl get deployment/janua-api -n janua -o jsonpath='{.spec.template.spec.containers[0].image}'"
 
 # Check image labels for git SHA
-ssh ssh.madfam.io "docker inspect janua-api:latest --format='{{.Config.Labels}}'"
+ssh <SSH_ZERO_TRUST_HOST> "docker inspect janua-api:latest --format='{{.Config.Labels}}'"
 ```
 
 ### Git Reference
 
 ```bash
 # On production server, check repo state
-ssh ssh.madfam.io "cd /opt/solarpunk/janua && git log --oneline -5"
+ssh <SSH_ZERO_TRUST_HOST> "cd /opt/solarpunk/janua && git log --oneline -5"
 
 # Checkout previous commit
-ssh ssh.madfam.io "cd /opt/solarpunk/janua && git checkout HEAD~1"
+ssh <SSH_ZERO_TRUST_HOST> "cd /opt/solarpunk/janua && git checkout HEAD~1"
 
 # Rebuild with previous code
-ssh ssh.madfam.io "/opt/solarpunk/scripts/build-and-tag.sh janua-api"
+ssh <SSH_ZERO_TRUST_HOST> "/opt/solarpunk/scripts/build-and-tag.sh janua-api"
 ```
 
 ## Rollback Verification
@@ -93,23 +93,23 @@ ssh ssh.madfam.io "/opt/solarpunk/scripts/build-and-tag.sh janua-api"
 
 ```bash
 # API health
-ssh ssh.madfam.io "curl -s http://localhost:4100/ | head -1"
+ssh <SSH_ZERO_TRUST_HOST> "curl -s http://localhost:4100/ | head -1"
 
 # Dashboard health
-ssh ssh.madfam.io "curl -s -I http://localhost:4101/ | head -1"
+ssh <SSH_ZERO_TRUST_HOST> "curl -s -I http://localhost:4101/ | head -1"
 
 # Check pod status
-ssh ssh.madfam.io "sudo kubectl get pods -n janua"
+ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl get pods -n janua"
 ```
 
 ### Functional Tests
 
 ```bash
 # Test authentication endpoint
-ssh ssh.madfam.io "curl -s -X POST http://localhost:4100/api/v1/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"test@example.com\",\"password\":\"test\"}'"
+ssh <SSH_ZERO_TRUST_HOST> "curl -s -X POST http://localhost:4100/api/v1/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"test@example.com\",\"password\":\"test\"}'"
 
 # Check API version
-ssh ssh.madfam.io "curl -s http://localhost:4100/api/v1/health"
+ssh <SSH_ZERO_TRUST_HOST> "curl -s http://localhost:4100/api/v1/health"
 ```
 
 ## Emergency Procedures
@@ -118,13 +118,13 @@ ssh ssh.madfam.io "curl -s http://localhost:4100/api/v1/health"
 
 ```bash
 # Stop all services
-ssh ssh.madfam.io "sudo kubectl scale deployment --all -n janua --replicas=0"
+ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl scale deployment --all -n janua --replicas=0"
 
 # Wait for termination
 sleep 10
 
 # Start all services
-ssh ssh.madfam.io "sudo kubectl scale deployment --all -n janua --replicas=1"
+ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl scale deployment --all -n janua --replicas=1"
 ```
 
 ### Database Rollback
@@ -133,13 +133,13 @@ If database migrations need reverting:
 
 ```bash
 # Check current migration version
-ssh ssh.madfam.io "docker exec janua-api alembic current"
+ssh <SSH_ZERO_TRUST_HOST> "docker exec janua-api alembic current"
 
 # Rollback one migration
-ssh ssh.madfam.io "docker exec janua-api alembic downgrade -1"
+ssh <SSH_ZERO_TRUST_HOST> "docker exec janua-api alembic downgrade -1"
 
 # Rollback to specific revision
-ssh ssh.madfam.io "docker exec janua-api alembic downgrade 009"
+ssh <SSH_ZERO_TRUST_HOST> "docker exec janua-api alembic downgrade 009"
 ```
 
 ## Post-Rollback Actions

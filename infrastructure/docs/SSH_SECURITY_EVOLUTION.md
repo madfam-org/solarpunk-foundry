@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the evolution of SSH access to the Solarpunk Foundry bare-metal server, progressing from direct SSH access to Cloudflare Zero Trust tunneling.
+This document describes the public-safe SSH access pattern for Solarpunk Foundry. Production SSH targets, node inventory, IPs, Cloudflare tunnel IDs, and access policy details live in the private `internal-devops` repo.
 
 ---
 
@@ -14,7 +14,7 @@ This document describes the evolution of SSH access to the Solarpunk Foundry bar
 ```
 ┌─────────────┐         Port 22         ┌──────────────────┐
 │  Developer  │ ──────────────────────► │  Hetzner Server  │
-│  Workstation│     SSH (internet)      │  95.217.198.239  │
+│  Workstation│     SSH (internet)      │ <BOOTSTRAP_HOST> │
 └─────────────┘                         └──────────────────┘
 ```
 
@@ -61,7 +61,7 @@ This document describes the evolution of SSH access to the Solarpunk Foundry bar
 ```
 ┌─────────────┐    cloudflared     ┌───────────────────┐    tunnel    ┌──────────────────┐
 │  Developer  │ ─────────────────► │  Cloudflare Edge  │ ───────────► │  Hetzner Server  │
-│  Workstation│  (Zero Trust auth) │  (ssh.madfam.io)  │  (encrypted) │  (port 22 closed)│
+│  Workstation│  (Zero Trust auth) │  (<SSH_HOST>)     │  (encrypted) │  (port 22 closed)│
 └─────────────┘                    └───────────────────┘              └──────────────────┘
                                            │
                                            ▼
@@ -79,8 +79,8 @@ This document describes the evolution of SSH access to the Solarpunk Foundry bar
 - **Session recording** (optional) for compliance
 
 **Components**:
-1. **Cloudflare Tunnel**: `foundry-prod` (ID: `d3d867f8-5617-48cd-8e08-a2a44fbdac71`)
-2. **DNS**: `ssh.madfam.io` CNAME → `<tunnel-id>.cfargotunnel.com`
+1. **Cloudflare Tunnel**: inventory and tunnel IDs are maintained in `internal-devops`
+2. **DNS**: `<SSH_HOST>` CNAME -> `<tunnel-id>.cfargotunnel.com`
 3. **Access Application**: Zero Trust SSH app with GitHub IdP
 4. **Access Policy**: Email whitelist for authorized team members
 
@@ -90,11 +90,11 @@ This document describes the evolution of SSH access to the Solarpunk Foundry bar
 
 ### Prerequisites
 - [x] Cloudflare account with Zero Trust enabled
-- [x] Tunnel created (`foundry-prod`)
+- [x] Tunnel created (name and ID in `internal-devops`)
 - [x] SSH hardening script created (`05-ssh-hardening.sh`)
 - [x] Cloudflared setup script created (`06-cloudflared-setup.sh`)
 - [x] Local SSH config updated (`~/.ssh/config`)
-- [x] madfam.io DNS managed via Cloudflare
+- [x] Production DNS managed via Cloudflare
 - [x] GitHub OAuth identity provider configured
 - [x] Access Application created with automatic cloudflared authentication
 - [x] Access Policy configured (email whitelist)
@@ -107,7 +107,7 @@ sudo ./05-ssh-hardening.sh
 
 # 2. Test SSH with solarpunk user (CRITICAL - do this first!)
 # From local machine:
-ssh -i ~/.ssh/id_ed25519 solarpunk@95.217.198.239
+ssh -i ~/.ssh/id_ed25519 solarpunk@<BOOTSTRAP_HOST>
 
 # 3. Once confirmed working, install cloudflared
 TUNNEL_TOKEN='<token-from-cloudflare>' sudo ./06-cloudflared-setup.sh
@@ -116,7 +116,7 @@ TUNNEL_TOKEN='<token-from-cloudflare>' sudo ./06-cloudflared-setup.sh
 cloudflared tunnel info
 
 # 5. Test SSH via tunnel
-ssh ssh.madfam.io
+ssh <SSH_HOST>
 
 # 6. Close port 22 (ONLY after tunnel SSH works!)
 sudo ufw delete allow 22/tcp
@@ -124,7 +124,7 @@ sudo ufw delete allow 22/tcp
 
 ### Cloudflare Dashboard Setup
 1. **Zero Trust** → **Access** → **Applications**
-   - Create SSH application for `ssh.madfam.io`
+   - Create SSH application for the host documented in `internal-devops`
    - Type: SSH
    - Session duration: 1 hour
 
@@ -133,7 +133,7 @@ sudo ufw delete allow 22/tcp
    - Identity Provider: GitHub
 
 3. **Verify Tunnel Health**
-   - **Networks** → **Tunnels** → `foundry-prod`
+   - **Networks** -> **Tunnels** -> production tunnel documented in `internal-devops`
    - Status should show "Healthy"
 
 ---
@@ -143,7 +143,7 @@ sudo ufw delete allow 22/tcp
 ### SSH Config (`~/.ssh/config`)
 ```
 # Solarpunk Foundry Server via Cloudflare Zero Trust
-Host ssh.madfam.io
+Host <SSH_HOST>
   ProxyCommand cloudflared access ssh --hostname %h
   User solarpunk
   IdentityFile ~/.ssh/id_ed25519
@@ -154,7 +154,7 @@ Host ssh.madfam.io
 - SSH client with ProxyCommand support
 
 ### Connection Flow
-1. Run `ssh ssh.madfam.io`
+1. Run `ssh <SSH_HOST>`
 2. `cloudflared` initiates connection to Cloudflare edge
 3. Browser opens for GitHub OAuth authentication
 4. After auth, SSH session established through tunnel
@@ -185,7 +185,7 @@ Host ssh.madfam.io
 sudo ufw allow 22/tcp
 
 # Connect via direct SSH
-ssh -i ~/.ssh/id_ed25519 solarpunk@95.217.198.239
+ssh -i ~/.ssh/id_ed25519 solarpunk@<BOOTSTRAP_HOST>
 
 # Debug cloudflared
 sudo journalctl -u cloudflared -f
@@ -193,8 +193,8 @@ sudo systemctl restart cloudflared
 ```
 
 ### If Locked Out
-1. Use Hetzner Robot console (rescue mode)
-2. Or contact Hetzner support for KVM access
+1. Use provider console console (rescue mode)
+2. Or contact the provider support path documented in internal-devops for KVM access
 3. Re-enable port 22 and direct SSH access
 
 ---
@@ -278,7 +278,7 @@ sudo systemctl status cloudflared
 |-----------|-------|
 | Tunnel Name | `foundry-prod` |
 | Tunnel ID | `d3d867f8-5617-48cd-8e08-a2a44fbdac71` |
-| SSH Hostname | `ssh.madfam.io` |
+| SSH Hostname | `<SSH_ZERO_TRUST_HOST>` |
 | Service Target | `ssh://localhost:22` |
 | Access Application | "Foundry SSH Access" |
 | Session Duration | 24 hours |

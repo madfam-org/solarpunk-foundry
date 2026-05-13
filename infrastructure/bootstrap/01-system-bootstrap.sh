@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Solarpunk Foundry - System Bootstrap Script
-# Server: Hetzner AX41-NVMe (95.217.198.239)
+# Target node: see internal-devops for production inventory
 # OS: Ubuntu 24.04 LTS
 # Purpose: System hardening, Docker setup with ZFS storage driver
 

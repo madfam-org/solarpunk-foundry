@@ -24,7 +24,8 @@ enclii local down
 ### Production Access
 
 ```bash
-ssh ssh.madfam.io
+# SSH host and node inventory are documented in internal-devops.
+ssh <SSH_ZERO_TRUST_HOST>
 sudo kubectl get pods -A --kubeconfig=/etc/rancher/k3s/k3s.yaml
 ```
 
@@ -146,16 +147,15 @@ http://localhost:8025 (Web UI)
 | Property | Value |
 |----------|-------|
 | Topology | 3-node cluster (1 control plane + 1 worker + 1 builder) |
-| SSH Access | `ssh.madfam.io` via Cloudflare Zero Trust Tunnel |
-| Provider | Hetzner Dedicated (primary) + VPS (builder) |
+| SSH Access | Cloudflare Zero Trust Tunnel; concrete host in `internal-devops` |
+| Provider | See `internal-devops` |
 | K8s Distribution | K3s (multi-node) |
 
 ### Cloudflare Tunnel
 
 | Tunnel | Status | Purpose |
 |--------|--------|---------|
-| foundry-prod | ✅ Active (2h 52m) | SSH access, API routing |
-| janua-prod | ✅ Active | Janua service routing |
+| production tunnels | Active | SSH access, API routing |
 
 ### SystemD Services
 
@@ -179,7 +179,7 @@ kubectl get pods -A
 # Janua services
 kubectl get svc -n janua
 # NAME        TYPE        CLUSTER-IP     PORT(S)
-# janua-api   ClusterIP   10.43.79.234   4100/TCP
+# janua-api   ClusterIP   <cluster-internal-ip>   4100/TCP
 ```
 
 ---

@@ -12,14 +12,12 @@ registry.
 
 ## Node Architecture
 
-### Node A: "The Sanctuary" (Production Workloads)
+### Control Plane / Workload Node
 
 | Attribute | Value |
 |-----------|-------|
-| **Role** | Production Workloads (Apps/DBs) — control plane + 1 worker |
-| **Hardware** | Hetzner dedicated (see `internal-devops`) |
-| **Storage** | NVMe SSD with RAID1 |
-| **Network** | 1 Gbit/s |
+| **Role** | Kubernetes control plane and production workloads |
+| **Inventory** | See `internal-devops` |
 
 **Workloads:**
 - ✅ Enclii Control Plane (`api.enclii.dev`, `app.enclii.dev`)
@@ -31,18 +29,19 @@ registry.
 
 **Taints:** None (accepts all workloads)
 
-### Node B: "The Forge" (CI/CD Builder)
+### Worker Node
 
 | Attribute | Value |
 |-----------|-------|
-| **Role** | CI/CD Builder Node |
-| **Hardware** | Hetzner Cloud CPX11 |
-| **CPU** | 2 AMD vCPUs |
-| **RAM** | 2GB |
-| **Storage** | 40GB NVMe |
-| **Network** | 1 Gbit/s |
-| **Hostname** | `forge-builder` |
-| **Cost** | ~$5/month |
+| **Role** | Application workloads and shared services |
+| **Inventory** | See `internal-devops` |
+
+### Builder Node
+
+| Attribute | Value |
+|-----------|-------|
+| **Role** | CI/CD build jobs and artifact generation |
+| **Inventory** | See `internal-devops` |
 
 **Workloads:**
 - ✅ Roundhouse Build Workers (Kaniko)
@@ -91,13 +90,13 @@ GitHub Push Webhook
         │
         ▼
 ┌─────────────────┐
-│  Switchyard API │  (The Sanctuary)
+│  Switchyard API │  (Cluster workloads)
 │  api.enclii.dev │
 └────────┬────────┘
          │ Enqueue Build Job
          ▼
 ┌─────────────────┐
-│   Roundhouse    │  (The Forge - Builder Node)
+│   Roundhouse    │  (Builder node)
 │   Build Worker  │
 │   ┌──────────┐  │
 │   │  Kaniko  │  │  ← Rootless container builds
@@ -112,7 +111,7 @@ GitHub Push Webhook
          │ Deploy Webhook
          ▼
 ┌─────────────────┐
-│  K8s Reconciler │  (The Sanctuary)
+│  K8s Reconciler │  (Cluster workloads)
 │   Deployment    │
 └─────────────────┘
 ```
@@ -132,7 +131,7 @@ Internet
                   │ Cloudflare Tunnel (Encrypted)
                   ▼
 ┌─────────────────────────────────────────────┐
-│  The Sanctuary (control plane + worker)     │
+│  Control plane / workload nodes             │
 │  ┌─────────────────────────────────────┐    │
 │  │ cloudflared (2 replicas)            │    │
 │  │ • auth.madfam.io → janua-api:80     │    │
@@ -151,7 +150,7 @@ Internet
                   │ K8s Internal Network
                   ▼
 ┌─────────────────────────────────────────────┐
-│  The Forge (forge-builder)                  │
+│  Builder node                               │
 │  ┌─────────────────────────────────────┐    │
 │  │ Roundhouse Build Workers            │    │
 │  │ • Kaniko (rootless builds)          │    │

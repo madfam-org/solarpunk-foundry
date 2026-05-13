@@ -17,7 +17,7 @@ See `internal-devops/access/ssh-runbook.md` for:
 ## If you just need the public-facing connection method
 
 All MADFAM production SSH goes through a Cloudflare Zero Trust Tunnel
-at `ssh.madfam.io`. You need:
+using the host documented in `internal-devops`. You need:
 
 1. **cloudflared installed**
    - macOS: `brew install cloudflared`
@@ -32,7 +32,7 @@ at `ssh.madfam.io`. You need:
 
 3. **Cloudflare Access authentication**
    ```sh
-   cloudflared access login ssh.madfam.io
+   cloudflared access login <SSH_ZERO_TRUST_HOST>
    ```
 
 4. **Membership in the MADFAM Cloudflare Access policy** — request via

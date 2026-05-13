@@ -235,8 +235,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=8030
-      - NEXT_PUBLIC_API_URL=http://95.217.198.239:8001
-      - NEXT_PUBLIC_JANUA_URL=http://95.217.198.239:8000
+      - NEXT_PUBLIC_API_URL=https://<enclii-public-host>
+      - NEXT_PUBLIC_JANUA_URL=https://<janua-public-host>
     networks:
       - solarpunk-network
     depends_on:

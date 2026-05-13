@@ -104,7 +104,7 @@ terraform apply -var-file=terraform.tfvars
 ./infrastructure/backup/postgres-backup.sh
 
 # Or via ZFS snapshot (preferred)
-ssh ssh.madfam.io "sudo zfs snapshot rpool/data/postgres@$(date +%Y%m%d)"
+ssh <SSH_ZERO_TRUST_HOST> "sudo zfs snapshot rpool/data/postgres@$(date +%Y%m%d)"
 ```
 
 ### Monitoring Stack

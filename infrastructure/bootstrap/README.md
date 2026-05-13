@@ -1,14 +1,16 @@
 # 🌞 Solarpunk Foundry - Deployment Guide
 
-## Server Bootstrapping on Hetzner Bare-Metal
+## Server Bootstrapping
 
-This guide will help you bootstrap your Hetzner server (95.217.198.239) to host the Solarpunk Foundry infrastructure.
+This guide documents the public-safe bootstrap flow for Solarpunk Foundry infrastructure.
+Production node inventory, SSH targets, IP addresses, provider details, and hardware specs
+live in the private `internal-devops` repo.
 
 ---
 
 ## Prerequisites
 
-- **Server**: Hetzner AX41-NVMe (Finland)
+- **Topology**: 3-node cluster; node inventory is maintained in `internal-devops`
 - **OS**: Ubuntu 24.04 LTS
 - **Storage**: ZFS Mirror (rpool) already configured
 - **Access**: Root SSH access with id_ed25519
@@ -28,14 +30,14 @@ This guide will help you bootstrap your Hetzner server (95.217.198.239) to host 
 ### Step 1: Connect to Server
 
 ```bash
-ssh -i ~/.ssh/id_ed25519 root@95.217.198.239
+ssh -i ~/.ssh/id_ed25519 root@<BOOTSTRAP_HOST>
 ```
 
 ### Step 2: Upload Deployment Scripts
 
 From your local machine:
 ```bash
-scp -i ~/.ssh/id_ed25519 bootstrap/*.sh root@95.217.198.239:/root/
+scp -i ~/.ssh/id_ed25519 bootstrap/*.sh root@<BOOTSTRAP_HOST>:/root/
 ```
 
 ### Step 3: Execute Deployment
@@ -140,8 +142,8 @@ DOCKER_HOST        # unix:///var/run/docker.sock
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│                   Hetzner Bare-Metal Server               │
-│                      95.217.198.239                       │
+│                    Solarpunk Cluster Node                 │
+│            inventory maintained in internal-devops         │
 ├──────────────────────────────────────────────────────────┤
 │                    ZFS Storage Layer                      │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐  │
@@ -236,13 +238,13 @@ Per the [PORT_ALLOCATION.md](../../docs/PORT_ALLOCATION.md), services use 100-po
 | Enclii API | 8001 | **4200** | api.enclii.madfam.io |
 | Enclii Dashboard | 3000 | **4201** | enclii.madfam.io |
 
-### Direct IP Access (Development/Debug Only)
+### Direct Host Access (Development/Debug Only)
 
 | Service | Direct URL | Notes |
 |---------|------------|-------|
-| Janua API | http://95.217.198.239:4100 | Use Cloudflare Tunnel in production |
-| Janua Dashboard | http://95.217.198.239:4101 | Use Cloudflare Tunnel in production |
-| Enclii API | http://95.217.198.239:4200 | Use Cloudflare Tunnel in production |
+| Janua API | http://<BOOTSTRAP_HOST>:4100 | Use Cloudflare Tunnel in production |
+| Janua Dashboard | http://<BOOTSTRAP_HOST>:4101 | Use Cloudflare Tunnel in production |
+| Enclii API | http://<BOOTSTRAP_HOST>:4200 | Use Cloudflare Tunnel in production |
 | PostgreSQL | localhost:5432 | Internal only, not exposed |
 | Redis | localhost:6379 | Internal only, not exposed |
 
@@ -271,7 +273,7 @@ ufw delete allow 22/tcp
 ```
 
 **Zero Trust SSH Access** (Recommended for production):
-- Access via: `ssh.madfam.io` (through Cloudflare Tunnel)
+- Access via the Zero Trust SSH host documented in `internal-devops`
 - Authentication: GitHub OAuth via Zero Trust
 - Audit: All SSH sessions logged in Cloudflare dashboard
 - See: `infrastructure/terraform/cloudflare.tf` for configuration
@@ -290,8 +292,8 @@ ufw delete allow 22/tcp
 ## 📝 Next Steps
 
 1. **Configure DNS**:
-   - Point auth.madfam.io to 95.217.198.239
-   - Point enclii.madfam.io to 95.217.198.239
+   - Use Cloudflare Tunnel routing for public endpoints
+   - Keep concrete DNS targets and node IPs in `internal-devops`
 
 2. **SSL Certificates**:
    ```bash

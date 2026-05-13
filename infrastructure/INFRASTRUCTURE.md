@@ -4,13 +4,13 @@
 
 **Document Version**: 1.0
 **Last Updated**: 2025-12-02
-**Classification**: Internal Operations
+**Classification**: Public-safe reference. Sensitive inventory lives in `internal-devops`.
 
 ---
 
 ## Table of Contents
 
-1. [Hardware Specifications](#1-hardware-specifications-the-bedrock)
+1. [Cluster Topology](#1-cluster-topology-the-bedrock)
 2. [OS & Storage Architecture](#2-os--storage-architecture-the-soil)
 3. [Container Engine](#3-the-container-engine)
 4. [Application Layer](#4-application-layer-the-organs)
@@ -20,29 +20,19 @@
 
 ---
 
-## 1. Hardware Specifications ("The Bedrock")
+## 1. Cluster Topology ("The Bedrock")
 
-### Server Details
+Production runs as a 3-node cluster. Concrete node names, IP addresses,
+SSH targets, provider inventory, hardware specs, and cost data are not
+published in this repository; see `internal-devops/infrastructure/nodes.md`.
 
-| Specification | Value | Rationale |
-|---------------|-------|-----------|
-| **Model** | Hetzner dedicated server | Optimal cost-to-performance ratio |
-| **Location** | Finland (HEL1) | Green energy profile, EU data residency |
-| **Hostname** | `enclii-core` | Primary infrastructure node |
-| **IP Address** | `<CONTROL_PLANE_IP>` | Static IPv4 |
+### Public-Safe Node Shape
 
-### Compute Resources
-
-| Component | Specification | Selection Rationale |
-|-----------|---------------|---------------------|
-| **CPU** | server CPU (Hexa-Core) | High single-core performance for auth handshakes |
-| **RAM** | 64 GB ECC DDR4 | ECC prevents bit-rot/corruption in treasury ledger and identity tables |
-| **Storage** | server storage SSD | High IOPS for container builds |
-
-> **Critical Note**: ECC memory was specifically chosen to ensure data integrity for:
-> - Dhanam treasury ledger transactions
-> - Janua identity and session tables
-> - PostgreSQL WAL consistency
+| Role | Purpose |
+|------|---------|
+| Control plane | Kubernetes control plane and core platform workloads |
+| Worker | Application workloads and shared services |
+| Builder | CI/CD build jobs and artifact generation |
 
 ---
 
@@ -58,7 +48,7 @@
 
 ### Partitioning Strategy: "Trojan Horse" Method
 
-Standard Hetzner provisioning requires ext4 partitions. We employed a post-installation conversion:
+Some provider provisioning flows require ext4 partitions. The production-specific provisioning notes live in `internal-devops`; the public-safe pattern is:
 
 ```
 1. Install via `installimage` with standard ext4 partitions (passes validation)

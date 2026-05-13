@@ -3,7 +3,7 @@
 
 - **Organization:** Innovaciones MADFAM S.A.S. de C.V. (Cuernavaca, Morelos, MX)
 - **Canonical domain:** [madfam.io](https://madfam.io)
-- **GitHub:** [`madfam-org`](https://github.com/madfam-org) + [`legal-ops`](https://github.com/legal-ops)
+- **GitHub:** [`madfam-org`](https://github.com/madfam-org)
 - **Status board:** [status.madfam.io](https://status.madfam.io)
 - **This repo's role:** Ecosystem orchestration hub — port registry, `@madfam/*` shared packages, local dogfooding scaffolds, public-safe architecture narrative. This README is the **public-facing single source of truth** for the MADFAM vision, platform map, and development contract.
 

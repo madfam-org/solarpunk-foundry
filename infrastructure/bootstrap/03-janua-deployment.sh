@@ -180,7 +180,7 @@ services:
       - "8010:3000"
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://95.217.198.239:8000
+      - NEXT_PUBLIC_API_URL=https://<janua-public-host>
     networks:
       - solarpunk-network
     depends_on:
@@ -209,7 +209,7 @@ services:
       - "8011:3000"
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://95.217.198.239:8000
+      - NEXT_PUBLIC_API_URL=https://<janua-public-host>
     networks:
       - solarpunk-network
     depends_on:

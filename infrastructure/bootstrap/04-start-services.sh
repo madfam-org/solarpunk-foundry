@@ -164,12 +164,12 @@ echo "==============================================="
 echo ""
 echo "Access Points:"
 echo "--------------"
-echo "Janua API:        http://95.217.198.239:8000"
-echo "Janua Dashboard:  http://95.217.198.239:8010"
-echo "Janua Admin:      http://95.217.198.239:8011"
-echo "Enclii API:       http://95.217.198.239:8001"
-echo "Enclii UI:        http://95.217.198.239:8030"
-echo "Docker Registry:  http://95.217.198.239:5000"
+echo "Janua API:        http://<BOOTSTRAP_HOST>:8000"
+echo "Janua Dashboard:  http://<BOOTSTRAP_HOST>:8010"
+echo "Janua Admin:      http://<BOOTSTRAP_HOST>:8011"
+echo "Enclii API:       http://<BOOTSTRAP_HOST>:8001"
+echo "Enclii UI:        http://<BOOTSTRAP_HOST>:8030"
+echo "Docker Registry:  http://<BOOTSTRAP_HOST>:5000"
 echo ""
 echo "Health Checks:"
 echo "--------------"
@@ -295,10 +295,9 @@ cat > /opt/solarpunk/DEPLOYMENT_SUMMARY.md << 'EOF'
 # Solarpunk Foundry - Deployment Summary
 
 ## Server Information
-- **IP**: 95.217.198.239
-- **Location**: Hetzner Finland
+- **Inventory**: See `internal-devops` for node IPs, hostnames, provider metadata, and SSH targets
+- **Topology**: 3-node cluster
 - **OS**: Ubuntu 24.04 LTS
-- **Hardware**: AX41-NVMe
 
 ## ZFS Configuration
 - **Pool**: rpool (Mirror/RAID1)

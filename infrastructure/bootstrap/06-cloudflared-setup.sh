@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Solarpunk Foundry - Cloudflared Tunnel Setup
-# Server: Hetzner AX41-NVMe (95.217.198.239)
+# Target node: see internal-devops for production inventory
 # Purpose: Install and configure cloudflared for Zero Trust access
 
 echo "==============================================="
@@ -29,8 +29,16 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Tunnel configuration
-TUNNEL_NAME="foundry-prod"
+TUNNEL_NAME="${TUNNEL_NAME:-foundry-prod}"
 TUNNEL_TOKEN="${TUNNEL_TOKEN:-}"
+SSH_TUNNEL_HOSTNAME="${SSH_TUNNEL_HOSTNAME:-ssh.example.com}"
+JANUA_API_HOSTNAME="${JANUA_API_HOSTNAME:-api.janua.example.com}"
+JANUA_APP_HOSTNAME="${JANUA_APP_HOSTNAME:-app.janua.example.com}"
+JANUA_ADMIN_HOSTNAME="${JANUA_ADMIN_HOSTNAME:-admin.janua.example.com}"
+JANUA_DOCS_HOSTNAME="${JANUA_DOCS_HOSTNAME:-docs.janua.example.com}"
+JANUA_WEB_HOSTNAME="${JANUA_WEB_HOSTNAME:-janua.example.com}"
+ENCLII_API_HOSTNAME="${ENCLII_API_HOSTNAME:-api.enclii.example.com}"
+ENCLII_APP_HOSTNAME="${ENCLII_APP_HOSTNAME:-app.enclii.example.com}"
 
 if [ -z "$TUNNEL_TOKEN" ]; then
     log_error "TUNNEL_TOKEN environment variable is required"
@@ -78,53 +86,53 @@ credentials-file: /etc/cloudflared/credentials.json
 # Ingress rules - what services to expose
 ingress:
   # SSH Access (Zero Trust protected)
-  - hostname: ssh.madfam.io
+  - hostname: ${SSH_TUNNEL_HOSTNAME}
     service: ssh://localhost:22
 
   # Janua API (port 4100)
-  - hostname: api.janua.dev
+  - hostname: ${JANUA_API_HOSTNAME}
     service: http://localhost:4100
     originRequest:
       connectTimeout: 30s
       noTLSVerify: true
 
   # Janua Dashboard (port 4101)
-  - hostname: app.janua.dev
+  - hostname: ${JANUA_APP_HOSTNAME}
     service: http://localhost:4101
     originRequest:
       connectTimeout: 30s
       noTLSVerify: true
 
   # Janua Admin (port 4102)
-  - hostname: admin.janua.dev
+  - hostname: ${JANUA_ADMIN_HOSTNAME}
     service: http://localhost:4102
     originRequest:
       connectTimeout: 30s
       noTLSVerify: true
 
   # Janua Docs (port 4103)
-  - hostname: docs.janua.dev
+  - hostname: ${JANUA_DOCS_HOSTNAME}
     service: http://localhost:4103
     originRequest:
       connectTimeout: 30s
       noTLSVerify: true
 
   # Janua Website (port 4104)
-  - hostname: janua.dev
+  - hostname: ${JANUA_WEB_HOSTNAME}
     service: http://localhost:4104
     originRequest:
       connectTimeout: 30s
       noTLSVerify: true
 
   # Enclii API (port 4200) - when deployed
-  - hostname: api.enclii.madfam.io
+  - hostname: ${ENCLII_API_HOSTNAME}
     service: http://localhost:4200
     originRequest:
       connectTimeout: 30s
       noTLSVerify: true
 
   # Enclii Dashboard (port 4201) - when deployed
-  - hostname: enclii.madfam.io
+  - hostname: ${ENCLII_APP_HOSTNAME}
     service: http://localhost:4201
     originRequest:
       connectTimeout: 30s
