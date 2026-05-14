@@ -1,0 +1,30 @@
+name: Repository Hygiene
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  no-tracked-node-modules:
+    name: No tracked node_modules
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Reject tracked dependency installs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          tracked="$(git ls-files | grep -E '(^|/)node_modules/' || true)"
+
+          if [[ -n "${tracked}" ]]; then
+            echo "Tracked node_modules entries are not allowed."
+            echo "They make reusable GitHub Actions brittle and platform-specific."
+            echo
+            echo "${tracked}"
+            exit 1
+          fi
