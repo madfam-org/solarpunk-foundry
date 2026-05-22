@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+.next/
+.turbo/
+coverage/
+**/__pycache__/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock

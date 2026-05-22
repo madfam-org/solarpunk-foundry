@@ -1,0 +1,25 @@
+---
+description: MADFAM Cursor workspace, models, and agent context discipline
+alwaysApply: true
+---
+
+# MADFAM Cursor operating rule (solarpunk-foundry)
+
+## Scope
+
+- Public-safe architecture and `@madfam/*` shared packages only.
+- No prod IPs, secrets, or costs — those live in **internal-devops**.
+
+## Instructions order
+
+1. `AGENTS.md` → `llms.txt` → `docs/PORT_ALLOCATION.md` for port conflicts.
+
+## Entrypoints
+
+- Packages: `packages/`
+- Local ops: `ops/local/`, `ops/bin/madfam.sh`
+- Prefer `enclii local up` over legacy `./madfam` when available.
+
+## Models
+
+- Default **Auto** / **Composer 2.5**; Sonnet for package refactors; frontier only for cross-cutting `@madfam/*` changes.

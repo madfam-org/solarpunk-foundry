@@ -48,6 +48,13 @@ redirect and should not become the source of truth again.
 Regenerate or repair these files with
 `internal-devops/scripts/sync-agent-docs.py` from the labspace ecosystem.
 
+## Cursor IDE
+
+- Use `labspace/madfam-platform.code-workspace` with **enclii** and **internal-devops** for cross-repo platform work.
+- Packages: `packages/`; ports: `docs/PORT_ALLOCATION.md`.
+- Default model: **Auto** / **Composer 2.5**; Sonnet for `@madfam/*` refactors.
+- Playbook: `internal-devops/ecosystem/cursor-usage-playbook.md`.
+
 ---
 
 ## Legacy CLAUDE.md guidance imported on 2026-05-13
