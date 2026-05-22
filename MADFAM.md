@@ -109,7 +109,7 @@ The ecosystem is organised into layers. Each platform has its own repo + domain.
 
 **19 repos are PRIVATE**, not public as earlier versions of this doc implied: `blueprint-harvester`, `factlas`, `forgesight`, `forj`, `fortuna`, `gh-backups`, `internal-devops`, `karafiel`, `legal-ops`, `madfam-crawler`, `proton-bridge-pipeline`, `rondelio`, `routecraft`, `social-sentiment-monitor`, `stratum-tcg`, `symbiosis-hcm`, `tablaco`, `turnbased-engine`, `zavlo`.
 
-**Additional platforms / repos** previously un-listed here: `symbiosis-hcm` (HCM — Mexican payroll, Shapley compensation, ONA, wellbeing), `kinship` (E2E-encrypted community logistics/energy platform), `electrochem-sim` (Galvana simulator core), `autoswarm-sandbox` (agent testing sandbox), `Auto-Claude` (automation toolkit), `claudecodeui` (third-party mobile Claude Code UI fork), `aureo-labs` (archived legacy brand repo).
+**Additional platforms / repos** previously un-listed here: `symbiosis-hcm` (HCM — Mexican payroll, Shapley compensation, ONA, wellbeing), `kinship` (E2E-encrypted community logistics/energy platform), `electrochem-sim` (Galvana simulator core), `autoswarm-sandbox` (agent testing sandbox), `Auto-Claude` (automation toolkit), `claudecodeui` (third-party mobile Claude Code UI fork), ~~`aureo-labs`~~ (archived 2026-04-08; removed from labspace checkout and active CI scope).
 
 The authoritative registry lives in [`internal-devops/ecosystem/repo-registry.md`](https://github.com/madfam-org/internal-devops/blob/main/ecosystem/repo-registry.md).
 
