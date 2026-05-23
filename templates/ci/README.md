@@ -29,6 +29,19 @@ Or use the direct reference in your workflow:
 - uses: madfam-org/solarpunk-foundry/.github/actions/doc-guard@main
 ```
 
+### `npm-madfam-auth` — private registry CI auth
+
+Use from any `madfam-org` repo (public action — no org Actions access config needed):
+
+```yaml
+- uses: madfam-org/solarpunk-foundry/.github/actions/npm-madfam-auth@main
+  with:
+    token: ${{ secrets.NPM_MADFAM_TOKEN }}
+    require-publish-capable: "true"   # optional publish dry-run smoke
+```
+
+Requires a repo-level `.npmrc` with `@scope:registry=https://npm.madfam.io` mappings (see janua or dhanam `.npmrc`).
+
 #### Configuration Options
 
 | Input | Default | Description |
