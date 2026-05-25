@@ -42,11 +42,11 @@ The ecosystem is organised into layers. Each platform has its own repo + domain.
 
 | Platform | Repo | Domain | Role |
 |---|---|---|---|
-| **Fortuna** | [`fortuna`](https://github.com/madfam-org/fortuna) | `fortuna.tube`, `api.fortuna.tube` | Problem-intelligence: discovers + validates market gaps. Consumes inference through Selva's `/v1/` proxy (no direct provider credentials). |
-| **ForgeSight** | [`forgesight`](https://github.com/madfam-org/forgesight) | `forgesight.quest`, `app`, `api`, `admin` | Global manufacturing-pricing data. Launch-wedge per the pricing strategy (lowest objection cost, nearshoring tailwind). |
-| **BlueprintTube** | [`blueprint-harvester`](https://github.com/madfam-org/blueprint-harvester) | `blueprint.tube` | 3D-model indexer + analyzer. |
+| **Fortuna** | `fortuna` | `fortuna.tube`, `api.fortuna.tube` | Problem-intelligence: discovers + validates market gaps. Consumes inference through Selva's `/v1/` proxy (no direct provider credentials). |
+| **ForgeSight** | `forgesight` | `forgesight.quest`, `app`, `api`, `admin` | Global manufacturing-pricing data. Launch-wedge per the pricing strategy (lowest objection cost, nearshoring tailwind). |
+| **BlueprintTube** | `blueprint-harvester` | `blueprint.tube` | 3D-model indexer + analyzer. |
 | **BloomScroll** | [`bloom-scroll`](https://github.com/madfam-org/bloom-scroll) | `almanac.solar` | Slow-web content aggregator. |
-| **madfam-crawler** | [`madfam-crawler`](https://github.com/madfam-org/madfam-crawler) | — | Internal scraping-as-a-service (Crawl4AI + ScrapegraphAI). Used by Tezca (DOF/RMF fiscal monitoring) and others. |
+| **madfam-crawler** | `madfam-crawler` | — | Internal scraping-as-a-service (Crawl4AI + ScrapegraphAI). Used by Tezca (DOF/RMF fiscal monitoring) and others. |
 
 ### 🪵 Stem — core standards
 
@@ -54,23 +54,23 @@ The ecosystem is organised into layers. Each platform has its own repo + domain.
 |---|---|---|
 | **geom-core** | [`geom-core`](https://github.com/madfam-org/geom-core) | C++ geometry-analysis core exposed to WASM + Python. Backs Sim4D and any future CAD surface. |
 | **AVALA** | [`avala`](https://github.com/madfam-org/avala) | Learning verification (Mexican EC/CONOCER + DC-3 compliance). |
-| **routecraft** | [`routecraft`](https://github.com/madfam-org/routecraft) | Trip-engine SaaS. **Emits signed `payment.succeeded` events via `@routecraft/payments::emitPaymentSucceeded`** — see §3. |
+| **routecraft** | `routecraft` | Trip-engine SaaS. **Emits signed `payment.succeeded` events via `@routecraft/payments::emitPaymentSucceeded`** — see §3. |
 
 ### 🍎 Fruit — user platforms
 
 | Platform | Repo | Domain | Role |
 |---|---|---|---|
 | **Sim4D** | [`sim4d`](https://github.com/madfam-org/sim4d) | (marketing only, no service domain) | Web-first parametric CAD (B-Rep / NURBS via OCCT.wasm). Rebranded from BrepFlow on 2026-04-17. |
-| **Forj** | [`forj`](https://github.com/madfam-org/forj) | `forj.design`, `app`, `api`, `admin` | Decentralized fabrication storefronts. 3D-first infinite scroller + blockchain-capable NFT minting. |
+| **Forj** | `forj` | `forj.design`, `app`, `api`, `admin` | Decentralized fabrication storefronts. 3D-first infinite scroller + blockchain-capable NFT minting. |
 | **Cotiza Studio** | [`digifab-quoting`](https://github.com/madfam-org/digifab-quoting) | `cotiza.studio`, `api.cotiza.studio` | Automated quoting engine. Emits billing events into Dhanam via `DhanamRelayService`. |
 | **Dhanam** | [`dhanam`](https://github.com/madfam-org/dhanam) | `dhan.am`, `app.dhan.am`, `api.dhan.am`, `admin.dhan.am` | Budget + wealth tracking + **ecosystem billing ledger**. Receiver for all signed MADFAM payment events. |
 | **Coforma Studio** | [`coforma-studio`](https://github.com/madfam-org/coforma-studio) | `coforma.studio` | Customer advisory boards as growth engines. |
 | **Galvana** | — | (unreleased) | Electrochemistry simulation. |
-| **Karafiel** | [`karafiel`](https://github.com/madfam-org/karafiel) | `karafiel.mx`, `app`, `api`, `admin` | Combat-accounting for Mexican tax defense. Consumes Tezca legal data + Dhanam financial data; never duplicates either. |
+| **Karafiel** | `karafiel` | `karafiel.mx`, `app`, `api`, `admin` | Combat-accounting for Mexican tax defense. Consumes Tezca legal data + Dhanam financial data; never duplicates either. |
 | **Tezca** | [`tezca`](https://github.com/madfam-org/tezca) | `tezca.mx`, `api.tezca.mx`, `admin.tezca.mx` | Legal-intelligence platform. Source of truth for Mexican law, changelog, compliance rules. |
 | **Yantra4D** | [`yantra4d`](https://github.com/madfam-org/yantra4d) | `yantra4d.com`, `app`, `api`, `admin` | Parametric design platform + its commons of OpenSCAD/CadQuery projects (gridfinity, rugged-box, custom-msh, etc.). |
 | **Pravara MES** | [`pravara-mes`](https://github.com/madfam-org/pravara-mes) | `mes.madfam.io`, `mes-api.madfam.io` | Manufacturing execution system. |
-| **Rondelio** | [`rondelio`](https://github.com/madfam-org/rondelio) | `rondel.io`, `api`, `play` | Tabletop / TCG game-intelligence cloud. |
+| **Rondelio** | `rondelio` | `rondel.io`, `api`, `play` | Tabletop / TCG game-intelligence cloud. |
 
 ### 🤝 Glue — cross-platform
 
@@ -111,14 +111,14 @@ The ecosystem is organised into layers. Each platform has its own repo + domain.
 
 **Additional platforms / repos** previously un-listed here: `symbiosis-hcm` (HCM — Mexican payroll, Shapley compensation, ONA, wellbeing), `kinship` (E2E-encrypted community logistics/energy platform), `electrochem-sim` (Galvana simulator core), `autoswarm-sandbox` (agent testing sandbox), `Auto-Claude` (automation toolkit), `claudecodeui` (third-party mobile Claude Code UI fork), ~~`aureo-labs`~~ (archived 2026-04-08; removed from labspace checkout and active CI scope).
 
-The authoritative registry lives in [`internal-devops/ecosystem/repo-registry.md`](https://github.com/madfam-org/internal-devops/blob/main/ecosystem/repo-registry.md).
+The authoritative registry lives in `internal-devops/ecosystem/repo-registry.md` in the private internal-devops repo.
 
 ---
 
 ## 2. Live routes
 
 Every production route flows through Cloudflare Tunnel → K8s Service → container. The authoritative mapping lives in
-[`internal-devops/ecosystem/domain-map.md`](https://github.com/madfam-org/internal-devops/blob/main/ecosystem/domain-map.md).
+`internal-devops/ecosystem/domain-map.md` in the private internal-devops repo.
 A sanitized status board exposes the current up/down state at [`status.madfam.io`](https://status.madfam.io).
 
 The Selva rebrand cutover will retire `agents-*.madfam.io` in favour of `*.selva.town`. Until that maintenance window runs, `agents-*` routes remain authoritative.

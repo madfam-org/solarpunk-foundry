@@ -313,9 +313,9 @@ curl http://localhost:4200/api/status | jq '.auth'
 
 ### Pre-Deployment Checklist
 
-- [ ] Janua health: `curl https://api.janua.dev/health`
-- [ ] OIDC discovery: `curl https://api.janua.dev/.well-known/openid-configuration`
-- [ ] JWKS endpoint: `curl https://api.janua.dev/.well-known/jwks.json`
+- [ ] Janua health: `curl "$JANUA_API_URL/health"`
+- [ ] OIDC discovery: `curl "$JANUA_API_URL/.well-known/openid-configuration"`
+- [ ] JWKS endpoint: `curl "$JANUA_API_URL/.well-known/jwks.json"`
 - [ ] Enclii health: `curl https://api.enclii.dev/health`
 - [ ] Cross-service auth: Obtain Janua token, use with Enclii
 
@@ -323,8 +323,8 @@ curl http://localhost:4200/api/status | jq '.auth'
 
 | Service | URL |
 |---------|-----|
-| Janua API | https://api.janua.dev |
-| Janua JWKS | https://api.janua.dev/.well-known/jwks.json |
+| Janua API | `$JANUA_API_URL` |
+| Janua JWKS | `$JANUA_API_URL/.well-known/jwks.json` |
 | Enclii API | https://api.enclii.dev |
 
 ---

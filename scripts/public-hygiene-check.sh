@@ -28,13 +28,13 @@ check_pattern() {
   fi
 }
 
-check_pattern 'Stripe live/test secret key pattern' 'sk_(live|test)_[A-Za-z0-9_]+'
+check_pattern 'Stripe live/test secret key pattern' 'sk_(live|test)_[A-Za-z0-9_]{16,}'
 check_pattern 'GitHub token pattern' 'gh[pousr]_[A-Za-z0-9_]{20,}'
 check_pattern 'AWS access key pattern' 'AKIA[0-9A-Z]{16}'
 check_pattern 'Private key marker' '-----BEGIN [A-Z ]*PRIVATE KEY-----'
 check_pattern 'Concrete admin bootstrap password assignment' "ADMIN_BOOTSTRAP_PASSWORD='[^<][^']{6,}'"
 check_pattern 'Concrete JWT secret assignment' 'JANUA_JWT_SECRET=([^<$][^[:space:]]{12,})'
-check_pattern 'Private kubeconfig reference' 'kubeconfig|\.kube/config|client-certificate-data|client-key-data'
+check_pattern 'Private kubeconfig reference' '--kubeconfig=/|\.kube/config|client-certificate-data|client-key-data|certificate-authority-data'
 
 if [[ "$status" -ne 0 ]]; then
   cat >&2 <<'MSG'

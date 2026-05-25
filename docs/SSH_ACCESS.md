@@ -21,12 +21,7 @@ using the host documented in `internal-devops`. You need:
 
 1. **cloudflared installed**
    - macOS: `brew install cloudflared`
-   - Debian/Ubuntu:
-     ```sh
-     curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | sudo tee /usr/share/keyrings/cloudflare-archive-keyring.gpg
-     echo "deb [signed-by=/usr/share/keyrings/cloudflare-archive-keyring.gpg] https://pkg.cloudflare.com/cloudflared focal main" | sudo tee /etc/apt/sources.list.d/cloudflared.list
-     sudo apt update && sudo apt install cloudflared
-     ```
+  - Debian/Ubuntu: follow Cloudflare's current Linux package instructions, then install `cloudflared`.
 
 2. **Ed25519 SSH key** (`ssh-keygen -t ed25519 -C "your-email@example.com"`)
 

@@ -116,7 +116,7 @@ http://localhost:8025 (Web UI)
 
 | Service | URL | Status |
 |---------|-----|--------|
-| API | https://api.janua.dev/health | ✅ Healthy |
+| API | `<JANUA_API_URL>/health` | Healthy |
 | Website | https://janua.dev | ✅ HTTP 200 |
 | Dashboard | https://app.janua.dev | ✅ HTTP 200 |
 | Admin | https://admin.janua.dev | ✅ HTTP 200 |
