@@ -120,7 +120,7 @@ Each app has its own database in the shared PostgreSQL instance:
 
 All apps use Janua as the central authentication hub:
 
-- **JWT Secret**: `dev-shared-janua-secret-32chars!!`
+- **JWT Secret**: `<JANUA_JWT_SECRET_FROM_LOCAL_ENV>`
 - **Janua API**: http://localhost:4000 (external) / http://janua-api:4000 (internal)
 
 ## Email Testing

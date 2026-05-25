@@ -89,7 +89,7 @@ Our ecosystem grows as a **living system**. Every tool has a specific organ func
 
 ### Adjacent / supporting (public)
 
-`madfam-site` ([madfam.io](https://madfam.io)), `primavera3d` ([primavera3d.pro](https://primavera3d.pro) — our in-house factory portfolio), `ceq` ([ceq.lol](https://ceq.lol) — ComfyUI wrapper), `nuit-one` ([nuit.one](https://nuit.one)), `subtext` ([subtext.live](https://subtext.live)), `accionables-madlab` ([madlab.quest](https://madlab.quest)), `server-auction-tracker` ([sniper.madfam.io](https://sniper.madfam.io) — Hetzner auction intelligence), `autoswarm-sandbox`, `kinship` (E2E-encrypted community logistics platform), `Auto-Claude` automation toolkit, `electrochem-sim` (Galvana simulator core).
+`madfam-site` ([madfam.io](https://madfam.io)), `primavera3d` ([primavera3d.pro](https://primavera3d.pro) — our in-house factory portfolio), `ceq` ([ceq.lol](https://ceq.lol) — ComfyUI wrapper), `nuit-one` ([nuit.one](https://nuit.one)), `subtext` (`subtext.live`), `accionables-madlab` ([madlab.quest](https://madlab.quest)), `server-auction-tracker` ([sniper.madfam.io](https://sniper.madfam.io) — Hetzner auction intelligence), `autoswarm-sandbox`, `kinship` (E2E-encrypted community logistics platform), `Auto-Claude` automation toolkit, `electrochem-sim` (Galvana simulator core).
 
 ### Adjacent / supporting (private)
 
@@ -294,3 +294,7 @@ Predecessor brand: **Aureo Labs** (`aureolabs.dev`) — retired 2026-04-17; ever
 > *"The best way to predict the future is to manufacture it."*
 >
 > **MADFAM** — High tech, deep roots. From bits to atoms.
+
+## Public repository boundary
+
+This repository is public. Live secrets, private infrastructure details, customer data, cost ledgers, sensitive incident detail, and production break-glass material belong in the private `internal-devops` repository or in Vault/ExternalSecrets, not here. See [`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md).

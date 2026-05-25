@@ -50,7 +50,7 @@ Verify Janua is running and exposing OIDC configuration correctly.
 # 1. Start Janua API
 cd ~/labspace/janua/apps/api
 source .venv/bin/activate
-ADMIN_BOOTSTRAP_PASSWORD='test-password' uvicorn app.main:app --port 4100
+ADMIN_BOOTSTRAP_PASSWORD='<TEST_ADMIN_BOOTSTRAP_PASSWORD>' uvicorn app.main:app --port 4100
 
 # 2. Verify health endpoint
 curl -s http://localhost:4100/health | jq
@@ -95,7 +95,7 @@ Verify admin user is created on first startup.
 
 ```bash
 # 1. Start Janua with bootstrap password
-ADMIN_BOOTSTRAP_PASSWORD='SecureTestPass123!' uvicorn app.main:app --port 4100
+ADMIN_BOOTSTRAP_PASSWORD='<TEST_ADMIN_BOOTSTRAP_PASSWORD>' uvicorn app.main:app --port 4100
 
 # 2. Attempt login with admin credentials
 curl -X POST http://localhost:4100/api/v1/auth/login \
@@ -153,7 +153,7 @@ Verify Enclii validates tokens from Janua via JWKS.
 ```bash
 # 1. Start Janua (if not already running)
 cd ~/labspace/janua/apps/api
-ADMIN_BOOTSTRAP_PASSWORD='test-pass' uvicorn app.main:app --port 4100
+ADMIN_BOOTSTRAP_PASSWORD='<TEST_ADMIN_BOOTSTRAP_PASSWORD>' uvicorn app.main:app --port 4100
 
 # 2. Start Enclii in OIDC mode
 cd ~/labspace/enclii/apps/switchyard-api
@@ -313,9 +313,9 @@ curl http://localhost:4200/api/status | jq '.auth'
 
 ### Pre-Deployment Checklist
 
-- [ ] Janua health: `curl https://api.janua.dev/health`
-- [ ] OIDC discovery: `curl https://api.janua.dev/.well-known/openid-configuration`
-- [ ] JWKS endpoint: `curl https://api.janua.dev/.well-known/jwks.json`
+- [ ] Janua health: `curl "$JANUA_API_URL/health"`
+- [ ] OIDC discovery: `curl "$JANUA_API_URL/.well-known/openid-configuration"`
+- [ ] JWKS endpoint: `curl "$JANUA_API_URL/.well-known/jwks.json"`
 - [ ] Enclii health: `curl https://api.enclii.dev/health`
 - [ ] Cross-service auth: Obtain Janua token, use with Enclii
 
@@ -323,8 +323,8 @@ curl http://localhost:4200/api/status | jq '.auth'
 
 | Service | URL |
 |---------|-----|
-| Janua API | https://api.janua.dev |
-| Janua JWKS | https://api.janua.dev/.well-known/jwks.json |
+| Janua API | `$JANUA_API_URL` |
+| Janua JWKS | `$JANUA_API_URL/.well-known/jwks.json` |
 | Enclii API | https://api.enclii.dev |
 
 ---

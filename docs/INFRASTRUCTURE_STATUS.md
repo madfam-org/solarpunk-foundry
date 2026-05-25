@@ -116,7 +116,7 @@ http://localhost:8025 (Web UI)
 
 | Service | URL | Status |
 |---------|-----|--------|
-| API | https://api.janua.dev/health | ✅ Healthy |
+| API | `<JANUA_API_URL>/health` | Healthy |
 | Website | https://janua.dev | ✅ HTTP 200 |
 | Dashboard | https://app.janua.dev | ✅ HTTP 200 |
 | Admin | https://admin.janua.dev | ✅ HTTP 200 |
@@ -227,7 +227,7 @@ enclii local down --keep-infra  # keep databases running
 # Janua API
 DATABASE_URL=postgresql://janua:janua_dev@localhost:5432/janua_dev
 REDIS_URL=redis://localhost:6379/0
-ADMIN_BOOTSTRAP_PASSWORD='YS9V9CK!qmR2s&'
+ADMIN_BOOTSTRAP_PASSWORD='<GENERATE_AT_RUNTIME>'
 
 # Enclii API
 ENCLII_DATABASE_URL=postgres://enclii:enclii_dev@localhost:5432/enclii_dev?sslmode=disable
