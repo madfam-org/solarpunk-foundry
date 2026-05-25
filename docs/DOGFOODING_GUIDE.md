@@ -208,7 +208,7 @@ docker ps | grep madfam
 Verify JWT secret consistency:
 ```bash
 grep -r "JANUA_JWT_SECRET" ~/labspace/*/docker-compose.yml
-# All should show: dev-shared-janua-secret-32chars!!
+# All should show: <JANUA_JWT_SECRET_FROM_LOCAL_ENV>
 ```
 
 ### Port Already in Use

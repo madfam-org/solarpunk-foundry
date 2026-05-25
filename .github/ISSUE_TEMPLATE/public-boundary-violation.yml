@@ -1,0 +1,32 @@
+name: Public Boundary Violation
+description: Report public-repo content that may belong in private ops or secret storage
+title: "public-boundary: <path or topic>"
+labels: ["security", "public-boundary"]
+body:
+  - type: input
+    id: path
+    attributes:
+      label: Path or reference
+      placeholder: docs/example.md:42
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Category
+      options:
+        - Credential-looking value
+        - Private infrastructure detail
+        - Customer or sensitive audit data
+        - Cost or procurement detail
+        - Break-glass operational detail
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: action
+    attributes:
+      label: Required action
+      description: Rotate, redact, move to internal-devops, or document as intentionally public.
+    validations:
+      required: true

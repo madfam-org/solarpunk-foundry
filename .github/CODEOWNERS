@@ -1,0 +1,13 @@
+# Public blueprint repo: protect public/private boundary and shared packages.
+* @madfam-io
+
+/SECURITY.md @madfam-io
+/CONTRIBUTING.md @madfam-io
+/docs/PUBLIC_REPO_BOUNDARY.md @madfam-io
+/docs/ @madfam-io
+/infrastructure/ @madfam-io
+/ops/ @madfam-io
+/packages/ @madfam-io
+/templates/ @madfam-io
+/.github/workflows/ @madfam-io
+/scripts/ @madfam-io

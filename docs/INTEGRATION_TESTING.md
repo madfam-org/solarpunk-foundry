@@ -50,7 +50,7 @@ Verify Janua is running and exposing OIDC configuration correctly.
 # 1. Start Janua API
 cd ~/labspace/janua/apps/api
 source .venv/bin/activate
-ADMIN_BOOTSTRAP_PASSWORD='test-password' uvicorn app.main:app --port 4100
+ADMIN_BOOTSTRAP_PASSWORD='<TEST_ADMIN_BOOTSTRAP_PASSWORD>' uvicorn app.main:app --port 4100
 
 # 2. Verify health endpoint
 curl -s http://localhost:4100/health | jq
@@ -95,7 +95,7 @@ Verify admin user is created on first startup.
 
 ```bash
 # 1. Start Janua with bootstrap password
-ADMIN_BOOTSTRAP_PASSWORD='SecureTestPass123!' uvicorn app.main:app --port 4100
+ADMIN_BOOTSTRAP_PASSWORD='<TEST_ADMIN_BOOTSTRAP_PASSWORD>' uvicorn app.main:app --port 4100
 
 # 2. Attempt login with admin credentials
 curl -X POST http://localhost:4100/api/v1/auth/login \
@@ -153,7 +153,7 @@ Verify Enclii validates tokens from Janua via JWKS.
 ```bash
 # 1. Start Janua (if not already running)
 cd ~/labspace/janua/apps/api
-ADMIN_BOOTSTRAP_PASSWORD='test-pass' uvicorn app.main:app --port 4100
+ADMIN_BOOTSTRAP_PASSWORD='<TEST_ADMIN_BOOTSTRAP_PASSWORD>' uvicorn app.main:app --port 4100
 
 # 2. Start Enclii in OIDC mode
 cd ~/labspace/enclii/apps/switchyard-api

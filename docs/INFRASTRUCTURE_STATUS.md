@@ -227,7 +227,7 @@ enclii local down --keep-infra  # keep databases running
 # Janua API
 DATABASE_URL=postgresql://janua:janua_dev@localhost:5432/janua_dev
 REDIS_URL=redis://localhost:6379/0
-ADMIN_BOOTSTRAP_PASSWORD='YS9V9CK!qmR2s&'
+ADMIN_BOOTSTRAP_PASSWORD='<GENERATE_AT_RUNTIME>'
 
 # Enclii API
 ENCLII_DATABASE_URL=postgres://enclii:enclii_dev@localhost:5432/enclii_dev?sslmode=disable

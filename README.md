@@ -294,3 +294,7 @@ Predecessor brand: **Aureo Labs** (`aureolabs.dev`) — retired 2026-04-17; ever
 > *"The best way to predict the future is to manufacture it."*
 >
 > **MADFAM** — High tech, deep roots. From bits to atoms.
+
+## Public repository boundary
+
+This repository is public. Live secrets, private infrastructure details, customer data, cost ledgers, sensitive incident detail, and production break-glass material belong in the private `internal-devops` repository or in Vault/ExternalSecrets, not here. See [`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md).

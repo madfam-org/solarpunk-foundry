@@ -1,35 +1,48 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT="${1:-.}"
+# Public-repo hygiene guard for solarpunk-foundry.
+# Scans authored public docs for live credential-looking material and private
+# operational detail that belongs in internal-devops.
 
-FORBIDDEN_INFRA_FACTS='37[.]27[.]235[.]104|95[.]217[.]198[.]239|77[.]42[.]89[.]211|89[.]167[.]39[.]247'
-FORBIDDEN_PLACEHOLDERS='CHANGEME[^A-Za-z0-9_-]|REPLACE_WITH_[A-Z0-9_]+'
-SELF_PATH="$ROOT/scripts/public-hygiene-check.sh"
+ROOT="${1:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+cd "$ROOT"
 
-exclude_paths=(
-  -path "$ROOT/.git" -o
-  -path "$ROOT/node_modules" -o
-  -path "$ROOT/.next" -o
-  -path "$ROOT/dist" -o
-  -path "$ROOT/build" -o
-  -path "$ROOT/coverage"
-)
+status=0
 
-echo "Checking public repository hygiene..."
+scan_files() {
+  find . \
+    \( -path './.git' -o -path './node_modules' -o -path './dist' -o -path './build' -o -path './coverage' \) -prune -o \
+    -type f \( -name '*.md' -o -name '*.mdx' -o -name '*.txt' -o -name 'README*' -o -name 'SECURITY*' -o -name 'CONTRIBUTING*' -o -name 'CHANGELOG*' \) -print
+}
 
-if find "$ROOT" \( "${exclude_paths[@]}" \) -prune -o -type f ! -path "$SELF_PATH" -print0 \
-  | xargs -0 grep -nE "$FORBIDDEN_INFRA_FACTS"; then
-  echo "ERROR: public repo contains hard-coded production infrastructure facts."
-  echo "Move sensitive inventory to internal-devops and use placeholders here."
-  exit 1
+check_pattern() {
+  local label="$1"
+  local pattern="$2"
+  local matches
+  matches=$(scan_files | xargs grep -nE "$pattern" 2>/dev/null || true)
+  if [[ -n "$matches" ]]; then
+    printf '\n[public-hygiene] %s\n' "$label" >&2
+    printf '%s\n' "$matches" >&2
+    status=1
+  fi
+}
+
+check_pattern 'Stripe live/test secret key pattern' 'sk_(live|test)_[A-Za-z0-9_]+'
+check_pattern 'GitHub token pattern' 'gh[pousr]_[A-Za-z0-9_]{20,}'
+check_pattern 'AWS access key pattern' 'AKIA[0-9A-Z]{16}'
+check_pattern 'Private key marker' '-----BEGIN [A-Z ]*PRIVATE KEY-----'
+check_pattern 'Concrete admin bootstrap password assignment' "ADMIN_BOOTSTRAP_PASSWORD='[^<][^']{6,}'"
+check_pattern 'Concrete JWT secret assignment' 'JANUA_JWT_SECRET=([^<$][^[:space:]]{12,})'
+check_pattern 'Private kubeconfig reference' 'kubeconfig|\.kube/config|client-certificate-data|client-key-data'
+
+if [[ "$status" -ne 0 ]]; then
+  cat >&2 <<'MSG'
+
+Public hygiene check failed. Rotate first if any value may have been live, then
+replace the public reference with a non-secret placeholder or move the detail to
+internal-devops.
+MSG
 fi
 
-if find "$ROOT" \( "${exclude_paths[@]}" \) -prune -o -type f ! -path "$SELF_PATH" -print0 \
-  | xargs -0 grep -nE "$FORBIDDEN_PLACEHOLDERS"; then
-  echo "ERROR: public repo contains unresolved secret placeholders."
-  echo "Use explicit local-only example values or documented placeholder syntax."
-  exit 1
-fi
-
-echo "Public hygiene check passed."
+exit "$status"

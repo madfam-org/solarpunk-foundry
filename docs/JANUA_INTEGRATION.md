@@ -68,7 +68,7 @@ npm link ../janua/packages/nextjs-sdk
 ```env
 # Port 4100 per PORT_ALLOCATION.md (Janua block: 4100-4199)
 JANUA_API_URL=http://localhost:4100
-JANUA_JWT_SECRET=your-shared-jwt-secret
+JANUA_JWT_SECRET=<JANUA_JWT_SECRET_FROM_SECRET_STORE>
 NEXT_PUBLIC_JANUA_URL=http://localhost:4100
 ```
 
@@ -159,7 +159,7 @@ npm install @janua/typescript-sdk jose
 ```env
 # Port 4100 per PORT_ALLOCATION.md (Janua block: 4100-4199)
 JANUA_API_URL=http://janua-api:4100
-JANUA_JWT_SECRET=your-shared-jwt-secret
+JANUA_JWT_SECRET=<JANUA_JWT_SECRET_FROM_SECRET_STORE>
 ```
 
 #### JWT Strategy (`src/auth/janua-jwt.strategy.ts`)
@@ -305,7 +305,7 @@ pip install python-jose[cryptography] httpx
 ```env
 # Port 4100 per PORT_ALLOCATION.md (Janua block: 4100-4199)
 JANUA_API_URL=http://janua-api:4100
-JANUA_JWT_SECRET=your-shared-jwt-secret
+JANUA_JWT_SECRET=<JANUA_JWT_SECRET_FROM_SECRET_STORE>
 ```
 
 #### Janua Auth Dependency (`app/core/janua_auth.py`)
@@ -435,7 +435,7 @@ All services MUST use the same JWT secret to validate tokens issued by Janua.
 openssl rand -base64 32
 
 # Set in all .env files
-JANUA_JWT_SECRET=your-generated-secret-here
+JANUA_JWT_SECRET=<GENERATE_AT_RUNTIME>
 ```
 
 ### Production (docker-compose.production.yml)
