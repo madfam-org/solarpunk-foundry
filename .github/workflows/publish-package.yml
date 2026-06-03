@@ -23,6 +23,7 @@ jobs:
     env:
       PACKAGE_PATH: ${{ inputs.package_path }}
       DRY_RUN: ${{ inputs.dry_run }}
+      NPM_CONFIG_USERCONFIG: ${{ github.workspace }}/.npmrc
     steps:
       - uses: actions/checkout@v4
 
