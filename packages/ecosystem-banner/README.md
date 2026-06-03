@@ -1,6 +1,6 @@
 # @madfam/ecosystem-banner
 
-A dismissible scrolling stock-ticker banner that surfaces the MADFAM platform ecosystem at the very bottom of every landing app. One `[KEYWORD]: [PLATFORM]` pair at a time, soft cross-fade, 30-day dismiss memory.
+A dismissible stock-ticker banner that surfaces the MADFAM platform ecosystem at the very bottom of every landing app. One `[KEYWORD]: [PLATFORM]` pair at a time, soft cross-fade, 30-day dismiss memory.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
@@ -16,7 +16,7 @@ pnpm add @madfam/ecosystem-banner --registry=https://npm.madfam.io
 npm install @madfam/ecosystem-banner --registry=https://npm.madfam.io
 ```
 
-You'll need a valid `~/.npmrc` with a token for `npm.madfam.io` — see the operator runbook in `internal-devops/runbooks/2026-04-25-npm-madfam-token-rotation.md`.
+You'll need a valid `~/.npmrc` with a token for `npm.madfam.io` — see the operator registry notes in `internal-devops/access/npm-registry.md`.
 
 ## Usage
 
@@ -42,8 +42,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 |---|---|---|---|
 | `platforms` | `EcosystemPlatform[]` | `DEFAULT_ECOSYSTEM_PLATFORMS` | Override the platform list. Each entry: `{ keyword, name, url }`. |
 | `lingerMs` | `number` | `4000` | How long each pair stays visible before fading to the next. |
-| `showBrand` | `boolean` | `true` | Show the "MADFAM ECOSYSTEM" mono chip on the left. Hidden on small viewports regardless. |
-| `className` | `string` | `''` | Optional className appended to the root `<aside>`. |
+| `label` | `string` | `'MADFAM ECOSYSTEM'` | Override the mono chip label on the left. Hidden on small viewports. |
+| `className` | `string` | `''` | Optional className appended to the outer fixed wrapper. |
+| `forceVisible` | `boolean` | `false` | Force-render even if the user dismissed the current banner version. Useful for previews. |
 
 ### Subset for a specific landing
 
@@ -72,26 +73,27 @@ const compliancePlatforms = DEFAULT_ECOSYSTEM_PLATFORMS.filter((p) =>
 
 1. `pnpm add @madfam/ecosystem-banner` (with the registry configured)
 2. Mount `<EcosystemBanner />` at the bottom of your root layout — outside provider trees if you have any client-side state, since the banner has its own SSR-safe local state
-3. If you want a subset of platforms, pass `platforms={...}` (defaults to all 12 confirmed-live)
+3. If you want a subset of platforms, pass `platforms={...}` (defaults to all 13 confirmed-live)
 
-That's it. No CSS to import, no provider to wrap, no theme to extend.
+That's it. No CSS to import, no provider to wrap, no theme to extend, and no Tailwind content scanning required.
 
 ## Development
 
 ```bash
 pnpm install
-pnpm test       # vitest, 17 tests
+pnpm test       # vitest, 20 tests
 pnpm typecheck  # tsc --noEmit
 pnpm build      # tsup → dist/
 ```
 
 ## Publishing
 
-Tag-triggered. Push a tag matching `v*` and CI publishes to `https://npm.madfam.io`:
+Use the `Publish Package` workflow with `package_path=packages/ecosystem-banner` and `dry_run=false`:
 
 ```bash
-npm version patch  # or minor/major
-git push origin main --tags
+gh workflow run publish-package.yml \
+  -f package_path=packages/ecosystem-banner \
+  -f dry_run=false
 ```
 
-The CI workflow uses the `NPM_MADFAM_TOKEN` org Actions secret; rotation procedure lives in `internal-devops/runbooks/2026-04-25-npm-madfam-token-rotation.md`.
+The CI workflow uses the `NPM_MADFAM_TOKEN` org Actions secret; rotation and smoke-test procedure lives in `internal-devops/access/npm-registry.md`.

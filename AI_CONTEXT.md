@@ -26,7 +26,7 @@
 | Registry config | `.npmrc` |
 | UI package | `packages/ui/` |
 | Core constants | `packages/core/` |
-| Publish helper | `scripts/publish-ui.sh` |
+| Publish helper | `.github/workflows/publish-package.yml`, `scripts/publish-ui.sh` |
 | Local linking | `scripts/link-ecosystem.sh` |
 | Enclii service spec | `.enclii.yml` |
 | Orchestration script | `ops/bin/madfam.sh` (→ symlinked to `../madfam` at labspace root) |
@@ -48,6 +48,7 @@ All published to `https://npm.madfam.io`:
 | `@madfam/constants` | Shared enums |
 | `@madfam/error-boundary` | Next.js route boundary components |
 | `@madfam/types` | Cross-repo shared types (events, webhooks, attribution) |
+| `@madfam/ecosystem-banner` | Self-styled bottom ticker for ecosystem offers/links |
 
 ## Ports (local dev only)
 

@@ -10,10 +10,179 @@ import { DEFAULT_ECOSYSTEM_PLATFORMS, type EcosystemPlatform } from './platforms
  * dismissed.
  */
 const STORAGE_KEY = 'madfam_ecosystem_banner';
-const BANNER_VERSION = 1;
+const BANNER_VERSION = 2;
 const DISMISS_DAYS = 30;
 const LINGER_MS_DEFAULT = 4000;
 const FADE_MS = 280;
+
+const BANNER_STYLES = `
+  @keyframes ecosystemBannerIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .madfam-eco-banner {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 40;
+    background: rgb(15 23 42 / 95%);
+    color: rgb(241 245 249);
+    border-top: 1px solid rgb(30 41 59);
+    backdrop-filter: blur(4px);
+    animation: ecosystemBannerIn 300ms ease-out both;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    box-sizing: border-box;
+  }
+
+  .madfam-eco-banner *,
+  .madfam-eco-banner *::before,
+  .madfam-eco-banner *::after {
+    box-sizing: border-box;
+  }
+
+  .madfam-eco-banner__inner {
+    width: 100%;
+    max-width: 1536px;
+    height: 28px;
+    margin-inline: auto;
+    padding-inline: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    line-height: 1;
+  }
+
+  .madfam-eco-banner__label {
+    display: none;
+    flex-shrink: 0;
+    border-radius: 2px;
+    background: rgb(30 41 59);
+    padding: 2px 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .025em;
+    color: rgb(148 163 184);
+    white-space: nowrap;
+  }
+
+  .madfam-eco-banner__separator {
+    display: none;
+    color: rgb(71 85 105);
+  }
+
+  .madfam-eco-banner__live {
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .madfam-eco-banner__link {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: baseline;
+    gap: 6px;
+    color: rgb(241 245 249);
+    text-decoration: none;
+    opacity: 1;
+    transition: opacity 200ms ease, color 150ms ease;
+    vertical-align: baseline;
+  }
+
+  .madfam-eco-banner__link:hover {
+    color: rgb(255 255 255);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .madfam-eco-banner__link:focus-visible,
+  .madfam-eco-banner__dismiss:focus-visible {
+    outline: 2px solid rgb(148 163 184);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .madfam-eco-banner__link--fading {
+    opacity: 0;
+  }
+
+  .madfam-eco-banner__keyword {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    text-transform: uppercase;
+    letter-spacing: .025em;
+    color: rgb(148 163 184);
+  }
+
+  .madfam-eco-banner__name {
+    flex-shrink: 0;
+    font-weight: 600;
+  }
+
+  .madfam-eco-banner__external {
+    margin-left: 4px;
+    color: rgb(100 116 139);
+  }
+
+  .madfam-eco-banner__dismiss {
+    position: relative;
+    margin-right: -4px;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: rgb(148 163 184);
+    cursor: pointer;
+    transition: color 150ms ease;
+    font: inherit;
+  }
+
+  .madfam-eco-banner__dismiss:hover {
+    color: rgb(241 245 249);
+  }
+
+  .madfam-eco-banner__dismiss-glyph {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  @media (min-width: 640px) {
+    .madfam-eco-banner__inner {
+      font-size: 12px;
+    }
+
+    .madfam-eco-banner__label,
+    .madfam-eco-banner__separator {
+      display: inline-block;
+    }
+
+    .madfam-eco-banner__dismiss {
+      width: 28px;
+      height: 28px;
+      flex-basis: 28px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .madfam-eco-banner,
+    .madfam-eco-banner__link,
+    .madfam-eco-banner__dismiss {
+      animation: none;
+      transition: none;
+    }
+  }
+`;
 
 interface DismissalRecord {
   v: number;
@@ -134,35 +303,17 @@ export function EcosystemBanner({
       role="complementary"
       aria-label="MADFAM ecosystem ticker"
       className={[
-        // Fixed bottom, full-width, very small height.
-        'fixed inset-x-0 bottom-0 z-40',
-        // Brand-neutral chrome.
-        'bg-slate-900/95 text-slate-100',
-        'border-t border-slate-800 backdrop-blur-sm',
-        // Entry animation: fade + slide-up 4px on first paint only.
-        'animate-[ecosystemBannerIn_300ms_ease-out_both]',
+        'madfam-eco-banner',
         className ?? '',
       ].join(' ')}
-      style={{
-        // Keep the banner clear of the iOS home-indicator on mobile.
-        paddingBottom: 'env(safe-area-inset-bottom, 0)',
-      }}
     >
-      <style>{`
-        @keyframes ecosystemBannerIn {
-          from { opacity: 0; transform: translateY(4px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
-      <div className="mx-auto flex h-7 max-w-screen-2xl items-center gap-2 px-3 text-[11px] leading-none sm:text-xs">
-        <span
-          aria-hidden="true"
-          className="hidden shrink-0 rounded-sm bg-slate-800 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-slate-400 sm:inline-block"
-        >
+      <style>{BANNER_STYLES}</style>
+      <div className="madfam-eco-banner__inner">
+        <span aria-hidden="true" className="madfam-eco-banner__label">
           {label}
         </span>
 
-        <span aria-hidden="true" className="hidden text-slate-600 sm:inline">
+        <span aria-hidden="true" className="madfam-eco-banner__separator">
           /
         </span>
 
@@ -171,26 +322,22 @@ export function EcosystemBanner({
           interrupting (polite). We give it a stable container and swap inner
           content so AT can pick up updates reliably.
         */}
-        <div aria-live="polite" aria-atomic="true" className="min-w-0 flex-1 truncate">
+        <div aria-live="polite" aria-atomic="true" className="madfam-eco-banner__live">
           <a
             href={current.url}
             target="_blank"
             rel="noopener noreferrer"
             title={fullPair}
             className={[
-              'inline-flex items-baseline gap-1.5 transition-opacity duration-200',
-              'text-slate-100 hover:text-white hover:underline underline-offset-2',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:rounded-sm',
-              fading ? 'opacity-0' : 'opacity-100',
-              // prefers-reduced-motion: still fades (no transform) — by design.
-              'motion-reduce:transition-none',
+              'madfam-eco-banner__link',
+              fading ? 'madfam-eco-banner__link--fading' : '',
             ].join(' ')}
           >
-            <span className="font-mono uppercase tracking-wide text-slate-400">
+            <span className="madfam-eco-banner__keyword">
               {current.keyword}:
             </span>
-            <span className="font-semibold">{current.name}</span>
-            <span aria-hidden="true" className="ml-1 text-slate-500">
+            <span className="madfam-eco-banner__name">{current.name}</span>
+            <span aria-hidden="true" className="madfam-eco-banner__external">
               ↗
             </span>
           </a>
@@ -200,15 +347,9 @@ export function EcosystemBanner({
           type="button"
           onClick={handleDismiss}
           aria-label="Dismiss MADFAM ecosystem ticker"
-          className={[
-            // 44x44 touch target via padding; visual glyph is ~16px.
-            'relative -mr-1 flex h-11 w-11 shrink-0 items-center justify-center',
-            'sm:h-7 sm:w-7',
-            'text-slate-400 hover:text-slate-100 transition-colors',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:rounded-sm',
-          ].join(' ')}
+          className="madfam-eco-banner__dismiss"
         >
-          <span aria-hidden="true" className="text-base leading-none">
+          <span aria-hidden="true" className="madfam-eco-banner__dismiss-glyph">
             ×
           </span>
         </button>

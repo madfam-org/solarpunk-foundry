@@ -1,0 +1,80 @@
+name: Publish Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      package_path:
+        description: Workspace package directory to publish
+        required: true
+        default: packages/ecosystem-banner
+        type: string
+      dry_run:
+        description: Validate publish without uploading the package
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      PACKAGE_PATH: ${{ inputs.package_path }}
+      DRY_RUN: ${{ inputs.dry_run }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate package path
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "${PACKAGE_PATH}" in
+            packages/*) ;;
+            *)
+              echo "::error::package_path must be under packages/"
+              exit 1
+              ;;
+          esac
+          test -f "${PACKAGE_PATH}/package.json"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Configure npm.madfam.io auth
+        uses: ./.github/actions/npm-madfam-auth
+        env:
+          NPM_MADFAM_TOKEN: ${{ secrets.NPM_MADFAM_TOKEN }}
+        with:
+          require-publish-capable: "true"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck package
+        run: pnpm -C "${PACKAGE_PATH}" typecheck
+
+      - name: Test package
+        run: pnpm -C "${PACKAGE_PATH}" test
+
+      - name: Build package
+        run: pnpm -C "${PACKAGE_PATH}" build
+
+      - name: Pack dry-run
+        working-directory: ${{ inputs.package_path }}
+        run: npm pack --dry-run
+
+      - name: Publish package
+        if: ${{ inputs.dry_run == false }}
+        working-directory: ${{ inputs.package_path }}
+        run: npm publish --access restricted --registry https://npm.madfam.io/
+
+      - name: Dry-run complete
+        if: ${{ inputs.dry_run == true }}
+        run: echo "Dry run completed; package was not published."

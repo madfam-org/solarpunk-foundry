@@ -104,12 +104,12 @@ describe('EcosystemBanner', () => {
       const raw = window.localStorage.getItem(STORAGE_KEY);
       expect(raw).not.toBeNull();
       const parsed = JSON.parse(raw!);
-      expect(parsed.v).toBe(1);
+      expect(parsed.v).toBe(2);
       expect(typeof parsed.dismissed_at).toBe('number');
     });
 
     it('does not render if a recent dismissal exists for the current banner version', () => {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: 1, dismissed_at: Date.now() }));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: 2, dismissed_at: Date.now() }));
       render(<EcosystemBanner />);
       expect(screen.queryByRole('link')).not.toBeInTheDocument();
     });
@@ -118,7 +118,7 @@ describe('EcosystemBanner', () => {
       const thirtyOneDaysAgo = Date.now() - 31 * 24 * 60 * 60 * 1000;
       window.localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ v: 1, dismissed_at: thirtyOneDaysAgo })
+        JSON.stringify({ v: 2, dismissed_at: thirtyOneDaysAgo })
       );
       render(<EcosystemBanner />);
       expect(screen.getByRole('link')).toBeInTheDocument();
@@ -131,7 +131,7 @@ describe('EcosystemBanner', () => {
     });
 
     it('forceVisible bypasses dismissal checks', () => {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: 1, dismissed_at: Date.now() }));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: 2, dismissed_at: Date.now() }));
       render(<EcosystemBanner forceVisible />);
       expect(screen.getByRole('link')).toBeInTheDocument();
     });
@@ -170,12 +170,30 @@ describe('EcosystemBanner', () => {
   });
 
   describe('platform list invariants', () => {
+    it('keeps the default live platform count explicit', () => {
+      expect(DEFAULT_ECOSYSTEM_PLATFORMS).toHaveLength(13);
+    });
+
     it('every default platform has a non-empty keyword, name, and https url', () => {
       for (const p of DEFAULT_ECOSYSTEM_PLATFORMS) {
         expect(p.keyword.length).toBeGreaterThan(0);
         expect(p.name.length).toBeGreaterThan(0);
         expect(p.url).toMatch(/^https:\/\//);
       }
+    });
+
+    it('uses the canonical Forge Sight landing domain', () => {
+      const forgesight = DEFAULT_ECOSYSTEM_PLATFORMS.find((p) => p.name === 'Forgesight');
+      expect(forgesight?.url).toBe('https://forgesight.quest');
+    });
+  });
+
+  describe('Packaged styles', () => {
+    it('ships scoped CSS so consumers do not need Tailwind content scanning', () => {
+      render(<EcosystemBanner />);
+      const style = document.querySelector('style');
+      expect(style?.textContent).toContain('.madfam-eco-banner');
+      expect(style?.textContent).toContain('prefers-reduced-motion');
     });
   });
 });
