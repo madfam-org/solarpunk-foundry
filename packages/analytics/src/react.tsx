@@ -13,7 +13,7 @@ import React, {
   useCallback,
   type ReactNode,
 } from 'react';
-import { analytics, type AnalyticsConfig, type UserIdentity, MADFAM_EVENTS } from './index';
+import { analytics, type AnalyticsConfig, type UserIdentity } from './index';
 
 // ============================================
 // Context

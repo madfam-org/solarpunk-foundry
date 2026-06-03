@@ -79,7 +79,7 @@ declare const licenseHeaders: {
     readonly Proprietary: string;
 };
 declare const socialLinks: {
-    readonly github: "https://github.com/madfam-io";
+    readonly github: "https://github.com/madfam-org";
     readonly twitter: "https://twitter.com/madfam_io";
     readonly linkedin: "https://linkedin.com/company/madfam";
 };

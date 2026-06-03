@@ -11,7 +11,7 @@ var brand = {
   /** Primary website */
   website: "https://madfam.io",
   /** GitHub organization */
-  github: "https://github.com/madfam-io"
+  github: "https://github.com/madfam-org"
 };
 var colors = {
   /**
@@ -221,5 +221,5 @@ var zIndex = {
 };
 
 export { brand, breakpoints, colors, gradients, radii, shadows, spacing, typography, zIndex };
-//# sourceMappingURL=out.js.map
+//# sourceMappingURL=brand.js.map
 //# sourceMappingURL=brand.js.map

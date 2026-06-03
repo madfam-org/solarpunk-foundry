@@ -61,5 +61,5 @@ function formatCurrency(amount, currency, options) {
 }
 
 export { currencies, currencyMetadata, defaultCurrency, fallbackCurrency, formatCurrency, getCurrencyMetadata, isValidCurrency, parseCurrency };
-//# sourceMappingURL=out.js.map
+//# sourceMappingURL=currencies.js.map
 //# sourceMappingURL=currencies.js.map

@@ -46,5 +46,5 @@ function getLocaleMetadata(locale) {
 }
 
 export { defaultLocale, fallbackLocale, getLocaleMetadata, isValidLocale, localeMetadata, locales, parseLocale };
-//# sourceMappingURL=out.js.map
+//# sourceMappingURL=locales.js.map
 //# sourceMappingURL=locales.js.map

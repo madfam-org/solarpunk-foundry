@@ -1,93 +1,12 @@
 # Solarpunk Foundry - MADFAM Monorepo & Shared Infrastructure
 # Deploy via Enclii
 
-apiVersion: enclii.dev/v1
-kind: Service
-metadata:
-  name: solarpunk-foundry
-  project: madfam-platform
-  description: MADFAM shared infrastructure, SDKs, and developer tools
+# Solarpunk Foundry deployable surface.
+#
+# This repository is the public shared-package monorepo. It does not currently
+# contain an app deployable; do not declare one here until its Dockerfile exists.
+# The live deployable owned by this repo is the private Verdaccio registry.
 
-spec:
-  # This is primarily a monorepo with shared packages
-  # The main deployable is the analytics dashboard and API
-  build:
-    type: dockerfile
-    dockerfile: apps/analytics/Dockerfile
-    context: .
-    source:
-      git:
-        repository: https://github.com/madfam-org/solarpunk-foundry
-        branch: main
-        autoDeploy: true
-
-  runtime:
-    port: 3000
-    replicas: 2
-    resources:
-      requests:
-        cpu: "200m"
-        memory: "256Mi"
-      limits:
-        cpu: "1000m"
-        memory: "512Mi"
-
-    healthCheck: /api/health
-    readinessProbe:
-      path: /api/health
-      initialDelaySeconds: 15
-      periodSeconds: 5
-    livenessProbe:
-      path: /api/health
-      initialDelaySeconds: 30
-      periodSeconds: 10
-
-  env:
-    - name: PORT
-      value: "3000"
-    - name: NODE_ENV
-      value: production
-
-    - name: DATABASE_URL
-      valueFrom:
-        secretKeyRef:
-          name: analytics-secrets
-          key: database-url
-
-    - name: REDIS_URL
-      valueFrom:
-        secretKeyRef:
-          name: analytics-secrets
-          key: redis-url
-
-    # Janua SSO
-    - name: NEXT_PUBLIC_JANUA_URL
-      value: https://auth.madfam.io
-    - name: NEXT_PUBLIC_JANUA_CLIENT_ID
-      value: madfam-analytics
-    - name: JANUA_CLIENT_SECRET
-      valueFrom:
-        secretKeyRef:
-          name: analytics-secrets
-          key: janua-client-secret
-
-  domains:
-    - domain: analytics.madfam.io
-      tls: true
-      tlsIssuer: cloudflare
-
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 8
-    targetCPUUtilizationPercentage: 70
-
-  slo:
-    availability: 99.95
-    latencyP95: 50
-    errorRate: 0.1
-
----
 # Verdaccio NPM Registry
 apiVersion: enclii.dev/v1
 kind: Service

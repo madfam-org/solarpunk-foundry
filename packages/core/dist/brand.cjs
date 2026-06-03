@@ -13,7 +13,7 @@ var brand = {
   /** Primary website */
   website: "https://madfam.io",
   /** GitHub organization */
-  github: "https://github.com/madfam-io"
+  github: "https://github.com/madfam-org"
 };
 var colors = {
   /**
@@ -231,5 +231,5 @@ exports.shadows = shadows;
 exports.spacing = spacing;
 exports.typography = typography;
 exports.zIndex = zIndex;
-//# sourceMappingURL=out.js.map
+//# sourceMappingURL=brand.cjs.map
 //# sourceMappingURL=brand.cjs.map

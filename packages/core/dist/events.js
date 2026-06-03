@@ -45,5 +45,5 @@ var analyticsEvents = {
 };
 
 export { analyticsEvents, eventCategories };
-//# sourceMappingURL=out.js.map
+//# sourceMappingURL=events.js.map
 //# sourceMappingURL=events.js.map

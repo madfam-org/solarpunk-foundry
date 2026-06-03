@@ -261,7 +261,7 @@ class Analytics {
    */
   async reloadFeatureFlags(): Promise<void> {
     if (!this.initialized || this.config?.disabled) return;
-    await posthog.reloadFeatureFlagsAsync();
+    posthog.reloadFeatureFlags();
   }
 
   /**

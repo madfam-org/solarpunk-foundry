@@ -54,5 +54,5 @@ exports.isValidLocale = isValidLocale;
 exports.localeMetadata = localeMetadata;
 exports.locales = locales;
 exports.parseLocale = parseLocale;
-//# sourceMappingURL=out.js.map
+//# sourceMappingURL=locales.cjs.map
 //# sourceMappingURL=locales.cjs.map

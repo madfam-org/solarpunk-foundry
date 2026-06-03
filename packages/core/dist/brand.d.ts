@@ -18,7 +18,7 @@ declare const brand: {
     /** Primary website */
     readonly website: "https://madfam.io";
     /** GitHub organization */
-    readonly github: "https://github.com/madfam-io";
+    readonly github: "https://github.com/madfam-org";
 };
 declare const colors: {
     /**

@@ -116,7 +116,7 @@ var licenseHeaders = {
  */`.trim()
 };
 var socialLinks = {
-  github: "https://github.com/madfam-io",
+  github: "https://github.com/madfam-org",
   twitter: "https://twitter.com/madfam_io",
   linkedin: "https://linkedin.com/company/madfam"
   // Add more as needed
@@ -140,5 +140,5 @@ var footerLinks = {
 };
 
 export { company, compliance, contacts, footerLinks, getCopyrightNotice, legalUrls, licenseHeaders, socialLinks };
-//# sourceMappingURL=out.js.map
+//# sourceMappingURL=legal.js.map
 //# sourceMappingURL=legal.js.map

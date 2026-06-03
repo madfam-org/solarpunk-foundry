@@ -70,5 +70,5 @@ exports.formatCurrency = formatCurrency;
 exports.getCurrencyMetadata = getCurrencyMetadata;
 exports.isValidCurrency = isValidCurrency;
 exports.parseCurrency = parseCurrency;
-//# sourceMappingURL=out.js.map
+//# sourceMappingURL=currencies.cjs.map
 //# sourceMappingURL=currencies.cjs.map

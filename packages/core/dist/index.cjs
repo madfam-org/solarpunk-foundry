@@ -13,7 +13,7 @@ var brand = {
   /** Primary website */
   website: "https://madfam.io",
   /** GitHub organization */
-  github: "https://github.com/madfam-io"
+  github: "https://github.com/madfam-org"
 };
 var colors = {
   /**
@@ -428,7 +428,7 @@ var products = {
     layer: "soil",
     domain: "enclii.dev",
     repo: "enclii",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "AGPL-3.0",
     defaultPort: 4200,
     isPublic: true,
@@ -441,7 +441,7 @@ var products = {
     layer: "soil",
     domain: "janua.dev",
     repo: "janua",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "AGPL-3.0",
     defaultPort: 4100,
     isPublic: true,
@@ -457,7 +457,7 @@ var products = {
     layer: "roots",
     domain: "fortuna.tube",
     repo: "fortuna",
-    githubOrg: "aureo-labs",
+    githubOrg: "madfam",
     license: "Proprietary",
     defaultPort: 4400,
     isPublic: false,
@@ -470,7 +470,7 @@ var products = {
     layer: "roots",
     domain: "forgesight.quest",
     repo: "forgesight",
-    githubOrg: "aureo-labs",
+    githubOrg: "madfam",
     license: "Proprietary",
     defaultPort: 4300,
     isPublic: false,
@@ -483,7 +483,7 @@ var products = {
     layer: "roots",
     domain: "blueprint.tube",
     repo: "blueprint-harvester",
-    githubOrg: "aureo-labs",
+    githubOrg: "madfam",
     license: "Proprietary",
     isPublic: false,
     phase: 2
@@ -495,7 +495,7 @@ var products = {
     layer: "roots",
     domain: "bloomscroll.app",
     repo: "bloom-scroll",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "MPL-2.0",
     isPublic: true,
     phase: 2
@@ -510,7 +510,7 @@ var products = {
     layer: "stem",
     domain: "geom-core.dev",
     repo: "geom-core",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "MPL-2.0",
     isPublic: true,
     phase: 3
@@ -522,7 +522,7 @@ var products = {
     layer: "stem",
     domain: "avala.studio",
     repo: "avala",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "AGPL-3.0",
     isPublic: true,
     phase: 3
@@ -537,7 +537,7 @@ var products = {
     layer: "fruit",
     domain: "sim4d.io",
     repo: "sim4d",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "MPL-2.0",
     defaultPort: 5173,
     isPublic: true,
@@ -550,7 +550,7 @@ var products = {
     layer: "fruit",
     domain: "forj.design",
     repo: "forj",
-    githubOrg: "aureo-labs",
+    githubOrg: "madfam",
     license: "Proprietary",
     isPublic: false,
     phase: 4
@@ -562,7 +562,7 @@ var products = {
     layer: "fruit",
     domain: "cotiza.studio",
     repo: "digifab-quoting",
-    githubOrg: "aureo-labs",
+    githubOrg: "madfam",
     license: "Proprietary",
     defaultPort: 4500,
     isPublic: false,
@@ -575,7 +575,7 @@ var products = {
     layer: "fruit",
     domain: "dhan.am",
     repo: "dhanam",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "AGPL-3.0",
     defaultPort: 4700,
     isPublic: true,
@@ -588,7 +588,7 @@ var products = {
     layer: "fruit",
     domain: "coforma.studio",
     repo: "coforma-studio",
-    githubOrg: "aureo-labs",
+    githubOrg: "madfam",
     license: "Proprietary",
     isPublic: false,
     phase: 1
@@ -600,7 +600,7 @@ var products = {
     layer: "fruit",
     domain: "galvana.io",
     repo: "electrochem-sim",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "MPL-2.0",
     isPublic: true,
     phase: 5
@@ -615,7 +615,7 @@ var products = {
     layer: "fruit",
     domain: "primavera3d.com",
     repo: "primavera3d",
-    githubOrg: "madfam-io",
+    githubOrg: "madfam-org",
     license: "Proprietary",
     isPublic: false,
     phase: 4
@@ -767,7 +767,7 @@ var licenseHeaders = {
  */`.trim()
 };
 var socialLinks = {
-  github: "https://github.com/madfam-io",
+  github: "https://github.com/madfam-org",
   twitter: "https://twitter.com/madfam_io",
   linkedin: "https://linkedin.com/company/madfam"
   // Add more as needed
@@ -836,5 +836,5 @@ exports.socialLinks = socialLinks;
 exports.spacing = spacing;
 exports.typography = typography;
 exports.zIndex = zIndex;
-//# sourceMappingURL=out.js.map
+//# sourceMappingURL=index.cjs.map
 //# sourceMappingURL=index.cjs.map

@@ -264,7 +264,28 @@ export class ResilientAuthClient {
       throw new Error(`Janua auth failed: ${response.status}`);
     }
 
-    return response.json();
+    const body = await response.json();
+
+    if (!this.isAuthResponse(body)) {
+      throw new Error('Janua auth returned an invalid response');
+    }
+
+    return body;
+  }
+
+  private isAuthResponse(value: unknown): value is AuthResponse {
+    if (typeof value !== 'object' || value === null) {
+      return false;
+    }
+
+    const response = value as Partial<AuthResponse>;
+    return (
+      typeof response.token === 'string' &&
+      typeof response.expiresIn === 'number' &&
+      typeof response.userId === 'string' &&
+      (response.metadata === undefined ||
+        (typeof response.metadata === 'object' && response.metadata !== null))
+    );
   }
 
   /**

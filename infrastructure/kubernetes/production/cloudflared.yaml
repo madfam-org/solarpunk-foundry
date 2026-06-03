@@ -146,6 +146,7 @@ spec:
               port: 2000
             initialDelaySeconds: 10
             periodSeconds: 10
+            timeoutSeconds: 3
             failureThreshold: 3
 
           readinessProbe:
@@ -154,6 +155,7 @@ spec:
               port: 2000
             initialDelaySeconds: 5
             periodSeconds: 5
+            timeoutSeconds: 3
             failureThreshold: 3
 
           volumeMounts:

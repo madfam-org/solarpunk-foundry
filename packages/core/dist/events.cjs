@@ -48,5 +48,5 @@ var analyticsEvents = {
 
 exports.analyticsEvents = analyticsEvents;
 exports.eventCategories = eventCategories;
-//# sourceMappingURL=out.js.map
+//# sourceMappingURL=events.cjs.map
 //# sourceMappingURL=events.cjs.map

@@ -2,7 +2,7 @@
  * React and Next.js Sentry configuration
  */
 
-import React, { Component, type ReactNode, type ErrorInfo } from 'react';
+import { Component, type ReactNode, type ErrorInfo } from 'react';
 import type { SentryConfig } from './types';
 import {
   shouldEnableSentry,
@@ -82,9 +82,7 @@ export async function initSentryReact(
   };
 
   const integrations = [
-    Sentry.browserTracingIntegration({
-      tracePropagationTargets: ['localhost', /^https:\/\/.*\.madfam\.io/],
-    }),
+    Sentry.browserTracingIntegration(),
     ...(config.integrations || []),
   ];
 
@@ -100,6 +98,7 @@ export async function initSentryReact(
 
   Sentry.init({
     ...defaultConfig,
+    tracePropagationTargets: ['localhost', /^https:\/\/.*\.madfam\.io/],
     integrations,
     beforeSend: (event, hint) => {
       if (config.beforeSend) {
@@ -110,7 +109,7 @@ export async function initSentryReact(
         event.request.data = sanitizeErrorData(event.request.data);
       }
       if (event.contexts) {
-        event.contexts = sanitizeErrorData(event.contexts);
+        event.contexts = sanitizeErrorData(event.contexts) as typeof event.contexts;
       }
 
       return event;

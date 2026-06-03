@@ -4,7 +4,7 @@ export default defineConfig({
   entry: {
     index: 'src/index.ts',
     react: 'src/react.tsx',
-    next: 'src/next.ts',
+    next: 'src/next.tsx',
   },
   format: ['cjs', 'esm'],
   dts: true,

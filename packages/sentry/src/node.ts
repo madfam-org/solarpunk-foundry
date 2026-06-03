@@ -79,7 +79,6 @@ export async function initSentryNode(config: Partial<SentryConfig> = {}): Promis
     integrations: [
       Sentry.httpIntegration(),
       Sentry.expressIntegration(),
-      Sentry.nodeProfilingIntegration(),
       ...(config.integrations || []),
     ],
     beforeSend: (event, hint) => {
@@ -91,7 +90,7 @@ export async function initSentryNode(config: Partial<SentryConfig> = {}): Promis
         event.request.data = sanitizeErrorData(event.request.data);
       }
       if (event.contexts) {
-        event.contexts = sanitizeErrorData(event.contexts);
+        event.contexts = sanitizeErrorData(event.contexts) as typeof event.contexts;
       }
 
       return event;

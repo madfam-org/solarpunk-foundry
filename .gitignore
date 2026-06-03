@@ -6,7 +6,7 @@ dist/
 *.tsbuildinfo
 
 # Package manager
-pnpm-lock.yaml
+packages/**/pnpm-lock.yaml
 package-lock.json
 yarn.lock
 

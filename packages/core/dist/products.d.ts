@@ -64,7 +64,7 @@ interface Product {
     /** GitHub repository name */
     repo: string;
     /** GitHub organization */
-    githubOrg: "madfam-io" | "aureo-labs";
+    githubOrg: "madfam-org" | "madfam";
     /** License type */
     license: LicenseType;
     /** Default port for local development */
@@ -86,7 +86,7 @@ declare const products: {
         readonly layer: "soil";
         readonly domain: "enclii.dev";
         readonly repo: "enclii";
-        readonly githubOrg: "madfam-io";
+        readonly githubOrg: "madfam-org";
         readonly license: "AGPL-3.0";
         readonly defaultPort: 4200;
         readonly isPublic: true;
@@ -99,7 +99,7 @@ declare const products: {
         readonly layer: "soil";
         readonly domain: "janua.dev";
         readonly repo: "janua";
-        readonly githubOrg: "madfam-io";
+        readonly githubOrg: "madfam-org";
         readonly license: "AGPL-3.0";
         readonly defaultPort: 4100;
         readonly isPublic: true;
@@ -112,7 +112,7 @@ declare const products: {
         readonly layer: "roots";
         readonly domain: "fortuna.tube";
         readonly repo: "fortuna";
-        readonly githubOrg: "aureo-labs";
+        readonly githubOrg: "madfam";
         readonly license: "Proprietary";
         readonly defaultPort: 4400;
         readonly isPublic: false;
@@ -125,7 +125,7 @@ declare const products: {
         readonly layer: "roots";
         readonly domain: "forgesight.quest";
         readonly repo: "forgesight";
-        readonly githubOrg: "aureo-labs";
+        readonly githubOrg: "madfam";
         readonly license: "Proprietary";
         readonly defaultPort: 4300;
         readonly isPublic: false;
@@ -138,7 +138,7 @@ declare const products: {
         readonly layer: "roots";
         readonly domain: "blueprint.tube";
         readonly repo: "blueprint-harvester";
-        readonly githubOrg: "aureo-labs";
+        readonly githubOrg: "madfam";
         readonly license: "Proprietary";
         readonly isPublic: false;
         readonly phase: 2;
@@ -150,7 +150,7 @@ declare const products: {
         readonly layer: "roots";
         readonly domain: "bloomscroll.app";
         readonly repo: "bloom-scroll";
-        readonly githubOrg: "madfam-io";
+        readonly githubOrg: "madfam-org";
         readonly license: "MPL-2.0";
         readonly isPublic: true;
         readonly phase: 2;
@@ -162,7 +162,7 @@ declare const products: {
         readonly layer: "stem";
         readonly domain: "geom-core.dev";
         readonly repo: "geom-core";
-        readonly githubOrg: "madfam-io";
+        readonly githubOrg: "madfam-org";
         readonly license: "MPL-2.0";
         readonly isPublic: true;
         readonly phase: 3;
@@ -174,7 +174,7 @@ declare const products: {
         readonly layer: "stem";
         readonly domain: "avala.studio";
         readonly repo: "avala";
-        readonly githubOrg: "madfam-io";
+        readonly githubOrg: "madfam-org";
         readonly license: "AGPL-3.0";
         readonly isPublic: true;
         readonly phase: 3;
@@ -186,7 +186,7 @@ declare const products: {
         readonly layer: "fruit";
         readonly domain: "sim4d.io";
         readonly repo: "sim4d";
-        readonly githubOrg: "madfam-io";
+        readonly githubOrg: "madfam-org";
         readonly license: "MPL-2.0";
         readonly defaultPort: 5173;
         readonly isPublic: true;
@@ -199,7 +199,7 @@ declare const products: {
         readonly layer: "fruit";
         readonly domain: "forj.design";
         readonly repo: "forj";
-        readonly githubOrg: "aureo-labs";
+        readonly githubOrg: "madfam";
         readonly license: "Proprietary";
         readonly isPublic: false;
         readonly phase: 4;
@@ -211,7 +211,7 @@ declare const products: {
         readonly layer: "fruit";
         readonly domain: "cotiza.studio";
         readonly repo: "digifab-quoting";
-        readonly githubOrg: "aureo-labs";
+        readonly githubOrg: "madfam";
         readonly license: "Proprietary";
         readonly defaultPort: 4500;
         readonly isPublic: false;
@@ -224,7 +224,7 @@ declare const products: {
         readonly layer: "fruit";
         readonly domain: "dhan.am";
         readonly repo: "dhanam";
-        readonly githubOrg: "madfam-io";
+        readonly githubOrg: "madfam-org";
         readonly license: "AGPL-3.0";
         readonly defaultPort: 4700;
         readonly isPublic: true;
@@ -237,7 +237,7 @@ declare const products: {
         readonly layer: "fruit";
         readonly domain: "coforma.studio";
         readonly repo: "coforma-studio";
-        readonly githubOrg: "aureo-labs";
+        readonly githubOrg: "madfam";
         readonly license: "Proprietary";
         readonly isPublic: false;
         readonly phase: 1;
@@ -249,7 +249,7 @@ declare const products: {
         readonly layer: "fruit";
         readonly domain: "galvana.io";
         readonly repo: "electrochem-sim";
-        readonly githubOrg: "madfam-io";
+        readonly githubOrg: "madfam-org";
         readonly license: "MPL-2.0";
         readonly isPublic: true;
         readonly phase: 5;
@@ -261,7 +261,7 @@ declare const products: {
         readonly layer: "fruit";
         readonly domain: "primavera3d.com";
         readonly repo: "primavera3d";
-        readonly githubOrg: "madfam-io";
+        readonly githubOrg: "madfam-org";
         readonly license: "Proprietary";
         readonly isPublic: false;
         readonly phase: 4;
@@ -274,7 +274,7 @@ type ProductId = keyof typeof products;
 /**
  * Array of all product IDs
  */
-declare const productIds: ("enclii" | "janua" | "fortuna" | "forgesight" | "blueprintTube" | "bloomScroll" | "geomCore" | "avala" | "sim4d" | "forj" | "cotiza" | "dhanam" | "coforma" | "galvana" | "primavera3d")[];
+declare const productIds: ProductId[];
 /**
  * Get products by ecosystem layer
  */
