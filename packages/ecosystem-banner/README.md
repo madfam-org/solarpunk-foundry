@@ -44,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 | `lingerMs` | `number` | `4000` | How long each pair stays visible before fading to the next. |
 | `label` | `string` | `'MADFAM ECOSYSTEM'` | Override the mono chip label on the left. Hidden on small viewports. |
 | `className` | `string` | `''` | Optional className appended to the outer fixed wrapper. |
+| `testId` | `string` | `undefined` | Optional `data-testid` for host-app E2E selectors. |
 | `forceVisible` | `boolean` | `false` | Force-render even if the user dismissed the current banner version. Useful for previews. |
 
 ### Subset for a specific landing
@@ -81,7 +82,7 @@ That's it. No CSS to import, no provider to wrap, no theme to extend, and no Tai
 
 ```bash
 pnpm install
-pnpm test       # vitest, 20 tests
+pnpm test       # vitest, 21 tests
 pnpm typecheck  # tsc --noEmit
 pnpm build      # tsup → dist/
 ```

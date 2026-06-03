@@ -10,7 +10,7 @@ import { DEFAULT_ECOSYSTEM_PLATFORMS, type EcosystemPlatform } from './platforms
  * dismissed.
  */
 const STORAGE_KEY = 'madfam_ecosystem_banner';
-const BANNER_VERSION = 2;
+const BANNER_VERSION = 3;
 const DISMISS_DAYS = 30;
 const LINGER_MS_DEFAULT = 4000;
 const FADE_MS = 280;
@@ -218,6 +218,8 @@ export interface EcosystemBannerProps {
   className?: string;
   /** Override host display label (defaults to "MADFAM ECOSYSTEM"). */
   label?: string;
+  /** Optional test id for host-app E2E selectors. */
+  testId?: string;
   /** Force-render even if dismissed — useful for previews/Storybook. */
   forceVisible?: boolean;
 }
@@ -241,6 +243,7 @@ export function EcosystemBanner({
   lingerMs = LINGER_MS_DEFAULT,
   className,
   label = 'MADFAM ECOSYSTEM',
+  testId,
   forceVisible = false,
 }: EcosystemBannerProps) {
   // Stable list — we filter empty/invalid entries defensively so a downstream
@@ -302,6 +305,7 @@ export function EcosystemBanner({
     <div
       role="complementary"
       aria-label="MADFAM ecosystem ticker"
+      data-testid={testId}
       className={[
         'madfam-eco-banner',
         className ?? '',
