@@ -65,7 +65,7 @@ Two code paths today:
 | blueprint-harvester | 8000, 3000 | No |
 | digifab-quoting | 3000 | No |
 | pravara-mes | 3000 | No |
-| autoswarm-office | 3000 | No |
+| selva-office | 3000 | No |
 
 **Reality:** 3 out of 23 production services follow the scheme. The
 other 20 use framework defaults.

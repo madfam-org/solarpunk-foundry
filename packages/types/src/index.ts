@@ -20,7 +20,7 @@ export interface ServiceEventEnvelope<T = unknown> {
 export type MadfamService =
   | 'dhanam'
   | 'phynd-crm'
-  | 'autoswarm-office'
+  | 'selva-office'
   | 'karafiel'
   | 'tezca'
   | 'janua'

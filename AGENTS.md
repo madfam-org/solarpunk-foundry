@@ -231,7 +231,7 @@ Do not add to solarpunk-foundry:
 - Literal secrets → belong nowhere (use ExternalSecret or Vault)
 - Strategic / competitive / pricing briefs → `internal-devops/ecosystem/`
 - Ecosystem audits with revenue / customer / cost data → `internal-devops/audits/`
-- Per-session remediation plans or cutover runbooks → `internal-devops/runbooks/` or the consuming repo (e.g. `autoswarm-office/REBRAND_CUTOVER_RUNBOOK.md`)
+- Per-session remediation plans or cutover runbooks → `internal-devops/runbooks/` or the consuming repo (e.g. `selva-office/REBRAND_CUTOVER_RUNBOOK.md`)
 
 If you find any of these leaking in, sanitize via the 2026-04-17 pattern (see git history of `docs/SSH_ACCESS.md`).
 

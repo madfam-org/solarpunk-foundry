@@ -85,11 +85,11 @@ Our ecosystem grows as a **living system**. Every tool has a specific organ func
 | Platform | Role | Domain |
 |---|---|---|
 | **PhyndCRM** | "Synthetic Single Pane of Glass" — federates data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts the ecosystem attribution receiver. | [phynd.app](https://phynd.app) |
-| **Selva** *(née AutoSwarm Office, rename cutover pending)* | AI workforce + office simulator. Owns the `/v1/` OpenAI-compatible inference proxy every ecosystem service routes through. Hosts revenue-loop probe, HITL-confidence ledger, `nexus-api` orchestration. | `agents.madfam.io` → `selva.town` post-cutover |
+| **Selva** *(née Selva Office, rename cutover pending)* | AI workforce + office simulator. Owns the `/v1/` OpenAI-compatible inference proxy every ecosystem service routes through. Hosts revenue-loop probe, HITL-confidence ledger, `nexus-api` orchestration. | `agents.madfam.io` → `selva.town` post-cutover |
 
 ### Adjacent / supporting (public)
 
-`madfam-site` ([madfam.io](https://madfam.io)), `primavera3d` ([primavera3d.pro](https://primavera3d.pro) — our in-house factory portfolio), `ceq` ([ceq.lol](https://ceq.lol) — ComfyUI wrapper), `nuit-one` ([nuit.one](https://nuit.one)), `subtext` (`subtext.live`), `accionables-madlab` ([madlab.quest](https://madlab.quest)), `server-auction-tracker` ([sniper.madfam.io](https://sniper.madfam.io) — Hetzner auction intelligence), `autoswarm-sandbox`, `kinship` (E2E-encrypted community logistics platform), `Auto-Claude` automation toolkit, `electrochem-sim` (Galvana simulator core).
+`madfam-site` ([madfam.io](https://madfam.io)), `primavera3d` ([primavera3d.pro](https://primavera3d.pro) — our in-house factory portfolio), `ceq` ([ceq.lol](https://ceq.lol) — ComfyUI wrapper), `nuit-one` ([nuit.one](https://nuit.one)), `subtext` (`subtext.live`), `accionables-madlab` ([madlab.quest](https://madlab.quest)), `server-auction-tracker` ([sniper.madfam.io](https://sniper.madfam.io) — Hetzner auction intelligence), `selva-sandbox`, `kinship` (E2E-encrypted community logistics platform), `Auto-Claude` automation toolkit, `electrochem-sim` (Galvana simulator core).
 
 ### Adjacent / supporting (private)
 
@@ -97,7 +97,7 @@ Our ecosystem grows as a **living system**. Every tool has a specific organ func
 
 ### Integration-path repos (private)
 
-Will fold into an existing platform rather than exist standalone long-term: `penny` → autoswarm-office, `zavlo` → karafiel, `panopticon-mx` → tezca (public), `social-sentiment-monitor` → fortuna.
+Will fold into an existing platform rather than exist standalone long-term: `penny` → selva-office, `zavlo` → karafiel, `panopticon-mx` → tezca (public), `social-sentiment-monitor` → fortuna.
 
 ### Repo visibility
 

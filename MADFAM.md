@@ -77,7 +77,7 @@ The ecosystem is organised into layers. Each platform has its own repo + domain.
 | Platform | Repo | Domain | Role |
 |---|---|---|---|
 | **PhyndCRM** | [`phynd-crm`](https://github.com/madfam-org/phynd-crm) | `phynd.app` | Phygital CRM — "Synthetic Single Pane of Glass" federating data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts ecosystem-attribution receivers — see §3. |
-| **AutoSwarm Office** (→ **Selva**) | [`autoswarm-office`](https://github.com/madfam-org/autoswarm-office) | `agents.madfam.io` *(→ `selva.town` post-cutover)* | AI workforce / office simulator. Owns the `/v1/` OpenAI-compatible inference proxy that every ecosystem service routes its LLM calls through. Also hosts the revenue-loop probe, HITL-confidence ledger, and `nexus-api` orchestration engine. **Rename gated by `REBRAND_CUTOVER_RUNBOOK.md`.** |
+| **Selva Office** (→ **Selva**) | [`selva-office`](https://github.com/madfam-org/selva-office) | `agents.madfam.io` *(→ `selva.town` post-cutover)* | AI workforce / office simulator. Owns the `/v1/` OpenAI-compatible inference proxy that every ecosystem service routes its LLM calls through. Also hosts the revenue-loop probe, HITL-confidence ledger, and `nexus-api` orchestration engine. **Rename gated by `REBRAND_CUTOVER_RUNBOOK.md`.** |
 
 ### Other live platforms
 
@@ -90,7 +90,7 @@ The ecosystem is organised into layers. Each platform has its own repo + domain.
 | `subtext` | `subtext.live` | (standalone) |
 | `accionables-madlab` | `madlab.quest` | (standalone) |
 | `factlas` | `factl.as`, `factlas.com` | Geospatial facts engine |
-| `penny` | `penny.onl` | → to merge into autoswarm-office post-Selva cutover |
+| `penny` | `penny.onl` | → to merge into selva-office post-Selva cutover |
 | `zavlo` | — | Financial ops engine → to integrate into Karafiel (CFDI loyalty) |
 | `panopticon-mx` | — | Mexican state structure → to integrate into Tezca |
 | `social-sentiment-monitor` | — | Social signals → to integrate into Fortuna |
@@ -109,7 +109,7 @@ The ecosystem is organised into layers. Each platform has its own repo + domain.
 
 **19 repos are PRIVATE**, not public as earlier versions of this doc implied: `blueprint-harvester`, `factlas`, `forgesight`, `forj`, `fortuna`, `gh-backups`, `internal-devops`, `karafiel`, `legal-ops`, `madfam-crawler`, `proton-bridge-pipeline`, `rondelio`, `routecraft`, `social-sentiment-monitor`, `stratum-tcg`, `symbiosis-hcm`, `tablaco`, `turnbased-engine`, `zavlo`.
 
-**Additional platforms / repos** previously un-listed here: `symbiosis-hcm` (HCM — Mexican payroll, Shapley compensation, ONA, wellbeing), `kinship` (E2E-encrypted community logistics/energy platform), `electrochem-sim` (Galvana simulator core), `autoswarm-sandbox` (agent testing sandbox), `Auto-Claude` (automation toolkit), `claudecodeui` (third-party mobile Claude Code UI fork), ~~`aureo-labs`~~ (archived 2026-04-08; removed from labspace checkout and active CI scope).
+**Additional platforms / repos** previously un-listed here: `symbiosis-hcm` (HCM — Mexican payroll, Shapley compensation, ONA, wellbeing), `kinship` (E2E-encrypted community logistics/energy platform), `electrochem-sim` (Galvana simulator core), `selva-sandbox` (agent testing sandbox), `Auto-Claude` (automation toolkit), `claudecodeui` (third-party mobile Claude Code UI fork), ~~`aureo-labs`~~ (archived 2026-04-08; removed from labspace checkout and active CI scope).
 
 The authoritative registry lives in `internal-devops/ecosystem/repo-registry.md` in the private internal-devops repo.
 
@@ -177,7 +177,7 @@ All of the following live **only** in the private `internal-devops` repo:
 | Incident response, disaster recovery, secret rotation, node replacement | `runbooks/*.md` |
 | Domain map (authoritative) | `ecosystem/domain-map.md` |
 | Repo registry (authoritative) | `ecosystem/repo-registry.md` |
-| Selva cutover sanitized infra reference | `ecosystem/autoswarm-office-infra.md` → becomes `ecosystem/selva-infra.md` post-cutover |
+| Selva cutover sanitized infra reference | `ecosystem/selva-office-infra.md` → becomes `ecosystem/selva-infra.md` post-cutover |
 | GTM strategy | `ecosystem/gtm-strategy.md` |
 | Compliance deadlines (SAT, DOF, etc.) | `ecosystem/compliance-deadlines.md` |
 | Hardware evaluation + Hetzner auction checklist | `hardware/*.md` |
@@ -196,8 +196,8 @@ These are the only open items blocking full ecosystem stability. Detail + runboo
 
 | Gate | Runbook | Owner | Notes |
 |---|---|---|---|
-| **Selva rebrand cutover** (the last unmerged branch in all of labspace) | `autoswarm-office/REBRAND_CUTOVER_RUNBOOK.md` | DevOps on-call | 3,982 files / ~1M insertions on `chore/2026-04-17-madfam-ecosystem-sweep`. Requires Vault-path migration, K8s namespace swap, DNS cutover to `*.selva.town`, 30-min soak, and a rollback branch. |
-| **Karafiel `AUTOSWARM_*` → `SELVA_*` secret rename** | `karafiel/infra/k8s/production/RENAME_AUTOSWARM_TO_SELVA_SECRETS.md` | karafiel-prod operator | Code path silent-no-ops when envs missing, so non-urgent. Gate after Selva cutover. |
+| **Selva rebrand cutover** (the last unmerged branch in all of labspace) | `selva-office/REBRAND_CUTOVER_RUNBOOK.md` | DevOps on-call | 3,982 files / ~1M insertions on `chore/2026-04-17-madfam-ecosystem-sweep`. Requires Vault-path migration, K8s namespace swap, DNS cutover to `*.selva.town`, 30-min soak, and a rollback branch. |
+| **Karafiel `SELVA_*` → `SELVA_*` secret rename** | `karafiel/infra/k8s/production/RENAME_SELVA_TO_SELVA_SECRETS.md` | karafiel-prod operator | Code path silent-no-ops when envs missing, so non-urgent. Gate after Selva cutover. |
 | **24 overdue secret rotations** + **rotation-monitor CronJob apply** | `internal-devops/runbooks/secret-rotation.md` | SRE | Apple OAuth 137d overdue is oldest. |
 | **HashiCorp Vault deploy** | `enclii/infra/argocd/apps/vault.yaml` + `scripts/migrate-secrets-to-vault.sh` | SRE | Manifests staged, never run. |
 | **MXN flywheel activation (H1–H7)** | `internal-devops/ecosystem/remediation-plan-2026-04.md` §H | ecosystem-ops | H1 (Anthropic credits or DeepInfra bridge) is the sole blocker for the autonomous revenue loop. |
