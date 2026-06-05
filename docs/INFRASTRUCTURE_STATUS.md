@@ -31,11 +31,15 @@ enclii local down
 
 ### Production Access
 
-```bash
-# SSH host and node inventory are documented in internal-devops.
-ssh <SSH_ZERO_TRUST_HOST>
-sudo kubectl get pods -A --kubeconfig=/etc/rancher/k3s/k3s.yaml
-```
+Use Enclii web, API, or CLI for routine production inventory and health checks.
+Private SSH targets, kubeconfig paths, and break-glass commands are documented
+only in `internal-devops`.
+
+### Boundary and roadmap checkpoint
+
+- Boundary contract: `docs/PUBLIC_REPO_BOUNDARY.md`
+- Public documents keep shape/status and placeholders only; private operational runbooks, credentials, and incident detail stay in `internal-devops`.
+- During roadmap updates, verify any new public entries remain pointer-first and redacted.
 
 ---
 
@@ -170,25 +174,13 @@ http://localhost:8025 (Web UI)
 | Service | Status | Purpose |
 |---------|--------|---------|
 | cloudflared.service | Active | Cloudflare tunnel connector |
-| janua-port-forward.service | Active | kubectl port-forward for API |
+| janua-port-forward.service | Active | Janua API forwarding service; private wiring in `internal-devops` |
 
 ### Kubernetes Resources
 
-```bash
-# Namespaces
-kubectl get ns
-# - janua
-# - enclii
-# - kube-system
-
-# All pods
-kubectl get pods -A
-
-# Janua services
-kubectl get svc -n janua
-# NAME        TYPE        CLUSTER-IP     PORT(S)
-# janua-api   ClusterIP   <cluster-internal-ip>   4100/TCP
-```
+Use Enclii-facing inventory and health surfaces for routine resource checks.
+This public status file keeps only sanitized namespace and service shape; raw
+cluster commands and private provider wiring remain in `internal-devops`.
 
 ---
 

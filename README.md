@@ -7,6 +7,13 @@
 - **Status board:** [status.madfam.io](https://status.madfam.io)
 - **This repo's role:** Ecosystem orchestration hub — port registry, `@madfam/*` shared packages, local dogfooding scaffolds, public-safe architecture narrative. This README is the **public-facing single source of truth** for the MADFAM vision, platform map, and development contract.
 
+## Repository boundary
+
+- This is the **public ecosystem contract** for MADFAM.
+- Sensitive production topology, access mechanisms, costs, and incident internals stay in `internal-devops`.
+- This repo should hold ecosystem intent, stable contracts, and sanitized references only.
+- For the boundary policy used by all repos, read [`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md).
+
 ---
 
 ## 🌍 I. Vision

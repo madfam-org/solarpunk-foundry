@@ -36,7 +36,7 @@ spec:
         fsGroup: 10001
       containers:
       - name: janua-api
-        image: janua/api:latest
+        image: ghcr.io/madfam-org/janua-api@sha256:13982832c5bb7a10bb190f2d64ade48a831245d5c1304a351557acd00c3d259b
         imagePullPolicy: Always
         ports:
         - containerPort: 8000

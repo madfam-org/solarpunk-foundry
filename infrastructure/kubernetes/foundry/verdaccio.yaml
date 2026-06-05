@@ -150,7 +150,7 @@ spec:
     spec:
       containers:
         - name: verdaccio
-          image: verdaccio/verdaccio:5
+          image: verdaccio/verdaccio@sha256:9d622d256378c6e7ae09f384774ee2f0f8ac67a66c066db55921a0b7218abc4c
           ports:
             - containerPort: 4873
               name: http

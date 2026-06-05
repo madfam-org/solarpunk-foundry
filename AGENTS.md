@@ -42,6 +42,14 @@ redirect and should not become the source of truth again.
 - `llms-full.txt` is the durable full-context map and operating contract.
 - `AGENTS.md` is canonical for agent instructions.
 - `CLAUDE.md` redirects here for Claude compatibility.
+- `docs/PUBLIC_REPO_BOUNDARY.md` defines public-facing documentation limits.
+
+## Repo-boundary contract
+
+- `internal-devops` is the private canonical source for production topology, secrets, and operational runbooks.
+- This repo is the public ecosystem contract; keep sensitive operational, pricing, and audit context out.
+- Use redacted summaries and canonical links when cross-referencing private context.
+- If uncertain, place operational detail in `internal-devops` and keep only a short pointer here.
 
 ## Maintenance
 

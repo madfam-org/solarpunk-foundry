@@ -14,6 +14,14 @@
 | **Ingress** | Cloudflare Tunnel (zero-trust, no exposed node ports) |
 | **Node inventory + IPs + hardware specs + costs** | See `internal-devops/infrastructure/nodes.md` (private) |
 
+## Roadmap alignment
+
+Boundary checkpoint:
+
+- Repo boundary contract is `docs/PUBLIC_REPO_BOUNDARY.md`.
+- Ecosystem-wide public-safe context lives here; private operational detail remains in `internal-devops`.
+- This document is a public status slice and does not include credentials, private host identifiers, raw provider wiring, or incident internals.
+
 ---
 
 ## Service Status

@@ -11,6 +11,7 @@ on:
       - 'CONTRIBUTING*'
       - 'CHANGELOG*'
       - 'scripts/public-hygiene-check.sh'
+      - 'scripts/boundary-checkpoint-check.sh'
       - '.github/workflows/public-hygiene.yml'
   push:
     branches: [main]
@@ -23,6 +24,7 @@ on:
       - 'CONTRIBUTING*'
       - 'CHANGELOG*'
       - 'scripts/public-hygiene-check.sh'
+      - 'scripts/boundary-checkpoint-check.sh'
       - '.github/workflows/public-hygiene.yml'
 
 permissions:
@@ -33,5 +35,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Check public repository hygiene
         run: ./scripts/public-hygiene-check.sh
+      - name: Check boundary checkpoints
+        run: bash ./scripts/boundary-checkpoint-check.sh

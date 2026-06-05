@@ -111,7 +111,7 @@ spec:
 
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:2024.1.0
+          image: cloudflare/cloudflared@sha256:e6aba36f47b17ba21c62404f826e7be09f089dc0d8978732752204a75d9d7375
           imagePullPolicy: IfNotPresent
 
           args:
