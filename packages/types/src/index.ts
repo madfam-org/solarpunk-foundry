@@ -20,6 +20,7 @@ export interface ServiceEventEnvelope<T = unknown> {
 export type MadfamService =
   | 'dhanam'
   | 'phynd-crm'
+  | 'routecraft'
   | 'selva-office'
   | 'karafiel'
   | 'tezca'
@@ -188,6 +189,47 @@ export interface CotizaWebhookPayload {
     | 'invoice.paid';
   data: Record<string, unknown>;
   timestamp: string;
+}
+
+// ─── Signed Payment-Attribution Fan-out (RouteCraft → receivers) ─────────────
+//
+// RouteCraft emits these to Dhanam (POST /v1/billing/madfam-events) and
+// PhyndCRM (POST /api/webhooks/routecraft). Transport security (the
+// `x-madfam-signature` HMAC, 5-min replay window, idempotency by `event_id`)
+// is implemented in `@madfam/webhook-attribution`. These types define the
+// event *shape*; that package defines verification.
+
+/** Header carrying `t=<unix-seconds>,v1=<hex hmac-sha256>` over `` `${t}.${rawBody}` ``. */
+export const MADFAM_SIGNATURE_HEADER = 'x-madfam-signature' as const;
+
+export type RouteCraftEventType =
+  | 'payment.succeeded'
+  | 'payment.refunded';
+
+/**
+ * Inbound event delivered by RouteCraft's `emitPaymentSucceeded` fan-out.
+ * Receivers must be idempotent by `event_id` and verify the signature header.
+ */
+export interface MadfamPaymentEvent {
+  event_id: string;
+  event_type: RouteCraftEventType;
+  occurred_at: string; // ISO 8601
+  source: 'routecraft';
+  payment: {
+    provider: BillingProvider;
+    provider_payment_id: string;
+    amount: number; // minor units (centavos / cents)
+    currency: string;
+    invoice_id?: string;
+  };
+  /** Attribution context for source-agent credit (PhyndCRM conversions). */
+  attribution?: {
+    org_id?: string;
+    customer_id?: string;
+    source_agent?: string;
+    campaign_id?: string;
+  };
+  metadata?: Record<string, unknown>;
 }
 
 // ─── Redis Streams Constants ─────────────────────────────────────────────────

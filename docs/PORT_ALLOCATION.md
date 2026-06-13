@@ -70,6 +70,16 @@ Two code paths today:
 **Reality:** 3 out of 23 production services follow the scheme. The
 other 20 use framework defaults.
 
+> **Clarification (2026-06-13):** Dhanam's local-dev port is referenced
+> inconsistently across docs (`4200` in the table above, `4700/4701` in
+> `DOGFOODING_GUIDE.md`, `3030/3031` in `ops/local/`). The source of truth for
+> local ports is `enclii local up` plus each repo's own `.enclii.yml` / dev
+> script; the 4xxx blocks remain aspirational and partially overlapping
+> (e.g. `4700` is already claimed by fortuna, phynd-crm, and rondelio).
+> **Production is unaffected** (namespace + hostname routing). Tracking item:
+> choose a non-overlapping local port for Dhanam and align its `.enclii.yml`
+> + `DOGFOODING_GUIDE.md` in a dedicated change (not a billing PR).
+
 ---
 
 ## Aspirational scheme (original design)
