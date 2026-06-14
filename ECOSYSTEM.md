@@ -81,8 +81,11 @@ below is embedded here so this document stands alone.
   to OpenAI / Anthropic from service code.
 - **CORS**: explicit allowlist per service. Wildcards are banned
   (audit 2026-04-23 H2/H5/H6).
-- **Images**: `@sha256:`-pinned in every manifest. Kyverno fail-closes on
-  `:latest` or mutable tags.
+- **Images**: active production overlays should pin first-party images by
+  digest. Ecosystem-wide digest pinning is not yet uniform, and Kyverno
+  coverage is currently audit/limited-enforce rather than a universal
+  fail-close control. Verify the current source of truth in
+  `internal-devops/ECOSYSTEM.md` before making enforcement claims.
 - **Onboarding**: `POST /v1/admin/onboard` on switchyard-api creates
   namespace, ArgoCD app, Cloudflare tunnel routes, Janua client, and
   NetworkPolicies in one shot. See `enclii/docs/guides/ONBOARDING_GUIDE.md`.
