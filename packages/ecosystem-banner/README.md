@@ -1,10 +1,10 @@
 # @madfam/ecosystem-banner
 
-A dismissible stock-ticker banner that surfaces the MADFAM platform ecosystem at the very bottom of every landing app. One `[KEYWORD]: [PLATFORM]` pair at a time, soft cross-fade, 30-day dismiss memory.
+A dismissible stock-ticker banner that surfaces the MADFAM platform ecosystem at the very bottom of every landing app. All platform names scroll horizontally in a continuous marquee (NYSE-style).
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
-│  MADFAM ECOSYSTEM    BUDGETING & WEALTH: Dhanam                  ×   │
+│  MADFAM ECOSYSTEM /  BUDGETING: Dhanam ↗  AI OFFICE: Selva ↗  …  × │
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -41,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `platforms` | `EcosystemPlatform[]` | `DEFAULT_ECOSYSTEM_PLATFORMS` | Override the platform list. Each entry: `{ keyword, name, url }`. |
-| `lingerMs` | `number` | `4000` | How long each pair stays visible before fading to the next. |
+| `marqueeDurationSec` | `number` | `platforms.length × 6` | Seconds for one full marquee loop. |
 | `label` | `string` | `'MADFAM ECOSYSTEM'` | Override the mono chip label on the left. Hidden on small viewports. |
 | `className` | `string` | `''` | Optional className appended to the outer fixed wrapper. |
 | `testId` | `string` | `undefined` | Optional `data-testid` for host-app E2E selectors. |
