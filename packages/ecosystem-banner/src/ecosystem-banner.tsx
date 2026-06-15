@@ -1,24 +1,27 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'react';
 
 import { DEFAULT_ECOSYSTEM_PLATFORMS, type EcosystemPlatform } from './platforms';
 
 /**
  * Schema-versioned dismissal record. Bump `BANNER_VERSION` when the platform
- * list materially changes so users see the new lineup even if previously
- * dismissed.
+ * list or ticker behaviour materially changes.
  */
 const STORAGE_KEY = 'madfam_ecosystem_banner';
-const BANNER_VERSION = 3;
+const BANNER_VERSION = 4;
 const DISMISS_DAYS = 30;
-const LINGER_MS_DEFAULT = 4000;
-const FADE_MS = 280;
+const MARQUEE_SECONDS_PER_PLATFORM = 6;
 
 const BANNER_STYLES = `
   @keyframes ecosystemBannerIn {
     from { opacity: 0; transform: translateY(4px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes ecosystemMarquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
 
   .madfam-eco-banner {
@@ -73,60 +76,62 @@ const BANNER_STYLES = `
     color: rgb(71 85 105);
   }
 
-  .madfam-eco-banner__live {
+  .madfam-eco-banner__viewport {
     min-width: 0;
     flex: 1 1 auto;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
   }
 
-  .madfam-eco-banner__link {
+  .madfam-eco-banner__track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    gap: 28px;
+    animation: ecosystemMarquee var(--madfam-marquee-duration, 78s) linear infinite;
+    will-change: transform;
+  }
+
+  .madfam-eco-banner__item {
     display: inline-flex;
-    max-width: 100%;
+    flex-shrink: 0;
     align-items: baseline;
     gap: 6px;
     color: rgb(241 245 249);
     text-decoration: none;
-    opacity: 1;
-    transition: opacity 200ms ease, color 150ms ease;
+    transition: color 150ms ease;
     vertical-align: baseline;
   }
 
-  .madfam-eco-banner__link:hover {
+  .madfam-eco-banner__item:hover {
     color: rgb(255 255 255);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
-  .madfam-eco-banner__link:focus-visible,
+  .madfam-eco-banner__item:focus-visible,
   .madfam-eco-banner__dismiss:focus-visible {
     outline: 2px solid rgb(148 163 184);
     outline-offset: 2px;
     border-radius: 2px;
   }
 
-  .madfam-eco-banner__link--fading {
-    opacity: 0;
-  }
-
   .madfam-eco-banner__keyword {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     text-transform: uppercase;
     letter-spacing: .025em;
     color: rgb(148 163 184);
+    white-space: nowrap;
   }
 
   .madfam-eco-banner__name {
     flex-shrink: 0;
     font-weight: 600;
+    white-space: nowrap;
   }
 
   .madfam-eco-banner__external {
-    margin-left: 4px;
+    margin-left: 2px;
     color: rgb(100 116 139);
   }
 
@@ -176,10 +181,16 @@ const BANNER_STYLES = `
 
   @media (prefers-reduced-motion: reduce) {
     .madfam-eco-banner,
-    .madfam-eco-banner__link,
     .madfam-eco-banner__dismiss {
       animation: none;
       transition: none;
+    }
+
+    .madfam-eco-banner__track {
+      animation: none;
+      flex-wrap: wrap;
+      width: 100%;
+      gap: 8px 16px;
     }
   }
 `;
@@ -212,8 +223,8 @@ function isStillDismissed(record: DismissalRecord | null): boolean {
 export interface EcosystemBannerProps {
   /** Override the platform list (e.g. show only a subset on a niche landing). */
   platforms?: readonly EcosystemPlatform[];
-  /** How long each pair lingers before transitioning, in ms. Default 4000. */
-  lingerMs?: number;
+  /** Seconds for one full marquee loop across the duplicated track. */
+  marqueeDurationSec?: number;
   /** Optional className for the outer fixed wrapper. */
   className?: string;
   /** Override host display label (defaults to "MADFAM ECOSYSTEM"). */
@@ -225,39 +236,28 @@ export interface EcosystemBannerProps {
 }
 
 /**
- * MADFAM Ecosystem Banner — sticky, very small, NYSE-style ticker.
+ * MADFAM Ecosystem Banner — sticky bottom NYSE-style marquee ticker.
  *
- * - Renders one `[KEYWORD]: [PLATFORM NAME]` pair at a time, cycling on a
- *   `lingerMs` cadence with a soft cross-fade.
- * - Respects `prefers-reduced-motion`: fades only (default behaviour anyway —
- *   we never horizontally scroll) and keeps cadence identical so screen
- *   readers receive predictable updates via `aria-live="polite"`.
- * - Dismissible. Dismissal persists 30 days in `localStorage` keyed by
- *   `BANNER_VERSION`; bump the version constant to force re-display after a
- *   meaningful lineup change.
- * - Brand-neutral chrome (slate-900 bg, slate-100 text) so it does not clash
- *   with embedding landings.
+ * - Continuous horizontal scroll of every `[KEYWORD]: [PLATFORM]` pair.
+ * - Dismissible for 30 days (versioned localStorage).
+ * - Brand-neutral chrome for embedding on any landing.
  */
 export function EcosystemBanner({
   platforms = DEFAULT_ECOSYSTEM_PLATFORMS,
-  lingerMs = LINGER_MS_DEFAULT,
+  marqueeDurationSec,
   className,
   label = 'MADFAM ECOSYSTEM',
   testId,
   forceVisible = false,
 }: EcosystemBannerProps) {
-  // Stable list — we filter empty/invalid entries defensively so a downstream
-  // typo doesn't render a blank ticker.
   const list = useMemo(() => platforms.filter((p) => p.keyword && p.name && p.url), [platforms]);
+  const track = useMemo(() => [...list, ...list], [list]);
+  const durationSec =
+    marqueeDurationSec ?? Math.max(30, list.length * MARQUEE_SECONDS_PER_PLATFORM);
 
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [index, setIndex] = useState(0);
-  const [fading, setFading] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // SSR-safe visibility check.
   useEffect(() => {
     setMounted(true);
     if (forceVisible) {
@@ -269,47 +269,31 @@ export function EcosystemBanner({
     setVisible(!dismissed);
   }, [forceVisible, list.length]);
 
-  // Cycle through platforms.
-  useEffect(() => {
-    if (!visible || list.length <= 1) return;
-    intervalRef.current = setInterval(() => {
-      setFading(true);
-      fadeTimerRef.current = setTimeout(() => {
-        setIndex((i) => (i + 1) % list.length);
-        setFading(false);
-      }, FADE_MS);
-    }, lingerMs);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
-    };
-  }, [visible, list.length, lingerMs]);
-
   const handleDismiss = useCallback(() => {
     setVisible(false);
     try {
       const record: DismissalRecord = { v: BANNER_VERSION, dismissed_at: Date.now() };
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
     } catch {
-      // localStorage unavailable (private mode, quota) — banner stays hidden
-      // for this session, which is the user's intent.
+      // localStorage unavailable — hide for this session only.
     }
   }, []);
 
   if (!mounted || !visible || list.length === 0) return null;
 
-  const current = list[index]!;
-  const fullPair = `${current.keyword}: ${current.name}`;
+  const tickerSummary = list.map((p) => p.name).join(', ');
 
   return (
     <div
       role="complementary"
-      aria-label="MADFAM ecosystem ticker"
+      aria-label={`MADFAM ecosystem ticker: ${tickerSummary}`}
       data-testid={testId}
-      className={[
-        'madfam-eco-banner',
-        className ?? '',
-      ].join(' ')}
+      className={['madfam-eco-banner', className ?? ''].join(' ')}
+      style={
+        {
+          '--madfam-marquee-duration': `${durationSec}s`,
+        } as CSSProperties
+      }
     >
       <style>{BANNER_STYLES}</style>
       <div className="madfam-eco-banner__inner">
@@ -321,30 +305,29 @@ export function EcosystemBanner({
           /
         </span>
 
-        {/*
-          Live region: announces each platform pair to screen readers without
-          interrupting (polite). We give it a stable container and swap inner
-          content so AT can pick up updates reliably.
-        */}
-        <div aria-live="polite" aria-atomic="true" className="madfam-eco-banner__live">
-          <a
-            href={current.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={fullPair}
-            className={[
-              'madfam-eco-banner__link',
-              fading ? 'madfam-eco-banner__link--fading' : '',
-            ].join(' ')}
-          >
-            <span className="madfam-eco-banner__keyword">
-              {current.keyword}:
-            </span>
-            <span className="madfam-eco-banner__name">{current.name}</span>
-            <span aria-hidden="true" className="madfam-eco-banner__external">
-              ↗
-            </span>
-          </a>
+        <div className="madfam-eco-banner__viewport">
+          <div className="madfam-eco-banner__track">
+            {track.map((platform, index) => {
+              const fullPair = `${platform.keyword}: ${platform.name}`;
+              const isDuplicate = index >= list.length;
+              return (
+                <a
+                  key={`${platform.name}-${index}`}
+                  href={platform.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={fullPair}
+                  className="madfam-eco-banner__item"
+                  aria-hidden={isDuplicate ? true : undefined}
+                  tabIndex={isDuplicate ? -1 : undefined}
+                >
+                  <span className="madfam-eco-banner__keyword">{platform.keyword}:</span>
+                  <span className="madfam-eco-banner__name">{platform.name}</span>
+                  <span className="madfam-eco-banner__external">↗</span>
+                </a>
+              );
+            })}
+          </div>
         </div>
 
         <button

@@ -1,6 +1,6 @@
 {
   "name": "@madfam/ecosystem-banner",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Dismissible scrolling stock-ticker banner that surfaces the MADFAM platform ecosystem at the bottom of every landing app.",
   "license": "UNLICENSED",
   "main": "dist/index.js",
