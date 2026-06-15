@@ -40,6 +40,7 @@ _(no deployed services — this repo is a library/tool.)_
 
 - every ecosystem repo — reads PORT_ALLOCATION.md for port assignment
 - `@madfam/core` package consumers
+- `@madfam/ecosystem-banner` — bottom marquee on product landings ([docs/ECOSYSTEM_BANNER.md](docs/ECOSYSTEM_BANNER.md))
 
 ### Key environment variables
 

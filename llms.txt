@@ -9,6 +9,11 @@ Compact LLM context index for this repository.
 - `ECOSYSTEM.md` — MADFAM ecosystem and Enclii deployment context when present.
 - `llms-full.txt` — full context map and durable operating contract.
 
+## Shared packages
+
+- `packages/ecosystem-banner` — `@madfam/ecosystem-banner` bottom marquee for landings
+- `docs/ECOSYSTEM_BANNER.md` — banner + footer contract (public-safe)
+
 ## Production operations
 
 Routine production operations are Enclii-first. Use Enclii web, API, or CLI
