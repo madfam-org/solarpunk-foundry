@@ -48,7 +48,7 @@ All published to `https://npm.madfam.io`:
 | `@madfam/constants` | Shared enums |
 | `@madfam/error-boundary` | Next.js route boundary components |
 | `@madfam/types` | Cross-repo shared types (events, webhooks, attribution) |
-| `@madfam/ecosystem-banner` | Self-styled bottom ticker for ecosystem offers/links |
+| `@madfam/ecosystem-banner` | Self-styled bottom ticker for ecosystem offers/links — **not** a footer; product footers exclude platform links (`docs/ECOSYSTEM_BANNER.md`, v0.1.3) |
 
 ## Ports (local dev only)
 

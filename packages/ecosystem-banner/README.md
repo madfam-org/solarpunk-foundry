@@ -78,6 +78,12 @@ const compliancePlatforms = DEFAULT_ECOSYSTEM_PLATFORMS.filter((p) =>
 
 That's it. No CSS to import, no provider to wrap, no theme to extend, and no Tailwind content scanning required.
 
+## Footer contract
+
+Mount the banner once at the bottom of the landing layout. **Do not** duplicate
+ecosystem platform links in the product footer — footers are product-owned
+(legal, support, product docs only). Public contract: `docs/ECOSYSTEM_BANNER.md`.
+
 ## Development
 
 ```bash
