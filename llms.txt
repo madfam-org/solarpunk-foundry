@@ -19,3 +19,6 @@ Compact LLM context index for this repository.
 Routine production operations are Enclii-first. Use Enclii web, API, or CLI
 before raw infrastructure tools. Direct `kubectl`, `helm`, SSH, provider CLIs,
 `docker exec`, or direct container access is bootstrap/break-glass only.
+
+- Secret handoff: Enclii `secrets intake` (never paste credentials in agent chat).
+  Private runbooks: `internal-devops` vault rebuild + custody decisions (2026-06).

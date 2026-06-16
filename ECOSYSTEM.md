@@ -179,6 +179,7 @@ enclii releases (n/a — blueprint repo) --latest --output json
 enclii secrets list (n/a — blueprint repo)
 enclii secrets set MY_KEY=value --service (n/a — blueprint repo) --secret
 enclii secrets rm MY_KEY --service (n/a — blueprint repo)
+enclii secrets intake targets   # orchestrator chat-safe credential handoff (Enclii API)
 
 # Domains, tunnel routes, DNS
 enclii domains list (n/a — blueprint repo)
@@ -217,6 +218,7 @@ Use the web UI, API, or CLI before reaching for raw infrastructure tools:
 - Longhorn / PVC / PV inspection and repair planning — `enclii ops storage ...`
 - Kyverno violations and time-bound waivers — `enclii ops policy ...`
 - ExternalSecrets and Vault readiness — `enclii ops secrets ...`
+- Orchestrator credential intake — `enclii secrets intake` (never paste secrets in agent chat). Provider custody: financial keys per domain owner; shared email on Enclii `secret/comms` — see private `internal-devops/decisions/2026-06-16-ecosystem-provider-custody-model.md`.
 - ARC runner inspection and drain workflows — `enclii ops runners ...`
 - DNS, tunnels, SaaS hostnames, providers, and repo automation — `enclii providers ...`
 - Service lifecycle, domains, secrets, jobs, and observability — `enclii deploy`, `enclii rollback`, `enclii logs`, `enclii observe`, `enclii domains`, `enclii secrets`, `enclii jobs`
