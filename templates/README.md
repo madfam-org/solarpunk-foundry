@@ -2,6 +2,8 @@
 
 Reference implementations for ecosystem applications. **Copy, don't depend.**
 
+> **Developer machine setup** (shell, Cursor MCP, Enclii CLI, agent preflight) lives in [internal-devops `TERMINAL_AND_DEV_HARNESS.md`](https://github.com/madfam-org/internal-devops/blob/main/docs/TERMINAL_AND_DEV_HARNESS.md) — not here.
+
 ## Philosophy
 
 These templates embody the principle: **"Each service owns its dependencies completely."**
