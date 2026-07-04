@@ -4,10 +4,9 @@
 > readiness or "production" claim publishes an evidence-backed status
 > scorecard instead of aspirational copy.
 >
-> **Modeled on:** rondelio's GA-readiness scorecard
-> (`docs/STABILITY_STATUS.md`, `docs/TABLETOP_CREATION_SUITE_READINESS.md` —
-> machine-checked 36% readiness, 7 named blockers) and blueprint-harvester's
-> truth audits (`docs/PLATFORM_TRUTH.md`, `docs/GA_READINESS.md` — capability
+> **Modeled on:** internal MADFAM GA-readiness scorecards and truth-audit
+> docs (machine-checked readiness scores, named blockers; exemplar pointers
+> live in the private `internal-devops` repo — RFC 0024 P3) and capability
 > tiers, smoke gates, dated evidence snapshots).
 
 ## How to use
@@ -77,7 +76,7 @@ implementation. List it here and fix or delete the overclaiming doc.
 ## 4. Blockers
 
 Named blockers, each with an owner and an explicit unblock criterion —
-"7 blocked, 0 clear" style. No anonymous blockers.
+"N blocked, 0 clear" style. No anonymous blockers.
 
 | # | Blocker | Owner | Severity | Unblock criterion |
 |---|---------|-------|----------|-------------------|
@@ -89,7 +88,7 @@ Severity guide: **critical** = blocks the honest-positioning line above;
 ## 5. Overall readiness score
 
 Score = verified checks / total checks, computed — not vibes. Prefer a
-machine-generated number (rondelio: `pnpm ga:readiness` → 61/169, 36.09%).
+machine-generated number (e.g. a `ga:readiness` script emitting `passed/total`).
 
 | Tier | Score | Meaning for public copy |
 |------|-------|-------------------------|

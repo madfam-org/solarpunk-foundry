@@ -39,8 +39,8 @@ pnpm add plausible-tracker @madfam/core
 ### Honest-Status Scorecard (`HONEST_STATUS_SCORECARD.md`)
 
 Evidence-backed status scorecard mandated by internal-devops RFC 0024 P3,
-modeled on rondelio's GA-readiness scorecard and blueprint-harvester's
-truth audits.
+modeled on internal MADFAM GA-readiness scorecards and truth audits
+(exemplar pointers in the private internal-devops repo).
 
 ```bash
 # Copy to your repo and fill in
