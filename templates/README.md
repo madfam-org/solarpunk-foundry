@@ -36,6 +36,23 @@ pnpm add plausible-tracker @madfam/core
 - Convenience methods for common events
 - React hook support
 
+### Honest-Status Scorecard (`HONEST_STATUS_SCORECARD.md`)
+
+Evidence-backed status scorecard mandated by internal-devops RFC 0024 P3,
+modeled on rondelio's GA-readiness scorecard and blueprint-harvester's
+truth audits.
+
+```bash
+# Copy to your repo and fill in
+cp templates/HONEST_STATUS_SCORECARD.md ~/your-app/docs/HONEST_STATUS.md
+```
+
+**Features:**
+- Verified / built-but-unverified / claimed-but-not-built claim states
+- Evidence-linked claims with verification dates
+- Blocker table with owners, severity, and unblock criteria
+- Readiness score rubric mapped to allowed public-copy tiers
+
 ### Tailwind Config (`tailwind/`)
 
 Tailwind CSS configuration using `@madfam/core` design tokens.
