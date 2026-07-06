@@ -91,9 +91,11 @@ integrations:
 # Authentication with MADFAM ecosystem
 auth:
   # Janua OAuth configuration
+  # Boundary note: real client IDs are operational detail and stay in the
+  # private ops repo (internal-devops); set via environment at deploy time.
   janua:
     issuer: "https://auth.madfam.io"
-    client_id: "jnc_lSGMbQtCGdHSctd4mEQoaklLBCv7xXhe"
+    client_id: "" # set via JANUA_CLIENT_ID env; never commit a real jnc_ value
 
   # Service token for API calls (set via environment)
   service_token_env: "AUTOCHESS_SERVICE_TOKEN"
