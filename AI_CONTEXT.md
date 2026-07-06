@@ -10,7 +10,7 @@
 - Home of the `@madfam/*` shared package set (published to `npm.madfam.io`).
 - Hosts the Verdaccio private registry.
 - Holds the local-dev `madfam` orchestration script + shared docker-compose.
-- **Public repo** — no secrets, no IPs, no hardware specs, no costs.
+- **Public repo** — no secrets, no IPs, no hardware specs, no costs. Boundary checkpoint: see [docs/PUBLIC_REPO_BOUNDARY.md](docs/PUBLIC_REPO_BOUNDARY.md).
 
 ## Architecture
 
@@ -39,7 +39,7 @@ All published to `https://npm.madfam.io`:
 | Package | Purpose |
 |---|---|
 | `@madfam/core` | Brand, locales, currencies, event taxonomy, product definitions |
-| `@madfam/ui` | shadcn/ui + Radix + Tailwind design system |
+| `@madfam/ui` | **Deprecated** — UI moved to per-app "incubator" model (`packages/ui/README.md`) |
 | `@madfam/analytics` | PostHog instrumentation + event schema |
 | `@madfam/auth-resilience` | Janua circuit breaker + retry |
 | `@madfam/sentry` | Sentry init + context enrichment |
@@ -48,6 +48,8 @@ All published to `https://npm.madfam.io`:
 | `@madfam/constants` | Shared enums |
 | `@madfam/error-boundary` | Next.js route boundary components |
 | `@madfam/types` | Cross-repo shared types (events, webhooks, attribution) |
+| `@madfam/telemetry` | OpenTelemetry tracing + W3C trace-context propagation |
+| `@madfam/webhook-attribution` | Signed payment-attribution HMAC sign/verify + idempotency |
 | `@madfam/ecosystem-banner` | Self-styled bottom ticker for ecosystem offers/links — **not** a footer; product footers exclude platform links (`docs/ECOSYSTEM_BANNER.md`, v0.1.3) |
 
 ## Ports (local dev only)

@@ -14,6 +14,18 @@
 - This repo should hold ecosystem intent, stable contracts, and sanitized references only.
 - For the boundary policy used by all repos, read [`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md).
 
+## How to read this repo (eagle's eye)
+
+Read top-down — you should not need to open every product repo to understand the ecosystem:
+
+1. **§I–II below** — the vision and the five-layer platform map (public repo → role).
+2. **§IV below** — the cross-repo contracts every platform implements (identity, inference, payment attribution, data ownership, eventing).
+3. [`docs/architecture/SYMBIOSIS.md`](docs/architecture/SYMBIOSIS.md) — the Substrate · Trellis · Membrane platform-relationship contract.
+4. [`MADFAM.md`](MADFAM.md) and [`ECOSYSTEM.md`](ECOSYSTEM.md) — the master platform reference and the standalone (agent-oriented) ecosystem map.
+5. [`docs/PORT_ALLOCATION.md`](docs/PORT_ALLOCATION.md), [`docs/LICENSING_STRATEGY.md`](docs/LICENSING_STRATEGY.md), and `packages/` — the concrete shared surfaces.
+
+Private operational detail (topology, costs, access, runbooks, strategy, audits) intentionally lives in the private **`internal-devops`** repo, which this repo links to by name only.
+
 ---
 
 ## 🌍 I. Vision
@@ -108,9 +120,9 @@ Will fold into an existing platform rather than exist standalone long-term: `pen
 
 ### Repo visibility
 
-**19 madfam-org repos are currently PRIVATE** (verified 2026-04-17 via `gh repo list`): `blueprint-harvester`, `factlas`, `forgesight`, `forj`, `fortuna`, `gh-backups`, `internal-devops`, `karafiel`, `legal-ops`, `madfam-crawler`, `proton-bridge-pipeline`, `rondelio`, `routecraft`, `social-sentiment-monitor`, `stratum-tcg`, `symbiosis-hcm`, `tablaco`, `turnbased-engine`, `zavlo`. Their GitHub URLs in this README will 404 unless you have org access.
+As of 2026-07-06 (verified via the GitHub search API): **23 madfam-org repos are PRIVATE** and **69 are PUBLIC** (the public count includes archived repos; the public set includes the ~39-repo Yantra4D-commons parametric-design library). Private-repo GitHub URLs in this README will 404 unless you have org access.
 
-**~74 are PUBLIC** — everything else referenced in this doc plus the 39-repo Yantra4D-commons parametric-design library.
+This public doc keeps **counts only**. The authoritative per-repo registry (names + visibility) is `ecosystem/repo-registry.md` in the private `internal-devops` repo, so this README cannot drift into enumerating private work.
 
 The legacy `aureo-labs` repo is PUBLIC but ARCHIVED (retired 2026-04-08).
 
@@ -170,6 +182,11 @@ Signature: `x-madfam-signature: t=<unix-seconds>,v1=<hex-hmac-sha256>` over `"${
 | Fabrication node capacity + pricing | Forj | Consume ForgeSight |
 | Manufacturing execution telemetry | Pravara MES | Feed into PhyndCRM federation |
 | 3D geometry kernel | geom-core | Used by Sim4D + Yantra4D |
+
+### Other public-safe contract surfaces
+
+- **Cross-service event bus.** Beyond the signed payment fan-out, services exchange lifecycle events over a shared event bus (domain streams with per-service consumer groups and dead-letter queues). The event-schema registry is governed privately in `internal-devops`; the event *shapes* used by public code live in `@madfam/types`.
+- **Payment-method vocabulary.** Dhanam and Karafiel share a versioned payment-method vocabulary (payment-method / settlement-rail tokens and their SAT `c_FormaPago` mapping). The canonical copy is governed in `internal-devops`; each consuming repo vendors a byte-identical copy enforced by contract tests.
 
 ---
 
@@ -250,7 +267,7 @@ Published to the private `npm.madfam.io` Verdaccio registry. Consumed by every e
 | Package | Purpose |
 |---|---|
 | `@madfam/core` | Brand, locales, currencies, event taxonomy, product definitions — **decisions, not implementations** |
-| `@madfam/ui` | Shared design system (shadcn/ui + Radix + Tailwind, φ-ratio tokens, glassmorphism primitives) |
+| `@madfam/ui` | **Deprecated** — the UI system moved to a decentralized per-app "incubator" model (see `packages/ui/README.md`) |
 | `@madfam/analytics` | PostHog instrumentation + event-schema enforcement |
 | `@madfam/auth-resilience` | Circuit breaker + retry for Janua calls |
 | `@madfam/sentry` | Standardised Sentry init + context enrichment |
@@ -259,6 +276,9 @@ Published to the private `npm.madfam.io` Verdaccio registry. Consumed by every e
 | `@madfam/constants` | Compile-time-safe enums for shared constants |
 | `@madfam/error-boundary` | Next.js route boundary components |
 | `@madfam/types` | Cross-repo shared types (events, webhook schemas, attribution) |
+| `@madfam/telemetry` | Shared OpenTelemetry tracing + W3C trace-context propagation |
+| `@madfam/webhook-attribution` | Signed payment-attribution HMAC sign/verify + idempotency (the §IV.3 contract, packaged) |
+| `@madfam/ecosystem-banner` | Dismissible ecosystem ticker for product landings (see `docs/ECOSYSTEM_BANNER.md`) |
 
 See `packages/<name>/README.md` for each. Publish with `./scripts/publish-ui.sh` (or per-package).
 

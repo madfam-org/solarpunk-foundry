@@ -148,7 +148,7 @@ Boundary checkpoint:
 | claudecodeui | 3001 | agents.madfam.io | 🔵 Ready to deploy |
 
 **Prerequisites**:
-- [x] Create Janua OAuth client (`jnc_lSGMbQtCGdHSctd4mEQoaklLBCv7xXhe`)
+- [x] Create Janua OAuth client (`<JANUA_OAUTH_CLIENT_ID>` — actual ID in the private registry, not in public docs)
 - [x] Create `.enclii.yml` for Auto-Claude backend
 - [x] Create `.enclii.yml` for claudecodeui dashboard
 - [ ] Deploy via Enclii CLI (requires SSO login for API token)

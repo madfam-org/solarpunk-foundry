@@ -63,7 +63,7 @@ Autochess provides the infrastructure layer for orchestrating Claude agents acro
 
 ### 2. ClaudeCodeUI (Web Interface)
 - **Domain**: agents.madfam.io
-- **OAuth Client**: `jnc_lSGMbQtCGdHSctd4mEQoaklLBCv7xXhe`
+- **OAuth Client**: `<JANUA_OAUTH_CLIENT_ID>` (actual ID in the private registry, not in public docs)
 - **Features**:
   - Web-based agent control center
   - Task management dashboard

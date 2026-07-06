@@ -93,11 +93,15 @@ below is embedded here so this document stands alone.
 
 ### Production topology
 
-Bare-metal k3s (v1.33+) on Hetzner, 3 nodes:
+> Boundary checkpoint: this is a public repo. Node hostnames, IPs, hardware
+> specs, and costs are documented only in the private `internal-devops`
+> repo (see `docs/PUBLIC_REPO_BOUNDARY.md`). This section keeps shape only.
 
-- `foundry-cp` (Hetzner EX44, 14C/20T, 128 GB) — control-plane + primary workload
-- `foundry-worker-01` (Hetzner AX41-NVMe, Ryzen 5 3600, 64 GB) — worker + Longhorn 2nd replica
-- `foundry-builder-01` (Hetzner VPS, 2 vCPU, 4 GB, tainted `builder=true:NoSchedule`) — ARC runners only
+Bare-metal k3s (v1.33+), 3 nodes:
+
+- one control-plane node — control plane + primary workload
+- one worker node — workloads + Longhorn 2nd replica
+- one builder node (tainted `builder=true:NoSchedule`) — ARC runners only
 
 **Ingress**: Cloudflare Tunnel → 2× cloudflared pods → K8s ClusterIP → container port.
 Zero exposed node ports. TLS terminated at Cloudflare edge.

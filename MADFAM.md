@@ -105,9 +105,9 @@ The ecosystem is organised into layers. Each platform has its own repo + domain.
 
 39 repos — `gridfinity`, `gridfinity_extended_openscad`, `rugged-box`, `microscope-slide-holder`, `microscope-slide-hyperobject`, `torus-knot`, `superformula`, `spiral-planter`, `relief`, `motor-mount`, `maze`, `gear-reducer`, `gears`, `cq-hyperobject-test`, `custom-msh`, `din-rail-clip`, `extrusion-hyperobject`, `faircap-filter`, `fasteners`, `framing-hyperobject`, `glia-diagnostic`, `hinge-hyperobject`, `implicit-lattice-hyperobject`, `julia-vase`, `keyv2`, `locking-mechanism-hyperobject`, `multiboard`, `parametric-connector`, `polydice`, `portacosas`, `prosthetic-socket`, `rubiks-hyperobject`, `scara-robotics`, `slide-holder`, `soft-jaw`, `stemfie`, `ultimate-box`, `voronoi`, `yapp-box`. Private within this class: `tablaco`.
 
-### Repo visibility reality (verified via `gh repo list` on 2026-04-17)
+### Repo visibility reality (verified via the GitHub search API on 2026-07-06)
 
-**19 repos are PRIVATE**, not public as earlier versions of this doc implied: `blueprint-harvester`, `factlas`, `forgesight`, `forj`, `fortuna`, `gh-backups`, `internal-devops`, `karafiel`, `legal-ops`, `madfam-crawler`, `proton-bridge-pipeline`, `rondelio`, `routecraft`, `social-sentiment-monitor`, `stratum-tcg`, `symbiosis-hcm`, `tablaco`, `turnbased-engine`, `zavlo`.
+**23 repos are PRIVATE** and **69 are PUBLIC** (public count includes archived repos). This public doc keeps counts only; the authoritative per-repo registry (names + visibility) is `ecosystem/repo-registry.md` in the private `internal-devops` repo.
 
 **Additional platforms / repos** previously un-listed here: `symbiosis-hcm` (HCM — Mexican payroll, Shapley compensation, ONA, wellbeing), `kinship` (E2E-encrypted community logistics/energy platform), `electrochem-sim` (Galvana simulator core), `selva-sandbox` (agent testing sandbox), `Auto-Claude` (automation toolkit), `claudecodeui` (third-party mobile Claude Code UI fork), ~~`aureo-labs`~~ (archived 2026-04-08; removed from labspace checkout and active CI scope).
 
@@ -198,7 +198,7 @@ These are the only open items blocking full ecosystem stability. Detail + runboo
 |---|---|---|---|
 | **Selva rebrand cutover** (the last unmerged branch in all of labspace) | `selva-office/REBRAND_CUTOVER_RUNBOOK.md` | DevOps on-call | 3,982 files / ~1M insertions on `chore/2026-04-17-madfam-ecosystem-sweep`. Requires Vault-path migration, K8s namespace swap, DNS cutover to `*.selva.town`, 30-min soak, and a rollback branch. |
 | **Karafiel `SELVA_*` → `SELVA_*` secret rename** | `karafiel/infra/k8s/production/RENAME_SELVA_TO_SELVA_SECRETS.md` | karafiel-prod operator | Code path silent-no-ops when envs missing, so non-urgent. Gate after Selva cutover. |
-| **24 overdue secret rotations** + **rotation-monitor CronJob apply** | `internal-devops/runbooks/secret-rotation.md` | SRE | Apple OAuth 137d overdue is oldest. |
+| **Secret-rotation backlog** + **rotation-monitor CronJob apply** | `internal-devops/runbooks/secret-rotation.md` | SRE | Counts and per-secret ages are tracked privately, not here. |
 | **HashiCorp Vault deploy** | `enclii/infra/argocd/apps/vault.yaml` + `scripts/migrate-secrets-to-vault.sh` | SRE | Manifests staged, never run. |
 | **MXN flywheel activation (H1–H7)** | `internal-devops/ecosystem/remediation-plan-2026-04.md` §H | ecosystem-ops | H1 (Anthropic credits or DeepInfra bridge) is the sole blocker for the autonomous revenue loop. |
 

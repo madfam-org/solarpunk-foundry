@@ -22,7 +22,7 @@ registry.
 **Workloads:**
 - ✅ Enclii Control Plane (`api.enclii.dev`, `app.enclii.dev`)
 - ✅ Janua SSO (`auth.madfam.io`)
-- ✅ Dhanam Services (`dhanam.com`)
+- ✅ Dhanam Services (`dhan.am`)
 - ✅ PostgreSQL (in-cluster with Longhorn PVC)
 - ✅ Redis (in-cluster)
 - ✅ Cloudflare Tunnel (2 replicas)
@@ -137,7 +137,7 @@ Internet
 │  │ • auth.madfam.io → janua-api:80     │    │
 │  │ • api.enclii.dev → switchyard:80    │    │
 │  │ • app.enclii.dev → switchyard-ui:80 │    │
-│  │ • dhanam.com → dhanam-web:80        │    │
+│  │ • dhan.am → dhanam-web:80           │    │
 │  └─────────────────────────────────────┘    │
 │                                             │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐  │
@@ -187,18 +187,14 @@ User → app.enclii.dev → auth.madfam.io (Janua)
 
 ## Cost Summary
 
-| Component | Monthly Cost |
-|-----------|--------------|
-| The Sanctuary (dedicated server) | $50 |
-| The Forge (CPX11) | $5 |
-| Cloudflare (Tunnel, R2) | $5 |
-| **Total** | **~$60/month** |
+This repo is public and does not publish infrastructure costs. The cost
+ledger lives in the private `internal-devops` repo.
 
 ## Scaling Path
 
 When traffic demands exceed single-node capacity:
 
-1. **Add Worker Nodes** → Replicate "The Sanctuary" pattern
+1. **Add Worker Nodes** → Replicate the dedicated workload-node pattern
 2. **Enable Longhorn Replication** → 2-3 replicas for HA
 3. **Enable Redis Sentinel** → Manifests staged at `infra/k8s/production/redis-sentinel.yaml`
 4. **Add GPU Node** → NVIDIA device plugin ready at `infra/k8s/base/gpu/`

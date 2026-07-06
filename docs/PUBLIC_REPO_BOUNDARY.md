@@ -11,7 +11,7 @@ This is the public ecosystem contract lane for the repo set.
 - `enclii`: public service platform implementation and safe operational patterns.
 - `tulana`: private service implementation and business/market data workflows.
 
-Use [`internal-devops/docs/repo-boundary-contract.md`](https://github.com/madfam-org/internal-devops/blob/main/docs/repo-boundary-contract.md) as the governing policy.
+Use `internal-devops/docs/repo-boundary-contract.md` (private repo — referenced by name only; the URL 404s without org access) as the governing policy.
 
 ## Belongs here
 
