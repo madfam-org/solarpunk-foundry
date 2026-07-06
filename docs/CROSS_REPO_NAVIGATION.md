@@ -28,7 +28,6 @@
 | Enclii CLAUDE.md | `enclii/CLAUDE.md` | Complete Enclii architecture overview |
 | GitOps Setup | `enclii/docs/infrastructure/GITOPS.md` | ArgoCD App-of-Apps pattern |
 | Storage (Longhorn) | `enclii/docs/infrastructure/STORAGE.md` | Persistent volume configuration |
-| Migration Plan | `solarpunk-foundry/docs/ENCLII_MIGRATION_PLAN.md` | Service migration status |
 | DR Runbook | `enclii/docs/production/DR_RUNBOOK.md` | Disaster recovery procedures |
 
 ### Ecosystem Architecture
@@ -114,7 +113,7 @@ Per `PORT_ALLOCATION.md`:
 | Enclii API | api.enclii.dev | `enclii/infra/k8s/production/cloudflared-unified.yaml` |
 | Enclii UI | app.enclii.dev | `enclii/infra/k8s/production/cloudflared-unified.yaml` |
 | Janua Auth | auth.madfam.io | `enclii/infra/k8s/production/cloudflared-unified.yaml` |
-| Dhanam | app.dhanam.dev | `dhanam/infra/k8s/production/` |
+| Dhanam | dhan.am | `dhanam/infra/k8s/production/` |
 
 ---
 
