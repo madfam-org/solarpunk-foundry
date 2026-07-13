@@ -98,17 +98,19 @@ Our ecosystem grows as a **living system**. Every tool has a specific organ func
 | **Yantra4D** | Parametric-design platform + its commons of OpenSCAD/CadQuery projects. | [yantra4d.com](https://yantra4d.com) |
 | **Pravara MES** | Manufacturing-execution system. | [mes.madfam.io](https://mes.madfam.io) |
 | **Rondelio** | Tabletop / TCG game-intelligence cloud. | [rondel.io](https://rondel.io) |
+| **Voxa** | Next-generation AAC (augmentative & alternative communication) platform — cross-platform, GLP-native, AI-powered. Apache-2.0; controlled commercial launch. | [voxa.madfam.io](https://voxa.madfam.io) |
 
 ### 🤝 Layer 5 — Glue (cross-platform federation)
 
 | Platform | Role | Domain |
 |---|---|---|
 | **PhyndCRM** | "Synthetic Single Pane of Glass" — federates data from 6 MADFAM platforms (Janua, Janua Telemetry, Dhanam, Cotiza, Pravara, Forj) without duplication. Hosts the ecosystem attribution receiver. | [phynd.app](https://phynd.app) |
-| **Selva** *(née Selva Office, rename cutover pending)* | AI workforce + office simulator. Owns the `/v1/` OpenAI-compatible inference proxy every ecosystem service routes through. Hosts revenue-loop probe, HITL-confidence ledger, `nexus-api` orchestration. | `agents.madfam.io` → `selva.town` post-cutover |
+| **Selva** *(née Selva Office)* | AI workforce + office simulator. Owns the `/v1/` OpenAI-compatible inference proxy every ecosystem service routes through. Hosts revenue-loop probe, HITL-confidence ledger, `nexus-api` orchestration. | [selva.town](https://selva.town) |
+| **Coupler** | Agent Tool Plane — delegated SaaS tools, MCP, sandbox, and triggers. The substrate that lets agents act across platforms without bespoke integrations. | — |
 
 ### Adjacent / supporting (public)
 
-`madfam-site` ([madfam.io](https://madfam.io)), `primavera3d` ([primavera3d.pro](https://primavera3d.pro) — our in-house factory portfolio), `ceq` ([ceq.lol](https://ceq.lol) — ComfyUI wrapper), `nuit-one` ([nuit.one](https://nuit.one)), `subtext` (`subtext.live`), `accionables-madlab` ([madlab.quest](https://madlab.quest)), `server-auction-tracker` ([sniper.madfam.io](https://sniper.madfam.io) — Hetzner auction intelligence), `selva-sandbox`, `kinship` (E2E-encrypted community logistics platform), `Auto-Claude` automation toolkit, `electrochem-sim` (Galvana simulator core).
+`madfam-site` ([madfam.io](https://madfam.io)), `primavera3d` ([primavera3d.pro](https://primavera3d.pro) — our in-house factory portfolio), `ceq` ([ceq.lol](https://ceq.lol) — ComfyUI wrapper), `nuit-one` ([nuit.one](https://nuit.one)), `subtext` (`subtext.live`), `accionables-madlab` ([madlab.quest](https://madlab.quest)), `server-auction-tracker` ([sniper.madfam.io](https://sniper.madfam.io) — Hetzner auction intelligence), `selva-sandbox`, `kinship` (E2E-encrypted community logistics platform), `eido` (embryonic), `electrochem-sim` (Galvana simulator core).
 
 ### Adjacent / supporting (private)
 
@@ -116,11 +118,11 @@ Our ecosystem grows as a **living system**. Every tool has a specific organ func
 
 ### Integration-path repos (private)
 
-Will fold into an existing platform rather than exist standalone long-term: `penny` → selva-office, `zavlo` → karafiel, `panopticon-mx` → tezca (public), `social-sentiment-monitor` → fortuna.
+Will fold into an existing platform rather than exist standalone long-term: `penny` → selva-office, `zavlo` → karafiel, `panopticon-mx` → tezca (public). (`social-sentiment-monitor` completed this path — archived after its Perception Index folded into fortuna per RFC 0016.)
 
 ### Repo visibility
 
-As of 2026-07-06 (verified via the GitHub search API): **23 madfam-org repos are PRIVATE** and **69 are PUBLIC** (the public count includes archived repos; the public set includes the ~39-repo Yantra4D-commons parametric-design library). Private-repo GitHub URLs in this README will 404 unless you have org access.
+As of 2026-07-13 (verified via the GitHub API): **24 madfam-org repos are PRIVATE** and **69 are PUBLIC** (93 non-fork; 9 archived). The public set includes the ~39-repo Yantra4D-commons parametric-design library. Private-repo GitHub URLs in this README will 404 unless you have org access.
 
 This public doc keeps **counts only**. The authoritative per-repo registry (names + visibility) is `ecosystem/repo-registry.md` in the private `internal-devops` repo, so this README cannot drift into enumerating private work.
 
