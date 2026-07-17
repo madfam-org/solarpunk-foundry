@@ -14,9 +14,12 @@ const DISMISS_DAYS = 30;
 const MARQUEE_SECONDS_PER_PLATFORM = 6;
 
 const BANNER_STYLES = `
+  /* Transform-only entry: an opacity fade composites the banner over the page
+     mid-animation, so audits (axe color-contrast) that scan during the 300ms
+     window see washed-out blended colors and fail WCAG AA. */
   @keyframes ecosystemBannerIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { transform: translateY(4px); }
+    to { transform: translateY(0); }
   }
 
   @keyframes ecosystemMarquee {
@@ -67,7 +70,7 @@ const BANNER_STYLES = `
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: .025em;
-    color: rgb(148 163 184);
+    color: rgb(203 213 225);
     white-space: nowrap;
   }
 
@@ -120,7 +123,7 @@ const BANNER_STYLES = `
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     text-transform: uppercase;
     letter-spacing: .025em;
-    color: rgb(148 163 184);
+    color: rgb(203 213 225);
     white-space: nowrap;
   }
 
