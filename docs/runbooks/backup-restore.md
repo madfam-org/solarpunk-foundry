@@ -8,6 +8,11 @@
 > directory. All three are prohibited in this repo (break-glass commands and
 > secret paths with retrieval detail), and all three describe an architecture
 > that has been superseded. Removed 2026-07-25.
+>
+> Removed under [`../PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md) and
+> `internal-devops/docs/repo-boundary-contract.md` (2026-06-14), which place raw
+> break-glass, secret paths and capacity data in Lane A. The operational procedure
+> lives in the private `internal-devops` repo; ask an operator if you need it.
 
 ## What is public
 

@@ -8,6 +8,11 @@
 > table of invented figures. Removed 2026-07-25 — break-glass commands and
 > capacity data are both Lane A, and two of those commands would have been
 > reverted by ArgoCD anyway.
+>
+> Removed under [`../PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md) and
+> `internal-devops/docs/repo-boundary-contract.md` (2026-06-14), which place raw
+> break-glass, secret paths and capacity data in Lane A. The operational procedure
+> lives in the private `internal-devops` repo; ask an operator if you need it.
 
 ## What is public
 

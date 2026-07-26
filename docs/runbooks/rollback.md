@@ -7,6 +7,11 @@
 > of an application repo, and a call to a build script on the server. Removed
 > 2026-07-25 — break-glass commands are Lane A, and the host-build flow does not
 > exist.
+>
+> Removed under [`../PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md) and
+> `internal-devops/docs/repo-boundary-contract.md` (2026-06-14), which place raw
+> break-glass, secret paths and capacity data in Lane A. The operational procedure
+> lives in the private `internal-devops` repo; ask an operator if you need it.
 
 ## What is public: how a deploy actually reaches production
 

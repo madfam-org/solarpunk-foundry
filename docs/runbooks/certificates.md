@@ -7,6 +7,11 @@
 > generate a new RSA keypair on the server and to re-authenticate the
 > Cloudflare Tunnel over SSH. Secret paths with retrieval detail and raw
 > break-glass are both prohibited in this repo. Removed 2026-07-25.
+>
+> Removed under [`../PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md) and
+> `internal-devops/docs/repo-boundary-contract.md` (2026-06-14), which place raw
+> break-glass, secret paths and capacity data in Lane A. The operational procedure
+> lives in the private `internal-devops` repo; ask an operator if you need it.
 
 ## What is public
 
