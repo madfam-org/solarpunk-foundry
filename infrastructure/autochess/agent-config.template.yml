@@ -1,5 +1,16 @@
 # Autochess Agent Configuration Template
 # This template defines how Claude agents operate within the MADFAM ecosystem
+#
+# =============================================================================
+#  ASPIRATIONAL — nothing consumes this file. Reviewed 2026-07-25.
+#
+#  Autochess was never built: no service exists, no phase of its roadmap has
+#  started, and no code reads this schema. See README.md in this directory.
+#
+#  This file has leaked a real value once before (a Janua OAuth client id,
+#  scrubbed 2026-07-06). Keep every value here a placeholder — this repository
+#  is public.
+# =============================================================================
 
 version: "1.0"
 kind: AgentConfig
@@ -20,8 +31,11 @@ agent:
   # Maximum parallel tasks this agent can handle
   max_parallel_tasks: 3
 
-  # Claude model to use (requires Claude Pro/Max subscription)
-  model: "claude-sonnet-4-20250514"  # or claude-opus-4-20250514 for complex tasks
+  # Claude model to use. Placeholder — pick a current model id at the time this
+  # is actually implemented. The identifiers previously hard-coded here dated
+  # from May 2025 and were removed 2026-07-25 rather than refreshed, since
+  # nothing reads this file and a stale pin is worse than an obvious blank.
+  model: "<MODEL_ID>"
 
 # Git isolation settings
 isolation:

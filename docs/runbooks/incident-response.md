@@ -1,147 +1,53 @@
-# Incident Response Runbook
+# Incident Response — public-safe summary
 
-> [!IMPORTANT]
-> MADFAM-ENCLII-FIRST-LEGACY-RAW v1: This document contains legacy raw infrastructure command examples.
-> Routine production operations must use Enclii web, API, or CLI. Treat raw
-> `kubectl`, `helm`, SSH, provider CLI/API, `docker exec`, and direct container
-> access as platform bootstrap or documented break-glass only, and record any
-> missing Enclii adapter gap.
+**Last verified: 2026-07-25**
 
+> **The operational procedure is not published here.** This page previously
+> carried raw break-glass (`ssh … "sudo kubectl …"`, `docker restart`,
+> `sudo journalctl`) against a host-Docker architecture that no longer exists.
+> That content was removed on 2026-07-25 under
+> [`../PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md) and
+> `internal-devops/docs/repo-boundary-contract.md` (2026-06-14).
 
-## Severity Levels
+## What is public
 
-| Level | Definition | Response Time | Examples |
-|-------|------------|---------------|----------|
-| SEV1 | Complete outage | Immediate | API down, auth broken, data loss |
-| SEV2 | Degraded service | < 1 hour | Slow responses, partial failures |
-| SEV3 | Minor issue | < 4 hours | UI bugs, non-critical errors |
+**Severity model.** Three levels, unchanged and still in use:
 
-## Initial Assessment (First 5 minutes)
+| Level | Definition | Target response |
+|---|---|---|
+| SEV1 | Complete outage — API down, auth broken, data loss | Immediate |
+| SEV2 | Degraded service — elevated latency, partial failures | < 1 hour |
+| SEV3 | Minor issue — UI defects, non-critical errors | < 4 hours |
 
-### 1. Check Service Health
+**Escalation shape.** Attempt a safe restart of the affected service → check
+dependencies (database, cache, ingress) → roll back if a recent deploy is
+implicated → address capacity → escalate to the on-call operator for SEV1/SEV2.
 
-```bash
-# Quick status check
-ssh ssh.madfam.io "sudo kubectl get pods -n janua"
+**Tooling.** Diagnosis and safe restarts go through `enclii ops pods`; ArgoCD
+sync/diff/rollback through `enclii ops apps`. Raw `kubectl` is break-glass only
+and must be recorded (see [`README.md`](./README.md)).
 
-# Check all namespaces
-ssh ssh.madfam.io "sudo kubectl get pods -A"
+**Post-incident.** Timeline, root cause, prevention measures, and runbook
+updates are recorded in `internal-devops/incidents/` — not here. Incident
+evidence trails are explicitly Lane A.
 
-# Docker containers
-ssh ssh.madfam.io "docker ps --format 'table {{.Names}}\t{{.Status}}'"
-```
+## One thing worth stating plainly
 
-### 2. Check Logs
+Alerting is not something this public repo can vouch for. The internal
+launch-readiness assessment dated **2026-07-16** recorded the operations hop as
+failing, with alert delivery not working and the synthetic revenue probe
+disabled. Nothing dated after that establishes recovery. If you are relying on
+"we would be paged", verify it against
+`internal-devops/roadmaps/2026-07-16-launch-remediation-roadmap.md` (blocker 9)
+before assuming.
 
-```bash
-# Kubernetes pod logs
-ssh ssh.madfam.io "sudo kubectl logs -n janua deployment/janua-api --tail=100"
+## Canonical private sources
 
-# Docker container logs
-ssh ssh.madfam.io "docker logs janua-api --tail=100"
+- Per-incident runbooks: `internal-devops/runbooks/`
+- Incident record and evidence: `internal-devops/incidents/`
+- Disaster recovery: `internal-devops/runbooks/disaster-recovery.md`
+  (last updated 2026-07-25)
 
-# System logs
-ssh ssh.madfam.io "sudo journalctl -u k3s --since '5 minutes ago'"
-```
+## Contact
 
-### 3. Check Resources
-
-```bash
-# Node resources
-ssh ssh.madfam.io "sudo kubectl top nodes"
-
-# Pod resources
-ssh ssh.madfam.io "sudo kubectl top pods -n janua"
-
-# Disk usage
-ssh ssh.madfam.io "df -h"
-ssh ssh.madfam.io "sudo zfs list"
-```
-
-## Common Issues & Resolutions
-
-### Pod CrashLoopBackOff
-
-```bash
-# Get pod details
-ssh ssh.madfam.io "sudo kubectl describe pod -n janua <pod-name>"
-
-# Check previous logs
-ssh ssh.madfam.io "sudo kubectl logs -n janua <pod-name> --previous"
-
-# Restart deployment
-ssh ssh.madfam.io "sudo kubectl rollout restart deployment/janua-api -n janua"
-```
-
-### Database Connection Issues
-
-```bash
-# Check postgres container
-ssh ssh.madfam.io "docker ps | grep postgres"
-
-# Test connection
-ssh ssh.madfam.io "docker exec janua-postgres pg_isready -U janua"
-
-# Check connections
-ssh ssh.madfam.io "docker exec janua-postgres psql -U janua -c 'SELECT count(*) FROM pg_stat_activity;'"
-
-# Restart if needed
-ssh ssh.madfam.io "docker restart janua-postgres"
-```
-
-### Redis Connection Issues
-
-```bash
-# Check redis
-ssh ssh.madfam.io "docker ps | grep redis"
-
-# Test ping
-ssh ssh.madfam.io "docker exec janua-redis redis-cli ping"
-
-# Check memory
-ssh ssh.madfam.io "docker exec janua-redis redis-cli info memory | head -10"
-
-# Restart if needed
-ssh ssh.madfam.io "docker restart janua-redis"
-```
-
-### High Memory/CPU
-
-```bash
-# Identify offending pods
-ssh ssh.madfam.io "sudo kubectl top pods -n janua --sort-by=memory"
-
-# Check node capacity
-ssh ssh.madfam.io "sudo kubectl describe node | grep -A5 'Allocated resources'"
-
-# Scale down if needed
-ssh ssh.madfam.io "sudo kubectl scale deployment/janua-api -n janua --replicas=1"
-```
-
-### Cloudflare Tunnel Issues
-
-```bash
-# Check tunnel status
-ssh ssh.madfam.io "sudo systemctl status cloudflared"
-
-# Restart tunnel
-ssh ssh.madfam.io "sudo systemctl restart cloudflared"
-
-# Check tunnel logs
-ssh ssh.madfam.io "sudo journalctl -u cloudflared --since '10 minutes ago'"
-```
-
-## Escalation Path
-
-1. **Attempt restart** of affected service
-2. **Check dependencies** (database, redis, network)
-3. **Roll back** if recent deployment
-4. **Scale resources** if capacity issue
-5. **Contact** @aldoruizluna for SEV1/SEV2
-
-## Post-Incident
-
-1. Document timeline in GitHub issue
-2. Identify root cause
-3. Create prevention measures
-4. Update runbooks if needed
+`admin@madfam.io`.

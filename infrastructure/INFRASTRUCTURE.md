@@ -1,5 +1,13 @@
 # Solarpunk Foundry Infrastructure Reference Guide
 
+> [!CAUTION]
+> **PARTLY HISTORICAL.** Written 2025-12-02 for a single Docker Compose host;
+> reviewed 2026-07-25. Sections §3, §4 and §7 describe an architecture that no
+> longer exists and must not be followed. Production is bare-metal k3s with
+> ArgoCD GitOps and Enclii as the control plane. A per-section status table is
+> immediately below. The operational source of truth is the private
+> `internal-devops` repository, not this file.
+
 > [!IMPORTANT]
 > MADFAM-ENCLII-FIRST-LEGACY-RAW v1: This document contains legacy raw infrastructure command examples.
 > Routine production operations must use Enclii web, API, or CLI. Treat raw
@@ -10,9 +18,32 @@
 
 > **Layer 1: "The Soil"** - Foundation infrastructure for the MADFAM ecosystem
 
-**Document Version**: 1.0
-**Last Updated**: 2025-12-02
+**Document Version**: 1.1
+**Written**: 2025-12-02 · **Reviewed and re-labelled**: 2026-07-25
 **Classification**: Public-safe reference. Sensitive inventory lives in `internal-devops`.
+
+---
+
+## ⚠ What in this document is current, and what is not
+
+This file was written on 2025-12-02, when the estate ran as Docker Compose on a
+single host. **It is now partly historical.** Rather than delete the historical
+sections — the ZFS reasoning in particular is real and worth keeping — each is
+labelled in place:
+
+| Section | Status |
+|---|---|
+| §1 Cluster Topology | **Current in shape.** 3-node cluster. Node identity, IPs, hardware and cost are deliberately absent; see `internal-devops/infrastructure/nodes.md` (last verified 2026-05-04). |
+| §2 OS & Storage | **Current for the host OS/ZFS layer.** Note that *workload* block storage is Longhorn CSI on Kubernetes, not these ZFS datasets. |
+| §3 Container Engine | **HISTORICAL — superseded.** Orchestration is bare-metal k3s + ArgoCD, not Docker Compose. The `172.18.x.x` Docker bridge subnets are not a network model the cluster uses. |
+| §4 Application Layer | **HISTORICAL — superseded.** Services run as Kubernetes Deployments in per-app namespaces, not as named containers on host ports. |
+| §5 Security & Fixes Log | **Retained as engineering notes.** The admin-bootstrap incident was removed 2026-07-25 (Lane A). |
+| §6 Port Allocation | **Superseded — see `../docs/PORT_ALLOCATION.md`.** The block table previously duplicated here disagreed with that document. |
+| §7 Maintenance Procedures | **HISTORICAL — superseded and unsafe to follow.** Deploys are GitOps; ArgoCD `selfHeal` reverts hand-applied changes. |
+
+**Nothing here is a substitute for `internal-devops`**, which is the operational
+source of truth for topology, capacity, access and runbooks. For how MADFAM
+actually ships today, see the table in [`README.md`](./README.md).
 
 ---
 
@@ -115,6 +146,12 @@ zfs create -o compression=lz4 rpool/data/registry
 
 ## 3. The Container Engine
 
+> **HISTORICAL — superseded.** Describes the pre-Kubernetes Docker Compose era
+> as it stood 2025-12-02. Production orchestration is bare-metal k3s with ArgoCD
+> GitOps; the Docker daemon config, ZFS storage driver and `172.18.x.x` bridge
+> networks below are not how the cluster runs. Retained as a record of what
+> preceded it.
+
 ### Runtime Configuration
 
 | Component | Value |
@@ -162,6 +199,14 @@ zfs create -o compression=lz4 rpool/data/registry
 ---
 
 ## 4. Application Layer ("The Organs")
+
+> **HISTORICAL — superseded.** Services no longer run as named Docker containers
+> on host ports. They run as Kubernetes Deployments in per-app namespaces, with
+> ingress via a single Cloudflare Tunnel to a K8s Service on port 80. The
+> container-name/host-port pairs below are a 2025-12-02 snapshot of an
+> architecture that no longer exists. Note in particular that `enclii-core`
+> below is a *container name*, not a node name — later docs mistakenly promoted
+> it into a hostname.
 
 ### Shared Infrastructure Services
 
@@ -298,31 +343,17 @@ allowed_hosts = [
 
 ### The Key Ceremony (Admin Bootstrap)
 
-**Incident**: Initial admin user creation via direct SQL injection caused authentication failures
+**Removed 2026-07-25.** This subsection described an admin-bootstrap incident,
+named the default admin identity, and named the credential store in use. Incident
+evidence trails and credential-retrieval detail are Lane A under
+`internal-devops/docs/repo-boundary-contract.md`. The record is retained
+privately.
 
-**Root Cause**:
-- Direct SQL `INSERT` used system `crypt()` function
-- Application expects `bcrypt` hash with specific salt/rounds format
-- Hash format mismatch caused 500 errors on login
-
-**Resolution**:
-1. Deleted malformed admin user from database
-2. Recreated admin via application's internal Python logic:
-
-```python
-from app.services.user_service import UserService
-from app.database import get_db_session
-
-async with get_db_session() as db:
-    admin = await UserService.create(
-        db,
-        email="admin@janua.dev",
-        password="<secure-password>",  # From Bitwarden
-        is_admin=True
-    )
-```
-
-**Current State**: Admin credentials secured in Bitwarden vault
+The generalizable lesson, which needs none of that detail: create the first
+administrative user through the application's own user-creation code path, never
+by direct SQL `INSERT`. Password hashing format (algorithm, salt, cost) is an
+application concern, and a hand-written row will not match what the verifier
+expects.
 
 ### Database Permissions Fix
 
@@ -339,33 +370,38 @@ GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO janua;
 
 ## 6. Port Allocation
 
-### MADFAM Ecosystem Port Blocks
+**Superseded — see [`../docs/PORT_ALLOCATION.md`](../docs/PORT_ALLOCATION.md).**
 
-| Block | Range | Project |
-|-------|-------|---------|
-| 4100-4199 | Janua | Identity & Authentication |
-| 4200-4299 | Enclii | PaaS Platform |
-| 4300-4399 | Dhanam | Treasury & Payments |
-| 4400-4499 | Avala | Analytics |
-| 4500-4599 | Reserved | Future projects |
+The block table that used to sit here assigned 4300-4399 to Dhanam and
+4400-4499 to Avala. `PORT_ALLOCATION.md` assigns those to Fortuna and ForgeSight,
+and puts Dhanam at 4700-4799 and AVALA at 4600-4699. Two public documents in one
+repository disagreeing about the same registry is worse than one document, so
+this copy is retired rather than corrected.
 
-### Janua Port Assignments
-
-| Port | Service | Container |
-|------|---------|-----------|
-| 4100 | API | `janua-api` |
-| 4101 | Dashboard | `janua-dashboard` |
-| 4102 | Admin | `janua-admin` |
-| 4103 | Docs | `janua-docs` |
-| 4104 | Website | `janua-website` |
-| 4105 | Demo | `janua-demo` |
-| 4110 | Email Worker | `janua-worker-email` |
-| 4120 | WebSocket | `janua-ws` |
-| 4190 | Metrics | `janua-metrics` |
+Read `PORT_ALLOCATION.md` for the scheme, its honest compliance count, and — more
+useful than either — the explanation of why container port choice has no effect
+in production and the two narrow cases where it does.
 
 ---
 
 ## 7. Maintenance Procedures
+
+> **HISTORICAL — superseded, and unsafe to follow against production.**
+> These are 2025-12-02 single-host Docker procedures. Two reasons not to run them:
+> (a) there is no build-on-server flow — images are built by CI, pushed to GHCR,
+> and pinned by digest into `kustomization.yaml`, which ArgoCD then syncs; and
+> (b) ArgoCD runs with `selfHeal` enabled, so anything changed by hand on the
+> cluster is reverted. Permanent changes go through the app repo.
+>
+> Routine production operations belong on the Enclii control plane
+> (`enclii ops apps`, `ops pods`, `ops storage`, `ops secrets`). Raw `kubectl`,
+> SSH and `docker exec` are for platform bootstrap or documented break-glass
+> only, and each such use has to be recorded with actor, reason, target,
+> commands, result and the missing-adapter note. Current break-glass procedures
+> are in `internal-devops`, not here.
+>
+> The ZFS commands below still describe the host storage layer and remain
+> accurate as reference; the Docker and deploy commands do not.
 
 ### ZFS Health Check
 
@@ -404,16 +440,14 @@ docker logs janua-api --tail 100 -f
 
 # Restart service
 docker restart janua-api
-
-# Rebuild and deploy
-cd /opt/solarpunk/janua
-git pull origin main
-docker build -f apps/api/Dockerfile -t janua-api:latest apps/api/
-docker stop janua-api && docker rm janua-api
-docker run -d --name janua-api --network janua-network \
-  -p 4100:8000 --env-file .env.production \
-  --restart unless-stopped janua-api:latest
 ```
+
+> The "rebuild and deploy" block that used to follow — `git pull` on the server,
+> `docker build`, `docker run` — was removed on 2026-07-25. It described building
+> images on the production host, which is the opposite of the current model
+> (CI builds → GHCR → digest pin → ArgoCD pull) and would be reverted or
+> overwritten if attempted. It also referenced an on-server checkout path that no
+> longer exists.
 
 ### Backup Procedures
 
@@ -428,13 +462,15 @@ zfs snapshot rpool/data/postgres@backup-$(date +%Y%m%d)
 zfs send rpool/data/postgres@backup-20251202 | ssh backup-server zfs recv backup/postgres
 ```
 
-### Emergency Contacts
+### Escalation
 
-| Role | Contact | Scope |
-|------|---------|-------|
-| Infrastructure | Enclii alerts | Server, network, storage |
-| Application | Janua logs | Auth, API, dashboard |
-| Security | Bitwarden vault | Credentials, secrets |
+Operator escalation paths, on-call ownership and the credential-custody model
+are maintained in `internal-devops` and are deliberately not published here.
+
+One caveat worth carrying in public, because it changes how you should read any
+"alerts will tell you" assumption: as of the 2026-07-16 internal launch-readiness
+assessment, **alert delivery was recorded as not working**. Do not assume an
+alerting backstop exists without checking the private record first.
 
 ---
 
@@ -443,7 +479,8 @@ zfs send rpool/data/postgres@backup-20251202 | ssh backup-server zfs recv backup
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2025-12-02 | Claude/MADFAM | Initial documentation |
+| 1.1 | 2026-07-25 | Truthfulness pass | Labelled §3/§4/§7 historical; retired the duplicate port table in favour of `docs/PORT_ALLOCATION.md`; removed the admin-bootstrap incident and credential-store reference (Lane A); removed the build-on-server deploy block. |
 
 ---
 
-*Solarpunk Foundry - Building sustainable digital infrastructure*
+*Public-safe. Contains no node identifiers, IP addresses, hardware specifications, capacity or cost figures, tunnel identifiers, or secret paths.*

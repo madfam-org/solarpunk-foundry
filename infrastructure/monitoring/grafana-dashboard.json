@@ -2,7 +2,13 @@
   "dashboard": {
     "id": null,
     "title": "Janua Platform - Production Monitoring",
-    "tags": ["janua", "production", "api", "authentication"],
+    "description": "UNVERIFIED ARTIFACT (reviewed 2026-07-25). Provenance unestablished: it is not known whether this is an ancestor of any live MADFAM dashboard or dead scaffolding. It shipped alongside a Docker Compose monitoring stack that was removed from solarpunk-foundry on 2026-07-25. This file does not configure MADFAM's production observability stack. See infrastructure/monitoring/README.md.",
+    "tags": [
+      "janua",
+      "production",
+      "api",
+      "authentication"
+    ],
     "timezone": "browser",
     "panels": [
       {

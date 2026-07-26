@@ -1,4 +1,21 @@
 #!/bin/bash
+# =============================================================================
+#  HISTORICAL — DO NOT RUN AGAINST MADFAM PRODUCTION.  Superseded 2026.
+#  Reviewed 2026-07-25.
+#
+#  This script is part of the 2025-12-02 single-host bootstrap: it provisioned
+#  ONE Ubuntu server running Docker Compose with a ZFS storage driver.
+#
+#  MADFAM production is now bare-metal k3s with ArgoCD GitOps. Images are built
+#  by CI, pushed to GHCR, pinned by digest into kustomization.yaml, and pulled
+#  by ArgoCD. Nothing is built or deployed on the server. Services are onboarded
+#  with `enclii onboard`. ArgoCD runs with selfHeal enabled, so hand-applied
+#  changes are reverted.
+#
+#  Kept as a record of how the estate actually ran, and because the ZFS tuning
+#  and SSH hardening here remain useful reference. See ../README.md for the
+#  current model, and the private internal-devops repo for real procedures.
+# =============================================================================
 set -euo pipefail
 
 # Solarpunk Foundry - SSH Hardening Script

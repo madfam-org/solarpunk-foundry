@@ -1,4 +1,21 @@
 #!/bin/bash
+# =============================================================================
+#  HISTORICAL — DO NOT RUN AGAINST MADFAM PRODUCTION.  Superseded 2026.
+#  Reviewed 2026-07-25.
+#
+#  This script is part of the 2025-12-02 single-host bootstrap: it provisioned
+#  ONE Ubuntu server running Docker Compose with a ZFS storage driver.
+#
+#  MADFAM production is now bare-metal k3s with ArgoCD GitOps. Images are built
+#  by CI, pushed to GHCR, pinned by digest into kustomization.yaml, and pulled
+#  by ArgoCD. Nothing is built or deployed on the server. Services are onboarded
+#  with `enclii onboard`. ArgoCD runs with selfHeal enabled, so hand-applied
+#  changes are reverted.
+#
+#  Kept as a record of how the estate actually ran, and because the ZFS tuning
+#  and SSH hardening here remain useful reference. See ../README.md for the
+#  current model, and the private internal-devops repo for real procedures.
+# =============================================================================
 set -euo pipefail
 
 # Solarpunk Foundry - Cloudflared Tunnel Setup
@@ -29,7 +46,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Tunnel configuration
-TUNNEL_NAME="${TUNNEL_NAME:-foundry-prod}"
+TUNNEL_NAME="${TUNNEL_NAME:-<TUNNEL_NAME>}"   # real name maintained in internal-devops
 TUNNEL_TOKEN="${TUNNEL_TOKEN:-}"
 SSH_TUNNEL_HOSTNAME="${SSH_TUNNEL_HOSTNAME:-ssh.example.com}"
 JANUA_API_HOSTNAME="${JANUA_API_HOSTNAME:-api.janua.example.com}"
@@ -46,7 +63,7 @@ if [ -z "$TUNNEL_TOKEN" ]; then
     echo "Usage: TUNNEL_TOKEN='your-token-here' ./06-cloudflared-setup.sh"
     echo ""
     echo "Get your tunnel token from Cloudflare Zero Trust dashboard:"
-    echo "  Networks → Tunnels → foundry-prod → Configure → Install connector"
+    echo "  Networks → Tunnels → <your tunnel> → Configure → Install connector"
     exit 1
 fi
 

@@ -1,24 +1,154 @@
-# Solarpunk Foundry LLM Context Pointer
+# Solarpunk Foundry — Full LLM Context Map
 
 Generated: 2026-05-13
+Last updated: 2026-07-25
+Last verified: 2026-07-25 — every repository path listed below was confirmed
+present in the working tree on that date. Ecosystem claims carry their own
+source and verification date inline; none of them was verified by probing
+production.
 
 ## Purpose
 
-This pointer file gives LLM agents a stable, tool-agnostic map for working in this
-repository without depending on vendor-specific instruction files.
+This file gives LLM agents a stable, tool-agnostic map for working in this
+repository without depending on vendor-specific instruction files. It is the
+durable full-context companion to the compact index in `llms.txt`.
 
 ## Canonical instruction order
 
-1. `AGENTS.md`
-2. `README.md` if present
-3. `ECOSYSTEM.md` if present
-4. Relevant files under `docs/`, `infra/`, `.github/workflows/`, and source
-   directories for the specific task
-
-## Agent compatibility
+1. `AGENTS.md` — canonical agent instructions for this repo
+2. `README.md` — what the repo is and is not, lanes, platform map, conventions,
+   honest status
+3. `ECOSYSTEM.md` — standalone ecosystem map, sanitized topology, Enclii CLI
+4. `MADFAM.md` — per-platform master reference
+5. `AI_CONTEXT.md` — package and registry quick reference
+6. Task-relevant files under `docs/`, `packages/`, `ops/`, `scripts/`,
+   `.github/workflows/`
 
 `AGENTS.md` is the source of truth. `CLAUDE.md` exists only to redirect Claude
-and other legacy agent integrations to `AGENTS.md`.
+and other legacy agent integrations to `AGENTS.md`; it must not accumulate repo
+policy.
+
+## What this repository is
+
+`madfam-org/solarpunk-foundry` is MADFAM's designated PUBLIC ecosystem contract
+hub — Lane B in the repo-boundary contract. It holds:
+
+- the canonical ecosystem map at a platform-public level
+- the cross-repo conventions every platform implements
+- the `@madfam/*` shared package set (13 packages under `packages/`)
+- the port registry (`docs/PORT_ALLOCATION.md`)
+- local dogfooding scaffolds (`ops/`)
+- sanitized architecture narrative and redacted pointers into the private repo
+
+It ships no application deployable and has no Kubernetes namespace.
+
+## What this repository is NOT
+
+It is not the operational source of truth. That is the PRIVATE `internal-devops`
+repo (Lane A), created after a 2026-03-13 audit found sensitive operational data
+spread across 18 public repositories. Lane A is the only allowed home for:
+
+- node identity, public IPs, hardware models, capacity figures
+- cost and procurement data
+- secret paths, secret names with retrieval detail, Vault layout
+- incident internals and evidence trails
+- raw break-glass `kubectl` / SSH procedures
+- the authoritative domain map and repo registry
+
+Topology SHAPE is public and stays public: a 3-node bare-metal k3s cluster on
+Hetzner (two dedicated nodes plus one cloud CI builder), ingress via a single
+Cloudflare Tunnel with zero exposed node ports, TLS terminated at the Cloudflare
+edge, Longhorn CSI block storage, Cloudflare R2 object storage, ArgoCD GitOps
+with self-heal on. Those figures carry the 2026-05-04 verification date of the
+private infrastructure records.
+
+## Lane map
+
+- Lane A — `internal-devops` (private): operational source of truth
+- Lane B — `solarpunk-foundry` (this repo, public): ecosystem contract hub
+- Lane C — public service repos, e.g. `enclii`: service-specific implementation
+  guidance and public-safe runbook structure
+- Lane D — private service repos, e.g. `tulana`: internal business logic and
+  customer-adjacent detail
+
+Canonical policy: `internal-devops/docs/repo-boundary-contract.md`
+(last updated 2026-06-14). Public checklist: `docs/PUBLIC_REPO_BOUNDARY.md`.
+Any public document carrying ecosystem context must include one short boundary
+note with a canonical link target.
+
+## Evidence standard
+
+This repo is held to a documentation standard, not just a code standard:
+
+1. No claim without a source and a date. Every factual assertion is traceable to
+   a file someone actually read, and carries the date that source was last
+   verified.
+2. Never invent verification. Production cannot be probed from this repo. If the
+   private repo last verified a route on 2026-07-01, the public doc says "last
+   verified 2026-07-01" — not "live", not "currently".
+3. Aspirational content is labelled as such, in place, and not deleted.
+   `docs/PORT_ALLOCATION.md` is the model: it opens by declaring its own scheme
+   aspirational and stating how few services follow it.
+4. No marketing language: no superlatives, no invented metrics, no adoption or
+   performance numbers nobody measured.
+5. Where something cannot be established, say so explicitly and name what would
+   settle it. An honest gap beats a confident guess.
+
+## Cross-repo conventions
+
+Full statements with sources and dates: `README.md` §IV.
+
+1. IDENTITY — Janua OIDC. Every authenticated service verifies RS256 JWTs
+   against the JWKS at `https://auth.madfam.io/.well-known/jwks.json`. HS256 is
+   fail-closed since the 2026-04-23 audit (findings H3/H4). No service
+   implements custom auth, password login, or session management. Claims: sub,
+   email, roles, org_id, and rfc for fiscal services. Janua is single-issuer per
+   deployment — the issuer derives from JANUA_CUSTOM_DOMAIN, not the request
+   Host, so a second Janua hostname cannot be served without breaking OIDC
+   validation. Fleet conformance is not uniform: the 2026-07-16 audit rates it
+   YELLOW and the matrix behind that rating was never committed, so per-surface
+   enforcement is currently unestablished.
+
+2. BILLING — Dhanam. Credit metering, entitlements, invoices and the billing
+   ledger flow through Dhanam. Other services read via API and keep no local
+   mirror.
+
+3. INFERENCE — Selva `/v1`. Every LLM-consuming service points its OpenAI SDK
+   base_url at Selva's OpenAI-compatible `/v1` surface, and service code makes
+   no direct provider calls. The endpoint is https://inference.selva.town as of
+   the 2026-07-07 cutover, when the proxy was extracted out of `nexus-api` into
+   `selva-inference-gateway` and the nexus-api `/v1` mount was removed. Provider
+   credentials are intended to live only on Selva; the 2026-07-09 phynd-crm
+   audit recorded a service failing open to api.openai.com, so treat credential
+   exclusivity as the rule rather than the verified state.
+
+4. PAYMENT ATTRIBUTION — signed fan-out. Header
+   `x-madfam-signature: t=<unix-seconds>,v1=<hex-hmac-sha256>` over
+   `"${ts}.${raw-body}"`, per-target secret, 5-minute replay window. Receivers:
+   dhanam POST /v1/billing/madfam-events and phynd-crm
+   POST /api/webhooks/routecraft, both idempotent by emitter event_id. As built
+   the emitter is `routecraft`; the ratified target (decision of record
+   2026-05-04, reaffirmed 2026-07-08) moves emission to Dhanam. As of 2026-07-08
+   the fan-out was verified to be a silent no-op in production. The
+   `@madfam/webhook-attribution` package in this repo packages the signing
+   contract; no repo had adopted it as of that date.
+
+5. CORS — explicit allowlist per service. Wildcards banned (audit 2026-04-23,
+   H2/H5/H6).
+
+6. DEPLOYMENT — Enclii is the mandatory control plane for routine production
+   operations. Flow: push to main, CI builds the image, GHCR, cosign keyless
+   signature, `kustomize edit set image` pins the digest, CI commits it back,
+   ArgoCD pulls and syncs. Nothing pushes to the cluster. Self-heal is on, so a
+   live `kubectl patch` gets reverted; permanent changes must be committed.
+   Onboarding is zero-touch by contract (RFC 0014): adding a service must not
+   require editing the enclii, janua or dhanam repos.
+
+7. DATA BOUNDARIES — own once, query everywhere. Identity and sessions: Janua.
+   Bank transactions and the billing ledger: Dhanam. Mexican law and compliance
+   rules: Tezca. CFDI/SAT/tax filings: Karafiel. Fabrication node capacity and
+   pricing: Forj. Manufacturing execution telemetry: Pravara MES. 3D geometry
+   kernel: geom-core.
 
 ## Enclii-first operations contract
 
@@ -30,22 +160,180 @@ Raw `kubectl`, `helm`, SSH, provider CLIs/APIs, `docker exec`, and direct
 container access are allowed only for platform bootstrap or documented
 break-glass emergencies when Enclii is unavailable or lacks an implemented
 adapter. Any break-glass use must record the actor, reason, target
-service/environment, commands executed, result, and follow-up Enclii adapter
-gap or incident link.
+service/environment, commands executed, result, and follow-up Enclii adapter gap
+or incident link. Recording the adapter gap is mandatory, not optional.
 
-## Repo entrypoints detected
+Enforcement of this doctrine is documentary, not technical: a banner convention
+plus a docs-linting script in `internal-devops`. There is no admission-time or
+CLI-time block on raw kubectl.
 
-- `README.md`
-- `ECOSYSTEM.md`
-- `docs/`
-- `.github/workflows/`
+## Repository layout
 
-## Boundary
+Verified present 2026-07-25.
 
-This is not a full repository ingest. It is a compact context pointer; task-specific work must still read the relevant source documents listed below.
+Root documents:
+- README.md, AGENTS.md, CLAUDE.md, ECOSYSTEM.md, MADFAM.md, AI_CONTEXT.md
+- CHANGELOG.md, CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md, LICENSE
+- llms.txt, llms-full.txt
+- package.json, pnpm-workspace.yaml, pnpm-lock.yaml, .npmrc
+- .enclii.yml (unreconciled with the live Verdaccio manifests — see below)
+- docker-compose.yml (currently broken — see below)
+- .env.example, playwright.config.ts, .eslintrc.cjs
+
+packages/ — 13 packages: analytics, auth-resilience, constants, core,
+ecosystem-banner, env, error-boundary, logging, sentry, telemetry, types, ui,
+webhook-attribution. `@madfam/ui` is DEPRECATED; the UI system moved to a
+per-app "incubator" model (packages/ui/README.md).
+
+ops/
+- ops/bin/ — madfam.sh (symlinked to ../madfam at labspace root) plus debug and
+  port-verification scripts
+- ops/local/ — docker-compose.shared.yml (THE canonical local stack),
+  docker-compose.infra.yml, docker-compose.platform.yml,
+  docker-compose.observability.yml, init-databases.sql, README.md
+- ops/db/ — init-shared-dbs.sql (older, superseded `*_db` naming)
+- ops/docker/, ops/env/, ops/k8s/network-policies/, ops/scripts/
+
+docs/
+- PORT_ALLOCATION.md, PUBLIC_REPO_BOUNDARY.md, OPERATIONAL_REDIRECTS.md
+- LICENSING_STRATEGY.md, MONETIZATION_PATH_READINESS.md, ECOSYSTEM_BANNER.md
+- DOGFOODING_GUIDE.md, JANUA_INTEGRATION.md, INTEGRATION_TESTING.md
+- CROSS_REPO_NAVIGATION.md, ECOSYSTEM_STATUS.md, INFRASTRUCTURE_STATUS.md
+- SSH_ACCESS.md
+- docs/architecture/ — SYMBIOSIS.md, CLUSTER_ARCHITECTURE.md,
+  FEDERATED_ARCHITECTURE_README.md, SELF_CONTAINED_SERVICES.md
+- docs/runbooks/ — UNDER REVIEW, see caveats below
+
+scripts/ — backup-registry.sh, boundary-checkpoint-check.sh, build-and-tag.sh,
+check-production-readiness-ratchet.py, cleanup-legacy-deployments.sh,
+link-ecosystem.sh, public-hygiene-check.sh, publish-all-sdks.sh, publish-ui.sh
+
+templates/ — HONEST_STATUS_SCORECARD.md, README.md, plus analytics, ci, env,
+providers, tailwind and tsconfig starters
+
+.github/workflows/ — doc-lint.yml, package-quality.yml,
+production-readiness-ratchet.yml, public-hygiene.yml, publish-package.yml,
+repository-hygiene.yml
+
+tests/ — smoke and integration
+
+infrastructure/ — UNDER REVIEW, see caveats below
+
+## Known-bad and under-review material in this repo
+
+State these rather than let an agent trip over them:
+
+- `docker-compose.yml` (root) does not build: its `janua` service targets a
+  `development` stage that does not exist in janua/apps/api/Dockerfile (which
+  defines only `builder` and `runner`, both Python), and its `enclii-api`
+  service points at `enclii/Dockerfile`, which does not exist — Enclii's
+  Dockerfiles are per app under enclii/apps/*/Dockerfile. It also declares the
+  network `madfam-network` while the canonical stack uses
+  `madfam-shared-network`. Use `enclii local up`. (Checked 2026-07-25.)
+- `.enclii.yml` describes an `npm-registry` service whose replica count, volume
+  size and storage class do not match the live Verdaccio manifests in the enclii
+  repo, and publishes an SLO with no measurement source behind it. Unreconciled.
+- `docs/runbooks/` describes a pre-k3s Docker-Compose architecture with a ZFS
+  pool and on-host secret paths. Production has not looked like that since the
+  k3s migration. Owned by a separate remediation pass.
+- `infrastructure/` contains four mutually incompatible architectures (AWS
+  EKS/RDS, Hetzner Cloud VMs on RFC1918 addressing, single-host Docker Compose
+  on ZFS, and an nginx/cert-manager ingress), none of which is production. Also
+  owned by a separate remediation pass. As of 2026-07-25 one file in that tree
+  carries a live infrastructure identifier on `main` (a scrub was in flight in
+  the working tree at the time of writing). Removing it from HEAD does not remove
+  it from git history, so rotation — an operator action — is the actual remedy.
+  Tracked as an open incident in `internal-devops`.
+- `scripts/public-hygiene-check.sh` scans .md/.mdx/.txt only and has no pattern
+  for infrastructure identifiers, IPs or node hostnames. A green CI run is not
+  proof a change is boundary-clean.
+- `docs/LICENSING_STRATEGY.md` is stale and in at least one case wrong (it lists
+  ForgeSight as Proprietary; its LICENSE file is AGPL-3.0). README.md §V carries
+  a table of what the LICENSE files actually say, checked 2026-07-25.
+
+## Local development
+
+Verified against enclii/packages/cli/internal/cmd/local.go on 2026-07-25.
+
+    enclii local up       # shared infra, then Janua + Enclii (NOT "all services")
+    enclii local infra    # shared infra only: PostgreSQL, Redis, MinIO, MailHog
+    enclii local status
+    enclii local logs [service]
+    enclii local down
+
+The CLI drives solarpunk-foundry/ops/local/docker-compose.shared.yml on the
+Docker network `madfam-shared-network`. `enclii local infra` does NOT include
+Verdaccio.
+
+Fallback: `./madfam` at the labspace root, a symlink to ops/bin/madfam.sh.
+`./madfam full` declares 10 services (janua, forgesight, digifab-quoting,
+madfam-site, madfam, primavera3d, dhanam, fortuna, sim4d, electrochem-sim), not
+18. Two of them — madfam and electrochem-sim — have no checkout under
+~/labspace, so `full` cannot start them.
+
+Databases created by ops/local/init-databases.sql: janua_dev, enclii_dev,
+forgesight_dev, fortuna_dev, cotiza_dev, avala_dev, dhanam_dev, sim4d_dev,
+forj_dev. The older ops/db/init-shared-dbs.sql creates `*_db`-suffixed names from
+a superseded scheme; several docs still quote those. The `_dev` set is what the
+CLI provisions.
+
+## Ports
+
+The ecosystem-wide 4xxx/5xxx block scheme is aspirational. Do not read a port
+out of any document and assume a service listens on it — read
+docs/PORT_ALLOCATION.md, which is honest about how little of the scheme is
+followed, then check the owning repo's enclii.yaml.
+
+In production, hostname routing makes container ports invisible to callers, but
+they are not irrelevant: the Enclii control plane generates NetworkPolicies from
+enclii.yaml's network.services[].port and applies them via the K8s API. If that
+declared number does not intersect the pod's actual containerPort, the CNI drops
+traffic silently, and it presents as a rendering or timeout bug rather than a
+network one.
+
+## Where live state comes from
+
+Not from this repo. `status.madfam.io` is the sanitized status board. The
+authoritative route map is internal-devops/ecosystem/domain-map.md (Last
+Verified 2026-07-01) and the authoritative repo registry is
+internal-devops/ecosystem/repo-registry.md (Last Verified 2026-07-04). No
+document in this repo should carry a green status glyph for a production
+endpoint, because nothing here can re-check one.
+
+## Standing route warnings
+
+From internal-devops/ecosystem/domain-map.md, verified 2026-07-01:
+
+- agents-*.madfam.io and selva.madfam.io are RETIRED — no tunnel ingress rules,
+  they return 502. Do not resurrect them. The Selva cutover to *.selva.town
+  executed and is complete.
+- auth.selva.town must NEVER be routed. Janua is single-issuer, so serving it
+  there would emit issuer=auth.madfam.io and break OIDC validation.
+- metrics.enclii.dev is a retired alias with no DNS or tunnel route; the
+  canonical endpoint is prometheus.enclii.dev.
+- phynd.app is NOT registered; crm.madfam.io is the live PhyndCRM host.
+- innovacionesmadfam.dev was NEVER owned (owner confirmation 2026-07-09). Do not
+  reference it, including any security@ address on it.
+- madfam.academy and madfam.info are expired.
+- periplo.madfam.io is NXDOMAIN (re-confirmed 2026-07-25).
+- All four meridian hostnames are pre-deploy — no DNS, no tunnel route.
+- eido.cam status is contradicted between internal sources dated the same day
+  and is unresolved; a dated HTTP probe would settle it.
 
 ## Maintenance
 
-These files are maintained by `internal-devops/scripts/sync-agent-docs.py`.
-If repo-specific long-form agent guidance is needed, put it in `AGENTS.md`,
-not `CLAUDE.md`.
+These files are inspected by internal-devops/scripts/sync-agent-docs.py. Run it
+bare to print a diff and write nothing; `--apply` overwrites AGENTS.md,
+CLAUDE.md, llms.txt and llms-full.txt with template-generated content across
+every labspace repo. This repo has hand-curated entrypoints, so prefer
+hand-editing and review the diff before committing. Repo-specific long-form
+agent guidance belongs in AGENTS.md, not CLAUDE.md.
+
+## Boundary
+
+This is not a full repository ingest. It is a durable context map; task-specific
+work must still read the relevant source documents. Public repo: node hostnames,
+public IPs, hardware models and capacity figures, the Cloudflare tunnel
+identifier, cost and procurement data, Vault paths, raw break-glass procedures,
+and incident evidence trails must never appear here. Canonical policy:
+internal-devops/docs/repo-boundary-contract.md (last updated 2026-06-14).

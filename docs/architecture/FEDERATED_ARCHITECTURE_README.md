@@ -1,239 +1,127 @@
-# Federated Architecture Implementation Complete
+# Federated local-development architecture — historical record
 
-> [!IMPORTANT]
-> MADFAM-ENCLII-FIRST-LEGACY-RAW v1: This document contains legacy raw infrastructure command examples.
-> Routine production operations must use Enclii web, API, or CLI. Treat raw
-> `kubectl`, `helm`, SSH, provider CLI/API, `docker exec`, and direct container
-> access as platform bootstrap or documented break-glass only, and record any
-> missing Enclii adapter gap.
+**Status: HISTORICAL. Superseded.**
+**Describes: 2025-11-24. Reviewed and labelled: 2026-07-25.**
 
+> ## Read this first
+>
+> This document records a **local development** refactor completed on
+> **2025-11-24**: moving from a single monolithic `docker-compose.yml` to
+> per-repository compose files sharing one infrastructure stack.
+>
+> It is kept because the reasoning is sound and the pattern still describes the
+> compose fallback path. It is **not** current guidance:
+>
+> - **The preferred local path is now `enclii local up`**, which manages shared
+>   infrastructure plus Janua and Enclii directly. See
+>   [`../DOGFOODING_GUIDE.md`](../DOGFOODING_GUIDE.md).
+> - **This has never described production.** Production is k3s with ArgoCD
+>   GitOps; `docker-compose` plays no part in it.
+> - The previous revision was titled "Federated Architecture Implementation
+>   **Complete**" while carrying an unstarted "Next Steps" list. A document
+>   cannot declare completion and list unstarted work; that contradiction is
+>   why the title changed.
+>
+> Corrections to factual errors in the original are inline below, marked
+> **[Corrected 2026-07-25]**. The original text is otherwise preserved.
 
-> **Note:** This document describes the "Federated Architecture" for application services.
-> For the core platform architecture (Substrate, Trellis, Membrane), see [SYMBIOSIS.md](./SYMBIOSIS.md).
-
-## Overview
-The MADFAM Revenue Shield has been refactored from a **monolithic docker-compose** to a **federated architecture** where each repository uses its own docker-compose.yml file, all sharing common infrastructure.
-
-## Key Changes
-
-### 1. Shared Infrastructure (`docker-compose.shared.yml`)
-Created a central infrastructure file that provides:
-- **PostgreSQL** (port 5432) - Multi-database instance with separate DBs:
-  - `janua_db` - Authentication platform
-  - `cotiza_db` - Quoting engine
-  - `forgesight_db` - Vendor intelligence
-  - Plus: dhanam_db, avala_db, fortuna_db, blueprint_db
-- **Redis** (port 6379) - Shared cache with DB isolation (0, 1, 2, etc.)
-- **MinIO** (ports 9000/9001) - S3-compatible storage with pre-provisioned buckets
-
-### 2. Refactored `madfam.sh`
-The control script now follows the **Solarpunk Zoning Law** boot sequence:
-
-#### Phase 0: Bedrock (Shared Infrastructure)
-```bash
-docker compose -f docker-compose.shared.yml up -d
-```
-Starts: PostgreSQL, Redis, MinIO
-
-#### Phase 1: Infrastructure Zone (Janua)
-```bash
-cd janua/deployment
-docker compose up -d api admin docs  # Skip postgres/redis
-```
-Ports: 4100 (API), 4102 (Admin), 4103 (Docs)
-
-#### Phase 2: Data Zone (Forgesight)
-```bash
-cd forgesight
-docker compose up -d api crawler discovery extractor normalizer admin-ui
-```
-Ports: 4300 (API), 4302 (Admin)
-
-#### Phase 3: Business Zone (Cotiza)
-```bash
-cd digifab-quoting
-docker compose up -d api web worker  # Skip postgres/redis
-```
-Ports: 4500 (API), 4501 (Web), 4510 (Worker)
-
-### 3. Connection String Updates Required
-
-**IMPORTANT**: Each app needs its `.env` updated to use shared infrastructure:
-
-#### Janua
-```bash
-DATABASE_URL=postgresql://madfam:madfam_dev_password@localhost:5432/janua_db
-REDIS_URL=redis://:redis_dev_password@localhost:6379/0
-```
-
-#### Cotiza (digifab-quoting)
-```bash
-DATABASE_URL=postgresql://madfam:madfam_dev_password@postgres:5432/cotiza_db?schema=public
-REDIS_URL=redis://:redis_dev_password@redis:6379/1
-```
-
-#### Forgesight
-```bash
-DATABASE_URL=postgresql+asyncpg://madfam:madfam_dev_password@postgres:5432/forgesight_db
-REDIS_URL=redis://:redis_dev_password@redis:6379/2
-```
-
-## Usage
-
-### Start Everything
-```bash
-cd ~/labspace
-./madfam.sh start
-```
-
-### Stop Everything
-```bash
-./madfam.sh stop
-```
-
-### Stop and Remove Volumes (Clean Slate)
-```bash
-./madfam.sh stop --clean
-```
-
-### View Logs
-```bash
-./madfam.sh logs shared              # Infrastructure logs
-./madfam.sh logs janua               # All Janua logs
-./madfam.sh logs janua api           # Janua API only
-./madfam.sh logs forgesight api      # Forgesight API
-./madfam.sh logs cotiza web          # Cotiza frontend
-```
-
-### Check Status
-```bash
-./madfam.sh status
-```
-
-## Port Conflicts Resolved
-
-### Before (Monolithic)
-- ❌ All apps tried to use port 5432 for PostgreSQL
-- ❌ All apps tried to use port 6379 for Redis
-- ❌ Multiple apps tried to use port 3000
-
-### After (Federated)
-- ✅ Single PostgreSQL on 5432 with isolated databases
-- ✅ Single Redis on 6379 with DB index isolation
-- ✅ Each app has unique ports per Solarpunk Zoning Law
-
-## Next Steps
-
-### 1. Update Individual docker-compose.yml Files
-Each repo's docker-compose needs modifications:
-
-**janua/deployment/docker-compose.yml**:
-- Remove `postgres` and `redis` service definitions
-- Update `api` service to use `external_links` or network connection
-- Change DATABASE_URL to use `janua_db`
-
-**digifab-quoting/docker-compose.yml**:
-- Remove `postgres` and `redis` service definitions
-- Update DATABASE_URL to use `cotiza_db`
-- Update REDIS_URL to use `/1` database index
-
-**forgesight/docker-compose.yml**:
-- Remove `postgres`, `redis`, `minio` service definitions
-- Update DATABASE_URL to use `forgesight_db`
-- Update REDIS_URL to use `/2` database index
-- Update MinIO connection to shared instance
-
-### 2. Network Configuration
-Add to each docker-compose.yml:
-```yaml
-networks:
-  default:
-    external: true
-    name: madfam-shared-network
-```
-
-### 3. Test the Boot Sequence
-```bash
-# Clean start
-./madfam.sh stop --clean
-./madfam.sh start
-
-# Verify services
-./madfam.sh status
-
-# Check health endpoints
-curl http://localhost:4100/health    # Janua
-curl http://localhost:4300/health    # Forgesight
-curl http://localhost:4500/api/v1/health  # Cotiza
-```
-
-## Benefits of Federated Architecture
-
-1. **Isolation**: Each app maintains its own docker-compose.yml
-2. **No Port Conflicts**: Shared infrastructure + unique app ports
-3. **Scalability**: Easy to add new apps to the ecosystem
-4. **Development Flexibility**: Can run individual apps without full stack
-5. **Resource Efficiency**: Single PostgreSQL/Redis for all apps
-6. **Data Isolation**: Separate databases per app, shared infrastructure
-
-## Architecture Diagram
-
-```
-┌─────────────────────────────────────────────────────┐
-│  Shared Infrastructure (docker-compose.shared.yml)  │
-│  - PostgreSQL:5432 (7 databases)                    │
-│  - Redis:6379 (multi-DB)                            │
-│  - MinIO:9000/9001                                  │
-└─────────────────────────────────────────────────────┘
-                         ▲
-                         │ (shared network)
-         ┌───────────────┼───────────────┐
-         │               │               │
-┌────────▼────────┐ ┌───▼──────────┐ ┌─▼─────────────┐
-│ Janua           │ │ Forgesight   │ │ Cotiza        │
-│ (Infra Zone)    │ │ (Data Zone)  │ │ (Business)    │
-│                 │ │              │ │               │
-│ API: 4100       │ │ API: 4300    │ │ API: 4500     │
-│ Admin: 4102     │ │ Admin: 4302  │ │ Web: 4501     │
-│ Docs: 4103      │ │ Workers: N/A │ │ Worker: 4510  │
-└─────────────────┘ └──────────────┘ └───────────────┘
-```
-
-## Troubleshooting
-
-### "Port already in use"
-```bash
-# Check what's using the port
-lsof -i :5432
-lsof -i :6379
-
-# Stop conflicting services
-./madfam.sh stop
-```
-
-### "Database does not exist"
-```bash
-# Recreate databases
-docker exec madfam-postgres-shared psql -U madfam -f /docker-entrypoint-initdb.d/01-init-dbs.sql
-```
-
-### "Cannot connect to shared network"
-```bash
-# Recreate network
-docker network rm madfam-shared-network
-./madfam.sh start
-```
-
-## Files Created
-
-1. **docker-compose.shared.yml** - Shared infrastructure definition
-2. **infrastructure/postgres/init-shared-dbs.sql** - Database initialization
-3. **madfam.sh** - Refactored federated control script
-4. **DOCKER_COMPOSE_ANALYSIS.md** - Conflict analysis
-5. **FEDERATED_ARCHITECTURE_README.md** - This file
+> **Terminology note.** The original opened by referring to "the MADFAM Revenue
+> Shield". That name appears nowhere in the current private operational record,
+> the repository registry, the domain map, or any 2026 roadmap. It is a retired
+> internal project name from 2025 and carries no current meaning. Read it as
+> "the MADFAM local development stack".
 
 ---
 
-**Status**: ✅ Refactor Complete  
-**Date**: 2025-11-24  
-**Architecture**: Solarpunk Federated with Shared Infrastructure
+## What the refactor did
+
+Replaced one monolithic compose file with:
+
+1. **A shared infrastructure compose file** providing PostgreSQL, Redis and
+   MinIO for every service.
+2. **Per-repository compose files** that consume that shared infrastructure
+   rather than each standing up its own database.
+
+### Shared infrastructure
+
+- **PostgreSQL** (5432) — one instance, multiple isolated databases
+- **Redis** (6379) — one instance, database-index isolation
+- **MinIO** (9000 / 9001) — S3-compatible object storage with pre-provisioned
+  buckets
+
+> **[Corrected 2026-07-25] Database names.** The original listed `janua_db`,
+> `cotiza_db`, `forgesight_db`, `dhanam_db`, `avala_db`, `fortuna_db` and
+> `blueprint_db`. **None of those exist.** The current init script
+> (`ops/local/init-databases.sql`) creates nine databases, all with a `_dev`
+> suffix: `janua_dev`, `enclii_dev`, `forgesight_dev`, `fortuna_dev`,
+> `cotiza_dev`, `avala_dev`, `dhanam_dev`, `sim4d_dev`, `forj_dev`.
+> `blueprint_db` has no creation statement anywhere. Verified 2026-07-25.
+
+> **[Corrected 2026-07-25] MailHog.** The current shared stack also includes
+> MailHog (SMTP 1025, UI 8025), which post-dates this document.
+
+### Boot sequence
+
+| Phase | Zone | Services |
+|---|---|---|
+| 0 | Bedrock | Shared infrastructure: PostgreSQL, Redis, MinIO |
+| 1 | Infrastructure | Janua (API, admin, docs) |
+| 2 | Data | ForgeSight (API, crawler, discovery, extractor, normalizer, admin UI) |
+| 3 | Business | Cotiza / `digifab-quoting` (API, web, worker) |
+
+> **[Corrected 2026-07-25] Ports.** The original assigned specific ports per
+> phase (ForgeSight admin `4302`, Cotiza worker `4510`, and others). Several
+> appear in no registry and none should be treated as current. The authority
+> for a service's port is that repository's own `enclii.yaml` / `.enclii.yml`;
+> the scheme itself, with its honest compliance statement, is in
+> [`../PORT_ALLOCATION.md`](../PORT_ALLOCATION.md).
+
+### Connection strings
+
+Each app's `.env` points at the shared infrastructure rather than a local
+sidecar — same host, different database and different Redis index per service.
+The current database names are in the correction above.
+
+---
+
+## Problems it solved
+
+| Before | After |
+|---|---|
+| Every app tried to bind 5432 | One PostgreSQL, isolated databases |
+| Every app tried to bind 6379 | One Redis, database-index isolation |
+| Multiple apps tried to bind 3000 | Per-app ports |
+
+Benefits claimed at the time — repo isolation, no port conflicts, ability to
+run one app without the full stack, one database server instead of nine — all
+still hold for the compose path.
+
+---
+
+## Unfinished work (as of 2025-11-24)
+
+Recorded as it stood. Whether any of it was later completed was **not** checked
+in this pass; `enclii local up` largely made the question moot for the services
+it manages.
+
+- Remove `postgres` / `redis` service definitions from each repo's compose file
+- Point each app at the shared external network
+- Verify the boot sequence end to end
+
+> **[Corrected 2026-07-25] Cited files.** The original's "Files Created" list
+> named `infrastructure/postgres/init-shared-dbs.sql` and
+> `DOCKER_COMPOSE_ANALYSIS.md`. Neither path exists. The real paths are
+> `ops/db/init-shared-dbs.sql` and `ops/local/init-databases.sql`; there is no
+> `DOCKER_COMPOSE_ANALYSIS.md` anywhere in the repository.
+
+---
+
+## Current guidance
+
+| Need | Go to |
+|---|---|
+| Start a local environment | [`../DOGFOODING_GUIDE.md`](../DOGFOODING_GUIDE.md) — `enclii local up` |
+| Database names and shared infra | same document; source is `ops/local/init-databases.sql` |
+| Ports | [`../PORT_ALLOCATION.md`](../PORT_ALLOCATION.md) |
+| Production architecture | [`CLUSTER_ARCHITECTURE.md`](./CLUSTER_ARCHITECTURE.md) |
+| Ecosystem narrative | [`SYMBIOSIS.md`](./SYMBIOSIS.md) |

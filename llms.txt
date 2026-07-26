@@ -2,23 +2,101 @@
 
 Compact LLM context index for this repository.
 
+Last updated: 2026-07-25
+Last verified: 2026-07-25 — every path below was confirmed present in the
+working tree on that date.
+
+## What this repo is
+
+`madfam-org/solarpunk-foundry` is MADFAM's PUBLIC ecosystem contract hub
+(Lane B): the ecosystem map at a platform-public level, the cross-repo
+conventions, the `@madfam/*` shared packages, the port registry, and local
+dogfooding scaffolds. It ships no application deployable.
+
+It is NOT the operational source of truth. That is the PRIVATE `internal-devops`
+repo (Lane A), which is the only allowed home for node identity, IPs, hardware
+and capacity figures, costs, secret paths, incident internals, break-glass
+procedures, and the authoritative domain map and repo registry.
+
 ## Read first
 
-- `AGENTS.md` — canonical agent operating instructions.
-- `README.md` — human/product overview when present.
-- `ECOSYSTEM.md` — MADFAM ecosystem and Enclii deployment context when present.
-- `llms-full.txt` — full context map and durable operating contract.
+- `AGENTS.md` — canonical agent operating instructions. Start here.
+- `README.md` — front door: what this repo is and is not, how the lanes divide,
+  the platform map, the cross-repo conventions, and current honest status.
+- `ECOSYSTEM.md` — standalone ecosystem map, sanitized production topology, and
+  the Enclii CLI reference.
+- `MADFAM.md` — the fuller per-platform master reference.
+- `llms-full.txt` — durable full-context map and operating contract.
+- `AI_CONTEXT.md` — package and registry quick reference.
+- `CLAUDE.md` — compatibility redirect to `AGENTS.md`. Not a policy file.
+
+## Evidence standard (applies to anything you write here)
+
+Every factual claim carries its source and the date that source was last
+verified. Distinguish verified / documented-but-unverified / aspirational.
+Never invent verification: you cannot probe production from this repo, so if the
+newest source says 2026-07-01, write "last verified 2026-07-01" — not "live",
+not "currently". Where you cannot establish something, say so and name what
+would settle it. No marketing language, no invented metrics.
+`docs/PORT_ALLOCATION.md` is the model to copy.
+
+## Cross-repo conventions (full statements in README.md §IV)
+
+- Auth: Janua OIDC, RS256 verified against the JWKS at
+  `https://auth.madfam.io/.well-known/jwks.json`. HS256 is fail-closed since the
+  2026-04-23 audit. Janua is single-issuer per deployment.
+- Billing and entitlements: Dhanam. Read via API; no local mirror.
+- LLM inference: Selva's OpenAI-compatible `/v1` at
+  `https://inference.selva.town` (moved off `nexus-api` on 2026-07-07). No
+  direct provider calls from service code.
+- CORS: explicit allowlist per service. Wildcards banned.
+- Deploys: Enclii is the control plane. GitOps — ArgoCD pulls; nothing pushes to
+  the cluster; self-heal reverts live edits.
 
 ## Shared packages
 
-- `packages/ecosystem-banner` — `@madfam/ecosystem-banner` bottom marquee for landings
+Thirteen `@madfam/*` packages under `packages/`, published to the private
+`npm.madfam.io` Verdaccio registry (which runs from the `enclii` repo, not this
+one). `@madfam/ui` is deprecated. Full table with versions: `AI_CONTEXT.md`.
+
+- `packages/ecosystem-banner` — `@madfam/ecosystem-banner`, landing-page ticker
 - `docs/ECOSYSTEM_BANNER.md` — banner + footer contract (public-safe)
+
+## Key documents
+
+- `docs/PORT_ALLOCATION.md` — port scheme, honestly labelled aspirational
+- `docs/PUBLIC_REPO_BOUNDARY.md` — public-repo boundary checklist
+- `docs/OPERATIONAL_REDIRECTS.md` — where operational content moved to
+- `docs/LICENSING_STRATEGY.md` — per-repo license rationale (matrix is stale;
+  see README.md §V for what the LICENSE files actually say)
+- `docs/JANUA_INTEGRATION.md` — wiring Janua into a service
+- `docs/DOGFOODING_GUIDE.md` — local dev setup
+- `docs/CROSS_REPO_NAVIGATION.md` — where to find things across the ecosystem
+- `docs/architecture/SYMBIOSIS.md` — the platform-relationship contract
+- `templates/HONEST_STATUS_SCORECARD.md` — the status-reporting template
+
+Two trees are under review and should not be treated as current: `docs/runbooks/`
+and `infrastructure/`. Both describe a pre-k3s Docker-Compose architecture that
+production no longer uses, and both are owned by a separate remediation pass.
 
 ## Production operations
 
 Routine production operations are Enclii-first. Use Enclii web, API, or CLI
 before raw infrastructure tools. Direct `kubectl`, `helm`, SSH, provider CLIs,
-`docker exec`, or direct container access is bootstrap/break-glass only.
+`docker exec`, or direct container access is bootstrap/break-glass only, and any
+such use must record actor, reason, target service and environment, commands,
+result, and the follow-up Enclii adapter gap or incident link.
 
-- Secret handoff: Enclii `secrets intake` (never paste credentials in agent chat).
-  Private runbooks: `internal-devops` vault rebuild + custody decisions (2026-06).
+Secret handoff: `enclii secrets intake`. Never paste credentials in agent chat.
+Never write Vault paths or secret names with retrieval detail into this repo.
+
+Live up/down state comes from `status.madfam.io`, never from a document in this
+repo.
+
+## Boundary
+
+Public repo. Node hostnames, public IPs, hardware models and capacity figures,
+the Cloudflare tunnel identifier, cost and procurement data, Vault paths, raw
+break-glass procedures, and incident evidence trails must never appear here.
+Canonical policy: `internal-devops/docs/repo-boundary-contract.md`
+(last updated 2026-06-14).

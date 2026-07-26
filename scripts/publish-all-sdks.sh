@@ -5,7 +5,9 @@
 set -e
 
 REGISTRY="https://npm.madfam.io"
-LABSPACE="/Users/aldoruizluna/labspace"
+# Override with MADFAM_LABSPACE if your checkout lives elsewhere. A hardcoded
+# operator home leaks a username into a public repo and breaks for everyone else.
+LABSPACE="${MADFAM_LABSPACE:-$HOME/labspace}"
 
 echo "🚀 MADFAM SDK Publisher"
 echo "========================"

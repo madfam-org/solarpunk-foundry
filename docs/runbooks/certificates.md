@@ -1,149 +1,67 @@
-# Certificate Renewal Runbook
+# Certificates & TLS — public-safe summary
 
-> [!IMPORTANT]
-> MADFAM-ENCLII-FIRST-LEGACY-RAW v1: This document contains legacy raw infrastructure command examples.
-> Routine production operations must use Enclii web, API, or CLI. Treat raw
-> `kubectl`, `helm`, SSH, provider CLI/API, `docker exec`, and direct container
-> access as platform bootstrap or documented break-glass only, and record any
-> missing Enclii adapter gap.
+**Last verified: 2026-07-25**
 
+> **The operational procedure is not published here.** This page previously
+> named an on-node directory holding JWT signing keys, and gave commands to
+> generate a new RSA keypair on the server and to re-authenticate the
+> Cloudflare Tunnel over SSH. Secret paths with retrieval detail and raw
+> break-glass are both prohibited in this repo. Removed 2026-07-25.
 
-## Overview
+## What is public
 
-MADFAM uses Cloudflare for SSL/TLS termination, so most certificate management is automatic. This runbook covers edge cases and internal certificates.
+**TLS terminates at the Cloudflare edge.** Certificates for MADFAM production
+hostnames are Cloudflare-managed and renew automatically. The origin leg —
+cloudflared pod to Kubernetes Service — is plain HTTP on port 80. There is no
+origin nginx, no cert-manager `Ingress` TLS story, and no per-service
+certificate to renew for public product traffic.
 
-## Cloudflare-Managed Certificates
+*Source: `internal-devops/ecosystem/domain-map.md` (ingress chain, last verified
+2026-07-01) and `internal-devops/ECOSYSTEM.md`.*
 
-### Status Check
+**A hostname-shape constraint worth knowing before you add a domain:**
+Cloudflare universal SSL covers `*.madfam.io` but not `*.*.madfam.io`. New
+`madfam.io` services therefore use flat hostnames (`meridian-app.madfam.io`,
+not `app.meridian.madfam.io`). Pravara MES hit exactly this.
 
-Certificates for `*.janua.dev` and `*.enclii.madfam.io` are automatically managed by Cloudflare.
+*Source: `internal-devops/ecosystem/domain-map.md` (2026-07-25 entry) and
+`meridian/enclii.yaml` header comment.*
 
-```bash
-# Check Cloudflare certificate status (requires CF token)
-curl -s -X GET "https://api.cloudflare.com/client/v4/zones/YOUR_ZONE_ID/ssl/certificate_packs" \
-  -H "Authorization: Bearer $CF_TOKEN" \
-  -H "Content-Type: application/json" | jq '.result[].status'
-```
+**JWT signing material is not a file on a node.** Janua's RS256 keypair is
+carried as configuration (`JANUA_JWT_PRIVATE_KEY` / `JANUA_JWT_PUBLIC_KEY`)
+delivered through the secret path described below — it is not generated or
+rotated by hand on a server, and the public half is served at the JWKS endpoint
+(`https://auth.madfam.io/.well-known/jwks.json`). See
+[`../JANUA_INTEGRATION.md`](../JANUA_INTEGRATION.md).
 
-### Troubleshooting
+**Secret delivery, mechanism only.** HashiCorp Vault (KV v2) is the home;
+External Secrets Operator reads it through a ClusterSecretStore; a per-app
+ExternalSecret materialises a native Kubernetes Secret in the app namespace;
+the Deployment consumes it via `envFrom`/`secretRef`; Stakater Reloader rolls
+consumers when the Secret changes. The operator-facing surface is
+`enclii secrets`, with human-supplied production values going through an
+`enclii secrets intake` protocol rather than chat or git.
 
-If Cloudflare certificates aren't working:
+Qualifier worth stating: **not every service is Vault-backed.** At least two
+recent go-lives provisioned plain Kubernetes Secrets out-of-band because the
+platform has no CLI surface to write Vault after onboarding — an Enclii adapter
+gap recorded 2026-07-10. Those secrets sit outside the ESO refresh loop.
 
-1. Check DNS propagation: `dig api.janua.dev`
-2. Verify tunnel status: `ssh ssh.madfam.io "sudo systemctl status cloudflared"`
-3. Check Cloudflare dashboard for certificate status
+*Sources: `internal-devops/runbooks/vault-bootstrap.md`,
+`internal-devops/ecosystem/deployment-conventions.md`,
+`internal-devops/runbooks/2026-07-10-periplo-repo-extraction.md`; verified
+2026-07-15 and re-confirmed 2026-07-25. Vault paths and secret names with
+retrieval detail are Lane A and are not reproduced here.*
 
-## Internal Certificates
+**Rotation has no technical backstop.** Documented token lifetimes are an
+unenforced convention; nothing pages on an overdue rotation. A prior claim that
+a rotation-monitor CronJob enforced cadence was corrected on 2026-07-25 — the
+path it pointed at has never existed.
 
-### JWT Signing Keys
+*Source: `internal-devops/runbooks/2026-07-25-stabilization-sweep-operator-gates.md`.*
 
-Location: `/opt/solarpunk/secrets/jwt/`
+## Canonical private sources
 
-```bash
-# Check key expiry (if applicable)
-ssh ssh.madfam.io "openssl x509 -in /opt/solarpunk/secrets/jwt/public.pem -noout -dates 2>/dev/null || echo 'Not an X.509 cert (likely RSA key pair)'"
-```
-
-### Generate New JWT Keys
-
-```bash
-# Generate new RSA key pair
-ssh ssh.madfam.io "cd /opt/solarpunk/secrets/jwt && \
-  openssl genrsa -out private.pem 4096 && \
-  openssl rsa -in private.pem -pubout -out public.pem && \
-  chmod 600 private.pem && chmod 644 public.pem"
-
-# Restart services to pick up new keys
-ssh ssh.madfam.io "sudo kubectl rollout restart deployment/janua-api -n janua"
-```
-
-### Database SSL Certificates
-
-If using SSL for PostgreSQL connections:
-
-```bash
-# Check PostgreSQL SSL status
-ssh ssh.madfam.io "docker exec janua-postgres psql -U janua -c 'SHOW ssl;'"
-
-# Check certificate
-ssh ssh.madfam.io "docker exec janua-postgres psql -U janua -c 'SELECT ssl_is_used FROM pg_stat_activity WHERE pid = pg_backend_pid();'"
-```
-
-## Cloudflare Tunnel Certificate
-
-The tunnel uses Cloudflare-managed credentials.
-
-```bash
-# Check tunnel certificate
-ssh ssh.madfam.io "sudo ls -la /etc/cloudflared/*.pem"
-
-# Tunnel status
-ssh ssh.madfam.io "sudo cloudflared tunnel info"
-```
-
-### Renew Tunnel Credentials
-
-If tunnel needs re-authentication:
-
-```bash
-# Re-authenticate tunnel
-ssh ssh.madfam.io "sudo cloudflared tunnel login"
-
-# Restart tunnel
-ssh ssh.madfam.io "sudo systemctl restart cloudflared"
-```
-
-## Certificate Expiry Monitoring
-
-### Manual Check Script
-
-```bash
-#!/bin/bash
-# check-certs.sh
-
-echo "=== Cloudflare Tunnel ==="
-sudo cloudflared tunnel info 2>/dev/null | head -5
-
-echo ""
-echo "=== JWT Keys ==="
-ls -la /opt/solarpunk/secrets/jwt/
-
-echo ""
-echo "=== Domain SSL (via curl) ==="
-for domain in api.janua.dev app.janua.dev admin.janua.dev; do
-  echo -n "$domain: "
-  echo | timeout 5 openssl s_client -servername $domain -connect $domain:443 2>/dev/null | \
-    openssl x509 -noout -dates 2>/dev/null | grep notAfter || echo "Unable to check"
-done
-```
-
-### Automated Monitoring (Future)
-
-Consider adding:
-- Prometheus certificate exporter
-- Cloudflare API polling for cert status
-- Slack/email alerts on expiry warnings
-
-## Emergency Procedures
-
-### Cloudflare Certificate Issues
-
-1. Check Cloudflare dashboard for errors
-2. Verify domain ownership/DNS
-3. Contact Cloudflare support if needed
-
-### Internal Certificate Emergency
-
-1. Generate new certificates immediately
-2. Update configuration
-3. Rolling restart of affected services
-4. Verify functionality
-
-## Key Locations Summary
-
-| Certificate | Location | Renewal |
-|-------------|----------|---------|
-| Cloudflare SSL | Cloudflare-managed | Automatic |
-| Tunnel creds | /etc/cloudflared/ | `cloudflared tunnel login` |
-| JWT keys | /opt/solarpunk/secrets/jwt/ | Manual (no expiry) |
-| PostgreSQL SSL | Container-internal | Optional |
+- `internal-devops/runbooks/secret-rotation.md`
+- `internal-devops/runbooks/vault-bootstrap.md`
+- `internal-devops/access/` for tunnel and provider credential custody

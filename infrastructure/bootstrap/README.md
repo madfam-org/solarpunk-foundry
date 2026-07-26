@@ -1,5 +1,28 @@
 # 🌞 Solarpunk Foundry - Deployment Guide
 
+> [!CAUTION]
+> **HISTORICAL — DO NOT RUN. Superseded 2026.**
+>
+> These six scripts provisioned a **single Docker Compose host** and date from
+> 2025-12-02. Across all ~2,170 lines they contain no reference to k3s, kubectl,
+> ArgoCD, Helm or Longhorn — which is the plainest evidence of which era they
+> belong to.
+>
+> MADFAM production is now bare-metal **k3s** with **ArgoCD** GitOps: CI builds an
+> image, pushes to GHCR, pins the digest into `kustomization.yaml`, and ArgoCD
+> syncs it. Images are never built on the server. Services are onboarded with
+> `enclii onboard`, which creates the namespace, ArgoCD app, tunnel route, DNS,
+> Janua client and NetworkPolicies in one call.
+>
+> They are kept because they are genuinely *historical* rather than invented —
+> this is how the estate ran — and because the ZFS dataset tuning and the SSH
+> hardening in `05-ssh-hardening.sh` remain sound reference. Unbannered, they
+> would be a trap: they are the only runnable-looking material in this tree and
+> they address themselves to "a fresh Ubuntu 24.04 server".
+>
+> **Reviewed:** 2026-07-25. For how MADFAM actually ships, see
+> [`../README.md`](../README.md). For current procedures, see `internal-devops`.
+
 > [!IMPORTANT]
 > MADFAM-ENCLII-FIRST-LEGACY-RAW v1: This document contains legacy raw infrastructure command examples.
 > Routine production operations must use Enclii web, API, or CLI. Treat raw
@@ -263,9 +286,18 @@ Per the [PORT_ALLOCATION.md](../../docs/PORT_ALLOCATION.md), services use 100-po
 ## 🔐 Security Notes
 
 ### Secrets Management
-- **Secrets Location**: `/opt/solarpunk/secrets/`
-- **JWT Keys**: `/opt/solarpunk/janua/keys/`
-- **Default Admin**: admin@madfam.io (CHANGE PASSWORD!)
+
+**Removed 2026-07-25.** This subsection listed on-disk paths for the secret store
+and JWT signing keys, plus the default administrative identity. Secret paths with
+retrieval detail and bootstrap credentials are Lane A material under
+`internal-devops/docs/repo-boundary-contract.md`.
+
+It is also no longer how secrets work. The current path is
+Vault → External Secrets Operator → a native K8s Secret in the app namespace →
+consumed by the Deployment via `envFrom`, with Reloader rolling consumers on
+change. Signing material is delivered as environment variables from that Secret,
+not as files hand-rotated on a node. The operator surface is `enclii secrets`.
+See `internal-devops` for the custody model.
 
 ### SSH Security (Critical)
 
@@ -283,8 +315,8 @@ ufw delete allow 22/tcp
 **Zero Trust SSH Access** (Recommended for production):
 - Access via the Zero Trust SSH host documented in `internal-devops`
 - Authentication: GitHub OAuth via Zero Trust
-- Audit: All SSH sessions logged in Cloudflare dashboard
-- See: `infrastructure/terraform/cloudflare.tf` for configuration
+- Audit: SSH sessions that use this path are logged in Cloudflare dashboard
+- See: `docs/SSH_SECURITY_EVOLUTION.md` in this directory tree, and `internal-devops/access/` for the paths of record. (The former `terraform/cloudflare.tf` pointer was removed on 2026-07-25 along with the Terraform itself.)
 
 ### Firewall Configuration
 - Only necessary ports open via UFW
@@ -371,8 +403,11 @@ docker network inspect solarpunk-network
 
 ## 📚 Documentation
 
-- **Enclii Repo**: https://github.com/madfam-io/enclii
-- **Janua Repo**: https://github.com/madfam-io/janua
+- **Enclii Repo**: https://github.com/madfam-org/enclii
+- **Janua Repo**: https://github.com/madfam-org/janua
+
+*(Corrected 2026-07-25: these previously pointed at the `madfam-io` org, which is
+not the organisation these repositories live in.)*
 - **Foundry Docs**: See solarpunk-foundry/docs/
 
 ---

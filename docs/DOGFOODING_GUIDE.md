@@ -1,308 +1,286 @@
-# 🐕 MADFAM Ecosystem Dogfooding Guide
+# MADFAM Local Development (Dogfooding) Guide
 
-> [!IMPORTANT]
-> MADFAM-ENCLII-FIRST-LEGACY-RAW v1: This document contains legacy raw infrastructure command examples.
-> Routine production operations must use Enclii web, API, or CLI. Treat raw
-> `kubectl`, `helm`, SSH, provider CLI/API, `docker exec`, and direct container
-> access as platform bootstrap or documented break-glass only, and record any
-> missing Enclii adapter gap.
+**Last verified: 2026-07-25** — against
+`enclii/packages/cli/internal/cmd/local.go`,
+`solarpunk-foundry/ops/local/docker-compose.shared.yml`,
+`solarpunk-foundry/ops/local/init-databases.sql`, and
+`solarpunk-foundry/ops/bin/madfam.sh`.
 
+> The previous revision was dated "January 2026", led with per-repo
+> `docker compose up -d`, listed PostgreSQL databases that are created nowhere,
+> published a production hostname that does not exist, and instructed readers to
+> verify a shared JWT secret that should not exist. All four are corrected here.
 
-## Quick Start
+---
 
-### 1. Start Shared Infrastructure
+## Quick start
+
+```bash
+# Shared infra + Janua + Enclii
+enclii local up
+
+# Shared infrastructure only (Postgres, Redis, MinIO, MailHog)
+enclii local infra
+
+# Specific services
+enclii local up janua
+enclii local up janua enclii
+
+enclii local status
+enclii local logs [service]
+enclii local logs -f
+
+enclii local down
+enclii local down --keep-infra    # leave databases running
+```
+
+`up`, `down`, `status`, `logs` and `infra` are the complete subcommand set.
+`enclii local up` with no arguments starts `janua` and `enclii`.
+*Verified 2026-07-25 in `enclii/packages/cli/internal/cmd/local.go`.*
+
+This is the preferred path. The `docker compose` route below still works and is
+kept as a fallback, but it is the older mechanism and it is where most of the
+drift in this document came from.
+
+---
+
+## Shared infrastructure
+
+Declared in `ops/local/docker-compose.shared.yml`. *Verified 2026-07-25 by
+parsing the file.*
+
+| Service | Container | Host ports |
+|---|---|---|
+| PostgreSQL | `madfam-postgres-shared` | 5432 |
+| Redis | `madfam-redis-shared` | 6379 |
+| MinIO (API + console) | `madfam-minio-shared` | 9000, 9001 |
+| MinIO provisioner | `madfam-minio-provisioner` | — |
+| MailHog (SMTP + UI) | `madfam-mailhog` | 1025, 8025 |
+
+Docker network: **`madfam-shared-network`**.
+
+**Verdaccio is not part of local infrastructure.** The private npm registry
+(`npm.madfam.io`) runs in the cluster from manifests in the `enclii`
+repository. If a document tells you `enclii local infra` starts Verdaccio, it
+is wrong — the CLI's own help text lists exactly four services.
+
+> Cross-file inconsistency worth knowing: the repository-root
+> `docker-compose.yml` declares a different network name (`madfam-network`) and
+> a different Postgres password than `.env.example`. `ops/local/` is what the
+> CLI uses. Root-level files are outside this document's scope.
+
+---
+
+## PostgreSQL databases
+
+Created by `ops/local/init-databases.sql`. *Verified 2026-07-25 by reading the
+`CREATE DATABASE` statements.* Nine databases, all `*_dev`:
+
+| Database | Owner | Service |
+|---|---|---|
+| `janua_dev` | `janua` | Identity |
+| `enclii_dev` | `enclii` | PaaS control plane |
+| `forgesight_dev` | `forgesight` | Fabrication industry intelligence |
+| `fortuna_dev` | `fortuna` | Problem intelligence |
+| `cotiza_dev` | `cotiza` | Quoting (repo `digifab-quoting`) |
+| `avala_dev` | `avala` | Learning verification |
+| `dhanam_dev` | `dhanam` | Billing and payments |
+| `sim4d_dev` | `sim4d` | CAD/simulation |
+| `forj_dev` | `forj` | Fabrication commerce |
+
+> **Correction.** The previous revision listed `madfam`, `janua_db`,
+> `cotiza_db`, `forgesight_db`, `dhanam_db`, `fortuna_db`, `avala_db` and
+> `blueprint_db`. **None of those exist.** The `_db` suffix comes from a
+> superseded scheme; `blueprint_db` has no creation statement anywhere; and
+> `enclii_dev`, `sim4d_dev` and `forj_dev` were missing entirely.
+
+Local passwords are development values of the form `<service>_dev`, readable in
+the init script. They are not secrets and have no production counterpart.
+
+---
+
+## Ports
+
+This guide deliberately does **not** restate the port scheme. Duplicating it is
+why several public documents disagreed with each other and with the registry.
+
+- The scheme, and its own honest account of how much of it is followed:
+  [`PORT_ALLOCATION.md`](./PORT_ALLOCATION.md).
+- The authority for any one service: that repository's `enclii.yaml` (or legacy
+  `.enclii.yml`), and for the CLI-managed subset, `enclii local status`, which
+  prints the URLs it actually bound.
+
+The only ports worth memorising are the shared-infrastructure ones in the table
+above, because they are stable and shared.
+
+---
+
+## Redis database index allocation
+
+The convention below is **aspirational and unverified**. It is recorded here
+because it exists nowhere else and is occasionally useful, not because it has
+been checked against running services. Several entries name platforms that no
+longer exist under those names.
+
+*Provenance: carried forward from earlier revisions of this document. It was
+previously attributed to `PORT_ALLOCATION.md`, which does not and never did
+contain a Redis allocation table — that citation was false and is removed.*
+
+| DB | Service |
+|---|---|
+| 0 | Janua |
+| 1 | Enclii |
+| 2 | ForgeSight |
+| 3 | Fortuna |
+| 4 | Cotiza |
+| 5 | AVALA |
+| 6 | Dhanam |
+| 7 | Sim4D |
+| 8 | Forj |
+| 9 | Coforma |
+| 10–15 | claimed by earlier platform names (Galvana, BloomScroll, Compendium, Blueprint, CEQ, Furnace) — several of these names are retired |
+
+**What would settle it:** a `CLIENT LIST`/`INFO keyspace` sample against a
+running local Redis, or an explicit allocation declared in each repo's config.
+Until then, treat a collision as likely and set the index explicitly.
+
+---
+
+## Fallback: the legacy `madfam.sh` script
+
+`ops/bin/madfam.sh` predates `enclii local`. It is still present and still
+works, with two caveats.
+
 ```bash
 cd ~/labspace/solarpunk-foundry/ops/bin
 ./madfam.sh start
-```
-
-### 2. Verify Infrastructure
-```bash
-./verify_databases.sh
-```
-
-### 3. Start Services (in order)
-
-```bash
-# Identity Platform (required for auth)
-cd ~/labspace/janua/deployment
-docker compose up -d
-
-# Revenue-critical apps
-cd ~/labspace/digifab-quoting
-docker compose up -d
-
-cd ~/labspace/forgesight
-docker compose up -d
-
-# Business site
-cd ~/labspace/madfam-site
-docker compose up web-dev -d
-```
-
-### 4. Debug Issues
-```bash
-cd ~/labspace/solarpunk-foundry/ops/bin
-./debug_logs.sh
-```
-
----
-
-## Service Port Map
-
-| Service | Port | URL | Block |
-|---------|------|-----|-------|
-| **Shared Infrastructure** ||||
-| PostgreSQL | 5432 | `madfam-postgres:5432` | Infra |
-| Redis | 6379 | `madfam-redis:6379` | Infra |
-| MinIO API | 9000 | `madfam-minio:9000` | Infra |
-| MinIO Console | 9001 | http://localhost:9001 | Infra |
-| **Identity (Janua)** | | | 4100-4199 |
-| Janua API | 4100 | http://localhost:4100 | |
-| Janua Dashboard | 4101 | http://localhost:4101 | |
-| Janua Admin | 4102 | http://localhost:4102 | |
-| Janua Docs | 4103 | http://localhost:4103 | |
-| **Platform (Enclii)** | | | 4200-4299 |
-| Enclii API | 4200 | http://localhost:4200 | |
-| Enclii UI | 4201 | http://localhost:4201 | |
-| **Data (ForgeSight)** | | | 4300-4399 |
-| ForgeSight API | 4300 | http://localhost:4300 | |
-| ForgeSight Web | 4301 | http://localhost:4301 | |
-| **Intelligence (Fortuna)** | | | 4400-4499 |
-| Fortuna API | 4400 | http://localhost:4400 | |
-| Fortuna Web | 4401 | http://localhost:4401 | |
-| **Quoting (Cotiza)** | | | 4500-4599 |
-| Cotiza API | 4500 | http://localhost:4500 | |
-| Cotiza Web | 4501 | http://localhost:4501 | |
-| **Finance (Dhanam)** | | | 4700-4799 |
-| Dhanam API | 4700 | http://localhost:4700 | |
-| Dhanam Web | 4701 | http://localhost:4701 | |
-| **CAD (Sim4D)** | | | 4800-4899 |
-| Sim4D API | 4800 | http://localhost:4800 | |
-| Sim4D Studio | 4801 | http://localhost:4801 | |
-
-> **Note**: See `PORT_ALLOCATION.md` for the complete port registry
-
----
-
-## Redis Database Allocation
-
-> **Source of Truth**: `PORT_ALLOCATION.md`
-
-| DB | Service | Purpose |
-|----|---------|---------|
-| 0 | Janua | Auth sessions, tokens, rate limiting |
-| 1 | Enclii | Deployment state, job queues |
-| 2 | ForgeSight | Document processing cache |
-| 3 | Fortuna | Analytics cache |
-| 4 | Cotiza | Quote calculation cache |
-| 5 | AVALA | Training sessions, quiz state |
-| 6 | Dhanam | Financial data cache |
-| 7 | Sim4D | Collaboration sessions |
-| 8 | Forj | Order queue, cart state |
-| 9 | Coforma | Feedback aggregation |
-| 10 | Galvana | Simulation job queue |
-| 11 | BloomScroll | Content cache |
-| 12 | Compendium | Search cache |
-| 13 | Blueprint | Index cache |
-| 14 | ceq | Workflow queue, job state |
-| 15 | Furnace | GPU job queue (Enclii extension) |
-
----
-
-## PostgreSQL Databases
-
-| Database | Service |
-|----------|---------|
-| `madfam` | Core/shared operations |
-| `janua_db` | Authentication platform |
-| `cotiza_db` | Quoting platform |
-| `forgesight_db` | Vendor intelligence |
-| `dhanam_db` | Financial platform |
-| `fortuna_db` | Problem intelligence |
-| `avala_db` | Procurement (future) |
-| `blueprint_db` | 3D harvester (future) |
-
----
-
-## Common Commands
-
-### Infrastructure
-```bash
-# Start everything
-./madfam.sh start
-
-# Stop everything
+./madfam.sh status
 ./madfam.sh stop
-
-# Clean restart (removes volumes)
-./madfam.sh stop --clean
-./madfam.sh start
-
-# Check status
-docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+./madfam.sh stop --clean     # removes volumes
+./verify_databases.sh
+./debug_logs.sh [service]
 ```
 
-### Debugging
+**Caveat 1 — it declares 10 services, not 18.** *Verified 2026-07-25 by reading
+the service arrays:*
+
+| Group | Services |
+|---|---|
+| Core | `janua`, `forgesight`, `digifab-quoting`, `madfam-site` |
+| Portfolio | `madfam`, `primavera3d` |
+| Platform | `dhanam`, `fortuna`, `sim4d` |
+| Utility | `electrochem-sim` |
+
+**Caveat 2 — two of those ten cannot start locally.** `madfam` and
+`electrochem-sim` have no checkout in `~/labspace`, so `./madfam.sh full` will
+not bring them up. (`madfam` is also not a repository name in the organisation;
+see [`LICENSING_STRATEGY.md`](./LICENSING_STRATEGY.md).)
+
+### Per-repository compose
+
 ```bash
-# All logs
-./debug_logs.sh
-
-# Specific service
-./debug_logs.sh janua
-./debug_logs.sh cotiza
-./debug_logs.sh forgesight
-
-# Database check
-docker exec -it madfam-postgres-shared psql -U madfam -c "\l"
-
-# Redis check
-docker exec -it madfam-redis-shared redis-cli -a redis_dev_password ping
+cd ~/labspace/janua/deployment && docker compose up -d
+cd ~/labspace/digifab-quoting  && docker compose up -d
+cd ~/labspace/forgesight       && docker compose up -d
 ```
 
-### Per-Service
+Each repo's compose file is that repo's business; check its README before
+assuming service names.
+
+---
+
+## Health checks
+
+Rather than a table of local health URLs — which drifted every time a port
+changed — use:
+
 ```bash
-# Janua
-cd ~/labspace/janua/deployment
-docker compose up -d      # Start
-docker compose down       # Stop
-docker compose logs -f    # Logs
-
-# Cotiza
-cd ~/labspace/digifab-quoting
-docker compose up -d
-docker compose down
-docker compose logs -f api
-
-# Forgesight
-cd ~/labspace/forgesight
-docker compose up -d
-docker compose down
-docker compose logs -f api
+enclii local status              # prints the URLs the CLI actually bound
 ```
+
+For a service you started yourself, its health path is declared in its own
+`enclii.yaml` (`healthCheckPath`). Note that health paths are **not** uniform
+across the ecosystem: at least one production service serves health at
+`/api/v1/health/` rather than `/health`, and a probe-path mismatch of exactly
+this kind caused a restart loop in 2026-05.
 
 ---
 
 ## Troubleshooting
 
 ### "Network madfam-shared-network not found"
+
 ```bash
-cd ~/labspace/solarpunk-foundry/ops/bin
-./madfam.sh start
+enclii local infra
+# or, on the legacy path:
+cd ~/labspace/solarpunk-foundry/ops/bin && ./madfam.sh start
 ```
 
 ### "Database does not exist"
+
 ```bash
-./madfam.sh stop --clean
-./madfam.sh start
-./verify_databases.sh
+enclii local down
+enclii local up
+# legacy path:
+./madfam.sh stop --clean && ./madfam.sh start && ./verify_databases.sh
 ```
 
-### "Connection refused to postgres/redis"
-Check if shared infrastructure is running:
+Check the name against the table above — the most common cause is a service
+configured for a `*_db` name from the superseded scheme.
+
+### Connection refused to Postgres or Redis
+
 ```bash
+enclii local status
 docker ps | grep madfam
 ```
 
-### JWT Authentication Failures
-Verify JWT secret consistency:
+### Authentication failures
+
+**Do not grep for `JANUA_JWT_SECRET`.** There is no shared symmetric secret in
+the Janua contract, and any service that has one is misconfigured — that
+pattern is the 2026-04-23 audit findings H3/H4.
+
+Verification is RS256 against Janua's JWKS. Check, in order:
+
+1. The service can reach the JWKS endpoint
+   (`<issuer>/.well-known/jwks.json`).
+2. Its configured `JANUA_ISSUER` exactly matches the `iss` claim in a real
+   token — locally `http://localhost:4100`, in production
+   `https://auth.madfam.io`.
+3. Its verifier allows `RS256` and nothing else.
+4. The route you are calling includes the `/api/v1` prefix.
+
+Full detail and working verifier code:
+[`JANUA_INTEGRATION.md`](./JANUA_INTEGRATION.md).
+
+### Port already in use
+
 ```bash
-grep -r "JANUA_JWT_SECRET" ~/labspace/*/docker-compose.yml
-# All should show: <JANUA_JWT_SECRET_FROM_LOCAL_ENV>
+lsof -i :<port>
 ```
 
-### Port Already in Use
-```bash
-# Find what's using the port
-lsof -i :8001
-
-# Kill it
-kill -9 <PID>
-```
+Pick a replacement from the aspirational blocks in
+[`PORT_ALLOCATION.md`](./PORT_ALLOCATION.md) rather than a framework default,
+and set it explicitly with `PORT=<n>` or the repo's documented override.
 
 ---
 
-## Full Stack Startup Script
+## Production ingress — for orientation only
 
-Save as `~/labspace/start-all.sh`:
-```bash
-#!/bin/bash
-set -e
-
-echo "🚀 Starting MADFAM Ecosystem..."
-
-# 1. Shared Infrastructure
-echo "📦 Starting shared infrastructure..."
-cd ~/labspace/solarpunk-foundry/ops/bin
-./madfam.sh start
-sleep 5
-
-# 2. Verify databases
-echo "🔍 Verifying databases..."
-./verify_databases.sh
-
-# 3. Identity Platform
-echo "🔐 Starting Janua..."
-cd ~/labspace/janua/deployment
-docker compose up -d
-sleep 3
-
-# 4. Revenue Apps
-echo "💰 Starting Cotiza..."
-cd ~/labspace/digifab-quoting
-docker compose up -d
-
-echo "📊 Starting Forgesight..."
-cd ~/labspace/forgesight
-docker compose up -d
-
-# 5. Business Site
-echo "🌐 Starting MADFAM Site..."
-cd ~/labspace/madfam-site
-docker compose up web-dev -d
-
-echo ""
-echo "✅ MADFAM Ecosystem Started!"
-echo ""
-echo "Services available at:"
-echo "  - Janua API:     http://localhost:4100"
-echo "  - Janua Dashboard: http://localhost:4101"
-echo "  - Enclii API:    http://localhost:4200"
-echo "  - Enclii UI:     http://localhost:4201"
-echo "  - ForgeSight:    http://localhost:4300"
-echo "  - MinIO Console: http://localhost:9001"
-```
-
----
-
-## Health Check URLs
-
-| Service | Health Endpoint |
-|---------|-----------------|
-| Janua API | http://localhost:4100/health |
-| Janua Dashboard | http://localhost:4101 |
-| Enclii API | http://localhost:4200/health |
-| Enclii UI | http://localhost:4201 |
-| Cotiza API | http://localhost:4500/health |
-| ForgeSight API | http://localhost:4300/health |
-| Fortuna API | http://localhost:4400/health |
-| Dhanam API | http://localhost:4700/health |
-
----
-
-## Production Ingress
-
-> **Note**: Production services use Cloudflare Tunnel instead of direct port exposure.
+Production services are reached over Cloudflare Tunnel by hostname; there is no
+port exposure and local ports have no production meaning.
 
 | Service | Production URL |
-|---------|----------------|
-| Enclii API | https://api.enclii.dev |
-| Enclii UI | https://app.enclii.dev |
-| Janua API | https://auth.madfam.io |
-| Janua Dashboard | https://dashboard.madfam.io |
+|---|---|
+| Enclii API | `https://api.enclii.dev` |
+| Enclii UI | `https://app.enclii.dev` |
+| Janua (OIDC issuer) | `https://auth.madfam.io` |
+| Janua dashboard | `https://app.janua.dev` |
 
-See `PORT_ALLOCATION.md` for complete production routing via Cloudflare Tunnel.
+> **`dashboard.madfam.io` was published here previously and is not a MADFAM
+> route.** It appears in no route table, no domain inventory and no tunnel rule.
+> The Janua dashboard is `app.janua.dev`.
 
----
-
-*Last Updated: January 2026*
+The full inventory, including retired and not-live hostnames, is in
+[`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md).

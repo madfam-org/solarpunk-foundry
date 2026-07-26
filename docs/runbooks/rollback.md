@@ -1,160 +1,57 @@
-# Rollback Runbook
+# Rollback — public-safe summary
 
-> [!IMPORTANT]
-> MADFAM-ENCLII-FIRST-LEGACY-RAW v1: This document contains legacy raw infrastructure command examples.
-> Routine production operations must use Enclii web, API, or CLI. Treat raw
-> `kubectl`, `helm`, SSH, provider CLI/API, `docker exec`, and direct container
-> access as platform bootstrap or documented break-glass only, and record any
-> missing Enclii adapter gap.
+**Last verified: 2026-07-25**
 
+> **The operational procedure is not published here.** This page previously
+> carried `ssh … "sudo kubectl rollout undo …"`, a host-side `git checkout HEAD~1`
+> of an application repo, and a call to a build script on the server. Removed
+> 2026-07-25 — break-glass commands are Lane A, and the host-build flow does not
+> exist.
 
-## When to Rollback
+## What is public: how a deploy actually reaches production
 
-- New deployment causes errors or crashes
-- Performance regression detected
-- Security vulnerability in new release
-- User-facing bugs in production
+Understanding this is what makes rollback comprehensible.
 
-## Kubernetes Rollback
+1. Push to `main` triggers CI, which builds the container image.
+2. The image is pushed to GHCR.
+3. The image is signed with cosign keyless (Sigstore Fulcio/Rekor OIDC).
+4. CI runs `kustomize edit set image` to pin the new digest.
+5. CI commits the updated `kustomization.yaml` back to the app repo.
+6. ArgoCD observes that commit and syncs.
+7. An optional lifecycle-event callback is posted to the Enclii control plane.
 
-### Check Rollout History
+*Source: `internal-devops/ecosystem/deployment-conventions.md` (steps 1–5) and
+`internal-devops/roadmaps/2026-07-07-tulana-ecosystem-session-handoff.md`
+(cosign step, verified end-to-end 2026-07-07).*
 
-```bash
-# View deployment history
-ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl rollout history deployment/janua-api -n janua"
+**Nothing pushes to the cluster. ArgoCD pulls.** Every ArgoCD Application
+manifest in the platform repo sets `syncPolicy.automated` with `prune: true`
+and `selfHeal: true`
+(*verified by reading the manifests directly, 2026-04-24*).
 
-# View specific revision details
-ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl rollout history deployment/janua-api -n janua --revision=2"
-```
+## What that means for rolling back
 
-### Rollback to Previous Version
+- The durable rollback is **a git operation on the app repo** — revert the
+  digest pin, let ArgoCD reconcile. A live `kubectl rollout undo` will be
+  reverted by `selfHeal`, so it is a stop-gap at best and must be followed by
+  the commit.
+- The supported operator surface is `enclii ops apps` (sync / diff / rollback).
+- Verify by health endpoint and by confirming the running digest matches the
+  digest in `kustomization.yaml` at the reverted commit.
 
-```bash
-# Rollback to previous revision
-ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl rollout undo deployment/janua-api -n janua"
+## Honest caveat on pipeline health
 
-# Rollback to specific revision
-ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl rollout undo deployment/janua-api -n janua --to-revision=2"
+"The pipeline works" is a per-service claim here, not a fleet-wide one. It was
+proven end-to-end (build → GHCR → cosign → digest pin → ArgoCD) for three named
+platform services on **2026-07-07**. The Q2 stability retrospective separately
+records auto-digest restoration as "not assessed" across the fleet. If you are
+about to rely on an automatic digest pin for a specific repo, check the most
+recent digest commit on that repo's production `kustomization.yaml` first.
 
-# Monitor rollback progress
-ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl rollout status deployment/janua-api -n janua"
-```
+*Sources: `internal-devops/roadmaps/2026-07-07-tulana-ecosystem-session-handoff.md`
+§2; `internal-devops/roadmaps/2026-q2-stability-remediation.md`.*
 
-### Rollback All Janua Services
+## Canonical private sources
 
-```bash
-# Rollback all deployments in namespace
-for deploy in janua-api janua-dashboard janua-admin janua-docs; do
-  ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl rollout undo deployment/$deploy -n janua"
-done
-```
-
-## Docker Rollback
-
-### Using Image Tags
-
-```bash
-# List available images
-ssh <SSH_ZERO_TRUST_HOST> "docker images | grep janua-api"
-
-# Rollback to specific SHA
-ssh <SSH_ZERO_TRUST_HOST> "docker stop janua-api && docker rm janua-api"
-ssh <SSH_ZERO_TRUST_HOST> "docker run -d --name janua-api janua-api:b657a88"  # Previous SHA
-```
-
-### Using Docker Compose
-
-```bash
-# Edit docker-compose.yml to use previous image tag
-# Then redeploy
-ssh <SSH_ZERO_TRUST_HOST> "cd /opt/solarpunk/janua/runtime && docker-compose -f docker-compose.prod.yml up -d janua-api"
-```
-
-## Identifying Version Information
-
-### Check Current Deployment
-
-```bash
-# Get current image and labels
-ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl get deployment/janua-api -n janua -o jsonpath='{.spec.template.spec.containers[0].image}'"
-
-# Check image labels for git SHA
-ssh <SSH_ZERO_TRUST_HOST> "docker inspect janua-api:latest --format='{{.Config.Labels}}'"
-```
-
-### Git Reference
-
-```bash
-# On production server, check repo state
-ssh <SSH_ZERO_TRUST_HOST> "cd /opt/solarpunk/janua && git log --oneline -5"
-
-# Checkout previous commit
-ssh <SSH_ZERO_TRUST_HOST> "cd /opt/solarpunk/janua && git checkout HEAD~1"
-
-# Rebuild with previous code
-ssh <SSH_ZERO_TRUST_HOST> "/opt/solarpunk/scripts/build-and-tag.sh janua-api"
-```
-
-## Rollback Verification
-
-### Health Checks
-
-```bash
-# API health
-ssh <SSH_ZERO_TRUST_HOST> "curl -s http://localhost:4100/ | head -1"
-
-# Dashboard health
-ssh <SSH_ZERO_TRUST_HOST> "curl -s -I http://localhost:4101/ | head -1"
-
-# Check pod status
-ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl get pods -n janua"
-```
-
-### Functional Tests
-
-```bash
-# Test authentication endpoint
-ssh <SSH_ZERO_TRUST_HOST> "curl -s -X POST http://localhost:4100/api/v1/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"test@example.com\",\"password\":\"test\"}'"
-
-# Check API version
-ssh <SSH_ZERO_TRUST_HOST> "curl -s http://localhost:4100/api/v1/health"
-```
-
-## Emergency Procedures
-
-### Complete Service Restart
-
-```bash
-# Stop all services
-ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl scale deployment --all -n janua --replicas=0"
-
-# Wait for termination
-sleep 10
-
-# Start all services
-ssh <SSH_ZERO_TRUST_HOST> "sudo kubectl scale deployment --all -n janua --replicas=1"
-```
-
-### Database Rollback
-
-If database migrations need reverting:
-
-```bash
-# Check current migration version
-ssh <SSH_ZERO_TRUST_HOST> "docker exec janua-api alembic current"
-
-# Rollback one migration
-ssh <SSH_ZERO_TRUST_HOST> "docker exec janua-api alembic downgrade -1"
-
-# Rollback to specific revision
-ssh <SSH_ZERO_TRUST_HOST> "docker exec janua-api alembic downgrade 009"
-```
-
-## Post-Rollback Actions
-
-1. [ ] Verify all services are healthy
-2. [ ] Check logs for errors
-3. [ ] Test critical user flows
-4. [ ] Document the incident
-5. [ ] Root cause analysis on failed deployment
-6. [ ] Fix issue before re-deploying
+- `internal-devops/ecosystem/deployment-conventions.md`
+- `internal-devops/runbooks/` for per-service rollback history

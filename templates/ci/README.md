@@ -132,5 +132,5 @@ When adding new CI templates:
 ## Related Documentation
 
 - [DocGuard Action Source](../../.github/actions/doc-guard/)
-- [Trinity Architecture](../../docs/architecture/TRINITY.md)
+- [Federated architecture](../../docs/architecture/FEDERATED_ARCHITECTURE_README.md) — this link previously pointed at a `TRINITY.md` that has never existed in this repository
 - [Port Allocation Registry](../../docs/PORT_ALLOCATION.md)

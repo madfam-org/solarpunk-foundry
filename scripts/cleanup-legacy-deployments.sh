@@ -13,7 +13,9 @@
 
 set -euo pipefail
 
-LABSPACE="/Users/aldoruizluna/labspace"
+# Override with MADFAM_LABSPACE if your checkout lives elsewhere. A hardcoded
+# operator home leaks a username into a public repo and breaks for everyone else.
+LABSPACE="${MADFAM_LABSPACE:-$HOME/labspace}"
 DRY_RUN=false
 
 if [[ "${1:-}" == "--dry-run" ]]; then

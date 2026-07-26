@@ -1,8 +1,35 @@
 # SSH Security Evolution - Solarpunk Foundry
 
+> **What this is:** a historical narrative of how operator SSH access was hardened
+> in three phases, kept because the reasoning is reusable. It is **not** a current
+> access runbook and not an inventory.
+>
+> **Last reviewed:** 2026-07-25.
+> **Phase 1 / Phase 2 narrative:** historical, describes 2025-12.
+> **Phase 3 / current posture:** see the correction note below — the concrete
+> configuration in earlier revisions of this file described a tunnel topology
+> that never existed in production.
+>
+> Production SSH targets, node inventory, IP addresses, Cloudflare tunnel names
+> and IDs, and the authorized-operator roster live **only** in the private
+> `internal-devops` repository. They were removed from this file on 2026-07-25.
+
 ## Overview
 
 This document describes the public-safe SSH access pattern for Solarpunk Foundry. Production SSH targets, node inventory, IPs, Cloudflare tunnel IDs, and access policy details live in the private `internal-devops` repo.
+
+### Correction (2026-07-25)
+
+Earlier revisions of this document named two separate Cloudflare tunnels
+(a product tunnel and an SSH tunnel) and published one tunnel's ID.
+Per `internal-devops/ecosystem/domain-map.md` (last verified 2026-07-01),
+**there is a single production Cloudflare Tunnel** carrying all ingress —
+every HTTP product route *and* the SSH jumphost. The split this document
+described never existed in the live infrastructure.
+
+The tunnel identifiers, the SSH hostname, and the authorized-user roster have
+been removed from this file. Deleting them from `HEAD` does not remove them
+from git history; credential rotation is tracked privately in `internal-devops`.
 
 ---
 
@@ -71,18 +98,29 @@ This document describes the public-safe SSH access pattern for Solarpunk Foundry
                                    └───────────────────┘
 ```
 
-**Benefits**:
-- **Port 22 closed** to internet entirely
+**What the Zero Trust path provides** (for connections that use it):
 - **Identity verification** via GitHub OAuth before SSH
 - **Session audit logging** in Cloudflare dashboard
-- **Access policies** - restrict by email, IP, device posture
+- **Access policies** — restrict by email, IP, device posture
 - **Session recording** (optional) for compliance
 
+> **Do not read this as an absolute posture.** Cloudflare Access with MFA is the
+> *supported operator path*, not the only path that exists. `internal-devops/access/`
+> (last updated 2026-05-04) documents additional key-only direct paths per node
+> that are **not** MFA-gated and **not** Cloudflare-audited. Earlier revisions of
+> this file asserted "no direct IP access", "MFA enforced", "no root SSH" and
+> "all connections audit-logged" as blanket facts; each is contradicted as an
+> absolute by that private record. The specific paths are deliberately not
+> enumerated here.
+>
+> Separately: "zero exposed node ports" in the ecosystem docs means **no NodePort
+> application ingress**. It does not mean nothing listens publicly on the nodes.
+
 **Components**:
-1. **Cloudflare Tunnel**: inventory and tunnel IDs are maintained in `internal-devops`
-2. **DNS**: `<SSH_HOST>` CNAME -> `<tunnel-id>.cfargotunnel.com`
+1. **Cloudflare Tunnel**: a single production tunnel carries all ingress (HTTP routes and the SSH jumphost). Name and ID are maintained in `internal-devops`.
+2. **DNS**: SSH hostname CNAME -> `<tunnel-id>.cfargotunnel.com`
 3. **Access Application**: Zero Trust SSH app with GitHub IdP
-4. **Access Policy**: Email whitelist for authorized team members
+4. **Access Policy**: Email whitelist for authorized team members (roster in `internal-devops`)
 
 ---
 
@@ -98,7 +136,7 @@ This document describes the public-safe SSH access pattern for Solarpunk Foundry
 - [x] GitHub OAuth identity provider configured
 - [x] Access Application created with automatic cloudflared authentication
 - [x] Access Policy configured (email whitelist)
-- [x] Port 22 closed on firewall
+- [x] Port 22 closed on firewall *(as recorded 2025-12-03 for the node this described; see the Phase 3 caveat above — this is not a fleet-wide claim and has not been re-verified in this repository)*
 
 ### Server-Side Setup
 ```bash
@@ -129,7 +167,7 @@ sudo ufw delete allow 22/tcp
    - Session duration: 1 hour
 
 2. **Access Policies**
-   - Include: Email matches `admin@madfam.io` (or team emails)
+   - Include: Email matches the operator roster maintained in `internal-devops`
    - Identity Provider: GitHub
 
 3. **Verify Tunnel Health**
@@ -199,36 +237,18 @@ sudo systemctl restart cloudflared
 
 ---
 
-## Terraform Integration
+## Infrastructure-as-code integration
 
-The SSH tunnel configuration is managed in `infrastructure/terraform/cloudflare.tf`:
+**Removed 2026-07-25.** Earlier revisions pointed at
+`infrastructure/terraform/cloudflare.tf` in this repository. That Terraform was
+deleted in the same change: it declared a *second* Cloudflare tunnel routing to
+`localhost` ports, which contradicts the live single-tunnel model, and it was
+not runnable (undeclared provider, undeclared variables, missing data source).
+See `infrastructure/README.md` for the removal ledger.
 
-```hcl
-# SSH ingress rule in tunnel config
-ingress_rule {
-  hostname = "ssh.${var.ssh_domain}"
-  service  = "ssh://localhost:22"
-}
-
-# SSH DNS record (conditional)
-resource "cloudflare_record" "ssh" {
-  count   = var.ssh_zone_id != "" ? 1 : 0
-  zone_id = var.ssh_zone_id
-  name    = "ssh"
-  value   = "${cloudflare_tunnel.janua.id}.cfargotunnel.com"
-  type    = "CNAME"
-  proxied = true
-}
-
-# Zero Trust Access application
-resource "cloudflare_access_application" "ssh" {
-  zone_id          = var.ssh_zone_id
-  name             = "Server SSH Access"
-  domain           = "ssh.${var.ssh_domain}"
-  type             = "ssh"
-  session_duration = "1h"
-}
-```
+Cloudflare tunnel routes and DNS are managed through the Enclii control plane
+(`enclii providers`), not from this repository. Tunnel configuration of record
+lives in `internal-devops`.
 
 ---
 
@@ -265,39 +285,30 @@ sudo systemctl status cloudflared
 |------|---------|
 | `bootstrap/05-ssh-hardening.sh` | Server SSH hardening |
 | `bootstrap/06-cloudflared-setup.sh` | Cloudflared installation |
-| `terraform/cloudflare.tf` | Tunnel and DNS infrastructure |
+| ~~`terraform/cloudflare.tf`~~ | Removed 2026-07-25 — see "Infrastructure-as-code integration" above |
 | `~/.ssh/config` | Local SSH client configuration |
 
 ---
 
 ## Configuration Details (Phase 3)
 
-### Cloudflare Zero Trust Components
+Removed from this public repository on 2026-07-25.
 
-| Component | Value |
-|-----------|-------|
-| Tunnel Name | `foundry-prod` |
-| Tunnel ID | `d3d867f8-5617-48cd-8e08-a2a44fbdac71` |
-| SSH Hostname | `<SSH_ZERO_TRUST_HOST>` |
-| Service Target | `ssh://localhost:22` |
-| Access Application | "Foundry SSH Access" |
-| Session Duration | 24 hours |
-| Identity Provider | GitHub OAuth |
+The concrete Zero Trust configuration — tunnel name and ID, SSH hostname,
+service target, Access application name and session duration, and the
+authorized-operator roster — is Lane A material under
+`internal-devops/docs/repo-boundary-contract.md`, which forbids copying raw
+IPs, SSH details, and host credentials into public repos.
 
-### Authorized Users
+The canonical records are:
 
-| Email | Role | Added |
-|-------|------|-------|
-| `admin@madfam.io` | Admin | 2025-12-03 |
-| `innovacionesmadfam@proton.me` | Admin | 2025-12-03 |
-
-### Key Settings
-
-- **Automatic Cloudflared Authentication**: Enabled
-- **Browser Rendering**: Disabled (CLI-based SSH)
-- **fail2ban**: Active (legacy, no longer needed with port 22 closed)
+| What | Where |
+|------|-------|
+| Tunnel inventory (name, ID, routes) | `internal-devops/ecosystem/domain-map.md` |
+| Node inventory and SSH targets | `internal-devops/infrastructure/nodes.md` |
+| Operator access paths and policy | `internal-devops/access/` |
 
 ---
 
-*Last Updated: 2025-12-03*
-*Solarpunk Foundry Infrastructure Team*
+*Historical narrative written 2025-12-03. Reviewed and sanitized 2026-07-25.*
+*Public-safe: contains no node identifiers, IP addresses, tunnel IDs, or operator identities.*

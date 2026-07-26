@@ -1,302 +1,309 @@
-# MADFAM Infrastructure Status
+# MADFAM Infrastructure — declared configuration
 
-> [!IMPORTANT]
-> MADFAM-ENCLII-FIRST-LEGACY-RAW v1: This document contains legacy raw infrastructure command examples.
-> Routine production operations must use Enclii web, API, or CLI. Treat raw
-> `kubectl`, `helm`, SSH, provider CLI/API, `docker exec`, and direct container
-> access as platform bootstrap or documented break-glass only, and record any
-> missing Enclii adapter gap.
+**Last verified: 2026-07-25**
 
+> **Read the framing before the tables.** This document describes **declared
+> configuration** — what the files in this repository and the private
+> operational record say is configured. It does **not** describe observed
+> production health, and it no longer pretends to.
+>
+> A public repository cannot honestly carry live status. It has no way to probe
+> production, and a checked-in green dot is a claim that ages into a lie. Every
+> row below is therefore traceable to a file, with the date that file was last
+> verified. Where something can only be settled by a probe, the probe is named.
 
-> **Last Verified**: January 11, 2026
-> **Environment**: Local + Production (3-node K3s cluster — node inventory in `internal-devops`)
+## How to read a claim in this document
 
-## Quick Reference
+| Label | Meaning |
+|---|---|
+| **Verified 2026-07-25** | Checked in this pass against a named file in a working tree on disk. Self-verifying — you can re-run the check. |
+| **Documented (date)** | Recorded in `internal-devops` on that date; not re-checked since. Treat the date as the age of the evidence. |
+| **Unverified** | Appears in a source but with no dated verification anywhere. Do not build on it. |
+| **Not asserted here** | Live health. Deliberately absent. Absence is not a health claim in either direction. |
 
-### Local Development
+The previous revision of this file carried "Last Verified: January 11, 2026" —
+196 days stale at the time of this rewrite — over present-tense pod tables and
+systemd status rows. Those tables are gone; see [What was removed](#what-was-removed).
+
+---
+
+## Local development environment
+
+This section is **verified 2026-07-25** against files in this repository. It is
+the most trustworthy part of this document precisely because it is
+self-checking: run the same commands and you get the same answer.
+
+### Preferred path
 
 ```bash
-# Start everything with single command
-enclii local up
-
-# Or start only infrastructure
-enclii local infra
-
-# Check status
+enclii local up          # shared infra + Janua + Enclii
+enclii local infra       # shared infrastructure only
 enclii local status
-
-# Stop everything
+enclii local logs [service]
 enclii local down
 ```
 
-### Production Access
+Those five subcommands (`up`, `down`, `status`, `logs`, `infra`) are the
+complete set. *Verified 2026-07-25 against
+`enclii/packages/cli/internal/cmd/local.go`.*
 
-Use Enclii web, API, or CLI for routine production inventory and health checks.
-Private SSH targets, kubeconfig paths, and break-glass commands are documented
-only in `internal-devops`.
+`enclii local up` with no arguments starts `janua` and `enclii`.
+`enclii local infra` starts **PostgreSQL, Redis, MinIO and MailHog** — the
+command's own help text says exactly that, and it matches the compose file.
+Verdaccio is **not** part of local infra; the private npm registry runs in the
+cluster (see below).
 
-### Boundary and roadmap checkpoint
+### Shared infrastructure containers
 
-- Boundary contract: `docs/PUBLIC_REPO_BOUNDARY.md`
-- Public documents keep shape/status and placeholders only; private operational runbooks, credentials, and incident detail stay in `internal-devops`.
-- During roadmap updates, verify any new public entries remain pointer-first and redacted.
+Declared in `ops/local/docker-compose.shared.yml`. *Verified 2026-07-25 by
+parsing that file.*
 
----
+| Service | Container name | Host ports |
+|---|---|---|
+| PostgreSQL | `madfam-postgres-shared` | 5432 |
+| Redis | `madfam-redis-shared` | 6379 |
+| MinIO (API + console) | `madfam-minio-shared` | 9000, 9001 |
+| MinIO provisioner | `madfam-minio-provisioner` | — |
+| MailHog (SMTP + UI) | `madfam-mailhog` | 1025, 8025 |
 
-## Local Environment Status
+Docker network: `madfam-shared-network`. *Verified 2026-07-25 in the same file.*
 
-### Infrastructure (Docker Compose)
+> Note for anyone reconciling docs: the root-level `docker-compose.yml` in this
+> repository declares a **different** network name (`madfam-network`) and a
+> different Postgres password than `.env.example`. `ops/local/` is the path the
+> CLI actually uses. Root-level files are outside this document's scope.
 
-| Service | Container | Port | Status |
-|---------|-----------|------|--------|
-| PostgreSQL | madfam-postgres-shared | 5432 | ✅ Healthy |
-| Redis | madfam-redis-shared | 6379 | ✅ Healthy |
-| MinIO API | madfam-minio-shared | 9000 | ✅ Healthy |
-| MinIO Console | madfam-minio-shared | 9001 | ✅ Healthy |
-| MailHog SMTP | madfam-mailhog | 1025 | ✅ Running |
-| MailHog UI | madfam-mailhog | 8025 | ✅ Running |
+### Databases created by the local init script
 
-### Connection Credentials (Local)
+Declared in `ops/local/init-databases.sql`. *Verified 2026-07-25 by reading the
+`CREATE DATABASE` statements.* Nine databases, all with a `_dev` suffix:
 
-```bash
-# PostgreSQL (multi-tenant)
-postgres://madfam:madfam_dev_password@localhost:5432/
+| Database | Owner | Purpose |
+|---|---|---|
+| `janua_dev` | `janua` | Identity |
+| `enclii_dev` | `enclii` | PaaS control plane |
+| `forgesight_dev` | `forgesight` | Fabrication industry intelligence |
+| `fortuna_dev` | `fortuna` | Problem intelligence |
+| `cotiza_dev` | `cotiza` | Quoting (repo `digifab-quoting`) |
+| `avala_dev` | `avala` | Learning verification |
+| `dhanam_dev` | `dhanam` | Billing and payments |
+| `sim4d_dev` | `sim4d` | CAD/simulation |
+| `forj_dev` | `forj` | Fabrication commerce |
 
-# Per-app databases:
-postgres://janua:janua_dev@localhost:5432/janua_dev
-postgres://enclii:enclii_dev@localhost:5432/enclii_dev
+Local credentials are development-only values of the form `<service>_dev`,
+readable in the init script. They are not secrets and they do not exist in
+production. Any doc naming `janua_db`, `cotiza_db`, `blueprint_db` or similar
+is using a superseded scheme — those databases are created nowhere.
 
-# Redis (with auth)
-redis://:redis_dev_password@localhost:6379
+### Local ports
 
-# MinIO
-http://localhost:9000 (minioadmin/minioadmin)
-http://localhost:9001 (Console)
-
-# MailHog
-smtp://localhost:1025
-http://localhost:8025 (Web UI)
-```
-
-### Databases Created
-
-| Database | User | Password | Purpose |
-|----------|------|----------|---------|
-| janua_dev | janua | janua_dev | Auth platform |
-| enclii_dev | enclii | enclii_dev | DevOps platform |
-| forgesight_dev | forgesight | forgesight_dev | Manufacturing intel |
-| fortuna_dev | fortuna | fortuna_dev | Problem intel |
-| cotiza_dev | cotiza | cotiza_dev | Quoting engine |
-| avala_dev | avala | avala_dev | Learning verification |
-| dhanam_dev | dhanam | dhanam_dev | Budget tracking |
-| sim4d_dev | sim4d | sim4d_dev | CAD platform |
-| forj_dev | forj | forj_dev | Fabrication |
+This document deliberately does **not** restate the port scheme. It has drifted
+in three separate places in the past. The registry, including its own honest
+statement about how much of the scheme is actually followed, is
+[`PORT_ALLOCATION.md`](./PORT_ALLOCATION.md); each repo's `enclii.yaml` /
+`.enclii.yml` is the per-service source.
 
 ---
 
-## Janua Services
+## Production — public-safe shape
 
-### Local Ports
+Everything in this section is **documented** in `internal-devops`, with the
+verification date of the private source. Node identity, addresses, hardware,
+capacity figures, costs and tunnel identifiers are Lane A and are not here.
 
-| Service | Port | URL | Status |
-|---------|------|-----|--------|
-| API | 4100 | http://localhost:4100 | ✅ Healthy |
-| Dashboard | 4101 | http://localhost:4101 | ✅ Running |
-| Admin | 4102 | http://localhost:4102 | ✅ Running |
-| Docs | 4103 | http://localhost:4103 | ✅ Running |
-| Website | 4104 | http://localhost:4104 | ✅ Running |
+### Cluster
 
-### Production Pods
+| Property | Value | Source and date |
+|---|---|---|
+| Distribution | k3s, `v1.33.7+k3s3` | `internal-devops/infrastructure/nodes.md`, verified **2026-05-04** |
+| Nodes | 3: 2 dedicated bare-metal (control plane + workload, and worker) + 1 cloud VPS as CI builder | same, **2026-05-04** |
+| Builder isolation | Taint `builder=true:NoSchedule`, label `role=builder`; only ARC runners schedule there | same, **2026-05-04** |
+| Namespaces | 22 at the last topology snapshot | `internal-devops/infrastructure/topology.md`, **2026-05-04** |
+| ArgoCD Applications | 28 declared (11 infrastructure + 2 ARC OCI + 15 project ApplicationSet) | same, **2026-05-04** — but see the contradiction note below |
+| Control-plane HA | **None.** Single control-plane node. | Documented privately; multi-server k3s is listed as future work, not done |
 
-| Pod | Status | Age | Namespace |
-|-----|--------|-----|-----------|
-| janua-api-5db7596c86-vvdkf | Running | ~2h | janua |
-| janua-dashboard-f76b4ff57-9zrlk | Running | 3d | janua |
-| janua-admin-5d9b8f8749-xc8kf | Running | 3d | janua |
-| janua-docs-65cbf57b86-bqxrw | Running | 27h | janua |
-| janua-website-c7bd5747c-8phqm | Running | 3d | janua |
+> **Contradiction, unresolved.** The topology record says 28 ArgoCD Applications
+> (2026-05-04); a dashboard-truthfulness roadmap dated 2026-04-29 reports
+> "18 of ~50" synced-and-healthy. Newest-wins does not settle it — the two are
+> measuring different things (declared apps vs an App-of-Apps health view).
+> **What would settle it:** one `enclii ops apps list` (or `argocd app list`)
+> with the output and date recorded.
 
-### Production Endpoints
+> **Staleness note.** The k3s version has no verification newer than
+> 2026-05-04 — 82 days at the time of writing. **What would settle it:** a node
+> listing through Enclii, recorded with a date.
 
-| Service | URL | Status |
-|---------|-----|--------|
-| API | `<JANUA_API_URL>/health` | Healthy |
-| Website | https://janua.dev | ✅ HTTP 200 |
-| Dashboard | https://app.janua.dev | ✅ HTTP 200 |
-| Admin | https://admin.janua.dev | ✅ HTTP 200 |
-| Docs | https://docs.janua.dev | ✅ HTTP 200 |
-| Auth Alias | https://auth.madfam.io | ✅ Same as API |
+### Ingress
 
----
+| Property | Value | Source and date |
+|---|---|---|
+| Path | Internet → Cloudflare edge → cloudflared pods → K8s Service :80 → container port | `internal-devops/ecosystem/domain-map.md`, verified **2026-07-01** |
+| TLS | Terminates at the Cloudflare edge; origin leg is plain HTTP on port 80 | `internal-devops/ECOSYSTEM.md`, **2026-05-04** |
+| Tunnels | **One** named Cloudflare Tunnel carries all ingress — every HTTP product route plus the SSH jumphost | domain-map, **2026-07-01** |
+| cloudflared deployment | Deployment `cloudflared` in namespace `cloudflare-tunnel` | domain-map + private runbooks, **2026-07-01** |
+| cloudflared replicas | Documented as 2 — **not re-verified since 2026-02** | `internal-devops/audits/ecosystem-audit-2026-02.md`; no 2026-05-or-later document restates the count |
+| Exposed node ports | Zero, for application ingress | nodes.md + topology.md, **2026-05-04** |
 
-## Enclii Services
+> **Correction carried forward.** Earlier public docs described *two* tunnels
+> (a product tunnel and an SSH tunnel). That split **never existed** in the live
+> infrastructure. Any doc still saying "production tunnels" plural is wrong.
 
-### Local Ports
+> **"Zero exposed node ports" means no NodePort application ingress.** It does
+> not mean nothing listens on the nodes; operator access paths exist and are
+> documented privately. See [`SSH_ACCESS.md`](./SSH_ACCESS.md).
 
-| Service | Port | URL | Status |
-|---------|------|-----|--------|
-| Switchyard API | 4200 | http://localhost:4200 | ✅ Healthy |
-| UI | 4201 | http://localhost:4201 | ❌ Not started |
+> **cloudflared replica count is the clearest open item in this section.**
+> **What would settle it:** read the live Deployment's replica count via
+> `enclii ops pods` and record the date.
 
-### Production Pods
+### Storage
 
-| Pod | Status | Age | Namespace |
-|-----|--------|-----|-----------|
-| switchyard-api-67db978596-57ck8 | Running | 20h | enclii |
-| switchyard-ui-7fd79848cf-xfqd2 | Running | 20h | enclii |
-| enclii-landing-9d6685b8b-6pk86 | Running | 2d | enclii |
+| Property | Value | Source and date |
+|---|---|---|
+| Block storage | Longhorn CSI, 2-replica across the two non-tainted nodes, `longhorn` StorageClass | `internal-devops/ECOSYSTEM.md` + `audits/2026-04-enclii-platform-audit.md`, **2026-05-04** |
+| Longhorn version | Stated once as "v1.7+" | `internal-devops/ECOSYSTEM.md` — **unverified**, no dated source anywhere |
+| Object storage | Cloudflare R2 (zero egress cost); destination for logical backups, WAL archiving, repo backups, per-product asset buckets | `internal-devops/ECOSYSTEM.md`, DR runbook, **2026-06-03** |
+| PostgreSQL | Single in-cluster instance on a Longhorn PVC. No auto-failover. | `audits/2026-04-enclii-platform-audit.md`, **2026-05-04** |
+| Redis | Single instance; Sentinel staged, not deployed | same, **2026-05-04** |
 
----
+> **What would settle the Longhorn version:** `enclii ops storage` version
+> output, or the Longhorn Helm chart pin in the GitOps source.
 
-## Production Infrastructure
+### GitOps and CI/CD
 
-### Server Details
+| Property | Value | Source and date |
+|---|---|---|
+| GitOps | ArgoCD, App-of-Apps plus ApplicationSets | `internal-devops/infra/argocd/`, read directly **2026-04-24** |
+| Self-heal | **On.** Every Application manifest in the platform repo sets `syncPolicy.automated` with `prune: true` and `selfHeal: true` | verified by reading the manifests, **2026-04-24** |
+| Deploy flow | push → CI build → GHCR → cosign keyless signature → `kustomize edit set image` digest pin → CI commits the pin → ArgoCD syncs | `internal-devops/ecosystem/deployment-conventions.md`; cosign step verified end-to-end **2026-07-07** |
+| Preview environments | ArgoCD ApplicationSet with the GitHub pullRequest generator, opt-in by label, one Application + namespace per PR | manifest read directly; **dormant by design** as of **2026-07-07** because the preview DNS zone was never bootstrapped |
+| CI runners | Actions Runner Controller self-hosted, namespace `arc-runners`, pools `madfam-runners-blue` / `madfam-runners-green` | `internal-devops/runbooks/arc-runner-image-rebuild.md` + topology, **2026-05-04** |
 
-> Node hostnames, IPs, hardware specs, and SSH targets are documented
-> in the **private** `internal-devops/infrastructure/nodes.md` registry.
-> This public doc intentionally keeps only non-sensitive shape data.
+Self-heal being on is load-bearing, not trivia: a live `kubectl patch` will be
+reverted. Permanent configuration changes must be committed to the app repo.
 
-| Property | Value |
-|----------|-------|
-| Topology | 3-node cluster (1 control plane + 1 worker + 1 builder) |
-| SSH Access | Cloudflare Zero Trust Tunnel; concrete host in `internal-devops` |
-| Provider | See `internal-devops` |
-| K8s Distribution | K3s (multi-node) |
+> **Fleet-wide pipeline health is not established.** The full chain was proven
+> for three named platform services on 2026-07-07; the Q2 retrospective records
+> auto-digest restoration as "not assessed" across the fleet. **What would
+> settle it:** the date of the most recent digest commit on each repo's
+> production `kustomization.yaml`.
 
-### Cloudflare Tunnel
+### Admission policy (image tags)
 
-| Tunnel | Status | Purpose |
-|--------|--------|---------|
-| production tunnels | Active | SSH access, API routing |
+Three Kyverno image-tag policies exist and **only one fail-closes**:
 
-### SystemD Services
+| Policy | Mode | Scope |
+|---|---|---|
+| `disallow-latest-tag` | **Audit** — warns, does not block | excludes infrastructure-labelled namespaces |
+| `block-latest-ifnotpresent` | **Enforce** | blocks only `:latest` **with** `imagePullPolicy: IfNotPresent` |
+| `require-image-digest` | **Audit** | application-labelled namespaces |
 
-| Service | Status | Purpose |
-|---------|--------|---------|
-| cloudflared.service | Active | Cloudflare tunnel connector |
-| janua-port-forward.service | Active | Janua API forwarding service; private wiring in `internal-devops` |
+Direct consequence: a pod using `:latest` with `imagePullPolicy: Always`
+passes admission. At the 2026-05-04 snapshot, 6 active deployments were still
+running `:latest`.
 
-### Kubernetes Resources
+Digest pinning is nevertheless the org rule, enforced mostly **CI-side**: a
+ratchet check fails the build on any tag-only image reference in infra
+manifests, and roughly 99% of MADFAM-org images were digest-pinned at the
+2026-05-04 provisioning audit.
 
-Use Enclii-facing inventory and health surfaces for routine resource checks.
-This public status file keeps only sanitized namespace and service shape; raw
-cluster commands and private provider wiring remain in `internal-devops`.
+*Source: `internal-devops/ECOSYSTEM.md` and
+`internal-devops/audits/2026-05-04-enclii-provisioning-audit.md`, **2026-05-04**.*
 
----
+> **Two open items here, both 82 days old.** (1) The two private records
+> disagree on the PolicyException count (8 vs 13), both dated 2026-05-04, so
+> newest-wins does not resolve it. (2) Whether `require-image-digest` is Audit
+> or Enforce *today* is genuinely unclear — the ecosystem template says Audit,
+> while an undated production-readiness runbook shows an Enforce-style admission
+> denial as an expected symptom. **What would settle both:** reading the
+> ClusterPolicy `validationFailureAction` values and the exception manifests in
+> the platform repo's Kyverno directories at a named commit, or
+> `enclii ops policy`.
 
-## CLI Commands Reference
+### Secret delivery
 
-### enclii local
+Mechanism only; paths and names are Lane A.
 
-```bash
-# Start full environment (infra + all apps)
-enclii local up
+Vault (KV v2) → External Secrets Operator via a ClusterSecretStore → per-app
+ExternalSecret materialises a native Kubernetes Secret → Deployment consumes it
+via `envFrom`/`secretRef`. ESO refresh interval is 15 minutes. Stakater Reloader
+rolls consumers on change. The operator surface is `enclii secrets`.
 
-# Start only infrastructure
-enclii local infra
+**Not all services are Vault-backed.** At least two recent go-lives provisioned
+plain Kubernetes Secrets out-of-band, because there is no CLI surface to write
+Vault after onboarding — an Enclii adapter gap recorded 2026-07-10 and
+re-confirmed 2026-07-25. Those secrets sit outside the ESO refresh loop.
 
-# Start specific services
-enclii local up janua
-enclii local up enclii
-enclii local up janua enclii
-
-# Check status
-enclii local status
-
-# View logs
-enclii local logs
-enclii local logs postgres
-enclii local logs -f  # follow
-
-# Stop everything
-enclii local down
-enclii local down --keep-infra  # keep databases running
-```
-
-### Environment Variables for Manual Start
-
-```bash
-# Janua API
-DATABASE_URL=postgresql://janua:janua_dev@localhost:5432/janua_dev
-REDIS_URL=redis://localhost:6379/0
-ADMIN_BOOTSTRAP_PASSWORD='<GENERATE_AT_RUNTIME>'
-
-# Enclii API
-ENCLII_DATABASE_URL=postgres://enclii:enclii_dev@localhost:5432/enclii_dev?sslmode=disable
-ENCLII_REDIS_HOST=localhost
-ENCLII_REDIS_PORT=6379
-ENCLII_REDIS_PASSWORD=redis_dev_password
-ENCLII_AUTH_MODE=local
-```
-
----
-
-## File Locations
-
-### Docker Compose
-
-```
-~/labspace/solarpunk-foundry/ops/local/docker-compose.shared.yml
-~/labspace/solarpunk-foundry/ops/local/init-databases.sql
-```
-
-### CLI Source
-
-```
-~/labspace/enclii/packages/cli/internal/cmd/local.go
-```
-
-### Kubernetes Manifests
-
-```
-~/labspace/janua/k8s/
-~/labspace/enclii/k8s/
-```
+*Sources: `internal-devops/runbooks/vault-bootstrap.md`,
+`internal-devops/ecosystem/deployment-conventions.md`,
+`internal-devops/runbooks/2026-07-10-periplo-repo-extraction.md`; **2026-07-15**,
+re-confirmed **2026-07-25**.*
 
 ---
 
-## Troubleshooting
+## Where manifests live
 
-### Docker containers not starting
+*Verified 2026-07-25 against the working trees on disk.*
 
-```bash
-# Check Docker is running
-docker ps
+| Purpose | Path |
+|---|---|
+| Enclii Kubernetes manifests | `enclii/infra/k8s/` (with `base/` and `production/` overlays) |
+| ArgoCD applications and ApplicationSets | `enclii/infra/argocd/` |
+| Janua Kubernetes manifests | `janua/k8s/` |
+| Dhanam Kubernetes manifests | `dhanam/infra/k8s/` |
+| Per-app production manifests, generally | `<app>/infra/k8s/production/` |
+| Local dev compose + DB init | `solarpunk-foundry/ops/local/` |
+| Enclii CLI `local` implementation | `enclii/packages/cli/internal/cmd/local.go` |
 
-# Restart infrastructure
-cd ~/labspace/solarpunk-foundry/ops/local
-docker compose -f docker-compose.shared.yml down
-docker compose -f docker-compose.shared.yml up -d
-```
+The previous revision of this file pointed at `enclii/k8s/`, which does not
+exist.
 
-### PostgreSQL connection refused
-
-```bash
-# Check container is healthy
-docker exec madfam-postgres-shared pg_isready -U madfam
-
-# Check databases exist
-docker exec madfam-postgres-shared psql -U madfam -c "\l"
-```
-
-### Redis authentication error
-
-```bash
-# Test with password
-docker exec madfam-redis-shared redis-cli -a redis_dev_password ping
-# Expected: PONG
-```
-
-### Port already in use
-
-```bash
-# Find process using port
-lsof -i :4100
-
-# Kill if needed
-kill -9 <PID>
-```
+The governing convention is *"core repos define the platform; client repos
+define themselves"* — a service's deployment configuration lives in the
+service's own repository, and onboarding must not require editing the platform
+repos. *Source: `internal-devops/ecosystem/deployment-conventions.md` and
+RFC 0014 zero-touch onboarding, **2026-04-26**.*
 
 ---
 
-*Last updated: January 11, 2026*
+## Production access
+
+Routine production inventory and health go through **Enclii** (web, API, or
+CLI). Raw `kubectl` / SSH / provider CLIs are bootstrap or documented
+break-glass only, and every such use must be recorded with the operator,
+reason, target, commands, result, and an adapter-gap or incident link.
+
+*Source: `internal-devops/README.md` and `internal-devops/AGENTS.md`, both
+carrying Last Updated **2026-07-25**.*
+
+SSH targets, kubeconfig handling and break-glass procedure are documented only
+in `internal-devops`. See [`SSH_ACCESS.md`](./SSH_ACCESS.md) for the public
+pointer.
+
+---
+
+## What was removed
+
+Recorded so this is a rewrite and not a quiet deletion.
+
+| Removed | Reason |
+|---|---|
+| Production pod tables (5 Janua rows, 3 Enclii rows, with names and ages) | Pod names carry ReplicaSet hashes that change on every rollout. A January 2026 name is certainly wrong now and is unfalsifiable from a public repo. It was also the one place this repo leaked per-pod runtime identity. |
+| `janua-port-forward.service` "Active" row | The string `janua-port-forward` returns zero hits across the whole of `internal-devops`. No readable source exists. If it is real, it needs a private source before it can be referenced publicly. |
+| "production tunnels" (plural), Active | There is one tunnel. See the ingress table. |
+| ✅/❌ health columns on the local-dev tables | Those were a snapshot of one laptop in January. The underlying container names, ports and databases were correct and are kept — only the unverifiable status column is gone. |
+| `enclii/k8s/` manifest path | Does not exist; corrected above. |
+| Local connection-string block with inline passwords | Development-only values, but reproducing them added nothing over pointing at `ops/local/init-databases.sql`, which is the source. |
+| Local troubleshooting section built on `docker exec` | Superseded by `enclii local status` / `enclii local logs`. |
+
+---
+
+## Related
+
+- [`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md) — service and route inventory,
+  including retired and broken endpoints
+- [`PORT_ALLOCATION.md`](./PORT_ALLOCATION.md) — port registry, with its own
+  honest compliance statement
+- [`PUBLIC_REPO_BOUNDARY.md`](./PUBLIC_REPO_BOUNDARY.md) — what may and may not
+  appear in this repo
+- [`runbooks/`](./runbooks/) — public-safe summaries plus pointers

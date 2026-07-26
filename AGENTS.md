@@ -6,7 +6,7 @@
 > `kubectl`, `helm`, SSH, provider CLI/API, `docker exec`, and direct container
 > access as platform bootstrap or documented break-glass only, and record any
 > missing Enclii adapter gap.
-
+> Last Updated: 2026-07-25
 
 <!-- MADFAM-AGENTS-CANONICAL v1 -->
 
@@ -28,13 +28,28 @@ redirect and should not become the source of truth again.
   emergencies when Enclii is unavailable or lacks an implemented adapter.
 - Record any missing Enclii adapter gap instead of normalizing raw production
   access in docs or runbooks.
+- **Date every factual claim you write into this repo.** State the source you
+  read and when that source was last verified. Distinguish *verified*,
+  *documented but unverified*, and *aspirational*. If you cannot establish
+  something, say so and name what would settle it — an honest gap beats a
+  confident guess. `docs/PORT_ALLOCATION.md` is the model to copy.
+- **Never invent verification.** You cannot probe production from this repo. If
+  the private repo last verified a route on 2026-07-01, write "last verified
+  2026-07-01" — not "live", not "currently".
+- **No marketing language.** No superlatives, no invented metrics, no adoption
+  or performance numbers you did not measure.
 
 ## Repo entrypoints
 
-- `README.md`
-- `ECOSYSTEM.md`
-- `docs/`
-- `.github/workflows/`
+- `README.md` — the front door: what this repo is (Lane B, the public ecosystem
+  contract hub), what it is not, how the lanes divide, and the reading order.
+- `ECOSYSTEM.md` — the standalone, agent-oriented ecosystem map, cross-repo
+  conventions, sanitized production topology, and the Enclii CLI reference.
+- `MADFAM.md` — the fuller per-platform master reference.
+- `docs/` — port registry, licensing, integration and architecture material.
+- `packages/` — the `@madfam/*` shared package set.
+- `.github/workflows/` — CI: doc lint, package quality, production-readiness
+  ratchet, public hygiene, repository hygiene, package publish.
 
 ## LLM context files
 
@@ -46,75 +61,132 @@ redirect and should not become the source of truth again.
 
 ## Repo-boundary contract
 
-- `internal-devops` is the private canonical source for production topology, secrets, and operational runbooks.
-- This repo is the public ecosystem contract; keep sensitive operational, pricing, and audit context out.
-- Use redacted summaries and canonical links when cross-referencing private context.
-- If uncertain, place operational detail in `internal-devops` and keep only a short pointer here.
+- `internal-devops` is the private canonical source for production topology,
+  node identity, capacity, costs, secrets, incident evidence, and operational
+  runbooks. It is Lane A.
+- This repo is the public ecosystem contract (Lane B). Keep sensitive
+  operational, pricing, and audit context out.
+- Use redacted summaries and canonical links when cross-referencing private
+  context. Never copy Vault paths, secret names with retrieval detail, or
+  break-glass `kubectl`/SSH into this repo.
+- If uncertain, place operational detail in `internal-devops` and keep only a
+  short pointer here.
+- Any public doc carrying ecosystem context must include one short boundary note
+  with a canonical link target.
+- Canonical policy: `internal-devops/docs/repo-boundary-contract.md`
+  (last updated 2026-06-14).
+
+**Never publish from this repo:** node hostnames, any public IP, hardware model
+numbers or capacity figures, the Cloudflare tunnel identifier, cost or
+procurement data, Vault paths or secret names with retrieval detail, raw
+break-glass `kubectl`/SSH procedures, incident evidence trails.
+
+**Already public and stays public:** the topology *shape* — a 3-node bare-metal
+k3s cluster on Hetzner (two dedicated + one cloud builder), ingress via a single
+Cloudflare Tunnel with zero exposed node ports, Longhorn CSI block storage,
+Cloudflare R2 object storage, ArgoCD GitOps with self-heal.
+
+Note that CI does not enforce this for you: `scripts/public-hygiene-check.sh`
+scans `.md`/`.mdx`/`.txt` only and has no pattern for infrastructure
+identifiers. A green CI run is not proof a change is boundary-clean.
 
 ## Maintenance
 
-Regenerate or repair these files with
-`internal-devops/scripts/sync-agent-docs.py` from the labspace ecosystem.
+Inspect drift in these files with `python3 internal-devops/scripts/sync-agent-docs.py`
+— run bare, it prints a diff and writes nothing. Read that diff before going
+further.
+
+Adding `--apply` **overwrites** `AGENTS.md`, `CLAUDE.md`, `llms.txt`, and
+`llms-full.txt` across every top-level labspace repo with template-generated
+content. This repo has hand-curated entrypoints, and a blind `--apply` replaces
+them with a generic stub. Prefer hand-editing; review the diff before committing.
 
 ## Cursor IDE
 
-- Use `labspace/madfam-platform.code-workspace` with **enclii** and **internal-devops** for cross-repo platform work.
+- Use `labspace/madfam-platform.code-workspace` with **enclii** and
+  **internal-devops** for cross-repo platform work.
 - Packages: `packages/`; ports: `docs/PORT_ALLOCATION.md`.
-- Default model: **Auto** / **Composer 2.5**; Sonnet for `@madfam/*` refactors.
 - Playbook: `internal-devops/ecosystem/cursor-usage-playbook.md`.
 
 ---
 
-## Legacy CLAUDE.md guidance imported on 2026-05-13
+## Repo-specific guidance
 
-<!-- BEGIN LEGACY_CLAUDE_IMPORT -->
+> Originally imported from a legacy `CLAUDE.md` on 2026-05-13 and left unrevised;
+> **rewritten in place on 2026-07-25** because several of its statements had gone
+> wrong rather than merely stale — the package list was three short, the
+> inference endpoint had moved, `@madfam/ui` was presented as the live design
+> system after being deprecated, and the service count in the local-dev section
+> was nearly double the real one. Where a claim below carries a date, that date
+> is when it was verified.
 
-# Solarpunk Foundry — CLAUDE.md
+### What this repo is
 
-> **Agent guide** for this repo. The public-facing vision + platform
-> map lives in [README.md](README.md); this file is the operating
-> protocol for Claude Code / GitHub Copilot / any other agent working
-> inside Solarpunk Foundry.
+Solarpunk Foundry is the **public ecosystem contract hub** (Lane B) for MADFAM:
 
-## What this repo is
+- **Shared packages** (`packages/`) — the `@madfam/*` set, published to `npm.madfam.io`
+- **Port registry** (`docs/PORT_ALLOCATION.md`) — the 100-port-block scheme and an
+  honest account of how little of it is followed
+- **Local dogfooding scaffolds** (`ops/`) — shared docker-compose infra, boot scripts
+- **Public architecture narrative** (`README.md`, `ECOSYSTEM.md`, `MADFAM.md`, `docs/architecture/`)
+- **Integration and contract patterns** (`docs/*.md`)
 
-Solarpunk Foundry is the **ecosystem orchestration hub** for MADFAM:
+It ships **no application deployable**. It is public, and deliberately holds no
+production identity, secrets, costs, hostnames, competitive intelligence, or
+sensitive audits — those live in the private `internal-devops` repo.
 
-- **Shared packages** (`packages/`) — `@madfam/*` published to `npm.madfam.io`, consumed by every ecosystem app
-- **Port registry** (`docs/PORT_ALLOCATION.md`) — authoritative 100-port-block allocation per platform
-- **Local dogfooding scaffolds** (`ops/`) — docker-compose shared infra, boot scripts
-- **Public architecture narrative** (`README.md`, `docs/architecture/`)
-- **Janua / integration / runbook patterns** (`docs/*.md`)
+### Quick start
 
-It is **public**. It deliberately does not hold prod IPs, secrets, costs, hostnames, competitive intelligence, or sensitive audits. Those live in the **private** `internal-devops` repo.
-
-## Quick start
+*Verified against `enclii/packages/cli/internal/cmd/local.go` and this repo's
+compose files on 2026-07-25.*
 
 ```sh
-# Preferred: enclii CLI (from enclii/packages/cli)
-enclii local up         # Infra + all services
-enclii local infra      # Only shared infra (Postgres, Redis, MinIO, MailHog, Verdaccio)
+# Preferred: the enclii CLI
+enclii local up         # shared infra, then Janua + Enclii (NOT "all services")
+enclii local infra      # shared infra only: PostgreSQL, Redis, MinIO, MailHog
 enclii local status
+enclii local logs [service]
 enclii local down
 
-# Fallback: the legacy orchestration script
+# Fallback: the legacy orchestration script (symlink → ops/bin/madfam.sh)
 cd ~/labspace
-./madfam start          # Core services
-./madfam full           # All 18 services
+./madfam start          # core: janua, forgesight, digifab-quoting, madfam-site
+./madfam full           # 10 declared services; 2 of them have no local checkout
 ./madfam status
 ./madfam stop --clean
 ```
 
-## Repo layout
+Two corrections worth carrying, because earlier editions of this file got both wrong:
+
+- `enclii local infra` starts PostgreSQL, Redis, MinIO and MailHog. **It does not
+  include Verdaccio.**
+- `./madfam full` declares **10** services (`janua`, `forgesight`,
+  `digifab-quoting`, `madfam-site`, `madfam`, `primavera3d`, `dhanam`, `fortuna`,
+  `sim4d`, `electrochem-sim`), not 18. Two of them — `madfam` and
+  `electrochem-sim` — have no checkout under `~/labspace`, so `full` cannot start
+  them.
+
+The **root `docker-compose.yml` is currently broken** and is not the canonical
+local path: its `janua` service targets a build stage that does not exist, its
+`enclii-api` service points at a Dockerfile that does not exist, and it declares
+a different Docker network than the canonical stack. Use `enclii local up`.
+
+### Repo layout
+
+*Verified against the working tree 2026-07-25.*
 
 ```
 solarpunk-foundry/
-├── README.md                        # Public master doc — vision, platform map, protocols
-├── CLAUDE.md                        # This file — agent protocol
+├── README.md                        # Front door — what this repo is/isn't, lanes, platform map
+├── AGENTS.md                        # This file — canonical agent instructions
+├── CLAUDE.md                        # Compatibility redirect to AGENTS.md
+├── ECOSYSTEM.md                     # Standalone ecosystem map + Enclii CLI reference
+├── MADFAM.md                        # Per-platform master reference
 ├── AI_CONTEXT.md                    # Package/registry quick reference
-├── packages/
+├── llms.txt / llms-full.txt         # LLM context index + durable map
+├── packages/                        # 13 packages
 │   ├── core/                        # @madfam/core — brand, locales, currencies, events
-│   ├── ui/                          # @madfam/ui — shadcn/Radix/Tailwind design system
+│   ├── ui/                          # @madfam/ui — DEPRECATED (see packages/ui/README.md)
 │   ├── analytics/                   # @madfam/analytics — PostHog + event schema
 │   ├── auth-resilience/             # @madfam/auth-resilience — Janua circuit breaker
 │   ├── sentry/                      # @madfam/sentry — Sentry init
@@ -122,54 +194,82 @@ solarpunk-foundry/
 │   ├── env/                         # @madfam/env — Zod env loader
 │   ├── constants/                   # @madfam/constants — shared enums
 │   ├── error-boundary/              # @madfam/error-boundary — Next.js route boundaries
-│   └── types/                       # @madfam/types — cross-repo shared types
+│   ├── types/                       # @madfam/types — cross-repo shared types
+│   ├── telemetry/                   # @madfam/telemetry — OTel tracing + W3C trace context
+│   ├── webhook-attribution/         # @madfam/webhook-attribution — the signed-fan-out contract, packaged
+│   └── ecosystem-banner/            # @madfam/ecosystem-banner — landing-page ticker
 ├── ops/
 │   ├── bin/                         # madfam.sh orchestration + debug scripts
-│   ├── local/                       # docker-compose shared infra
-│   ├── db/                          # init-shared-dbs.sql
-│   └── scripts/                     # one-off tooling
+│   ├── local/                       # docker-compose.shared.yml (the canonical local stack), init-databases.sql
+│   ├── db/                          # init-shared-dbs.sql (older, superseded naming)
+│   ├── docker/ · env/ · k8s/ · scripts/
 ├── docs/
-│   ├── PORT_ALLOCATION.md           # Authoritative port registry
+│   ├── PORT_ALLOCATION.md           # Port scheme — aspirational, honestly labelled
+│   ├── PUBLIC_REPO_BOUNDARY.md      # Public-repo boundary checklist
+│   ├── OPERATIONAL_REDIRECTS.md     # Where operational content moved to
+│   ├── LICENSING_STRATEGY.md        # Per-repo license rationale (matrix is stale — see README §V)
 │   ├── DOGFOODING_GUIDE.md          # Local dev setup
-│   ├── JANUA_INTEGRATION.md         # How to wire Janua into a new service
-│   ├── ECOSYSTEM_STATUS.md          # Live service roster (sanitized)
-│   ├── INFRASTRUCTURE_STATUS.md     # Infra shape (pointer to internal-devops)
-│   ├── CROSS_REPO_NAVIGATION.md     # Where to find things across the ecosystem
+│   ├── JANUA_INTEGRATION.md         # Wiring Janua into a service
 │   ├── INTEGRATION_TESTING.md       # Cross-service test patterns
-│   ├── LICENSING_STRATEGY.md        # Per-repo license rationale
+│   ├── CROSS_REPO_NAVIGATION.md     # Where to find things across the ecosystem
+│   ├── ECOSYSTEM_STATUS.md          # Point-in-time service roster
+│   ├── INFRASTRUCTURE_STATUS.md     # Infra shape (pointer to internal-devops)
+│   ├── ECOSYSTEM_BANNER.md          # Banner + footer contract
+│   ├── MONETIZATION_PATH_READINESS.md
 │   ├── SSH_ACCESS.md                # Pointer to internal-devops
-│   ├── architecture/                # SYMBIOSIS, cluster shape, self-contained services
-│   └── runbooks/                    # backup-restore, certs, incident-response
-├── templates/                       # Project templates
-├── scripts/                         # Build + publish utilities
+│   ├── architecture/                # SYMBIOSIS, cluster shape, federated + self-contained services
+│   └── runbooks/                    # Legacy; under review for removal in favour of internal-devops
+├── templates/                       # Project + doc templates (incl. HONEST_STATUS_SCORECARD.md)
+├── scripts/                         # Build, publish, hygiene, ratchet utilities
 ├── tests/                           # Smoke + integration
-├── docker-compose.yml               # Root compose (Verdaccio + dev deps)
-├── .enclii.yml                      # Enclii service spec
-└── pnpm-workspace.yaml              # Monorepo workspace
+├── infrastructure/                  # Legacy tree, largely superseded — under review
+├── docker-compose.yml               # Root compose — currently broken, not canonical
+├── .enclii.yml                      # Enclii service spec — unreconciled with live manifests
+└── pnpm-workspace.yaml
 ```
 
-## The four ecosystem-wide contracts
+### The cross-repo contracts
 
-Every MADFAM service participates in these. If you're building or editing a service, verify you're not breaking them.
+Every MADFAM service participates in these. If you are building or editing a
+service, verify you are not breaking them. Full statements with sources and
+dates: `README.md` §IV.
 
-### 1. Identity — Janua only
+**1. Identity — Janua only.** Every authenticated service verifies **RS256**
+JWTs against `https://auth.madfam.io/.well-known/jwks.json`. **HS256 is
+fail-closed** since the 2026-04-23 audit (H3/H4). No custom auth, password
+login, or session store. Claims: `sub`, `email`, `roles`, `org_id`, `rfc`
+(fiscal only). Janua is single-issuer per deployment — never route a second
+Janua hostname. *Conformance across the fleet is not uniform; the 2026-07-16
+audit rates it YELLOW.*
 
-No service implements custom auth, password login, or session management. Every service verifies RS256 JWTs against `auth.madfam.io/.well-known/jwks.json`. Claims available: `sub`, `email`, `roles`, `org_id`, `rfc` (fiscal services only).
+**2. Inference — Selva `/v1`, no direct provider calls.** The endpoint is
+**`https://inference.selva.town`** as of the 2026-07-07 cutover. The proxy was
+extracted out of `nexus-api` into `selva-inference-gateway` and the `nexus-api`
+`/v1` mount was removed. Provider credentials are intended to live only on
+Selva; the 2026-07-09 phynd-crm audit recorded a service failing open to
+`api.openai.com`, so treat this as the rule rather than the verified state.
 
-### 2. Inference — Selva `/v1/` proxy only
+**3. Billing — Dhanam.** Metering, entitlements, invoices and the ledger flow
+through Dhanam. Read via API; keep no local mirror.
 
-Every LLM-consuming service points its OpenAI SDK `base_url` at Selva's `nexus-api` `/v1/` proxy. Provider credentials (Anthropic, OpenAI, DeepInfra, Together, Fireworks, SiliconFlow, Moonshot) live ONLY on Selva. Other services hold no LLM provider secrets.
+**4. Payment attribution — signed fan-out.** Header
+`x-madfam-signature: t=<ts>,v1=<hex>` over `"${ts}.${body}"`, per-target secret,
+5-minute replay window. Receivers: dhanam `POST /v1/billing/madfam-events` and
+phynd-crm `POST /api/webhooks/routecraft`, both idempotent by emitter
+`event_id`. **As built the emitter is `routecraft`; the ratified target moves
+emission to Dhanam. As of 2026-07-08 the fan-out was verified to be a silent
+no-op in production.** `@madfam/webhook-attribution` packages the signing
+contract; no repo had adopted it as of that date.
 
-### 3. Payment attribution — signed fan-out
+**5. CORS — explicit allowlist, wildcards banned** (audit 2026-04-23, H2/H5/H6).
 
-`routecraft` emits `payment.succeeded` via `@routecraft/payments::emitPaymentSucceeded`. Header `x-madfam-signature: t=<ts>,v1=<hex>` over `"${ts}.${body}"`. Two receivers:
+**6. Deployment — Enclii is the control plane.** Push to `main` → CI builds →
+GHCR → cosign keyless signature → `kustomize edit set image` pins the digest →
+CI commits it back → ArgoCD pulls and syncs. Nothing pushes to the cluster.
+Self-heal is on, so a live `kubectl patch` gets reverted; commit permanent
+changes.
 
-- `dhanam` `POST /v1/billing/madfam-events` → `BillingEvent` row
-- `phynd-crm` `POST /api/webhooks/routecraft` → `conversions` row + source-agent credit
-
-Both idempotent by emitter `event_id`. 5-minute replay window.
-
-### 4. Data boundaries — own once, query everywhere
+**7. Data boundaries — own once, query everywhere.**
 
 | Dataset | Owner | Everyone else |
 |---|---|---|
@@ -179,72 +279,90 @@ Both idempotent by emitter `event_id`. 5-minute replay window.
 | CFDI / SAT / tax filings | Karafiel | single authority |
 | 3D geometry kernel | geom-core | used by Sim4D + Yantra4D |
 
-## Agent session protocol
+### Agent session protocol
 
-### Session start
+**Session start**
 
-1. **Read `README.md`** for current ecosystem shape.
-2. **Run `git status && git branch`** to verify clean state.
-3. **Check existing TodoWrite items** from previous sessions.
-4. **Load Serena memories** (if available): `list_memories()` → `read_memory()`.
+1. Read `README.md` §0–§II for the current ecosystem shape and the lane split.
+2. Run `git status && git branch` to verify a clean state.
+3. Check existing TodoWrite items from previous sessions.
+4. Load Serena memories if available: `list_memories()` → `read_memory()`.
 
-### During session
+**During session**
 
 1. **Feature branches only.** Never commit directly to `main`.
-2. **Always validate before commit**:
-   - TypeScript: `pnpm typecheck && pnpm lint`
-   - Package publish: `./scripts/publish-ui.sh --dry-run`
-   - Scripts: `bash -n <script>` for syntax
-3. **Update TodoWrite** after each task.
-4. **Checkpoint every 30 min** via `write_memory()`.
-5. **Prefer `enclii` CLI over `kubectl`** for any operational task — `enclii` routes through the Switchyard API with audit logging and lifecycle tracking.
+2. **Validate before commit:** `pnpm typecheck && pnpm lint`; `bash -n <script>`
+   for shell; `./scripts/publish-ui.sh --dry-run` before any `@madfam/ui` publish.
+3. Update TodoWrite after each task; checkpoint roughly every 30 minutes.
+4. **Prefer the `enclii` CLI over `kubectl`** for any operational task — it
+   routes through the Switchyard API with audit logging and lifecycle tracking.
+5. **Before writing a status claim, find its source and its date.** If the
+   newest source you can read is three months old, say three months old.
 
-### Secret management (safe-patch mode)
+**Secret management (safe-patch mode)**
 
-You are PERMITTED to edit `.env` and `.env.local` files, but:
+You may edit `.env` and `.env.local` files, but:
 
-1. **Backup first**: `cp .env .env.bak` before any modification.
-2. **Patch, don't purge**: never `> .env` (deletes everything). Always `sed -i '' 's/OLD/NEW/' .env` or `echo "NEW_KEY=value" >> .env`.
-3. **Placeholder ban**: never write `your_key_here`, `placeholder`, `example`, `xxx`, or `TODO` into active config files.
+1. **Back up first:** `cp .env .env.bak` before any modification.
+2. **Patch, don't purge:** never `> .env`. Use `sed -i '' 's/OLD/NEW/' .env` or
+   `echo "NEW_KEY=value" >> .env`.
+3. **Placeholder ban:** never write `your_key_here`, `placeholder`, `example`,
+   `xxx`, or `TODO` into active config files.
+4. Never paste a production credential into agent chat. Human handoff goes
+   through `enclii secrets intake`.
 
-### Session end
+**Session end**
 
-1. Verify all TodoWrite items completed or documented.
+1. Verify all TodoWrite items are completed or documented.
 2. Run final validation: `pnpm build`.
 3. `write_memory("session_summary", outcomes)`.
-4. **Do not leave uncommitted changes** without explicit user approval.
+4. Do not leave uncommitted changes without explicit user approval.
 
-## Validation requirements
+### Validation requirements
 
 | Change type | Required validation |
 |---|---|
-| Package code | `pnpm build` in package directory |
-| Publish | `./scripts/publish-ui.sh --dry-run` |
+| Package code | `pnpm build` in the package directory |
+| `@madfam/ui` publish | `./scripts/publish-ui.sh --dry-run` |
 | Shell scripts | `bash -n <script>` syntax check |
 | `.enclii.yml` / docker-compose | `enclii local status` round-trip |
-| Docs | Manual review — if it touches a §IV contract, cross-check all affected services |
+| Docs | Manual review. If it touches a cross-repo contract, cross-check every affected service. If it asserts a status, it must carry a source and a verification date. |
 
-## Proof-of-life standard
+CI on this repo: `doc-lint`, `package-quality`, `production-readiness-ratchet`,
+`public-hygiene`, `repository-hygiene`, `publish-package` (manual dispatch).
 
-> No deployment, refactor, or fix is "complete" until you have successfully `curl`ed the public endpoint and received the expected response.
+### Proof-of-life standard
+
+> No deployment, refactor, or fix is "complete" until you have successfully
+> `curl`ed the public endpoint and received the expected response.
 
 - **"K8s applied" is NOT "done."** "Endpoint reachable" is "done."
-- **Failure protocol:** if the curl fails (502/503/connection refused), diagnose logs immediately. Do not report success.
+- **Failure protocol:** if the curl fails (502/503/connection refused), diagnose
+  logs immediately. Do not report success.
+- **Corollary for docs:** if you did not run the curl, do not write a status
+  glyph. Write the date of the newest verification you can actually cite.
 
-## What this repo is NOT
+### What this repo is NOT
 
 Do not add to solarpunk-foundry:
 
-- Production IPs, hardware specs, hostnames, provider account numbers, costs, SSH targets → belong in `internal-devops`
-- Literal secrets → belong nowhere (use ExternalSecret or Vault)
-- Strategic / competitive / pricing briefs → `internal-devops/ecosystem/`
-- Ecosystem audits with revenue / customer / cost data → `internal-devops/audits/`
-- Per-session remediation plans or cutover runbooks → `internal-devops/runbooks/` or the consuming repo (e.g. `selva-office/REBRAND_CUTOVER_RUNBOOK.md`)
+- Node hostnames, public IPs, hardware models or capacity figures, provider
+  account numbers, costs, SSH targets, the Cloudflare tunnel identifier →
+  `internal-devops`
+- Literal secrets, or Vault paths and secret names with retrieval detail →
+  nowhere public; use ExternalSecret + Vault
+- Raw break-glass `kubectl`/SSH procedures → `internal-devops`
+- Strategic, competitive or pricing briefs → `internal-devops/ecosystem/`
+- Ecosystem audits carrying revenue, customer or cost data → `internal-devops/audits/`
+- Incident evidence trails → `internal-devops/incidents/`
+- Per-session remediation plans or cutover runbooks → `internal-devops/runbooks/`,
+  or the consuming repo when the runbook is product-owned
 
-If you find any of these leaking in, sanitize via the 2026-04-17 pattern (see git history of `docs/SSH_ACCESS.md`).
+If you find any of these leaking in, sanitize by moving the detail into
+`internal-devops` and leaving a one-to-three-sentence public summary plus a
+canonical link, per `internal-devops/docs/repo-boundary-contract.md` §Migration
+workflow. `docs/OPERATIONAL_REDIRECTS.md` is where such moves are recorded.
 
 ---
 
-*Solarpunk Foundry v0.1.0 · The Blueprint · From bits to atoms*
-
-<!-- END LEGACY_CLAUDE_IMPORT -->
+*Solarpunk Foundry · the public ecosystem contract · From bits to atoms*

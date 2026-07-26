@@ -1,129 +1,169 @@
 # Cross-Repository Navigation Guide
 
-> **Last Verified**: February 3, 2026
-> **Purpose**: Navigate documentation across the MADFAM ecosystem repositories
+**Last verified: 2026-07-25** — every path in this document was checked for
+existence on that date against the working trees in `~/labspace`.
+
+**Purpose:** find the canonical document for a topic, across the MADFAM
+repositories.
+
+**Scope, honestly stated:** this guide covers the **core platform** —
+Enclii, Janua, Dhanam and the shared-package monorepo — plus the ecosystem-wide
+contracts. It is *not* a map of all 96 non-fork repositories in the
+organisation. The repository registry lives privately at
+`internal-devops/ecosystem/repo-registry.md`; the public platform map is
+[`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md).
+
+> The previous revision carried "Last Verified: February 3, 2026" — 172 days
+> stale — and four of roughly twenty-five paths were dead. Those are corrected
+> below and listed at the end so the corrections are auditable.
 
 ---
 
-## Quick Links by Topic
+## By topic
 
-### Port Allocation & Networking
-| Document | Location | Description |
-|----------|----------|-------------|
-| **PORT_ALLOCATION.md** | `solarpunk-foundry/docs/` | **Single source of truth** for all port assignments |
-| Service Routing | `enclii/infra/DEPLOYMENT.md` | K8s service routing for production |
-| Cloudflare Tunnel | `enclii/infra/k8s/production/cloudflared-unified.yaml` | Production ingress routes |
+### Ports and networking
+
+| Document | Location | What it is |
+|---|---|---|
+| Port registry | `solarpunk-foundry/docs/PORT_ALLOCATION.md` | The port scheme **and its own honest statement of how little of it is followed**. Read the TL;DR before treating any block as authoritative. |
+| Per-service declared ports | `<repo>/enclii.yaml` (or legacy `<repo>/.enclii.yml`) | The actual source of truth per service |
+| Enclii deployment notes | `enclii/infra/DEPLOYMENT.md` | Service routing for production |
+| Cloudflare Tunnel ingress | `enclii/infra/k8s/production/cloudflared-unified.yaml` | Production ingress route definitions |
+
+> **This document deliberately does not restate the port block table.**
+> Duplicating it is how three public documents ended up disagreeing with the
+> registry they all cited — two of them swapping the Fortuna and ForgeSight
+> blocks. One table, one place.
 
 ### Authentication (Janua)
-| Document | Location | Description |
-|----------|----------|-------------|
-| Integration Guide | `solarpunk-foundry/docs/JANUA_INTEGRATION.md` | SDK integration patterns |
-| Janua Architecture | `janua/docs/ARCHITECTURE.md` | Internal Janua design |
-| OIDC Configuration | `janua/k8s/base/` | Production K8s manifests |
-| Enclii SSO Config | `enclii/apps/switchyard-api/internal/auth/` | How Enclii uses Janua |
 
-### Infrastructure & Deployment
-| Document | Location | Description |
-|----------|----------|-------------|
-| Enclii CLAUDE.md | `enclii/CLAUDE.md` | Complete Enclii architecture overview |
-| GitOps Setup | `enclii/docs/infrastructure/GITOPS.md` | ArgoCD App-of-Apps pattern |
-| Storage (Longhorn) | `enclii/docs/infrastructure/STORAGE.md` | Persistent volume configuration |
-| DR Runbook | `enclii/docs/production/DR_RUNBOOK.md` | Disaster recovery procedures |
+| Document | Location | What it is |
+|---|---|---|
+| Integration guide | `solarpunk-foundry/docs/JANUA_INTEGRATION.md` | RS256/JWKS verification patterns, endpoints, SDKs |
+| Janua architecture | `janua/docs/architecture/ARCHITECTURE.md` | Internal design (also `ADR-001_AUTH_FLOW.md`, `SUBDOMAIN_ARCHITECTURE.md` in the same directory) |
+| Janua ecosystem contract | `janua/ECOSYSTEM.md` | Current verifier set and cross-repo position |
+| Production manifests | `janua/k8s/` | Kubernetes manifests |
+| Enclii's use of Janua | `enclii/apps/switchyard-api/internal/auth/` | Reference consumer implementation |
 
-### Ecosystem Architecture
-| Document | Location | Description |
-|----------|----------|-------------|
-| Symbiosis | `solarpunk-foundry/docs/architecture/SYMBIOSIS.md` | Substrate/Trellis/Membrane architecture |
-| Federated Architecture | `solarpunk-foundry/docs/architecture/FEDERATED_ARCHITECTURE_README.md` | Service federation design |
-| Cluster Architecture | `solarpunk-foundry/docs/architecture/CLUSTER_ARCHITECTURE.md` | K8s cluster design |
-| Ecosystem Status | `solarpunk-foundry/docs/ECOSYSTEM_STATUS.md` | Live service status |
+### Infrastructure and deployment
 
-### Dogfooding & Development
-| Document | Location | Description |
-|----------|----------|-------------|
-| Dogfooding Guide | `solarpunk-foundry/docs/DOGFOODING_GUIDE.md` | Local development setup |
-| Enclii Dogfooding | `enclii/docs/guides/DOGFOODING_GUIDE.md` | Enclii-specific dogfooding |
-| Service Specs | `enclii/dogfooding/` | Enclii service definitions |
+| Document | Location | What it is |
+|---|---|---|
+| Enclii architecture | `enclii/docs/architecture/ARCHITECTURE.md` | Control plane design |
+| Enclii agent guide | `enclii/AGENTS.md` (`enclii/CLAUDE.md` is a shim) | Repo conventions |
+| GitOps | `enclii/docs/infrastructure/GITOPS.md` | ArgoCD App-of-Apps pattern |
+| Storage | `enclii/docs/infrastructure/STORAGE.md` | Longhorn persistent volumes |
+| Disaster recovery | `enclii/docs/production/DR_RUNBOOK.md` | Public-safe DR structure |
+| Declared configuration | `solarpunk-foundry/docs/INFRASTRUCTURE_STATUS.md` | Cluster shape, GitOps, admission policy — dated per claim |
 
-### Financial Services (Dhanam)
-| Document | Location | Description |
-|----------|----------|-------------|
-| Dhanam README | `dhanam/README.md` | Financial platform overview |
-| K8s Manifests | `dhanam/infra/k8s/production/` | Production deployment |
+**Private counterpart:** the operational source of truth for node inventory,
+capacity, incident history, secret custody and break-glass is `internal-devops`.
+Nothing in the public tree substitutes for it. See
+[`OPERATIONAL_REDIRECTS.md`](./OPERATIONAL_REDIRECTS.md).
+
+### Ecosystem architecture
+
+| Document | Location | Status |
+|---|---|---|
+| Symbiosis | `solarpunk-foundry/docs/architecture/SYMBIOSIS.md` | Current — Substrate/Trellis/Membrane narrative |
+| Cluster architecture | `solarpunk-foundry/docs/architecture/CLUSTER_ARCHITECTURE.md` | Current, with dated caveats |
+| Service and route inventory | `solarpunk-foundry/docs/ECOSYSTEM_STATUS.md` | Current — includes retired and not-live endpoints |
+| Federated architecture | `solarpunk-foundry/docs/architecture/FEDERATED_ARCHITECTURE_README.md` | **Historical record (2025-11-24), superseded** |
+| Self-contained services | `solarpunk-foundry/docs/architecture/SELF_CONTAINED_SERVICES.md` | **Position paper, partly superseded** — labelled in place |
+
+### Local development
+
+| Document | Location | What it is |
+|---|---|---|
+| Dogfooding guide | `solarpunk-foundry/docs/DOGFOODING_GUIDE.md` | `enclii local up` first; compose fallback |
+| CLI implementation | `enclii/packages/cli/internal/cmd/local.go` | What `enclii local` actually does |
+| Shared infra compose | `solarpunk-foundry/ops/local/docker-compose.shared.yml` | Postgres, Redis, MinIO, MailHog |
+| Local database init | `solarpunk-foundry/ops/local/init-databases.sql` | The nine `*_dev` databases |
+| Alternative DB init | `solarpunk-foundry/ops/db/init-shared-dbs.sql` | Second init script; check which one your path uses |
+| Legacy control script | `solarpunk-foundry/ops/bin/madfam.sh` | Predates `enclii local`; declares 10 services |
+
+### Billing and payments (Dhanam)
+
+| Document | Location | What it is |
+|---|---|---|
+| Dhanam README | `dhanam/README.md` | Platform overview (**private repo** as of 2026-07-25) |
+| Production manifests | `dhanam/infra/k8s/production/` | Deployment |
+| Payment-attribution contract | `solarpunk-foundry/docs/MONETIZATION_PATH_READINESS.md` | The signed fan-out contract and its current standing |
 
 ---
 
-## Repository Locations
+## Repository locations on disk
 
 ```
 ~/labspace/
-├── solarpunk-foundry/     # Ecosystem orchestration & shared packages
-├── enclii/                # PaaS platform (control plane, UI, CLI)
-├── janua/                 # Identity & authentication service
-├── dhanam/                # Financial management platform
-├── forgesight/            # Manufacturing intelligence
+├── solarpunk-foundry/     # public ecosystem hub + shared @madfam/* packages
+├── internal-devops/       # PRIVATE — operational source of truth
+├── enclii/                # PaaS control plane, UI, CLI
+├── janua/                 # identity provider
+├── dhanam/                # billing and payments (private repo)
+├── selva-office/          # inference routing + agent orchestration
 ├── digifab-quoting/       # Cotiza quoting engine
-├── sim4d/                 # CAD/CAM simulation
-└── [other MADFAM repos]
+├── forgesight/            # fabrication industry intelligence (private repo)
+├── tezca/                 # Mexican law oracle
+├── karafiel/              # operational compliance (private repo)
+├── pravara-mes/           # manufacturing execution
+├── phynd-crm/             # client deliverables portal
+├── routecraft/            # trip engine; payment-attribution emitter
+└── … 30 further repos cloned locally, of 96 in the organisation
 ```
 
----
-
-## Key Infrastructure Files
-
-### Kubernetes Configuration
-| Purpose | Canonical Location |
-|---------|-------------------|
-| Enclii K8s | `enclii/infra/k8s/` |
-| Janua K8s | `janua/k8s/` |
-| Dhanam K8s | `dhanam/infra/k8s/` |
-| ArgoCD | `enclii/infra/argocd/` |
-| Longhorn | `enclii/infra/helm/longhorn/` |
-
-### Shared Infrastructure
-| Purpose | Location |
-|---------|----------|
-| Docker Compose (dev) | `solarpunk-foundry/ops/local/docker-compose.shared.yml` |
-| Database Init | `solarpunk-foundry/ops/postgres/init-databases.sql` |
-| madfam.sh Control | `solarpunk-foundry/ops/bin/madfam.sh` |
+*Counts verified 2026-07-25: 43 of the 96 non-fork `madfam-org` repositories
+are cloned locally, and every local directory with a `.git` maps to a real
+organisation repository. Absence from disk is a checkout-hygiene fact, not an
+inventory fact.*
 
 ---
 
-## Service Port Quick Reference
+## Key infrastructure paths
 
-Per `PORT_ALLOCATION.md`:
+| Purpose | Canonical location |
+|---|---|
+| Enclii Kubernetes manifests | `enclii/infra/k8s/` (`base/` + `production/`) |
+| ArgoCD applications | `enclii/infra/argocd/` |
+| Longhorn Helm values | `enclii/infra/helm/longhorn/` |
+| Janua Kubernetes manifests | `janua/k8s/` |
+| Dhanam Kubernetes manifests | `dhanam/infra/k8s/` |
+| Per-app production manifests | `<app>/infra/k8s/production/` |
 
-| Service | Port Range | Example |
-|---------|------------|---------|
-| Janua | 4100-4199 | 4100 (API) |
-| Enclii | 4200-4299 | 4200 (API), 4201 (UI) |
-| ForgeSight | 4300-4399 | 4300 (API) |
-| Fortuna | 4400-4499 | 4400 (API) |
-| Cotiza | 4500-4599 | 4500 (API) |
-| AVALA | 4600-4699 | 4600 (API) |
-| Dhanam | 4700-4799 | 4700 (API), 4701 (Web) |
-| Sim4D | 4800-4899 | 4800 (API) |
-
----
-
-## Production Domains
-
-| Service | Domain | Source Config |
-|---------|--------|---------------|
-| Enclii API | api.enclii.dev | `enclii/infra/k8s/production/cloudflared-unified.yaml` |
-| Enclii UI | app.enclii.dev | `enclii/infra/k8s/production/cloudflared-unified.yaml` |
-| Janua Auth | auth.madfam.io | `enclii/infra/k8s/production/cloudflared-unified.yaml` |
-| Dhanam | dhan.am | `dhanam/infra/k8s/production/` |
+The governing convention: *"core repos define the platform; client repos define
+themselves."* A service's manifests belong in that service's repository — not
+here, and not in the platform repos.
 
 ---
 
-## Getting Help
+## Getting help
 
-1. **Port conflicts**: Check `solarpunk-foundry/docs/PORT_ALLOCATION.md`
-2. **Auth issues**: Check `solarpunk-foundry/docs/JANUA_INTEGRATION.md`
-3. **Deployment issues**: Check `enclii/docs/production/DR_RUNBOOK.md`
-4. **Local dev setup**: Check `solarpunk-foundry/docs/DOGFOODING_GUIDE.md`
+| Problem | Start here |
+|---|---|
+| Port conflict on your laptop | `docs/PORT_ALLOCATION.md`, then the repo's own `enclii.yaml` |
+| Token rejected / auth failing | `docs/JANUA_INTEGRATION.md` troubleshooting table |
+| Local stack will not start | `docs/DOGFOODING_GUIDE.md` |
+| Deployment or rollback question | `docs/runbooks/rollback.md`, then `enclii ops apps` |
+| "Is this hostname live?" | `docs/ECOSYSTEM_STATUS.md` — including the retired and not-live lists |
+| Anything requiring production access | `internal-devops`; see `docs/OPERATIONAL_REDIRECTS.md` |
 
 ---
 
-*This document should be updated whenever major documentation is added or relocated.*
+## Corrections applied 2026-07-25
+
+Recorded so the fixes are auditable rather than silent.
+
+| Was | Now |
+|---|---|
+| `enclii/docs/guides/DOGFOODING_GUIDE.md` | **Did not exist.** Removed; local dev is covered by this repo's `DOGFOODING_GUIDE.md` and `enclii/packages/cli/internal/cmd/local.go`. |
+| `enclii/dogfooding/` | **Did not exist.** Removed. |
+| `janua/docs/ARCHITECTURE.md` | **Did not exist.** Correct path is `janua/docs/architecture/ARCHITECTURE.md`. |
+| `solarpunk-foundry/ops/postgres/init-databases.sql` | **Did not exist.** Correct paths are `ops/local/init-databases.sql` and `ops/db/init-shared-dbs.sql`. |
+| "PORT_ALLOCATION.md — **single source of truth** for all port assignments" | That document explicitly disclaims the label in its own TL;DR. Described accurately above. |
+| A port-block table listing ForgeSight 4300-4399 and Fortuna 4400-4499 | **Swapped** relative to the registry it cited. Table removed rather than corrected — see the note under "Ports and networking". |
+| Production domains table (4 rows) | Superseded by the full inventory in `ECOSYSTEM_STATUS.md`, which also lists retired and not-live hostnames. |
+
+**Suggested follow-up (not applied here):** add a link-existence check to this
+repository's documentation CI. A navigation document is the one place where a
+dead path is guaranteed to waste someone's time, and this class of defect is
+mechanically detectable.

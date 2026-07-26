@@ -5,7 +5,9 @@
 
 set -e
 
-LABSPACE_ROOT="/Users/aldoruizluna/labspace"
+# Override with MADFAM_LABSPACE if your checkout lives elsewhere. A hardcoded
+# operator home leaks a username into a public repo and breaks for everyone else.
+LABSPACE_ROOT="${MADFAM_LABSPACE:-$HOME/labspace}"
 
 # Target versions - ALIGNED ECOSYSTEM
 TARGET_NEXTJS="15.1.6"

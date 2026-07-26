@@ -1,175 +1,56 @@
-# Scaling Runbook
+# Scaling — public-safe summary
 
-> [!IMPORTANT]
-> MADFAM-ENCLII-FIRST-LEGACY-RAW v1: This document contains legacy raw infrastructure command examples.
-> Routine production operations must use Enclii web, API, or CLI. Treat raw
-> `kubectl`, `helm`, SSH, provider CLI/API, `docker exec`, and direct container
-> access as platform bootstrap or documented break-glass only, and record any
-> missing Enclii adapter gap.
+**Last verified: 2026-07-25**
 
+> **The operational procedure is not published here.** This page previously
+> carried `ssh … "sudo kubectl scale …"`, `kubectl patch` of resource limits,
+> `docker exec` into the database, `sudo zpool list`, and a capacity-planning
+> table of invented figures. Removed 2026-07-25 — break-glass commands and
+> capacity data are both Lane A, and two of those commands would have been
+> reverted by ArgoCD anyway.
 
-## When to Scale
+## What is public
 
-- High CPU/memory utilization (>80% sustained)
-- Increased response latency
-- Request queue buildup
-- Planned traffic increase
+**Scaling is a GitOps change, not a live command.** ArgoCD runs with
+`selfHeal: true` on every Application manifest held in the platform repo
+(*verified by reading the manifests, 2026-04-24*), so a live `kubectl scale` or
+`kubectl patch` is reverted. Replica counts and resource requests/limits belong
+in the app repo's `infra/k8s/production/` manifests and reach the cluster
+through the normal reconcile. The supported operator surface is
+`enclii ops apps`.
 
-## Horizontal Scaling (Replicas)
+*Source: `internal-devops/ecosystem/deployment-conventions.md`;
+`internal-devops/runbooks/2026-07-09-operator-activation-script.md`.*
 
-### Scale Specific Deployment
+**Requests, not usage, are the binding constraint.** The one measured capacity
+observation that can be summarised publicly: at the last live measurement, both
+production workload nodes were near-saturated on *CPU requested* while actual
+CPU usage was under 10% of what was requested. A cross-repo request
+right-sizing pass reduced the requested figure materially. The lesson
+generalises — before asking for more hardware, check whether requests are
+simply over-declared.
 
-```bash
-# Scale up
-ssh ssh.madfam.io "sudo kubectl scale deployment/janua-api -n janua --replicas=3"
+*Source: `internal-devops/audits/2026-07-07-selva-gateway-and-cluster-rightsizing-session.md`,
+verified 2026-07-07. The concrete node figures are Lane A and are not
+reproduced.*
 
-# Scale down
-ssh ssh.madfam.io "sudo kubectl scale deployment/janua-api -n janua --replicas=1"
+**Data-layer scaling has a hard ceiling today.** PostgreSQL is a single
+in-cluster instance; Redis is single-instance with Sentinel staged but not
+deployed. There is no automatic failover. Horizontal scaling of the data layer
+is not currently available and any doc implying otherwise is describing a plan.
 
-# Check current replicas
-ssh ssh.madfam.io "sudo kubectl get deployment/janua-api -n janua"
-```
+*Source: `internal-devops/audits/2026-04-enclii-platform-audit.md` and
+`internal-devops/audits/2026-05-04-enclii-provisioning-audit.md`, verified
+2026-05-04.*
 
-### Scale All Services
+## Canonical private sources
 
-```bash
-# Scale all to 2 replicas
-ssh ssh.madfam.io "sudo kubectl scale deployment --all -n janua --replicas=2"
-```
+- `internal-devops/infrastructure/capacity.md` — node capacity, allocation,
+  and the audit history behind it
+- `internal-devops/infrastructure/nodes.md` — canonical node record
 
-### Auto-scaling (HPA)
+## What would settle current capacity
 
-```bash
-# Create HPA
-ssh ssh.madfam.io "sudo kubectl autoscale deployment/janua-api -n janua --min=1 --max=5 --cpu-percent=70"
-
-# Check HPA status
-ssh ssh.madfam.io "sudo kubectl get hpa -n janua"
-
-# Delete HPA (return to manual)
-ssh ssh.madfam.io "sudo kubectl delete hpa janua-api -n janua"
-```
-
-## Vertical Scaling (Resources)
-
-### Check Current Resources
-
-```bash
-# View resource requests/limits
-ssh ssh.madfam.io "sudo kubectl get deployment/janua-api -n janua -o jsonpath='{.spec.template.spec.containers[0].resources}'"
-
-# View actual usage
-ssh ssh.madfam.io "sudo kubectl top pods -n janua"
-```
-
-### Update Resource Limits
-
-```bash
-# Patch deployment with new limits
-ssh ssh.madfam.io "sudo kubectl patch deployment/janua-api -n janua -p '{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"janua-api\",\"resources\":{\"limits\":{\"memory\":\"1Gi\",\"cpu\":\"1000m\"},\"requests\":{\"memory\":\"512Mi\",\"cpu\":\"250m\"}}}]}}}}'"
-```
-
-## Database Scaling
-
-### PostgreSQL Connection Pool
-
-```bash
-# Check current connections
-ssh ssh.madfam.io "docker exec janua-postgres psql -U janua -c 'SELECT count(*) FROM pg_stat_activity;'"
-
-# Increase max connections (requires restart)
-ssh ssh.madfam.io "docker exec janua-postgres psql -U janua -c 'SHOW max_connections;'"
-```
-
-### PostgreSQL Memory
-
-```bash
-# Check shared buffers
-ssh ssh.madfam.io "docker exec janua-postgres psql -U janua -c 'SHOW shared_buffers;'"
-
-# Update in docker-compose and restart
-ssh ssh.madfam.io "docker restart janua-postgres"
-```
-
-### Redis Memory
-
-```bash
-# Check memory usage
-ssh ssh.madfam.io "docker exec janua-redis redis-cli INFO memory"
-
-# Set max memory policy
-ssh ssh.madfam.io "docker exec janua-redis redis-cli CONFIG SET maxmemory 512mb"
-ssh ssh.madfam.io "docker exec janua-redis redis-cli CONFIG SET maxmemory-policy allkeys-lru"
-```
-
-## Node Scaling (Infrastructure)
-
-### Check Node Capacity
-
-```bash
-# Node resources
-ssh ssh.madfam.io "sudo kubectl describe node | grep -A10 'Capacity:'"
-ssh ssh.madfam.io "sudo kubectl describe node | grep -A10 'Allocatable:'"
-ssh ssh.madfam.io "sudo kubectl describe node | grep -A10 'Allocated resources:'"
-```
-
-### ZFS Storage
-
-```bash
-# Check pool usage
-ssh ssh.madfam.io "sudo zpool list"
-ssh ssh.madfam.io "sudo zfs list"
-
-# If running low, consider adding drives or expanding vdevs
-```
-
-## Load Testing
-
-Before scaling, validate capacity:
-
-```bash
-# Simple load test with curl
-for i in {1..100}; do
-  curl -s -o /dev/null -w "%{http_code}\n" http://localhost:4100/api/v1/health
-done
-
-# Use hey or ab for more thorough testing
-# hey -n 1000 -c 10 http://localhost:4100/api/v1/health
-```
-
-## Monitoring During Scale Events
-
-```bash
-# Watch pods
-ssh ssh.madfam.io "sudo kubectl get pods -n janua -w"
-
-# Watch resource usage
-ssh ssh.madfam.io "watch -n5 'sudo kubectl top pods -n janua'"
-
-# Watch events
-ssh ssh.madfam.io "sudo kubectl get events -n janua --sort-by='.lastTimestamp'"
-```
-
-## Capacity Planning
-
-| Service | Baseline | Max Tested | Recommended Max |
-|---------|----------|------------|-----------------|
-| janua-api | 1 replica | 5 replicas | 3 replicas |
-| janua-dashboard | 1 replica | 3 replicas | 2 replicas |
-| PostgreSQL | 100 conn | 200 conn | 150 conn |
-| Redis | 256MB | 1GB | 512MB |
-
-## Emergency Load Shedding
-
-If system is overwhelmed:
-
-```bash
-# Reduce to minimum replicas
-ssh ssh.madfam.io "sudo kubectl scale deployment --all -n janua --replicas=1"
-
-# Enable maintenance mode (if implemented)
-# ssh ssh.madfam.io "curl -X POST http://localhost:4100/api/v1/admin/maintenance"
-
-# Clear Redis caches if memory issue
-ssh ssh.madfam.io "docker exec janua-redis redis-cli FLUSHDB"
-```
+An `enclii ops pods`-derived allocation report with a recorded date. The
+private capacity record notes that any figure predating the 2026-05-04 builder
+replacement needs a fresh audit before use.
