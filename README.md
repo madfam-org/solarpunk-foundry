@@ -148,6 +148,7 @@ and only then face outward.
 | **Karafiel** 🔒 | `karafiel` | Operational compliance — CFDI, NOM-151, e.firma, SAT-adjacent. Single authority for CFDI/SAT/tax filings. Absorbed the archived `legal-ops` document generation as `legalgen`. | `karafiel.mx`, `app.`, `api.`, `admin.` |
 | **Tezca** | `tezca` | Mexican law oracle — authoritative source of law, changelog, and compliance rules. Informational; feeds Karafiel. | `tezca.mx`, `api.tezca.mx`, `admin.tezca.mx` |
 | **Yantra4D** | `yantra4d` | Parametric-design platform plus its commons of OpenSCAD/CadQuery projects. | `yantra4d.com`, `app.`, `api.`, `admin.` |
+| **Fashion Cabinet** 🔒 | `fashion-cabinet` | Parametric fashion commons — the FC-100 (top-100 most-demanded garments, made-to-measure, seam-verified, exploded for fabrication); soft-goods sibling of Yantra4D. Repo private during incubation. | `fc.madfam.io` (ruled 2026-08-17; onboarding in progress — not live yet) |
 | **Pravara MES** | `pravara-mes` | Manufacturing-execution system — fabrication-node routing and dispatch for physical jobs. | `mes.madfam.io`, `mes-api.madfam.io` |
 | **Rondelio** 🔒 | `rondelio` | Tabletop / TCG game-intelligence cloud. | `rondel.io`, `www.`, `api.`, `play.`, plus `studio.`, `admin.` (operator-gated), `sim.` — all seven re-probed 2026-07-09 |
 | **Voxa** | `voxa` | AAC (augmentative and alternative communication) platform, Apache-2.0. Registry records a controlled commercial launch at `voxa.madfam.io`; that hostname is **not in the verified route table** — treat as documented-but-unverified. | `voxa.madfam.io` *(unverified)* |
@@ -403,6 +404,7 @@ not to route around.
 | Fabrication node capacity + pricing | Forj | consume ForgeSight |
 | Manufacturing execution telemetry | Pravara MES | feeds PhyndCRM federation |
 | 3D geometry kernel | geom-core | used by Sim4D + Yantra4D |
+| Fashion-domain data: parametric pattern blocks + garments (FC-100), grading, fabric cards (physical + digital twin), construction techniques, tech packs | Fashion Cabinet | query the API; hard-goods solids federate to Yantra4D, never re-implemented |
 
 ### Other public-safe contract surfaces
 

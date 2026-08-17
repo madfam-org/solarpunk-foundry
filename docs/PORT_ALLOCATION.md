@@ -233,7 +233,8 @@ Two code paths.
 | 5500-5599 | Sites — madfam-site | |
 | 5600-5699 | Sites — madfam | |
 | 5700-5799 | Sites — primavera3d | |
-| 6000-6999 | Reserved | Future expansion |
+| 6200-6299 | Fruit — Fashion Cabinet | `fc` single-service (API + landing + studio) on `6200`; declared in `fashion-cabinet/enclii.yaml` (claimed 2026-08-17) |
+| 6000-6199, 6300-6999 | Reserved | Future expansion |
 
 **Reserved (do NOT use):** `4000-4099` (near Webpack HMR), `5000-5049` (Flask),
 `3000-3999` (Next.js), `8000-8999` (Django). Modern reality: most services
