@@ -2,6 +2,17 @@
 
 Complete local development environment for the MADFAM ecosystem.
 
+> **Staleness note (added 2026-08-24).** Parts of this README predate the
+> current scheme and are kept for the compose files they describe:
+>
+> - The database tables below use the **superseded `*_db` naming**. The
+>   canonical local databases are the nine **`*_dev`** names created by
+>   [`init-databases.sql`](init-databases.sql), which is what `enclii local`
+>   provisions — see `docs/DOGFOODING_GUIDE.md`. The `*_db` set does not exist
+>   on a fresh stack.
+> - The preferred entry point is **`enclii local up`** / `enclii local infra`
+>   (which drives `docker-compose.shared.yml`), not manual compose invocations.
+
 ## Quick Start
 
 ```bash
@@ -120,7 +131,12 @@ Each app has its own database in the shared PostgreSQL instance:
 
 All apps use Janua as the central authentication hub:
 
-- **JWT Secret**: `<JANUA_JWT_SECRET_FROM_LOCAL_ENV>`
+- **Token verification**: RS256 JWTs verified against Janua's JWKS endpoint
+  (`/.well-known/jwks.json`). There is **no shared symmetric JWT secret** in
+  the contract — HS256 is fail-closed ecosystem-wide, and services never hold
+  a signing secret. *(An earlier edition of this file showed a
+  `JANUA_JWT_SECRET` placeholder; that pattern is banned by
+  `docs/PUBLIC_REPO_BOUNDARY.md` because it teaches the wrong architecture.)*
 - **Janua API**: http://localhost:4000 (external) / http://janua-api:4000 (internal)
 
 ## Email Testing

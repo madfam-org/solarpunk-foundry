@@ -212,10 +212,14 @@ export const products = {
   // ─────────────────────────────────────────────────────────────────────────────
   // Layer 4: The Fruit (User Platforms)
   // ─────────────────────────────────────────────────────────────────────────────
+  // ARCHIVED: the sim4d repo was archived by 2026-08-07 and the platform is
+  // retired (parametric design continues in yantra4d). Entry retained for type
+  // stability — consumers must not render Sim4D as an active product.
   sim4d: {
     id: "sim4d",
     name: "Sim4D",
-    description: "The Creator. Web-based CAD guided by geom-core.",
+    description:
+      "ARCHIVED (2026-08). Web-based CAD guided by geom-core; superseded by Yantra4D.",
     layer: "fruit",
     domain: "sim4d.io",
     repo: "sim4d",

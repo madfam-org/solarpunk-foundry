@@ -7,16 +7,18 @@
 > access as platform bootstrap or documented break-glass only, and record any
 > missing Enclii adapter gap.
 
-> **Last updated:** 2026-07-25
+> **Last updated:** 2026-08-24
 > **Verification anchors:**
-> - Repo names / visibility / roles — `internal-devops/ecosystem/repo-registry.md`, *Last Verified 2026-07-04*; org counts re-checked live 2026-07-25.
-> - Routes and domains — `internal-devops/ecosystem/domain-map.md`, *Last Verified 2026-07-01*.
-> - Topology, storage, GitOps, image policy — `internal-devops/infrastructure/topology.md` and `nodes.md`, *verified 2026-05-04*, i.e. **82 days old as of today**.
+> - Repo names / visibility / roles — `internal-devops/ecosystem/repo-registry.md`, *Last Verified 2026-08-24* (live GitHub enumeration).
+> - Routes and domains — `internal-devops/ecosystem/domain-map.md`, *Last Verified 2026-08-24* (live HTTP probes of every routed domain).
+> - Topology — `internal-devops/infrastructure/nodes.md` (*Last Updated 2026-08-05*; 4-node cluster since 2026-08-06) and `topology.md` (*refreshed 2026-08-24*).
+> - GitOps app count — live `enclii ops apps status` control-plane read, 2026-08-24.
 > - Enclii CLI surface — read from `enclii/packages/cli/internal/cmd/` on 2026-07-25.
-> - Inference endpoint — `internal-devops` cutover record, 2026-07-07.
+> - Inference endpoint — `internal-devops` cutover record 2026-07-07; gateway `/health` re-probed 200 on 2026-08-24.
 >
-> This document was **not** verified by probing production. Where something is documented but
-> unverified, or contradicted between sources, it says so rather than picking a winner.
+> This document contains no probes of its own; route claims inherit the private domain map's
+> 2026-08-24 live-probe verification. Where something is documented but unverified, or
+> contradicted between sources, it says so rather than picking a winner.
 
 > **Boundary note.** This is a public repo (Lane B). Node hostnames, IPs, hardware and
 > capacity figures, costs, the Cloudflare tunnel identifier, Vault paths and break-glass
@@ -100,9 +102,14 @@ Two platforms other docs in this repo treat as load-bearing but which are missin
 table above by convention rather than by accident:
 
 - **`routecraft`** (private) — today's canonical payment-event producer (§3.4). The ratified
-  target moves emission to Dhanam; see §3.4.
-- **`meridian`** (public, created 2026-07-25, AGPL-3.0) — migration law and logistics.
-  **Not deployed**, no operator gates run, no pathway counsel-reviewed.
+  target moves emission to Dhanam; see §3.4. *(The first completed live charge, 2026-08-02,
+  ran Dhanam's own PSP path — the ratified direction — not this fan-out.)*
+- **`meridian`** (public, AGPL-3.0) — migration law and logistics. **Partially live as of
+  the 2026-08-24 probe** (landing/app/admin serve; the API answers 502). No pathway has
+  been counsel-reviewed, which blocks all advice-class output by design.
+- **`nauta`** (private, created 2026-08-07) — the fractional-CTO operating system: internal
+  cockpit (`cto.madfam.io`, live 2026-08-24) + white-labeled, auth-gated client workspaces.
+  Client-engagement repos it coordinates are excluded from public maps by policy.
 
 The full public/private repo inventory is in `internal-devops/ecosystem/repo-registry.md`;
 `README.md` §II in this repo carries the public-safe restatement with counts.
@@ -150,9 +157,9 @@ phynd-crm audit found its reddit-bot fails open to `api.openai.com` when its bas
 unset — recorded as an ecosystem violation, fix ranked #3 on that audit's list. Deviations
 are tracked privately.
 
-`inference.selva.town` is declared in `selva-office/enclii.yaml` and was live-verified on
-2026-07-07, but it does **not** appear in the private domain map's route table — a gap in that
-map, not evidence the route is absent.
+`inference.selva.town` was live-verified on 2026-07-07 and its `/health` re-probed 200 on
+**2026-08-24**; the private domain map gained its route row in the 2026-08-24 refresh (the
+gap earlier editions of this paragraph flagged is closed).
 
 ### 3.4 Payment attribution — signed fan-out
 
@@ -270,18 +277,19 @@ bootstrapped, and CI self-skips green.
 > Cloudflare tunnel identifier are documented **only** in `internal-devops`. This section
 > keeps shape.
 >
-> **All figures below carry the 2026-05-04 verification date of
-> `internal-devops/infrastructure/nodes.md` and `topology.md` unless stated otherwise — 82
-> days old as of 2026-07-25.**
+> **Figures below carry the date of their source:** node shape from
+> `internal-devops/infrastructure/nodes.md` (*Last Updated 2026-08-05*, 4-node cluster since
+> 2026-08-06); GitOps app counts from a live `enclii ops apps status` read on **2026-08-24**;
+> anything still dated 2026-05-04 says so inline and has not been re-verified since.
 
-**Cluster.** Bare-metal k3s (recorded at v1.33.7+k3s3, *verified 2026-05-04; no newer
-verification exists*), 3 nodes, all at Hetzner:
+**Cluster.** Bare-metal k3s (v1.33.7+k3s3 — re-attested 2026-08-06 when the fourth node
+joined at that version), **4 nodes**, all at Hetzner:
 
 - one control-plane node — control plane + primary workload
 - one worker node — workloads + the Longhorn second replica
-- one CI builder node — a Hetzner **Cloud** instance, not dedicated hardware, tainted
-  `builder=true:NoSchedule` and labelled `role=builder`; only ARC GitHub Actions runners
-  schedule there
+- two CI builder nodes — one a Hetzner **Cloud** instance, one dedicated hardware (added
+  2026-08-06, removing the single-builder SPOF); both tainted `builder=true:NoSchedule` and
+  labelled `role=builder`, so only ARC GitHub Actions runners schedule there
 
 **Ingress.** Internet → Cloudflare edge → cloudflared pods → K8s Service:80 → container port.
 TLS terminates at the Cloudflare edge, which also handles DDoS mitigation; the origin leg from
@@ -307,17 +315,17 @@ place, undated — treat the version as **unverified**. Object storage is Cloudf
 for zero egress cost; it is the destination for PostgreSQL logical backups, WAL archiving,
 repo backups, and per-product asset buckets.
 
-**GitOps.** ArgoCD App-of-Apps plus ApplicationSets, self-heal on (§3.8). App and namespace
-counts: `topology.md` records **28 ArgoCD apps across 22 namespaces** (2026-05-04). A separate
-private document dated 2026-04-29 reports "18 of ~50" apps Synced+Healthy — the two are
-measuring different things (declared apps vs an App-of-Apps health view) and **newest-wins does
-not resolve it**. One `enclii ops apps list` with the output and date recorded would.
+**GitOps.** ArgoCD App-of-Apps plus ApplicationSets, self-heal on (§3.8). **App count is
+now settled the way earlier editions asked for:** a live `enclii ops apps status` read on
+**2026-08-24** returned **81 Applications** (71 Healthy / 7 Degraded / 2 Progressing /
+1 Missing; 73 Synced). The old "28 apps across 22 namespaces" was the 2026-05-04 snapshot;
+the namespace count has **not** been re-read and should be treated as stale.
 
-**Service count.** Three sources disagree: "~40 services" (undated, generated template),
-93 declared / 76 healthy (2026-04-29 control-plane analysis), ~90 routed hostnames
-(domain map, 2026-07-01). They are not the same measurement. **No service count in this repo
-should be treated as authoritative** until one Enclii control-plane query is recorded with a
-date and an explicit definition of "service".
+**Service count.** "81 ArgoCD Applications (2026-08-24)" is the one dated control-plane
+measurement this document can now cite. It is an *Application* count, not a per-container
+"service" count — routed hostnames (the private domain map's route table, re-verified
+2026-08-24) and K8s Services are different measurements again. Name the measurement when
+quoting a number.
 
 **Secrets path — mechanism only.** HashiCorp Vault (KV v2) is the home; External Secrets
 Operator reads it through a ClusterSecretStore; a per-app ExternalSecret materializes a native
@@ -491,25 +499,32 @@ break-glass use only. Routine production operations go through Enclii.
 
 Stated explicitly so nobody has to rediscover them:
 
-| Gap | What would settle it |
+| Gap | Status |
 |---|---|
-| ArgoCD app count contradicted (28 declared, 2026-05-04 vs "18 of ~50" health view, 2026-04-29) | one `enclii ops apps list` with output + date |
-| `cloudflared` replica count unverified since 2026-02 | read the live Deployment's replica count via `enclii ops pods`, record the date |
-| Kyverno PolicyException count: 8 vs 13, both dated 2026-05-04 | `enclii ops policy`, or read the exception manifests at a named commit |
-| Whether `require-image-digest` is Audit or Enforce today | read the ClusterPolicy `validationFailureAction` in the enclii repo at HEAD |
-| Longhorn version (`v1.7+`, single undated mention) | `enclii ops storage` version output, or the Helm chart pin in GitOps |
-| k3s version unverified since 2026-05-04 | a dated node-version read through Enclii |
-| Whether the auto-digest pipeline is healthy fleet-wide | most recent digest-commit date per repo's production `kustomization.yaml` |
-| Service count (~40 / 93 / ~90 across three sources) | one Enclii control-plane query, dated, with "service" defined |
-| Per-surface Janua SSO enforcement | commit the SSO uniformity matrix to `internal-devops` and cite it by path |
-| Whether the published `@madfam/*` versions are actually on `npm.madfam.io` | a registry query or a dated operator attestation |
+| ~~ArgoCD app count contradicted~~ | **SETTLED 2026-08-24:** `enclii ops apps status` → 81 Applications (71 Healthy / 73 Synced) |
+| ~~Service count (~40 / 93 / ~90 across three sources)~~ | **SETTLED enough 2026-08-24:** cite "81 ArgoCD Applications (2026-08-24)" and name the measurement; hostname and K8s-Service counts remain separate measurements |
+| ~~k3s version unverified since 2026-05-04~~ | **RE-ATTESTED 2026-08-06:** builder-03 joined at v1.33.7+k3s3 (`internal-devops/infrastructure/nodes.md`) |
+| ~~Whether `eido.cam` is live~~ | **SETTLED 2026-08-24:** live — `eido.cam` 200, `api.eido.cam/health` 200 |
+| `cloudflared` replica count unverified since 2026-02 | still open — read the live Deployment via `enclii ops pods`, record the date |
+| Kyverno PolicyException count: 8 vs 13, both dated 2026-05-04 | still open — `enclii ops policy`, or read the exception manifests at a named commit |
+| Whether `require-image-digest` is Audit or Enforce today | still open — read the ClusterPolicy `validationFailureAction` in the enclii repo at HEAD |
+| Longhorn version (`v1.7+`, single undated mention) | still open — `enclii ops storage` version output, or the Helm chart pin in GitOps |
+| Whether the auto-digest pipeline is healthy fleet-wide | still open — most recent digest-commit date per repo's production `kustomization.yaml` |
+| Per-surface Janua SSO enforcement | still open — commit the SSO uniformity matrix to `internal-devops` and cite it by path |
+| Whether the `@madfam/*` versions are on `npm.madfam.io` | still open for the private registry; **public npm checked 2026-08-24:** only `@madfam/core@0.1.0` is published there |
+| Cluster namespace count | newly listed — the "22 namespaces" figure is the 2026-05-04 snapshot and predates the 2026-08 onboarding wave; one `enclii ops pods` namespace read would settle it |
 
 ---
 
 ## Document provenance
 
 This document was originally generated on 2026-04-23 as part of the "each repo stands alone"
-docs sweep, and was **hand-corrected on 2026-07-25** against the sources listed in the header.
+docs sweep, was **hand-corrected on 2026-07-25** against the sources then listed in the
+header, and was **re-verified on 2026-08-24** against a same-day live refresh of the private
+registries (repo enumeration, HTTP probes of every routed domain, and an `enclii ops apps
+status` control-plane read) — which settled the ArgoCD-count, service-count, k3s-version and
+eido gaps §6 had carried, corrected the topology to 4 nodes, and updated meridian to
+partially-live.
 The corrections it needed included: a Selva inference endpoint that had moved (2026-07-07), a
 platform table that linked private repos as public, a claim that this repo hosts the Verdaccio
 registry, a secret-store path that should never have been public, and an unsubstituted

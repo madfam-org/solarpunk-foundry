@@ -1,6 +1,12 @@
 -- ============================================
 -- MADFAM Shared PostgreSQL Database Initialization
 -- ============================================
+-- ⚠️ SUPERSEDED — DO NOT USE (banner added 2026-08-24).
+-- This creates the legacy `*_db` names. The canonical local scheme is the
+-- `*_dev` set created by ops/local/init-databases.sql, which is what
+-- `enclii local` provisions (docs/DOGFOODING_GUIDE.md: "none of the *_db
+-- names exist" on a current stack). Retained as a historical record.
+-- ============================================
 -- Creates separate databases for each application
 -- All apps share the same PostgreSQL instance
 -- but maintain data isolation through separate DBs

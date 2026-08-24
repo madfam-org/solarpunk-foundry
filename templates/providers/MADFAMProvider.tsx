@@ -29,7 +29,7 @@ import { CoformaProvider, type CoformaConfig } from '@coforma/client/react';
 
 // Environment-based configuration
 const januaConfig: JanuaConfig = {
-  apiUrl: process.env.NEXT_PUBLIC_JANUA_API_URL || 'https://api.janua.madfam.io',
+  apiUrl: process.env.NEXT_PUBLIC_JANUA_API_URL || 'https://auth.madfam.io',
   clientId: process.env.NEXT_PUBLIC_JANUA_CLIENT_ID || '',
   redirectUri: typeof window !== 'undefined' ? window.location.origin : '',
 };

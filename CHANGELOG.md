@@ -14,6 +14,56 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-08-24 — re-verification pass (recon-driven)
+
+Driven by a same-day full refresh of the private registries: live GitHub
+enumeration (115 repos), live HTTP probes of every routed domain, and an
+`enclii ops apps status` control-plane read (81 Applications). Changes here
+restate that evidence at the platform-public level:
+
+- Re-anchored `README.md`, `ECOSYSTEM.md`, `MADFAM.md`, `AGENTS.md`,
+  `AI_CONTEXT.md`, `llms.txt`, `llms-full.txt` to the 2026-08-24 verification
+  dates of `repo-registry.md` and `domain-map.md` (both refreshed the same day,
+  so registry and live org agree for the first time since 2026-07-04).
+- **Recorded the first completed end-to-end charge (2026-08-02)** — live
+  charge + SAT-stamped CFDI + `billing_events` off zero + entitlement — 
+  superseding the "no real charge has ever completed" headline of the
+  2026-07-16 audit, which otherwise still stands as the last full funnel audit.
+- Status flips, each probed 2026-08-24: **Sim4D archived** (marked in the map,
+  licensing table, and `@madfam/core` products with a dated note);
+  **phynd.app registered and live** (was "not registered"); **eido.cam live**
+  (was "contradicted and unresolved"); **meridian partially live** — landing/
+  app/admin serve, API 502 (was "not deployed, no DNS"); **voxa.madfam.io
+  live** (was documented-but-unverified); periplo still NXDOMAIN.
+- Added the platforms that went live since 2026-07-25 to the map at
+  platform-public level: **Fashion Cabinet** (re-probed), **Kalya**, **Acervo**,
+  **Nauta**; listed the new private supporting repos (hyperobjects-spec,
+  migration-platform, marca, angelia, games cluster, delivery tooling) and the
+  policy that client-engagement repos are counted but not mapped.
+- Updated topology shape: **4 nodes** (second CI builder 2026-08-06, SPOF
+  removed); settled the long-open ArgoCD-count gap with a dated control-plane
+  read (81 apps); k3s version re-attested 2026-08-06.
+- §II.7 / §1.3 counts rebuilt from the 2026-08-24 enumeration: 112 non-fork =
+  43 private + 69 public, 8 archived; reconciled +16 (all private) against
+  2026-07-25.
+- Packages: registry reality stated — only `@madfam/core@0.1.0` is on public
+  npm; `@madfam/ecosystem-banner` corrected to 0.1.4 here and in
+  `docs/ECOSYSTEM_BANNER.md`.
+- Templates: default Janua URL corrected `api.janua.madfam.io` →
+  `auth.madfam.io` (and AVALA/ForgeSight URLs to their real domains) in
+  `templates/env/` + `templates/providers/` — anyone copying them previously
+  got a wrong-by-default auth host.
+- `ops/` truth labels: DO-NOT-USE banners on `docker-compose.production.yml`
+  (no Compose production exists; shared-JWT anti-pattern) and
+  `init-shared-dbs.sql` (superseded `*_db` names); `ops/local/README.md`
+  banned-placeholder (`JANUA_JWT_SECRET`) block replaced with the RS256/JWKS
+  statement and a staleness note.
+- §IX exposure note updated: the `infrastructure/` scrub landed 2026-07-25
+  (removal ledger in-tree); identifier rotation remains an owed operator
+  action; the public-hygiene scanner's file-type gap is restated.
+- Added the Trivy CVE gate (fleet rollout 2026-08-21; verified in enclii +
+  janua CI at HEAD) to the deployment convention.
+
 ### 2026-07-25 — root-document truth pass
 
 - Rewrote the root documents (`README.md`, `ECOSYSTEM.md`, `MADFAM.md`,

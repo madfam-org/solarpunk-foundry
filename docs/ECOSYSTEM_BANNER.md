@@ -11,14 +11,14 @@ Public contract for the shared bottom marquee across MADFAM product landings.
 |---|---|
 | npm package | `@madfam/ecosystem-banner` |
 | Source | `packages/ecosystem-banner/` in this repository |
-| Version in the source tree | **0.1.3** (verified 2026-07-25) |
+| Version in the source tree | **0.1.4** (verified 2026-08-24) |
 | Publish target | `npm.madfam.io` |
 
 ```bash
-pnpm add @madfam/ecosystem-banner@0.1.3
+pnpm add @madfam/ecosystem-banner@0.1.4
 ```
 
-> **Publication is not verified here.** `0.1.3` is what the package manifest in
+> **Publication is not verified here.** `0.1.4` is what the package manifest in
 > this repository declares; whether that version is actually published to
 > `npm.madfam.io` needs a registry query. If `pnpm add` fails, that is the first
 > thing to check — not a version bump.
