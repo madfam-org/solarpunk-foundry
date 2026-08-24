@@ -1,11 +1,12 @@
 # Solarpunk Foundry — Full LLM Context Map
 
 Generated: 2026-05-13
-Last updated: 2026-07-25
-Last verified: 2026-07-25 — every repository path listed below was confirmed
+Last updated: 2026-08-24
+Last verified: 2026-08-24 — every repository path listed below was confirmed
 present in the working tree on that date. Ecosystem claims carry their own
-source and verification date inline; none of them was verified by probing
-production.
+source and verification date inline; this file contains no probes of its own —
+route claims inherit the private domain map's 2026-08-24 live-probe
+verification.
 
 ## Purpose
 
@@ -55,12 +56,13 @@ spread across 18 public repositories. Lane A is the only allowed home for:
 - raw break-glass `kubectl` / SSH procedures
 - the authoritative domain map and repo registry
 
-Topology SHAPE is public and stays public: a 3-node bare-metal k3s cluster on
-Hetzner (two dedicated nodes plus one cloud CI builder), ingress via a single
-Cloudflare Tunnel with zero exposed node ports, TLS terminated at the Cloudflare
-edge, Longhorn CSI block storage, Cloudflare R2 object storage, ArgoCD GitOps
-with self-heal on. Those figures carry the 2026-05-04 verification date of the
-private infrastructure records.
+Topology SHAPE is public and stays public: a 4-node bare-metal k3s cluster on
+Hetzner (two dedicated workload nodes plus two CI builders — one cloud, one
+dedicated, the latter added 2026-08-06), ingress via a single Cloudflare Tunnel
+with zero exposed node ports, TLS terminated at the Cloudflare edge, Longhorn
+CSI block storage, Cloudflare R2 object storage, ArgoCD GitOps with self-heal
+on (81 Applications at the 2026-08-24 control-plane read). Node shape carries
+the 2026-08-05 date of the private infrastructure records.
 
 ## Lane map
 
@@ -236,14 +238,16 @@ State these rather than let an agent trip over them:
 - `docs/runbooks/` describes a pre-k3s Docker-Compose architecture with a ZFS
   pool and on-host secret paths. Production has not looked like that since the
   k3s migration. Owned by a separate remediation pass.
-- `infrastructure/` contains four mutually incompatible architectures (AWS
-  EKS/RDS, Hetzner Cloud VMs on RFC1918 addressing, single-host Docker Compose
-  on ZFS, and an nginx/cert-manager ingress), none of which is production. Also
-  owned by a separate remediation pass. As of 2026-07-25 one file in that tree
-  carries a live infrastructure identifier on `main` (a scrub was in flight in
-  the working tree at the time of writing). Removing it from HEAD does not remove
-  it from git history, so rotation — an operator action — is the actual remedy.
-  Tracked as an open incident in `internal-devops`.
+- `infrastructure/` contains four mutually incompatible historical architectures
+  (AWS EKS/RDS, Hetzner Cloud VMs on RFC1918 addressing, single-host Docker
+  Compose on ZFS, and an nginx/cert-manager ingress), none of which is
+  production. The 2026-07-25 scrub landed: the tree now carries historical
+  banners and a removal ledger (including the identifier that had leaked).
+  Removing content from HEAD does not remove it from git history, so identifier
+  rotation — an operator action — remains owed, tracked in `internal-devops`.
+- `ops/docker/docker-compose.production.yml` and `ops/db/init-shared-dbs.sql`
+  carry DO-NOT-USE banners (added 2026-08-24): there is no Docker-Compose
+  production, and the `*_db` database names are superseded by the `*_dev` set.
 - `scripts/public-hygiene-check.sh` scans .md/.mdx/.txt only and has no pattern
   for infrastructure identifiers, IPs or node hostnames. A green CI run is not
   proof a change is boundary-clean.
@@ -295,30 +299,34 @@ network one.
 
 Not from this repo. `status.madfam.io` is the sanitized status board. The
 authoritative route map is internal-devops/ecosystem/domain-map.md (Last
-Verified 2026-07-01) and the authoritative repo registry is
-internal-devops/ecosystem/repo-registry.md (Last Verified 2026-07-04). No
+Verified 2026-08-24, live HTTP probes) and the authoritative repo registry is
+internal-devops/ecosystem/repo-registry.md (Last Verified 2026-08-24). No
 document in this repo should carry a green status glyph for a production
 endpoint, because nothing here can re-check one.
 
 ## Standing route warnings
 
-From internal-devops/ecosystem/domain-map.md, verified 2026-07-01:
+From internal-devops/ecosystem/domain-map.md, verified 2026-08-24:
 
-- agents-*.madfam.io and selva.madfam.io are RETIRED — no tunnel ingress rules,
-  they return 502. Do not resurrect them. The Selva cutover to *.selva.town
-  executed and is complete.
+- agents-*.madfam.io and selva.madfam.io are RETIRED — no tunnel ingress rules.
+  Do not resurrect them. The Selva cutover to *.selva.town executed and is
+  complete; the LLM gateway is inference.selva.town (NOT selva.town/v1).
 - auth.selva.town must NEVER be routed. Janua is single-issuer, so serving it
   there would emit issuer=auth.madfam.io and break OIDC validation.
 - metrics.enclii.dev is a retired alias with no DNS or tunnel route; the
   canonical endpoint is prometheus.enclii.dev.
-- phynd.app is NOT registered; crm.madfam.io is the live PhyndCRM host.
+- phynd.app IS registered and live (probed 2026-08-24); crm.madfam.io also
+  still answers. Earlier editions said "not registered" — superseded.
 - innovacionesmadfam.dev was NEVER owned (owner confirmation 2026-07-09). Do not
   reference it, including any security@ address on it.
 - madfam.academy and madfam.info are expired.
-- periplo.madfam.io is NXDOMAIN (re-confirmed 2026-07-25).
-- All four meridian hostnames are pre-deploy — no DNS, no tunnel route.
-- eido.cam status is contradicted between internal sources dated the same day
-  and is unresolved; a dated HTTP probe would settle it.
+- periplo.madfam.io is NXDOMAIN (re-confirmed 2026-08-24) — not live.
+- meridian is PARTIALLY live (probed 2026-08-24): landing/app/admin serve;
+  meridian-api answers 502. Advice-class output remains counsel-gated by design.
+- eido.cam is LIVE (probed 2026-08-24: apex 200, api.eido.cam/health 200) —
+  the old same-day contradiction is settled.
+- Found down 2026-08-24: api.fortuna.tube (502) and the madfam-site CMS host
+  (404) — recorded as gaps in the private map, not papered over.
 
 ## Maintenance
 

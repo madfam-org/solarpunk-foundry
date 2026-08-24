@@ -2,8 +2,8 @@
 
 Compact LLM context index for this repository.
 
-Last updated: 2026-07-25
-Last verified: 2026-07-25 — every path below was confirmed present in the
+Last updated: 2026-08-24
+Last verified: 2026-08-24 — every path below was confirmed present in the
 working tree on that date.
 
 ## What this repo is
@@ -35,7 +35,7 @@ procedures, and the authoritative domain map and repo registry.
 Every factual claim carries its source and the date that source was last
 verified. Distinguish verified / documented-but-unverified / aspirational.
 Never invent verification: you cannot probe production from this repo, so if the
-newest source says 2026-07-01, write "last verified 2026-07-01" — not "live",
+newest source says 2026-08-24, write "last verified 2026-08-24" — not "live",
 not "currently". Where you cannot establish something, say so and name what
 would settle it. No marketing language, no invented metrics.
 `docs/PORT_ALLOCATION.md` is the model to copy.

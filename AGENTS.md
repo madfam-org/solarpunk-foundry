@@ -6,7 +6,7 @@
 > `kubectl`, `helm`, SSH, provider CLI/API, `docker exec`, and direct container
 > access as platform bootstrap or documented break-glass only, and record any
 > missing Enclii adapter gap.
-> Last Updated: 2026-07-25
+> Last Updated: 2026-08-24
 
 <!-- MADFAM-AGENTS-CANONICAL v1 -->
 
@@ -34,8 +34,8 @@ redirect and should not become the source of truth again.
   something, say so and name what would settle it — an honest gap beats a
   confident guess. `docs/PORT_ALLOCATION.md` is the model to copy.
 - **Never invent verification.** You cannot probe production from this repo. If
-  the private repo last verified a route on 2026-07-01, write "last verified
-  2026-07-01" — not "live", not "currently".
+  the private repo last verified a route on 2026-08-24, write "last verified
+  2026-08-24" — not "live", not "currently".
 - **No marketing language.** No superlatives, no invented metrics, no adoption
   or performance numbers you did not measure.
 

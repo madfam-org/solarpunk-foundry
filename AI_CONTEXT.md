@@ -5,11 +5,11 @@
 > a compatibility redirect. The public ecosystem narrative is in
 > [README.md](README.md).
 
-**Last updated:** 2026-07-25
-**Last verified:** 2026-07-25 — package directories, names and versions read
+**Last updated:** 2026-08-24
+**Last verified:** 2026-08-24 — package directories, names and versions read
 from `packages/*/package.json`; script and compose paths read from the working
 tree; registry ownership cross-checked against `internal-devops/ecosystem/domain-map.md`
-(*Last Verified 2026-07-01*).
+(*Last Verified 2026-08-24*).
 
 > **Boundary note.** Public repo, Lane B. No secrets, no node identity, no IPs,
 > no hardware or capacity figures, no costs. Canonical policy:
@@ -69,10 +69,12 @@ Two caveats on that table:
 
 ## `@madfam/*` packages
 
-Thirteen packages, published to `https://npm.madfam.io`. Versions are what
-`package.json` declares in the working tree as of 2026-07-25 — **whether these
-versions are actually present on the registry is unverified** and would need a
-registry query or a dated operator attestation.
+Thirteen packages, intended for `https://npm.madfam.io`. Versions are what
+`package.json` declares in the working tree as of 2026-08-24. **Registry
+reality (checked 2026-08-24): only `@madfam/core@0.1.0` is published on public
+npmjs.org; the other twelve 404 there**, and their presence on the private
+`npm.madfam.io` is still unverified (needs a registry query or a dated operator
+attestation). `publishConfig` targets are inconsistent across the set.
 
 | Package | Version | Purpose |
 |---|---|---|
@@ -88,7 +90,7 @@ registry query or a dated operator attestation.
 | `@madfam/types` | 0.1.0 | Cross-repo shared types (events, webhooks, attribution) |
 | `@madfam/telemetry` | 0.1.0 | OpenTelemetry tracing + W3C trace-context propagation |
 | `@madfam/webhook-attribution` | 0.1.0 | Signed payment-attribution HMAC sign/verify + idempotency |
-| `@madfam/ecosystem-banner` | 0.1.3 | Bottom ticker for ecosystem offers/links on product landings — **not** a footer; product footers exclude platform links ([docs/ECOSYSTEM_BANNER.md](docs/ECOSYSTEM_BANNER.md)) |
+| `@madfam/ecosystem-banner` | 0.1.4 | Bottom ticker for ecosystem offers/links on product landings — **not** a footer; product footers exclude platform links ([docs/ECOSYSTEM_BANNER.md](docs/ECOSYSTEM_BANNER.md)) |
 
 `@madfam/webhook-attribution` packages the ecosystem's signed payment-attribution
 contract so it is not reimplemented per repo. As of the 2026-07-08 internal

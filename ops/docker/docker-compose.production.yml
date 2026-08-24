@@ -1,7 +1,14 @@
 # =============================================================================
 # MADFAM ECOSYSTEM - UNIFIED PRODUCTION DOCKER COMPOSE
 # =============================================================================
-# Usage: docker compose -f docker-compose.production.yml --env-file .env.production up -d
+# ⚠️ HISTORICAL — DO NOT USE (banner added 2026-08-24).
+# There is NO Docker-Compose production deployment: production is k3s + ArgoCD
+# via Enclii (docs/INFRASTRUCTURE_STATUS.md). This file also fans a shared
+# JANUA_JWT_SECRET into services — the exact anti-pattern
+# docs/JANUA_INTEGRATION.md calls out as wrong (auth is RS256/JWKS, no shared
+# secret). Retained only as a historical record, like infrastructure/.
+# =============================================================================
+# Usage (historical): docker compose -f docker-compose.production.yml --env-file .env.production up -d
 # =============================================================================
 
 services:

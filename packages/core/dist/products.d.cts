@@ -182,7 +182,7 @@ declare const products: {
     readonly sim4d: {
         readonly id: "sim4d";
         readonly name: "Sim4D";
-        readonly description: "The Creator. Web-based CAD guided by geom-core.";
+        readonly description: "ARCHIVED (2026-08). Web-based CAD guided by geom-core; superseded by Yantra4D.";
         readonly layer: "fruit";
         readonly domain: "sim4d.io";
         readonly repo: "sim4d";
