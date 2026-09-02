@@ -420,6 +420,18 @@ not to route around.
 | Manufacturing execution telemetry | Pravara MES | feeds PhyndCRM federation |
 | 3D geometry kernel | geom-core | used by Sim4D + Yantra4D |
 | Fashion-domain data: parametric pattern blocks + garments (FC-100), grading, fabric cards (physical + digital twin), construction techniques, tech packs | Fashion Cabinet | query the API; hard-goods solids federate to Yantra4D, never re-implemented |
+| Client brand assets: brand books, palettes, typography, logo variants, guidelines (multi-tenant DAM) | ceq | consume the `/v1/brand-kits/{id}/tokens` export; vendor into the app, never fork the source-of-truth |
+
+> **Brand DAM ↔ generation ↔ consumption — the three-way split.** ceq is both the
+> **system-of-record** for a client's *source* brand book (the curated, tenant-scoped
+> `Client`/`BrandKit`/`BrandAsset` model on R2, tenant-from-token à la acervo — designated
+> here 2026-09-02) **and** the *generation* pillar that renders derivative work from it
+> (`/v1/render/*`). Consumers do NOT read ceq at runtime: they pull the resolved
+> `/v1/brand-kits/{id}/tokens` document and **vendor** it locally (per the deprecation of a
+> central `@madfam/ui` in favour of per-app tokens — see `@madfam/core` note below). MAP
+> (crea-map) aligns its local `globals.css` tokens + `clinic-identity.ts` + `public/` logos
+> against that export; it never imports ceq. The DAM stores the truth once; each product
+> keeps its own clean-exit copy.
 
 ### Other public-safe contract surfaces
 
