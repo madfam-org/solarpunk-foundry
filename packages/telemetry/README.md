@@ -1,5 +1,10 @@
 # @madfam/telemetry
 
+> **Boundary checkpoint (2026-09-04, platform ops):** public package surface.
+> Public-safe API and usage detail only; no private topology, node identities,
+> credentials or cost data.
+> Policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../../docs/PUBLIC_REPO_BOUNDARY.md)
+
 Shared OpenTelemetry tracing + W3C `traceparent` propagation for every MADFAM service. One `import`, one `init` call, every request gets a trace ID that follows it across service boundaries.
 
 This package exists because the 2026-05-04 enclii provisioning audit scored telemetry at **1/5**: zero deployments propagated W3C trace context, despite §IV-3 of `solarpunk-foundry/CLAUDE.md` mandating it across every service.

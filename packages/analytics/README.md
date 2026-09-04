@@ -1,5 +1,10 @@
 # @madfam/analytics
 
+> **Boundary checkpoint (2026-09-04, platform ops):** public package surface.
+> Public-safe API and usage detail only; no private topology, node identities,
+> credentials or cost data.
+> Policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../../docs/PUBLIC_REPO_BOUNDARY.md)
+
 Shared PostHog instrumentation for the MADFAM ecosystem.
 
 ## Installation

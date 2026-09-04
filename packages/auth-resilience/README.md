@@ -1,5 +1,10 @@
 # @madfam/auth-resilience
 
+> **Boundary checkpoint (2026-09-04, platform ops):** public package surface.
+> Public-safe API and usage detail only; no private topology, node identities,
+> credentials or cost data.
+> Policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../../docs/PUBLIC_REPO_BOUNDARY.md)
+
 Resilient authentication client for the MADFAM ecosystem with circuit breaker pattern and graceful degradation when Janua is unavailable.
 
 ## Problem

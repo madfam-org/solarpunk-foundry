@@ -1,5 +1,10 @@
 # @madfam/ui - DEPRECATED
 
+> **Boundary checkpoint (2026-09-04, platform ops):** public package surface.
+> Public-safe API and usage detail only; no private topology, node identities,
+> credentials or cost data.
+> Policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../../docs/PUBLIC_REPO_BOUNDARY.md)
+
 > **This package is deprecated.** The MADFAM UI system has moved to a decentralized "incubator" model.
 
 ## New Architecture
