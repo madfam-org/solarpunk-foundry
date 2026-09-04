@@ -7,6 +7,8 @@ on:
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - "packages/**"
+      - "scripts/check-package-scripts.mjs"
+      - "scripts/check-package-scripts.test.mjs"
       - ".github/workflows/package-quality.yml"
   push:
     branches: [main]
@@ -15,6 +17,8 @@ on:
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - "packages/**"
+      - "scripts/check-package-scripts.mjs"
+      - "scripts/check-package-scripts.test.mjs"
       - ".github/workflows/package-quality.yml"
 
 permissions:
@@ -45,6 +49,15 @@ jobs:
 
       - name: Typecheck
         run: pnpm -r typecheck
+
+      # Runs BEFORE the recursive steps below. `pnpm -r lint` and `pnpm -r test`
+      # skip any package that does not define the script and still exit 0, so
+      # without this step the two gates below can pass with almost no coverage.
+      - name: Package script coverage guard self-test
+        run: node --test scripts/check-package-scripts.test.mjs
+
+      - name: Package script coverage
+        run: node scripts/check-package-scripts.mjs
 
       - name: Lint
         run: pnpm -r lint

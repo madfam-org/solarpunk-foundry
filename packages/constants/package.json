@@ -57,6 +57,8 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "lint": "eslint src --max-warnings=0",
+    "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist .turbo node_modules",
     "prepublishOnly": "pnpm build"
