@@ -6,7 +6,7 @@
 > `kubectl`, `helm`, SSH, provider CLI/API, `docker exec`, and direct container
 > access as platform bootstrap or documented break-glass only, and record any
 > missing Enclii adapter gap.
-> Last Updated: 2026-08-24
+> Last Updated: 2026-09-04
 
 <!-- MADFAM-AGENTS-CANONICAL v1 -->
 
@@ -66,6 +66,10 @@ redirect and should not become the source of truth again.
   runbooks. It is Lane A.
 - This repo is the public ecosystem contract (Lane B). Keep sensitive
   operational, pricing, and audit context out.
+- **This repo is permanently public** by owner decision of 2026-09-04: it stays
+  the public-facing ecosystem hub, sharing the non-sensitive aspects of how the
+  MADFAM substrate operates, sanitized as necessary. Sanitize; do not plan for a
+  flip to private.
 - Use redacted summaries and canonical links when cross-referencing private
   context. Never copy Vault paths, secret names with retrieval detail, or
   break-glass `kubectl`/SSH into this repo.
@@ -81,10 +85,13 @@ numbers or capacity figures, the Cloudflare tunnel identifier, cost or
 procurement data, Vault paths or secret names with retrieval detail, raw
 break-glass `kubectl`/SSH procedures, incident evidence trails.
 
-**Already public and stays public:** the topology *shape* — a 3-node bare-metal
-k3s cluster on Hetzner (two dedicated + one cloud builder), ingress via a single
-Cloudflare Tunnel with zero exposed node ports, Longhorn CSI block storage,
-Cloudflare R2 object storage, ArgoCD GitOps with self-heal.
+**Already public and stays public:** the topology *shape* — a **4-node** bare-metal
+k3s cluster on Hetzner (one control-plane node, one worker and two CI builders —
+one cloud instance, one dedicated box added 2026-08-06, which removed the
+single-builder SPOF), ingress via a single Cloudflare Tunnel with zero exposed
+node ports, Longhorn CSI block storage, Cloudflare R2 object storage, ArgoCD
+GitOps with self-heal. See [`MADFAM.md`](MADFAM.md) §1.2 and
+[`ECOSYSTEM.md`](ECOSYSTEM.md) §4 for the maintained statement of this shape.
 
 Note that CI does not enforce this for you: `scripts/public-hygiene-check.sh`
 scans `.md`/`.mdx`/`.txt` only and has no pattern for infrastructure
@@ -96,10 +103,11 @@ Inspect drift in these files with `python3 internal-devops/scripts/sync-agent-do
 — run bare, it prints a diff and writes nothing. Read that diff before going
 further.
 
-Adding `--apply` **overwrites** `AGENTS.md`, `CLAUDE.md`, `llms.txt`, and
-`llms-full.txt` across every top-level labspace repo with template-generated
-content. This repo has hand-curated entrypoints, and a blind `--apply` replaces
-them with a generic stub. Prefer hand-editing; review the diff before committing.
+`--apply` **wraps, never replaces**: `AGENTS.md` keeps its handcrafted body under
+a canonical header; `CLAUDE.md` becomes the redirect shim; `llms.txt` and
+`llms-full.txt` are written only when absent or still template-shaped — a
+curated file is kept and reported as `agent_doc_curated_kept=`. Ineligible
+checkouts are refused as `agent_doc_skip=`. Read the dry-run diff first.
 
 ## Cursor IDE
 
@@ -131,9 +139,10 @@ Solarpunk Foundry is the **public ecosystem contract hub** (Lane B) for MADFAM:
 - **Public architecture narrative** (`README.md`, `ECOSYSTEM.md`, `MADFAM.md`, `docs/architecture/`)
 - **Integration and contract patterns** (`docs/*.md`)
 
-It ships **no application deployable**. It is public, and deliberately holds no
-production identity, secrets, costs, hostnames, competitive intelligence, or
-sensitive audits — those live in the private `internal-devops` repo.
+It ships **no application deployable**. It is **permanently public** (owner
+decision, 2026-09-04) and deliberately holds no production identity, secrets,
+costs, hostnames, competitive intelligence, or sensitive audits — those live in
+the private `internal-devops` repo.
 
 ### Quick start
 
