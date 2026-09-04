@@ -26,19 +26,35 @@ cp templates/ci/lint-workflow.yml .github/workflows/doc-lint.yml
 Or use the direct reference in your workflow:
 
 ```yaml
-- uses: madfam-org/solarpunk-foundry/.github/actions/doc-guard@main
+- uses: madfam-org/solarpunk-foundry/.github/actions/doc-guard@05f164e7d3d0a701632d5970f01c01f56c40e583 # solarpunk-foundry main, 2026-09-04
 ```
+
+> **Pin by SHA.** `@main` gives every pusher to this repository's default branch
+> execution inside *your* CI, with *your* secrets — `npm-madfam-auth` is handed
+> `NPM_MADFAM_TOKEN`. Tags move too, so `@v1` is not a pin either. Use a 40-hex
+> commit SHA and keep the trailing comment: it is what shows a reader how stale
+> the pin is. Enable Dependabot's `github-actions` ecosystem and it will bump
+> both the SHA and the comment.
+
 
 ### `npm-madfam-auth` — private registry CI auth
 
 Use from any `madfam-org` repo (public action — no org Actions access config needed):
 
 ```yaml
-- uses: madfam-org/solarpunk-foundry/.github/actions/npm-madfam-auth@main
+- uses: madfam-org/solarpunk-foundry/.github/actions/npm-madfam-auth@05f164e7d3d0a701632d5970f01c01f56c40e583 # solarpunk-foundry main, 2026-09-04
   with:
     token: ${{ secrets.NPM_MADFAM_TOKEN }}
     require-publish-capable: "true"   # optional publish dry-run smoke
 ```
+
+> **Pin by SHA.** `@main` gives every pusher to this repository's default branch
+> execution inside *your* CI, with *your* secrets — `npm-madfam-auth` is handed
+> `NPM_MADFAM_TOKEN`. Tags move too, so `@v1` is not a pin either. Use a 40-hex
+> commit SHA and keep the trailing comment: it is what shows a reader how stale
+> the pin is. Enable Dependabot's `github-actions` ecosystem and it will bump
+> both the SHA and the comment.
+
 
 Requires a repo-level `.npmrc` with `@scope:registry=https://npm.madfam.io` mappings (see janua or dhanam `.npmrc`).
 
@@ -67,10 +83,18 @@ Create a JSON file with additional banned terms:
 Then reference it in your workflow:
 
 ```yaml
-- uses: madfam-org/solarpunk-foundry/.github/actions/doc-guard@main
+- uses: madfam-org/solarpunk-foundry/.github/actions/doc-guard@05f164e7d3d0a701632d5970f01c01f56c40e583 # solarpunk-foundry main, 2026-09-04
   with:
     banned-terms-file: '.github/banned-terms.json'
 ```
+
+> **Pin by SHA.** `@main` gives every pusher to this repository's default branch
+> execution inside *your* CI, with *your* secrets — `npm-madfam-auth` is handed
+> `NPM_MADFAM_TOKEN`. Tags move too, so `@v1` is not a pin either. Use a 40-hex
+> commit SHA and keep the trailing comment: it is what shows a reader how stale
+> the pin is. Enable Dependabot's `github-actions` ecosystem and it will bump
+> both the SHA and the comment.
+
 
 #### Default Banned Terms
 
