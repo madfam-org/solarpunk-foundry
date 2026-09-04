@@ -25,15 +25,15 @@ GRANT ALL PRIVILEGES ON DATABASE enclii_dev TO enclii;
 -- Layer 2: The Roots (Sensing & Input)
 -- ============================================
 
--- ForgeSight - Manufacturing Intelligence (Port Block: 4300-4399)
-CREATE USER forgesight WITH PASSWORD 'forgesight_dev';
-CREATE DATABASE forgesight_dev OWNER forgesight;
-GRANT ALL PRIVILEGES ON DATABASE forgesight_dev TO forgesight;
-
--- Fortuna - Problem Intelligence (Port Block: 4400-4499)
+-- Fortuna - Problem Intelligence (Port Block: 4300-4399)
 CREATE USER fortuna WITH PASSWORD 'fortuna_dev';
 CREATE DATABASE fortuna_dev OWNER fortuna;
 GRANT ALL PRIVILEGES ON DATABASE fortuna_dev TO fortuna;
+
+-- Forgesight - Manufacturing Intelligence (Port Block: 4400-4499)
+CREATE USER forgesight WITH PASSWORD 'forgesight_dev';
+CREATE DATABASE forgesight_dev OWNER forgesight;
+GRANT ALL PRIVILEGES ON DATABASE forgesight_dev TO forgesight;
 
 -- ============================================
 -- Layer 3: The Stem (Core Standards)

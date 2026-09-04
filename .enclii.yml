@@ -41,7 +41,7 @@ spec:
     - name: verdaccio-storage
       mountPath: /verdaccio/storage
       size: 50Gi
-      storageClassName: hetzner-ssd
+      storageClassName: longhorn
       accessMode: ReadWriteOnce
     - name: verdaccio-config
       mountPath: /verdaccio/conf
