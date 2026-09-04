@@ -90,9 +90,26 @@ describe('EcosystemBanner', () => {
       expect(DEFAULT_ECOSYSTEM_PLATFORMS).toHaveLength(13);
     });
 
-    it('uses the canonical Forge Sight landing domain', () => {
-      const forgesight = DEFAULT_ECOSYSTEM_PLATFORMS.find((p) => p.name === 'Forge Sight');
+    it('uses the canonical Forgesight name and landing domain', () => {
+      const forgesight = DEFAULT_ECOSYSTEM_PLATFORMS.find((p) => p.name === 'Forgesight');
       expect(forgesight?.url).toBe('https://forgesight.quest');
+    });
+
+    it('links Janua to its product domain, not the infra endpoint', () => {
+      const janua = DEFAULT_ECOSYSTEM_PLATFORMS.find((p) => p.name === 'Janua');
+      expect(janua?.url).toBe('https://janua.dev');
+    });
+
+    it('uses the canonical Pravara MES display name', () => {
+      const names = DEFAULT_ECOSYSTEM_PLATFORMS.map((p) => p.name);
+      expect(names).toContain('Pravara MES');
+    });
+
+    it('renders no retired brand', () => {
+      const names = DEFAULT_ECOSYSTEM_PLATFORMS.map((p) => p.name);
+      for (const retired of ['Sim4D', 'PENNY', 'SPARK']) {
+        expect(names).not.toContain(retired);
+      }
     });
   });
 

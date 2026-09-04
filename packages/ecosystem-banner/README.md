@@ -3,10 +3,12 @@
 A dismissible stock-ticker banner that surfaces the MADFAM platform ecosystem at the very bottom of every landing app. All platform names scroll horizontally in a continuous marquee (NYSE-style).
 
 ```
-┌──────────────────────────────────────────────────────────────────────┐
-│  MADFAM ECOSYSTEM /  BUDGETING: Dhanam ↗  AI OFFICE: Selva ↗  …  × │
-└──────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────┐
+│  MADFAM ECOSYSTEM /  BUDGETING & WEALTH: Dhanam ↗  AI AGENT OFFICE: Selva ↗ … × │
+└──────────────────────────────────────────────────────────────────────────────┘
 ```
+
+*The keywords above are the real ones from `src/platforms.ts`.*
 
 ## Install
 
@@ -63,18 +65,20 @@ const compliancePlatforms = DEFAULT_ECOSYSTEM_PLATFORMS.filter((p) =>
 
 - **Dismissible.** A 44×44 hit-area `×` button on the right writes a `{ v, dismissed_at }` record to `localStorage.madfam_ecosystem_banner` and hides the banner for 30 days. Bumping `BANNER_VERSION` in source resets dismissals so users see new platform lineups.
 - **Linked.** Each platform name is a real `<a target="_blank" rel="noopener noreferrer">` to its apex domain. `title=` exposes the full pair on hover for users who scrolled mid-read.
-- **Accessible.** `aria-live="polite"` on the ticker so screen readers announce each new pair without interrupting; `prefers-reduced-motion` swaps the cross-fade for an instant transition (same content cadence, zero motion).
+- **Accessible.** The banner is a `role="complementary"` landmark whose `aria-label` lists every platform in the ticker, so a screen reader gets the full lineup once, in one place, rather than being interrupted by a scrolling region. There is deliberately **no** `aria-live` on the ticker: the content never changes, it only moves. Under `prefers-reduced-motion` the marquee animation is switched off entirely and the track wraps to a static, fully readable list — there is no cross-fade (it was removed in 0.1.3).
 - **Mobile-friendly.** Collapses to single-line ≤640px viewports; the brand chip hides on small screens to keep the ticker readable.
 
 ## Platform list (single source of truth)
 
 `src/platforms.ts` exports `DEFAULT_ECOSYSTEM_PLATFORMS`. Add a new platform by editing that one file and bumping the package minor version. Bumping `BANNER_VERSION` in `ecosystem-banner.tsx` re-engages previously-dismissed users.
 
+The list is **partial and hand-kept**: several live platforms are not in it, and the URLs were last probed on 2026-05-04. Names and the Janua URL were reconciled against the ecosystem records on 2026-09-04, which is a records check, not a re-probe. Membership is scheduled to become generated from the single product registry, so treat this file as a source of truth for shape, not for coverage.
+
 ## Adopting in a new landing
 
 1. `pnpm add @madfam/ecosystem-banner` (with the registry configured)
 2. Mount `<EcosystemBanner />` at the bottom of your root layout — outside provider trees if you have any client-side state, since the banner has its own SSR-safe local state
-3. If you want a subset of platforms, pass `platforms={...}` (defaults to all 13 confirmed-live)
+3. If you want a subset of platforms, pass `platforms={...}` (the default list has 13 entries)
 
 That's it. No CSS to import, no provider to wrap, no theme to extend, and no Tailwind content scanning required.
 
@@ -88,7 +92,7 @@ ecosystem platform links in the product footer — footers are product-owned
 
 ```bash
 pnpm install
-pnpm test       # vitest, 21 tests
+pnpm test       # vitest, 17 tests
 pnpm typecheck  # tsc --noEmit
 pnpm build      # tsup → dist/
 ```
