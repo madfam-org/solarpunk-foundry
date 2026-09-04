@@ -95,34 +95,65 @@ does not remove it from git history, so the rotation is still owed.
 
 ## Automation — what it does and does not catch
 
-*Verified 2026-07-25 by reading the scripts and the workflow directory.*
+*Verified 2026-09-04 by reading the scripts and the workflow directory.*
 
 | Guard | Location | Coverage |
 |---|---|---|
-| `public-hygiene-check.sh` | `scripts/`, run by `.github/workflows/public-hygiene.yml` | 7 patterns: Stripe key shapes, GitHub token shapes, AWS access keys, PEM private-key markers, concrete admin-bootstrap password assignment, concrete JWT secret assignment, kubeconfig markers |
+| `public-hygiene-check.sh` | `scripts/`, run by `.github/workflows/public-hygiene.yml` | 10 pattern classes over **every tracked text file** (see below) |
+| `public-hygiene` self-test | `scripts/tests/test-public-hygiene.sh`, run by the same workflow | 10 cases proving the guard fails on a planted credential, a public IPv4 and a tunnel UUID, and reports UNDETERMINED when it cannot look |
 | `boundary-checkpoint-check.sh` | `scripts/` | Requires a boundary checkpoint in edited high-risk doc surfaces (README, ROADMAP, AI_CONTEXT, AGENTS, changelog, status, production, runbook docs) |
 | `check-production-readiness-ratchet.py` | `scripts/`, run by `.github/workflows/production-readiness-ratchet.yml` | Infrastructure and package-shape regressions, **warn-only** |
 
-### Known coverage gaps
+### Coverage as of 2026-09-04
 
-State these plainly, because the guard has been read as broader than it is:
+**File scope.** The scan is `git ls-files` filtered to text files — 292 of 292
+tracked files at the time of writing. Until 2026-09-04 it was a `find` over
+`*.md`, `*.mdx`, `*.txt` and `README*` / `SECURITY*` / `CONTRIBUTING*` /
+`CHANGELOG*`, roughly 70 files; `.npmrc`, `.yml`, `.sh`, `.ts` and `.json` were
+never opened. A committed registry credential in `packages/core/.npmrc` passed
+this guard for its entire life as a result.
 
-1. **No pattern for Cloudflare tunnel identifiers.**
-2. **No pattern for public IPv4 addresses.**
-3. **No pattern for node hostname literals.**
+| Class | Status |
+|---|---|
+| Stripe / GitHub / AWS key shapes, PEM private-key markers | covered |
+| Concrete admin-bootstrap password and JWT secret assignments | covered |
+| Kubeconfig credential material (the embedded client- and CA-certificate data keys) and break-glass invocations passing an absolute kubeconfig path | covered |
+| npm registry auth with a concrete value (`:_auth` / `:_authToken`) | **covered** (new) |
+| Cloudflare tunnel identifiers (UUID shape) | **covered** (new) |
+| Public IPv4 addresses | **covered** (new) — RFC1918, loopback, link-local, TEST-NET and reserved ranges excluded so illustrative addresses stay usable |
+| Node hostname literals | **not covered here, by design** — see below |
 
-Those are three of the categories this document bans most emphatically, and the
-guard does not look for any of them.
+**Node identities are enforced from the private repo.** The literals cannot be
+written into a public script, and hashing them would buy obfuscation while
+implying secrecy (`foundry-<role>-NN` is a dozen guesses; IPv4 is 2^32). Two
+mechanisms cover the class instead:
 
-4. **File-type scope is narrow.** The scan covers `*.md`, `*.mdx`, `*.txt` and
-   `README*` / `SECURITY*` / `CONTRIBUTING*` / `CHANGELOG*`. It does **not**
-   scan `.tf`, `.yaml`, `.yml`, `.conf`, `.sh`, or `.json`.
+1. `MADFAM_HYGIENE_PATTERNS` — a path to a private pattern file (one ERE per
+   line), default `../internal-devops/security/public-hygiene-private-patterns.txt`.
+   When it is readable the class runs and matches print `file:line` only, never
+   the matched text, because this repository's CI logs are public.
+2. `internal-devops/scripts/check-public-repo-node-identity.py`, which reads the
+   private node inventory and greps sibling public checkouts.
+
+Every run ends with `files_scanned=<n> classes_skipped=<n>`. **`classes_skipped=1`
+means the node-identity class was not checked at all** — a green run with a
+skipped class is not a clean bill of health for that class.
+
+**Fail-closed.** If the tracked file set cannot be established the guard prints
+`UNDETERMINED` and exits 2, which fails CI exactly like exit 1. A guard that
+could not look must not report what a clean look reports.
+
+**Self-reference marker.** This script and its test necessarily contain the
+shapes they hunt for. A line carrying `hygiene-self-reference` is excluded from
+findings. The marker is per line, never per file, so neither file becomes a
+blind spot — and a line that carries it is visible to any reviewer grepping for
+the marker.
 
 **Consequence:** passing CI is not evidence that a change is boundary-clean.
 Human review against the "does not belong here" list above is still the control
-that matters. Closing gaps 1–4 is a worthwhile change to `scripts/` — outside
-the scope of this document, which is why it is recorded here rather than
-assumed fixed.
+that matters. The 2026-07-25 revision of this section listed four known gaps and
+said closing them was out of scope; three of the four are closed above, and the
+fourth (node hostnames) is deliberately enforced from the private repo instead.
 
 If the guard blocks a legitimate non-secret example, prefer a placeholder over
 a realistic-looking value.
