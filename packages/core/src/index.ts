@@ -113,8 +113,11 @@ export {
 export {
   ecosystemLayers,
   licenseTypes,
+  productStatuses,
   products,
   productIds,
+  isRetired,
+  getActiveProducts,
   getProductsByLayer,
   getProductsByLicense,
   getPublicProducts,
@@ -127,6 +130,7 @@ export {
   type LicenseType,
   type Product,
   type ProductId,
+  type ProductStatus,
 } from './products';
 
 // ═══════════════════════════════════════════════════════════════════════════════
