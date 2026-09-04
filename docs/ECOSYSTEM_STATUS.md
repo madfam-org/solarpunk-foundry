@@ -2,6 +2,17 @@
 
 **Last verified: 2026-07-25**
 
+> [!WARNING]
+> **SUPERSEDED — stamped 2026-09-04.** This document is a point-in-time record
+> from **2026-07-25** and has not been re-verified since. Newer sources in this
+> repository contradict parts of it. For current facts read
+> [`README.md`](../README.md) §II (platform map and repo counts) and
+> [`ECOSYSTEM.md`](../ECOSYSTEM.md) §4 (cluster and infrastructure shape), both
+> anchored to the **2026-08-24** live enumeration and probe set. Where this
+> document and those disagree, the newer source wins — that is this repo's own
+> evidence rule ([`../llms.txt`](../llms.txt)). Individual rows corrected on
+> 2026-09-04 say so inline; everything else is unrefreshed.
+
 > **This is a point-in-time inventory, not a live status page.** It records what
 > is *documented* about MADFAM's services and routes, with the date each fact
 > was last verified and the source it came from. It cannot and does not report
@@ -230,35 +241,20 @@ issuer derivation independently verified 2026-07-25 by reading
 | Hostname | State | Verified |
 |---|---|---|
 | `periplo.madfam.io` | **NXDOMAIN.** The repo is private and populated; nothing is routed. | 2026-07-25 |
-| `meridian.madfam.io`, `meridian-app.`, `meridian-api.`, `meridian-admin.` | **Pre-deploy.** No tunnel routes, no DNS. | 2026-07-25 |
-| `phynd.app` | **Not registered.** Must be acquired before the tunnel and DNS can be updated. `crm.madfam.io` is the live host today. | 2026-07-01 |
 | `innovacionesmadfam.dev` | **Never owned.** A prior entry listing it as expiring was wrong. Canonical company domain is `madfam.io`. Do not use any address at this domain. | owner confirmation 2026-07-09 |
 | `madfam.academy`, `madfam.info` | **Expired.** | 2026-07-01 |
 
-### Contradiction: `eido.cam`
+### Corrected 2026-09-04 — no longer "not live"
 
-Unresolved in the private record, so it is unresolved here. The domain map
-(updated 2026-07-10) lists eido as pre-deploy and `eido.cam` as "provisioning
-staged, not yet deployed". A same-repo roadmap **and** an as-built runbook,
-**both dated 2026-07-10**, record `eido.cam` as having gone live that day —
-Cloudflare zone created, NS delegated, R2 buckets and `cdn.eido.cam` attached,
-Enclii project and three services registered.
+Three rows this document carried as unsettled or pre-deploy were settled by the
+2026-08-24 live probe set recorded in the private domain map. They are lifted
+out of the table above rather than left to mislead.
 
-**One incidental data point, 2026-07-25.** This repository's documentation
-link-checker (`doc-guard`, run as part of the CI documentation lint) issued an
-HTTP request to `api.eido.cam/health` while validating this file and received
-**HTTP 405 Method Not Allowed**. That is not a health check and was not
-intended as one — but a 405 means DNS resolved and a server answered, which is
-inconsistent with "no DNS, pre-deploy". It does **not** establish that the eido
-services are healthy, correctly configured, or serving the expected payload; a
-405 is equally consistent with a proxy or placeholder responding to the wrong
-HTTP method.
-
-**What would settle it properly:** a dated `GET` against `eido.cam` and
-`api.eido.cam/health` recorded with its response body (the as-built runbook
-records the expected healthy body), or an `enclii ps` on the eido project.
-Whichever way it resolves, the domain map needs updating — it currently
-contradicts two same-day sibling documents.
+| Hostname | State | Verified |
+|---|---|---|
+| `meridian.madfam.io`, `meridian-app.`, `meridian-admin.` | **PARTIALLY LIVE.** Landing, app and admin all answered 200; `meridian-api` returned 502. No longer pre-deploy. | 2026-08-24 |
+| `phynd.app` | **REGISTERED + LIVE.** Answered 200. It is the canonical PhyndCRM host; `crm.madfam.io` is the legacy one. | 2026-08-24 |
+| `eido.cam` | **LIVE.** `eido.cam` answered 200 and `api.eido.cam/health` answered 200. This settles the 2026-07-10 contradiction this document used to carry as an open question; the section stating it was unresolved is removed. | 2026-08-24 |
 
 ### Other hostnames declared but unmapped
 
@@ -354,7 +350,7 @@ replay window.
 | Bank transactions, billing ledger | Dhanam | Read via API; keep no local mirror |
 | Mexican law and compliance rules | Tezca | Query `/api/v1/laws`; do not fork the dataset |
 | CFDI / SAT / tax filings | Karafiel | Single authority |
-| 3D geometry kernel | geom-core | Shared by Sim4D and Yantra4D |
+| 3D geometry kernel | geom-core | Used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`) |
 
 ### CORS
 
@@ -375,17 +371,21 @@ platform gap to file, not to route around (RFC 0014, zero-touch onboarding).
 
 ## Repository inventory
 
-*Verified 2026-07-25 by live enumeration of the `madfam-org` GitHub
-organisation.*
+*Current counts as of 2026-08-29 (corrected 2026-09-04). The 2026-07-25 column
+is kept so the movement is auditable; only the 2026-08-29 column is current.*
 
-| Measure | Count |
-|---|---|
-| Repositories returned by the org listing | 99 |
-| Of which forks | 3 |
-| **Non-fork repositories** | **96** |
-| Private | 27 |
-| Public | 69 |
-| Archived (non-fork) | 8 |
+| Measure | 2026-07-25 | **Current (2026-08-29)** |
+|---|---|---|
+| Repositories returned by the org listing | 99 | **116** |
+| Of which forks | 3 | **3** |
+| **Non-fork repositories** | **96** | **113** |
+| Private | 27 | **44** |
+| Public | 69 | **69** |
+| Archived (non-fork) | 8 | **8** |
+
+The current figures come from the 2026-08-24 live GraphQL enumeration (115
+total; 112 non-fork = 43 private + 69 public) plus one private repo created
+after it, `lexidrop` (2026-08-25). See [`../README.md`](../README.md) §II.7.
 
 This reconciles cleanly against the private registry's own headline of
 22 private + 69 public = 91 (that registry's figure carries `Last Verified:
@@ -425,7 +425,7 @@ are linking five URLs that 404 for anyone outside the organisation.
 | PhyndCRM | `phynd-crm` | Client-facing deliverables portal | Public |
 | Fortuna | `fortuna` | Problem intelligence / zeitgeist analysis | **Private** |
 | AVALA | `avala` | Learning verification (EC/CONOCER, DC-3) | **Private** (flipped 2026-07-16) |
-| RouteCraft | `routecraft` | Trip-engine SaaS; canonical payment-attribution emitter | Public |
+| RouteCraft | `routecraft` | Trip-engine SaaS; canonical payment-attribution emitter | **Private** *(corrected 2026-09-04; the registry lists it under private repos, and this repo's own `README.md` §II, `MADFAM.md` and `ECOSYSTEM.md` all mark it private)* |
 
 *Roles from `internal-devops/ecosystem/repo-registry.md` (verified 2026-07-04);
 visibility from a live query 2026-07-25.*
