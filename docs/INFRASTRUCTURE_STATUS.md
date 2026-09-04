@@ -2,6 +2,17 @@
 
 **Last verified: 2026-07-25**
 
+> [!WARNING]
+> **SUPERSEDED — stamped 2026-09-04.** This document is a point-in-time record
+> from **2026-07-25** and has not been re-verified since. Newer sources in this
+> repository contradict parts of it. For current facts read
+> [`README.md`](../README.md) §II (platform map and repo counts) and
+> [`ECOSYSTEM.md`](../ECOSYSTEM.md) §4 (cluster and infrastructure shape), both
+> anchored to the **2026-08-24** live enumeration and probe set. Where this
+> document and those disagree, the newer source wins — that is this repo's own
+> evidence rule ([`../llms.txt`](../llms.txt)). Individual rows corrected on
+> 2026-09-04 say so inline; everything else is unrefreshed.
+
 > **Read the framing before the tables.** This document describes **declared
 > configuration** — what the files in this repository and the private
 > operational record say is configured. It does **not** describe observed

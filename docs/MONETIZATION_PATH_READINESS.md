@@ -10,11 +10,13 @@ in `internal-devops`.
 > ## Standing of this document
 >
 > The assessment this document was built on is dated **2026-06-13** and has
-> been **overtaken twice**. Both supersessions are recorded below rather than
-> quietly folded in, because the direction of the correction matters: the
-> earlier version described the monetization spine in the present tense as
-> "built and live" with one remaining gap, and both later checks found
-> materially less than that.
+> been **overtaken three times**. Every supersession is recorded below rather
+> than quietly folded in, because the direction of the correction matters: the
+> earliest version described the monetization spine in the present tense as
+> "built and live" with one remaining gap; the two 2026-07 checks found
+> materially less than that; and on **2026-08-02** the funnel completed end to
+> end for the first time, retiring the "no real charge has ever completed"
+> headline (added 2026-09-04).
 
 ---
 
@@ -24,11 +26,17 @@ in `internal-devops`.
 |---|---|---|
 | **2026-06-13** | Architecture review: monetization spine "built and live"; the signed payment-attribution contract identified as the one Critical integration gap. | **Superseded.** Accurate as a package/contract-design finding; wrong as a funnel-level claim. |
 | **2026-07-08** | Payment-emission separation-of-concerns plan, verified directly against `routecraft` at a named commit. | **The current word on the fan-out.** See below. |
-| **2026-07-16** | Holistic launch-readiness audit — 8 platforms, 7 integration edges. | **Verdict: NO-GO.** The revenue funnel was assessed as structurally dead at four consecutive hops, with `billing_events = 0` — no real charge has ever completed end to end. Sixteen enumerated blockers across eight funnel hops. |
+| **2026-07-16** | Holistic launch-readiness audit — 8 platforms, 7 integration edges. | **Superseded in its central fact.** The funnel was assessed as structurally dead at four consecutive hops, with `billing_events = 0` — no real charge had then completed end to end. Sixteen enumerated blockers across eight funnel hops; most of the structural findings still stand. |
+| **2026-08-02** | **First live end-to-end charge.** | **The current word on the funnel.** A real, live-mode card charge on Dhanam (a product subscription) produced a SAT-stamped CFDI through Karafiel, `billing_events` rows from a clean zero baseline, and the entitlement behind it — verified by the internal post-charge verifier and recorded in `internal-devops/runbooks/` (2026-08-03 evidence record). |
 
-Nothing dated after 2026-07-16 was found that revises the NO-GO. The blocker
-list itself is operator/product material and lives in
-`internal-devops/roadmaps/2026-07-16-launch-remediation-roadmap.md`.
+**The 2026-07-16 NO-GO was overtaken by a dated event on 2026-08-02**
+*(corrected 2026-09-04)*. `billing_events = 0` is no longer true: the funnel has
+completed end to end at least once, live. One completed charge is a threshold,
+not traction, and the audit's structural findings about the individual hops are
+not thereby discharged — but the headline claim that no real charge has ever
+completed is retired. [`../README.md`](../README.md) §VI carries the same fact
+and has since 2026-08-24. The blocker list itself is operator/product material
+and lives in `internal-devops/roadmaps/2026-07-16-launch-remediation-roadmap.md`.
 
 ---
 

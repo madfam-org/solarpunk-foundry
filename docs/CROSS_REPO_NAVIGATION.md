@@ -3,13 +3,24 @@
 **Last verified: 2026-07-25** — every path in this document was checked for
 existence on that date against the working trees in `~/labspace`.
 
+> [!WARNING]
+> **SUPERSEDED — stamped 2026-09-04.** This document is a point-in-time record
+> from **2026-07-25** and has not been re-verified since. Newer sources in this
+> repository contradict parts of it. For current facts read
+> [`README.md`](../README.md) §II (platform map and repo counts) and
+> [`ECOSYSTEM.md`](../ECOSYSTEM.md) §4 (cluster and infrastructure shape), both
+> anchored to the **2026-08-24** live enumeration and probe set. Where this
+> document and those disagree, the newer source wins — that is this repo's own
+> evidence rule ([`../llms.txt`](../llms.txt)). Individual rows corrected on
+> 2026-09-04 say so inline; everything else is unrefreshed.
+
 **Purpose:** find the canonical document for a topic, across the MADFAM
 repositories.
 
 **Scope, honestly stated:** this guide covers the **core platform** —
 Enclii, Janua, Dhanam and the shared-package monorepo — plus the ecosystem-wide
-contracts. It is *not* a map of all 96 non-fork repositories in the
-organisation. The repository registry lives privately at
+contracts. It is *not* a map of all 113 non-fork repositories in the
+organisation (count as of 2026-08-29; corrected 2026-09-04). The repository registry lives privately at
 `internal-devops/ecosystem/repo-registry.md`; the public platform map is
 [`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md).
 
@@ -108,14 +119,16 @@ Nothing in the public tree substitutes for it. See
 ├── karafiel/              # operational compliance (private repo)
 ├── pravara-mes/           # manufacturing execution
 ├── phynd-crm/             # client deliverables portal
-├── routecraft/            # trip engine; payment-attribution emitter
-└── … 30 further repos cloned locally, of 96 in the organisation
+├── routecraft/            # trip engine; payment-attribution emitter (private repo)
+└── … 30 further repos cloned locally, of 113 non-fork in the organisation
 ```
 
-*Counts verified 2026-07-25: 43 of the 96 non-fork `madfam-org` repositories
-are cloned locally, and every local directory with a `.git` maps to a real
-organisation repository. Absence from disk is a checkout-hygiene fact, not an
-inventory fact.*
+*Local-checkout count verified 2026-07-25: 43 repositories cloned locally, and
+every local directory with a `.git` maps to a real organisation repository.
+Absence from disk is a checkout-hygiene fact, not an inventory fact. The
+organisation total is **113 non-fork** (44 private + 69 public) of **116** as of
+2026-08-29 — corrected 2026-09-04; the "96" this document carried was the
+2026-07-25 figure.*
 
 ---
 
