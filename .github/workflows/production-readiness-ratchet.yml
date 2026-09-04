@@ -30,6 +30,6 @@ jobs:
     # `true` and every job here moves to the self-hosted pool with no edit.
     runs-on: ${{ vars.ARC_BOOTSTRAP_COMPLETE == 'true' && 'madfam-runners-blue' || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Report production-readiness ratchet findings
         run: python3 scripts/check-production-readiness-ratchet.py --warn-only .
