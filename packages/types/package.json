@@ -19,10 +19,14 @@
       "require": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --max-warnings=0",
+    "test": "vitest run --passWithNoTests"
   },
   "devDependencies": {
     "tsup": "^8.0.0",

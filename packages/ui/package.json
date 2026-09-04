@@ -20,6 +20,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "clean": "rm -rf dist",

@@ -8,7 +8,8 @@ const LOG_LEVELS: Record<LogLevel, number> = {
 };
 
 const currentLevel: LogLevel =
-  (typeof window !== 'undefined' && (window as any).__LOG_LEVEL__) ||
+  (typeof window !== 'undefined' &&
+    (window as unknown as { __LOG_LEVEL__?: LogLevel }).__LOG_LEVEL__) ||
   (process.env.NODE_ENV === 'production' ? 'warn' : 'debug');
 
 function shouldLog(level: LogLevel): boolean {
