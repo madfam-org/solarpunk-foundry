@@ -31,7 +31,9 @@ jobs:
 
   action-pins:
     name: Actions pinned by SHA
-    runs-on: ubuntu-latest
+    # Same runner arm the rest of the fleet uses (row 1A.4), so this new job does
+    # not reintroduce a hard pin. No behaviour change until the org variable is set.
+    runs-on: ${{ vars.ARC_BOOTSTRAP_COMPLETE == 'true' && 'madfam-runners-blue' || 'ubuntu-latest' }}
     steps:
       - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
