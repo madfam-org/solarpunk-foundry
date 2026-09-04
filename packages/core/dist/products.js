@@ -32,11 +32,30 @@ var licenseTypes = {
     openSource: true,
     purpose: "File-level copyleft, allows proprietary integration"
   },
+  "Apache-2.0": {
+    name: "Apache License 2.0",
+    openSource: true,
+    purpose: "Permissive with an explicit patent grant; libraries meant to be embedded"
+  },
+  MIT: {
+    name: "MIT License",
+    openSource: true,
+    purpose: "Maximally permissive; shared packages and developer tooling"
+  },
+  "CERN-OHL-W-2.0": {
+    name: "CERN Open Hardware Licence Version 2 - Weakly Reciprocal",
+    openSource: true,
+    purpose: "Open hardware designs; reciprocal for the design itself"
+  },
   Proprietary: {
     name: "Proprietary",
     openSource: false,
     purpose: "Commercial protection for competitive advantage"
   }
+};
+var productStatuses = {
+  active: { name: "Active", renderable: true },
+  retired: { name: "Retired", renderable: false }
 };
 var products = {
   // ─────────────────────────────────────────────────────────────────────────────
@@ -78,7 +97,7 @@ var products = {
     layer: "roots",
     domain: "fortuna.tube",
     repo: "fortuna",
-    githubOrg: "madfam",
+    githubOrg: "madfam-org",
     license: "Proprietary",
     defaultPort: 4400,
     isPublic: false,
@@ -86,13 +105,16 @@ var products = {
   },
   forgesight: {
     id: "forgesight",
-    name: "ForgeSight",
+    name: "Forgesight",
     description: "The Pricer. Real-time manufacturing cost data.",
     layer: "roots",
     domain: "forgesight.quest",
     repo: "forgesight",
-    githubOrg: "madfam",
-    license: "Proprietary",
+    githubOrg: "madfam-org",
+    // The code is AGPL-3.0 (LICENSE file); the price corpus ships under a
+    // separate DATA_LICENSE. The older "proprietary edge" note was wrong.
+    license: "AGPL-3.0",
+    dataLicense: "DATA_LICENSE",
     defaultPort: 4300,
     isPublic: false,
     phase: 2
@@ -104,7 +126,7 @@ var products = {
     layer: "roots",
     domain: "blueprint.tube",
     repo: "blueprint-harvester",
-    githubOrg: "madfam",
+    githubOrg: "madfam-org",
     license: "Proprietary",
     isPublic: false,
     phase: 2
@@ -114,7 +136,7 @@ var products = {
     name: "BloomScroll",
     description: "The Filter. Slow Web content aggregator.",
     layer: "roots",
-    domain: "bloomscroll.app",
+    domain: "almanac.solar",
     repo: "bloom-scroll",
     githubOrg: "madfam-org",
     license: "MPL-2.0",
@@ -127,25 +149,28 @@ var products = {
   geomCore: {
     id: "geomCore",
     name: "geom-core",
-    description: "The Physics Standard. C++ geometry analysis library.",
+    description: "The Physics Standard. C++ geometry analysis library (WASM + Python bindings). A library, not a deployed service: no domain.",
     layer: "stem",
-    domain: "geom-core.dev",
+    // No routed host. `geom-core.dev` was never registered.
     repo: "geom-core",
     githubOrg: "madfam-org",
-    license: "MPL-2.0",
+    // Apache-2.0 per the repository LICENSE file, which wins over any badge.
+    license: "Apache-2.0",
     isPublic: true,
     phase: 3
   },
   avala: {
     id: "avala",
-    name: "AVALA",
+    name: "Avala",
+    acronym: "Alineamiento y Verificaci\xF3n de Aprendizajes y Logros Acreditables",
     description: "The Human Standard. Applied learning verification.",
     layer: "stem",
     domain: "avala.studio",
     repo: "avala",
     githubOrg: "madfam-org",
     license: "AGPL-3.0",
-    isPublic: true,
+    // Repository flipped private 2026-07-16. The product surface is live.
+    isPublic: false,
     phase: 3
   },
   // ─────────────────────────────────────────────────────────────────────────────
@@ -165,7 +190,9 @@ var products = {
     license: "MPL-2.0",
     defaultPort: 5173,
     isPublic: true,
-    phase: 3
+    phase: 3,
+    status: "retired",
+    successorSlug: "yantra4d"
   },
   forj: {
     id: "forj",
@@ -174,19 +201,19 @@ var products = {
     layer: "fruit",
     domain: "forj.design",
     repo: "forj",
-    githubOrg: "madfam",
+    githubOrg: "madfam-org",
     license: "Proprietary",
     isPublic: false,
     phase: 4
   },
   cotiza: {
     id: "cotiza",
-    name: "Cotiza Studio",
+    name: "Cotiza",
     description: "The Merchant. Automated quoting engine.",
     layer: "fruit",
     domain: "cotiza.studio",
     repo: "digifab-quoting",
-    githubOrg: "madfam",
+    githubOrg: "madfam-org",
     license: "Proprietary",
     defaultPort: 4500,
     isPublic: false,
@@ -202,7 +229,8 @@ var products = {
     githubOrg: "madfam-org",
     license: "AGPL-3.0",
     defaultPort: 4700,
-    isPublic: true,
+    // Repository flipped private by 2026-07-25. The product surface is live.
+    isPublic: false,
     phase: 1
   },
   coforma: {
@@ -212,7 +240,7 @@ var products = {
     layer: "fruit",
     domain: "coforma.studio",
     repo: "coforma-studio",
-    githubOrg: "madfam",
+    githubOrg: "madfam-org",
     license: "Proprietary",
     isPublic: false,
     phase: 1
@@ -222,7 +250,7 @@ var products = {
     name: "Galvana",
     description: "The Reactor. Electrochemistry simulation platform.",
     layer: "fruit",
-    domain: "galvana.io",
+    // No routed host. `galvana.io` was never registered; roadmap only.
     repo: "electrochem-sim",
     githubOrg: "madfam-org",
     license: "MPL-2.0",
@@ -237,26 +265,50 @@ var products = {
     name: "Primavera3D",
     description: "Internal 3D printing operations (dogfooding target).",
     layer: "fruit",
-    domain: "primavera3d.com",
+    domain: "primavera3d.pro",
     repo: "primavera3d",
     githubOrg: "madfam-org",
     license: "Proprietary",
     isPublic: false,
     phase: 4
+  },
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Tombstones — retired products. Kept so a consumer can recognise a dead brand
+  // and redirect. `status: "retired"` entries MUST NOT be rendered as products.
+  // ─────────────────────────────────────────────────────────────────────────────
+  penny: {
+    id: "penny",
+    name: "PENNY",
+    description: "RETIRED. Assistant platform; everything PENNY did is absorbed by Selva. Repository archived; penny.onl 301-redirects to selva.town.",
+    layer: "fruit",
+    repo: "penny",
+    githubOrg: "madfam-org",
+    license: "Proprietary",
+    isPublic: true,
+    phase: 4,
+    status: "retired",
+    successorSlug: "selva",
+    redirectTo: "https://selva.town"
   }
 };
 var productIds = Object.keys(products);
+function isRetired(product) {
+  return product.status === "retired";
+}
+function getActiveProducts() {
+  return Object.values(products).filter((p) => !isRetired(p));
+}
 function getProductsByLayer(layer) {
-  return Object.values(products).filter((p) => p.layer === layer);
+  return getActiveProducts().filter((p) => p.layer === layer);
 }
 function getProductsByLicense(license) {
-  return Object.values(products).filter((p) => p.license === license);
+  return getActiveProducts().filter((p) => p.license === license);
 }
 function getPublicProducts() {
-  return Object.values(products).filter((p) => p.isPublic);
+  return getActiveProducts().filter((p) => p.isPublic);
 }
 function getProductsByPhase(phase) {
-  return Object.values(products).filter((p) => p.phase === phase);
+  return getActiveProducts().filter((p) => p.phase === phase);
 }
 function isValidProductId(value) {
   return value in products;
@@ -270,9 +322,12 @@ function getProductGitHubUrl(id) {
 }
 function getProductWebsiteUrl(id) {
   const product = products[id];
-  return `https://${product.domain}`;
+  if (product.status === "retired" && product.redirectTo) {
+    return product.redirectTo;
+  }
+  return product.domain ? `https://${product.domain}` : null;
 }
 
-export { ecosystemLayers, getProduct, getProductGitHubUrl, getProductWebsiteUrl, getProductsByLayer, getProductsByLicense, getProductsByPhase, getPublicProducts, isValidProductId, licenseTypes, productIds, products };
+export { ecosystemLayers, getActiveProducts, getProduct, getProductGitHubUrl, getProductWebsiteUrl, getProductsByLayer, getProductsByLicense, getProductsByPhase, getPublicProducts, isRetired, isValidProductId, licenseTypes, productIds, productStatuses, products };
 //# sourceMappingURL=products.js.map
 //# sourceMappingURL=products.js.map

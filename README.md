@@ -2,9 +2,10 @@
 
 ### *From Bits to Atoms. High tech, deep roots.*
 
-> **Last updated:** 2026-08-24
+> **Last updated:** 2026-09-04 — reconciliation edition. No new probes were run; the
+> verification anchors below are unchanged, and every claim was re-checked against them.
 > **Verification anchors** — every status claim below inherits one of these dates, and each section says which:
-> - **Repo names, visibility, and roles:** `internal-devops/ecosystem/repo-registry.md`, *Last Verified 2026-08-24* (live GitHub enumeration including forks). Org counts restated in §II.7.
+> - **Repo names, visibility, and roles:** `internal-devops/ecosystem/repo-registry.md`, *Last Verified 2026-08-24* (live GitHub enumeration including forks), *Last Updated 2026-08-29* (one repo added after the enumeration). Org counts restated in §II.7.
 > - **Production routes and domains:** `internal-devops/ecosystem/domain-map.md`, *Last Verified 2026-08-24* — a full **live HTTP probe of every routed domain** run for that refresh (the Cloudflare tunnel ingress API was last re-read 2026-07-01; rows added since carry `enclii.yaml`-sourced service/port values).
 > - **Funnel / commercial status:** the 2026-07-16 internal launch-readiness audit, **plus the dated events that superseded parts of it** — first completed live charge 2026-08-02 (§VI) — and the 2026-08-14 internal sovereign-pivot audit.
 > - **Cross-repo conventions:** dates stated per convention in §IV.
@@ -132,7 +133,7 @@ and only then face outward.
 
 | Platform | Repo | Role | Domains |
 |---|---|---|---|
-| **geom-core** | `geom-core` | Geometry-analysis core exposed to WASM + Python. Backs Sim4D and Yantra4D. | — |
+| **geom-core** | `geom-core` | C++17 geometry-analysis library exposed to WASM + Python. Apache-2.0 per its LICENSE. Used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`). A library, not a service — no deployed domain. | — *(none; `geom-core.dev` was never registered)* |
 | **AVALA** 🔒 | `avala` | Learning-verification engine (Mexico EC/CONOCER + DC-3). **Repo flipped private on 2026-07-16.** | `avala.studio` (landing), `app.avala.studio`, `admin.avala.studio`, `api.avala.studio` — landing/app split repointed 2026-07-18; `admin.` recorded live since 2026-07 |
 | **routecraft** 🔒 | `routecraft` | Trip-engine SaaS. Today's payment-event emitter (§IV.3), which the ratified target moves to Dhanam. | `routecraft.app` |
 
@@ -183,14 +184,17 @@ intelligence) · `selva-sandbox` · `kinship` (E2E-encrypted community logistics
 `electrochem-sim` (**recorded stale since 2025-11**) · `dhanam-core` (AGPLv3 open core
 extracted from Dhanam, created 2026-07-20) · `coupler` (MADFAM Agent Tool Plane — delegated
 SaaS tools, MCP, sandbox, triggers; AGPL-3.0; registry records Phase 2 and very active) ·
-`eido` (registry records a PRD-only README with no working code yet; see the eido note below)
+`eido` (live — see the note below)
 · `meridian` (see below).
 
 ### Adjacent / supporting — private 🔒
 
 `factlas` (geospatial facts, `factl.as` / `factlas.com`) · `gh-backups` ·
-`proton-bridge-pipeline` · `symbiosis-hcm` (Mexican payroll + Shapley compensation + ONA +
-wellbeing; human-facing surfaces live since 2026-08-04) · `tulana` (internal pricing
+`proton-bridge-pipeline` · `symbiosis-hcm` (Mexican payroll — ISR, IMSS, INFONAVIT, ISN —
+plus employees, time-off and recruiting; human-facing surfaces live since 2026-08-04. ONA,
+wellbeing and Shapley compensation are empty package stubs, not shipped features) ·
+`lexidrop` (domain-acquisition intelligence; created 2026-08-25, live at `ld.madfam.io`) ·
+`tulana` (internal pricing
 intelligence; deployed, Janua-gated) · `converge-dash` (executive metrics layer; rollout
 blocked) · `turnbased-engine` + `stratum-tcg` + `tablaco` family (`tablaco`, `tablaco-v2`,
 `tablaco-tabletop`) + `arcanic-rosetta` + `madfam-baraja` (the games cluster) · `zavlo`
@@ -232,13 +236,16 @@ Intended to fold into an existing platform rather than exist standalone: `zavlo`
 ported to Fortuna, IG/YT/TT collectors moved to `madfam-crawler`). `penny` was listed as a
 `selva-office` integration path; the repo is **archived** as of the 2026-07-25 live check.
 
-### II.7 Repo counts — live enumeration, 2026-08-24
+### II.7 Repo counts — as of 2026-08-29
 
-**Live GitHub enumeration run for this edition on 2026-08-24** (GraphQL, includes forks):
-**115 repos**, of which 3 are forks (`gridfinity_extended_openscad`, `claudecodeui`,
-`Auto-Claude`). Excluding forks: **112 repos = 43 private + 69 public**, with **8 archived**
+**116 repos**, of which 3 are forks (`gridfinity_extended_openscad`, `claudecodeui`,
+`Auto-Claude`). Excluding forks: **113 repos = 44 private + 69 public**, with **8 archived**
 (aureo-labs, ecosystem-banner, legal-ops, penny, **sim4d**, slide-holder,
 social-sentiment-monitor, yapp-box) plus the archived `claudecodeui` fork.
+
+The base is a live GraphQL enumeration run on **2026-08-24** (115 total; 112 non-fork =
+43 private + 69 public), incremented by one private repo — `lexidrop`, created 2026-08-25,
+after that enumeration, so a genuine new repo rather than an enumeration miss.
 
 Reconciliation against this document's previous enumeration (2026-07-25: 96 non-fork =
 27 private + 69 public): **+16 non-fork repos, all private**, all created between 2026-08-04
@@ -418,7 +425,7 @@ not to route around.
 | CFDI / SAT / tax filings | Karafiel | single authority |
 | Fabrication node capacity + pricing | Forj | consume ForgeSight |
 | Manufacturing execution telemetry | Pravara MES | feeds PhyndCRM federation |
-| 3D geometry kernel | geom-core | used by Sim4D + Yantra4D |
+| 3D geometry kernel | geom-core | used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`) |
 | Fashion-domain data: parametric pattern blocks + garments (FC-100), grading, fabric cards (physical + digital twin), construction techniques, tech packs | Fashion Cabinet | query the API; hard-goods solids federate to Yantra4D, never re-implemented |
 | Client brand assets: brand books, palettes, typography, logo variants, guidelines (multi-tenant DAM) | ceq | consume the `/v1/brand-kits/{id}/tokens` export; vendor into the app, never fork the source-of-truth |
 
@@ -451,16 +458,15 @@ not to route around.
 The strategy is: infrastructure and standards open so the ecosystem has something real to
 adopt; the market-gap intelligence and revenue engines closed.
 
-**The public licensing matrix in [`docs/LICENSING_STRATEGY.md`](docs/LICENSING_STRATEGY.md)
-is stale and in at least one case wrong** — it lists ForgeSight as Proprietary when
-`forgesight/LICENSE` is AGPL-3.0 (with a separate `DATA_LICENSE`). Rather than restate a
-strategic class here, the table below reports what the LICENSE file in each working tree
-actually says, re-checked 2026-08-24:
+The table below reports what the LICENSE file in each working tree actually says,
+re-checked 2026-08-24. Where it and
+[`docs/LICENSING_STRATEGY.md`](docs/LICENSING_STRATEGY.md) disagree, the LICENSE
+file wins, per that document's own rule:
 
 | Repo | LICENSE file says |
 |---|---|
 | `enclii`, `janua` | AGPL-3.0 (`enclii` additionally carries `COMMERCIAL_LICENSE.md` — dual-licensed) |
-| `geom-core` | Apache-2.0 *(the 2026-07-04 audit notes its README badge says MIT — a contradiction to arbitrate)* |
+| `geom-core` | Apache-2.0 *(LICENSE, `package.json` and `pyproject.toml` all agree; the README badge was corrected to Apache 2.0 on 2026-07-03, so the older MIT-badge contradiction is closed)* |
 | `sim4d` *(archived)*, `bloom-scroll` | MPL-2.0 |
 | `avala`, `forgesight`, `dhanam`, `karafiel`, `tezca`, `phynd-crm`, `selva-office`, `yantra4d`, `fashion-cabinet` | AGPL-3.0 |
 | `digifab-quoting` (Cotiza), `coforma-studio` | Proprietary, all rights reserved |
@@ -511,7 +517,9 @@ Status, with the honest date on each:
   remediation (OWID connector broken; 5 of 6 content types real) still stands as the newest
   depth check recorded here, and Fortuna's API being 502 on 2026-08-24 says its edge needs
   attention now.
-- **Engines.** `geom-core` published. **Sim4D is archived** (by 2026-08-07) — parametric
+- **Engines.** `geom-core`'s mesh-analysis core is real, but neither the npm nor the PyPI
+  artefact is published yet and its CI cannot build them, so nothing consumes it today.
+  **Sim4D is archived** (by 2026-08-07) — parametric
   design consolidated into Yantra4D, whose commons now spans ~36 active public hyperobject
   repos plus the private Fashion Cabinet soft-goods commons and the `hyperobjects-spec`
   conformance keystone.

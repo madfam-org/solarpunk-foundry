@@ -1,6 +1,9 @@
 # Port Allocation — reality check
 
-> **Last verified:** 2026-07-25
+> **Last verified:** 2026-07-25 (declarations). **Last updated:** 2026-09-04 —
+> punch-list item 3 closed and the `madfam-site` row corrected to its real
+> service names; no re-parse of the repository set was run, so every other row
+> still carries its 2026-07-25 verification.
 >
 > **Verified against:** every `enclii.yaml` and `.enclii.yml` at the root of the
 > 43 MADFAM repositories checked out locally — 35 of them carry one or both —
@@ -100,7 +103,7 @@ counted here.
 | `janua` | `enclii.yaml` | janua `8080` | 4100-4199 | no |
 | `karafiel` | `enclii.yaml` + `.enclii.yml` | karafiel `3050` | — none — | — |
 | `madfam-crawler` | `.enclii.yml` | crawler-api `8000`; redis-broker `6379` | — none — | — |
-| `madfam-site` | `enclii.yaml` + `.enclii.yml` | madfam-site `3000` | 5500-5599 | no |
+| `madfam-site` | `enclii.yaml` + `.enclii.yml` | madfam-web `3000`; madfam-cms `3000` | 5500-5599 | no |
 | `meridian` | `enclii.yaml` | meridian-api `8000`; meridian-app `3000`; meridian-landing `3000`; meridian-admin `3000` | — none — | — |
 | `phynd-crm` | `enclii.yaml` + `.enclii.yml` | phynd-crm-web `3000` | — none — | — |
 | `pravara-mes` | `enclii.yaml` | pravara-mes `4500` | — none — | — |
@@ -279,13 +282,14 @@ Re-scoped 2026-07-25. Two of the three previous items are closed.
    `enclii local up` for every service rather than Janua and Enclii alone. What
    should not continue is a third state where the scheme is neither followed nor
    withdrawn and gets re-cited downstream as a registry it is not.
-3. **Fix the Fortuna / ForgeSight block swap still living in `ops/`.** The prose
-   docs that carried this were corrected on 2026-07-25, but two runnable files
-   were not and still contradict the table above:
-   `ops/bin/madfam.sh:286-287` prints "ForgeSight 4300-4399 / Fortuna 4400-4499"
-   and health-checks ForgeSight on 4300, and `ops/local/init-databases.sql:28,33`
-   carries the same swapped comments. Both are outside this document's scope but
-   are the last places the swap survives. *(Verified 2026-07-25.)*
+3. ~~**Fix the Fortuna / ForgeSight block swap still living in `ops/`.**~~
+   **CLOSED 2026-09-04.** `ops/bin/madfam.sh` printed "ForgeSight 4300-4399 /
+   Fortuna 4400-4499" and health-checked Forgesight on 4300; `ops/local/
+   init-databases.sql` carried the same swapped comments. Both now match the
+   table above — Fortuna 4300-4399, Forgesight 4400-4499 — and the two
+   Forgesight health checks in `madfam.sh` were moved to 4400 with them. The
+   prose docs had been corrected on 2026-07-25; these were the last two places
+   the swap survived.
 4. **Converge on one config-file convention.** 13 repos carry both `enclii.yaml`
    and `.enclii.yml`; 9 of those disagree about ports, usually because the newer
    `enclii.yaml` omits them entirely. Until that is settled, "what port does this

@@ -1,6 +1,29 @@
 #!/usr/bin/env python3
 """Reusable production-readiness ratchet checks.
 
+DEPRECATED — not canonical. `scripts/ratchet/*.py` is the source of truth for
+the RFC 0021 checks (rfcs/0021-production-readiness-ratchet.md:49-50), and
+`.github/workflows/production-readiness-ratchet.yml` loads only from there.
+This file is a condensed single-file reimplementation of four of those five
+checks and will drift from them.
+
+Kept, not deleted, because it is the upstream of live vendored copies:
+`solarpunk-foundry/scripts/` (vendored 2026-09-04, verified identical),
+`blueprint-harvester/scripts/` and `enclii/scripts/` (drifted derivatives), each
+invoked by that repo's own `production-readiness-ratchet.yml`. Deleting it here
+would orphan those copies from their provenance. Migrate consumers to vendoring
+`scripts/ratchet/` instead, then remove this file.
+
+Vendored from internal-devops/scripts/ on 2026-09-04; re-vendor from there,
+never edit in place. Until 2026-09-04 the foundry copy omitted this banner
+entirely, so the repository that runs it in CI had no way to learn from the file
+that it is not canonical.
+
+Boundary checkpoint (2026-09-04, platform ops): public-safe repo automation.
+No node identities, addresses, credentials, cost data or private topology appear
+here or in its output. Policy: the repo-boundary contract in internal-devops,
+restated for public repos in `docs/PUBLIC_REPO_BOUNDARY.md`.
+
 Usage:
   check-production-readiness-ratchet.py [--warn-only] /path/to/repo
 

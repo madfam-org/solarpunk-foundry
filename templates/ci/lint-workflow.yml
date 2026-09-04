@@ -27,10 +27,10 @@ jobs:
     name: DocGuard
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Run DocGuard
-        uses: madfam-org/solarpunk-foundry/.github/actions/doc-guard@main
+        uses: madfam-org/solarpunk-foundry/.github/actions/doc-guard@05f164e7d3d0a701632d5970f01c01f56c40e583 # solarpunk-foundry main, 2026-09-04
         with:
           doc-path: './docs'
           strict: true

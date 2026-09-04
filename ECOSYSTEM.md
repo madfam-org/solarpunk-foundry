@@ -7,7 +7,8 @@
 > access as platform bootstrap or documented break-glass only, and record any
 > missing Enclii adapter gap.
 
-> **Last updated:** 2026-08-24
+> **Last updated:** 2026-09-04 — reconciliation edition. No new probes were run; the
+> verification anchors below are unchanged.
 > **Verification anchors:**
 > - Repo names / visibility / roles — `internal-devops/ecosystem/repo-registry.md`, *Last Verified 2026-08-24* (live GitHub enumeration).
 > - Routes and domains — `internal-devops/ecosystem/domain-map.md`, *Last Verified 2026-08-24* (live HTTP probes of every routed domain).
@@ -78,7 +79,8 @@ size do not match those manifests; treat `.enclii.yml` as unreconciled, not as a
 ### The platforms every repo should know about
 
 Roles and repo names follow `internal-devops/ecosystem/repo-registry.md`, **Last Verified
-2026-07-04**. Visibility re-checked against the GitHub API on **2026-07-25** — five of the
+2026-08-24** — the same anchor as this document's header block above, which the table was
+not re-anchored to when the header moved. Visibility is from that enumeration: five of the
 twelve repos below are private, so their `github.com/madfam-org/...` links **404 without org
 access**. That is stated here because an earlier edition of this table linked all twelve as if
 they were public.
@@ -267,7 +269,7 @@ bootstrapped, and CI self-skips green.
 | CFDI / SAT / tax filings | Karafiel | single authority |
 | Fabrication node capacity + pricing | Forj | consume ForgeSight |
 | Manufacturing execution telemetry | Pravara MES | feeds PhyndCRM federation |
-| 3D geometry kernel | geom-core | used by Sim4D + Yantra4D |
+| 3D geometry kernel | geom-core | used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`) |
 
 ---
 

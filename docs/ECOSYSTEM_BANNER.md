@@ -23,10 +23,10 @@ pnpm add @madfam/ecosystem-banner@0.1.4
 > `npm.madfam.io` needs a registry query. If `pnpm add` fails, that is the first
 > thing to check — not a version bump.
 
-> **License field mismatch, noted 2026-07-25.** This package declares
+> **License field mismatch — resolved 2026-09-04.** This package declared
 > `"license": "UNLICENSED"` while the repository `LICENSE` is MIT and every
-> other `@madfam/*` package declares `MIT`. Reconcile before wider adoption —
-> see [`LICENSING_STRATEGY.md`](./LICENSING_STRATEGY.md).
+> other `@madfam/*` package declares `MIT`. It now declares `MIT`, per the
+> shared-packages tier in [`LICENSING_STRATEGY.md`](./LICENSING_STRATEGY.md).
 
 See [`packages/ecosystem-banner/README.md`](../packages/ecosystem-banner/README.md)
 for the mount API, `testId`, and vendor-script behaviour.

@@ -1,44 +1,35 @@
 name: Public Hygiene
 
+# The hygiene scan reads every tracked TEXT file, not a doc glob, so the path
+# filter must not be narrower than the scan: a narrow filter under-triggers and
+# a `.npmrc`, `.yml` or `.sh` change would skip the guard that exists to read it.
 on:
   pull_request:
     paths:
-      - '**/*.md'
-      - '**/*.mdx'
-      - '**/*.txt'
-      - 'README*'
-      - 'SECURITY*'
-      - 'CONTRIBUTING*'
-      - 'CHANGELOG*'
-      - 'scripts/public-hygiene-check.sh'
-      - 'scripts/boundary-checkpoint-check.sh'
-      - 'scripts/tests/**'
-      - '.github/workflows/public-hygiene.yml'
+      - '**'
   push:
     branches: [main]
     paths:
-      - '**/*.md'
-      - '**/*.mdx'
-      - '**/*.txt'
-      - 'README*'
-      - 'SECURITY*'
-      - 'CONTRIBUTING*'
-      - 'CHANGELOG*'
-      - 'scripts/public-hygiene-check.sh'
-      - 'scripts/boundary-checkpoint-check.sh'
-      - 'scripts/tests/**'
-      - '.github/workflows/public-hygiene.yml'
+      - '**'
 
 permissions:
   contents: read
 
 jobs:
   public-hygiene:
-    runs-on: ubuntu-latest
+    # Runner arm. GitHub-hosted minutes are billing-blocked org-wide and free
+    # only for public repositories (ADR-010), so `ubuntu-latest` is the correct
+    # default while this repo is public -- which it permanently is, per the
+    # 2026-09-04 owner ruling. The arm exists so the runner choice is a single
+    # org-level variable rather than a hard pin: set `ARC_BOOTSTRAP_COMPLETE` to
+    # `true` and every job here moves to the self-hosted pool with no edit.
+    runs-on: ${{ vars.ARC_BOOTSTRAP_COMPLETE == 'true' && 'madfam-runners-blue' || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
+      - name: Public hygiene guard self-test
+        run: bash ./scripts/tests/test-public-hygiene.sh
       - name: Check public repository hygiene
         run: ./scripts/public-hygiene-check.sh
       - name: Boundary surface guard self-test

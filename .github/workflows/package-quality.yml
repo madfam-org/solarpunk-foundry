@@ -7,6 +7,8 @@ on:
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - "packages/**"
+      - "scripts/check-package-scripts.mjs"
+      - "scripts/check-package-scripts.test.mjs"
       - ".github/workflows/package-quality.yml"
   push:
     branches: [main]
@@ -15,6 +17,8 @@ on:
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - "packages/**"
+      - "scripts/check-package-scripts.mjs"
+      - "scripts/check-package-scripts.test.mjs"
       - ".github/workflows/package-quality.yml"
 
 permissions:
@@ -22,12 +26,18 @@ permissions:
 
 jobs:
   packages:
-    runs-on: ubuntu-latest
+    # Runner arm. GitHub-hosted minutes are billing-blocked org-wide and free
+    # only for public repositories (ADR-010), so `ubuntu-latest` is the correct
+    # default while this repo is public -- which it permanently is, per the
+    # 2026-09-04 owner ruling. The arm exists so the runner choice is a single
+    # org-level variable rather than a hard pin: set `ARC_BOOTSTRAP_COMPLETE` to
+    # `true` and every job here moves to the self-hosted pool with no edit.
+    runs-on: ${{ vars.ARC_BOOTSTRAP_COMPLETE == 'true' && 'madfam-runners-blue' || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "20"
 
@@ -39,6 +49,15 @@ jobs:
 
       - name: Typecheck
         run: pnpm -r typecheck
+
+      # Runs BEFORE the recursive steps below. `pnpm -r lint` and `pnpm -r test`
+      # skip any package that does not define the script and still exit 0, so
+      # without this step the two gates below can pass with almost no coverage.
+      - name: Package script coverage guard self-test
+        run: node --test scripts/check-package-scripts.test.mjs
+
+      - name: Package script coverage
+        run: node scripts/check-package-scripts.mjs
 
       - name: Lint
         run: pnpm -r lint

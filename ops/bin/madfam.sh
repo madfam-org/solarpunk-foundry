@@ -236,7 +236,7 @@ start_core_services() {
 
     # Health checks
     wait_for_health "http://localhost:4100/health" "Janua API" 45 || true
-    wait_for_health "http://localhost:4300/health" "ForgeSight API" 30 || true
+    wait_for_health "http://localhost:4400/health" "Forgesight API" 30 || true
     wait_for_health "http://localhost:3000/api/health" "MADFAM Site" 45 || true
 }
 
@@ -283,8 +283,8 @@ print_summary() {
     echo "  🌐 MADFAM Site:        http://localhost:3000 (Legacy)"
     echo "  🔐 Janua Auth:         http://localhost:4100 (4100-4199)"
     echo "  📊 Enclii PaaS:        http://localhost:4200 (4200-4299)"
-    echo "  📊 ForgeSight:         http://localhost:4300 (4300-4399)"
-    echo "  📈 Fortuna:            http://localhost:4400 (4400-4499)"
+    echo "  📈 Fortuna:            http://localhost:4300 (4300-4399)"
+    echo "  📊 Forgesight:         http://localhost:4400 (4400-4499)"
     echo "  🛠️  Cotiza Quoting:     http://localhost:4500 (4500-4599)"
     echo ""
     echo -e "${MAGENTA}Platform Apps${NC}"
@@ -292,7 +292,6 @@ print_summary() {
     echo "  🔧 Sim4D Studio:       http://localhost:4800 (4800-4899)"
     echo ""
     echo -e "${MAGENTA}Portfolio Sites${NC}"
-    echo "  🎨 Innovaciones MADFAM:         http://localhost:3010"
     echo "  🌱 Primavera3D:        http://localhost:3020"
     echo ""
     echo -e "${MAGENTA}Utilities${NC}"
@@ -402,7 +401,7 @@ cmd_status() {
     # Services (per PORT_ALLOCATION.md)
     check_health "Janua API" "http://localhost:4100/health"
     check_health "Enclii API" "http://localhost:4200/health"
-    check_health "ForgeSight API" "http://localhost:4300/health"
+    check_health "Forgesight API" "http://localhost:4400/health"
     check_health "MADFAM Site" "http://localhost:3000/api/health"
     check_health "Cotiza API" "http://localhost:4500/health"
 }

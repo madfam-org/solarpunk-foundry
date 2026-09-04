@@ -176,7 +176,7 @@ Every repository must have:
 | **Missing `LICENSE` file** | `factlas` and `symbiosis-hcm` among cloned repos. The 2026-07-04 org-wide audit found roughly ten active repositories with no `LICENSE` at all, and one whose `LICENSE` file is a saved HTML 404 page. |
 | **Missing `package.json` `license` field** | At least 7 of the cloned repositories with a `package.json` omit it: `enclii`, `janua`, `avala`, `bloom-scroll`, `forgesight`, `digifab-quoting`, `blueprint-harvester`. |
 | **Internal contradictions** | The 2026-07-04 audit flags license inconsistencies in several Yantra4D Commons repositories (`ultimate-box`, `multiboard`, `keyv2`, `stemfie`, `julia-vase`). Not verifiable here — those repositories are not cloned locally. |
-| **Package-level mismatch inside this repository** | `@madfam/ecosystem-banner` declares `"license": "UNLICENSED"` while the repository `LICENSE` is MIT and every other `@madfam/*` package declares `MIT`. Deliberate or not, it should be reconciled. |
+| ~~**Package-level mismatch inside this repository**~~ | **Closed 2026-09-04.** `@madfam/ecosystem-banner` declared `"license": "UNLICENSED"` while the repository `LICENSE` is MIT and every other `@madfam/*` package declares `MIT`. It now declares `MIT`, per the shared-packages tier above. |
 | **Stale copyright ranges** | The prescribed header still reads "2024-2025" while repositories created in 2026 (`meridian`, `coupler`, `dhanam-core`) are being licensed under it. `madfam-site/LICENSE` reads "2024-2025 MADFAM" rather than the full legal entity name. |
 
 ### Verification command

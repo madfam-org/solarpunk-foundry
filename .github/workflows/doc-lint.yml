@@ -17,9 +17,15 @@ on:
 jobs:
   doc-guard:
     name: DocGuard
-    runs-on: ubuntu-latest
+    # Runner arm. GitHub-hosted minutes are billing-blocked org-wide and free
+    # only for public repositories (ADR-010), so `ubuntu-latest` is the correct
+    # default while this repo is public -- which it permanently is, per the
+    # 2026-09-04 owner ruling. The arm exists so the runner choice is a single
+    # org-level variable rather than a hard pin: set `ARC_BOOTSTRAP_COMPLETE` to
+    # `true` and every job here moves to the self-hosted pool with no edit.
+    runs-on: ${{ vars.ARC_BOOTSTRAP_COMPLETE == 'true' && 'madfam-runners-blue' || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Run DocGuard
         uses: ./.github/actions/doc-guard

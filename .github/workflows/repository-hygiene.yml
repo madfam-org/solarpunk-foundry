@@ -9,10 +9,16 @@ on:
 jobs:
   no-tracked-node-modules:
     name: No tracked node_modules
-    runs-on: ubuntu-latest
+    # Runner arm. GitHub-hosted minutes are billing-blocked org-wide and free
+    # only for public repositories (ADR-010), so `ubuntu-latest` is the correct
+    # default while this repo is public -- which it permanently is, per the
+    # 2026-09-04 owner ruling. The arm exists so the runner choice is a single
+    # org-level variable rather than a hard pin: set `ARC_BOOTSTRAP_COMPLETE` to
+    # `true` and every job here moves to the self-hosted pool with no edit.
+    runs-on: ${{ vars.ARC_BOOTSTRAP_COMPLETE == 'true' && 'madfam-runners-blue' || 'ubuntu-latest' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Reject tracked dependency installs
         shell: bash
@@ -28,3 +34,18 @@ jobs:
             echo "${tracked}"
             exit 1
           fi
+
+  action-pins:
+    name: Actions pinned by SHA
+    # Same runner arm the rest of the fleet uses (row 1A.4), so this new job does
+    # not reintroduce a hard pin. No behaviour change until the org variable is set.
+    runs-on: ${{ vars.ARC_BOOTSTRAP_COMPLETE == 'true' && 'madfam-runners-blue' || 'ubuntu-latest' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Action pin guard self-test
+        run: bash ./scripts/tests/test-action-pins.sh
+
+      - name: Assert every third-party `uses:` is SHA-pinned
+        run: bash ./scripts/check-action-pins.sh

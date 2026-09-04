@@ -1,8 +1,16 @@
 /**
  * @madfam/core - Product Registry
  *
- * Authoritative registry of all products in the Solarpunk ecosystem.
- * This is derived directly from the governance manifesto (README.md Section IV).
+ * Hand-maintained registry of MADFAM ecosystem products, reconciled against the
+ * private ecosystem registry (repo names, visibility, licenses) and the domain
+ * map (routed hosts). Where this file and those records disagree, those records
+ * win.
+ *
+ * Last verified: 2026-09-04.
+ *
+ * INTERIM: this file is maintained by hand today. It is scheduled to become a
+ * generated projection of the single product registry, with a CI freshness
+ * check, so that visibility, license and domain facts cannot drift again.
  *
  * Changes to this file require governance approval.
  */
@@ -43,6 +51,21 @@ declare const licenseTypes: {
         readonly openSource: true;
         readonly purpose: "File-level copyleft, allows proprietary integration";
     };
+    readonly "Apache-2.0": {
+        readonly name: "Apache License 2.0";
+        readonly openSource: true;
+        readonly purpose: "Permissive with an explicit patent grant; libraries meant to be embedded";
+    };
+    readonly MIT: {
+        readonly name: "MIT License";
+        readonly openSource: true;
+        readonly purpose: "Maximally permissive; shared packages and developer tooling";
+    };
+    readonly "CERN-OHL-W-2.0": {
+        readonly name: "CERN Open Hardware Licence Version 2 - Weakly Reciprocal";
+        readonly openSource: true;
+        readonly purpose: "Open hardware designs; reciprocal for the design itself";
+    };
     readonly Proprietary: {
         readonly name: "Proprietary";
         readonly openSource: false;
@@ -50,29 +73,65 @@ declare const licenseTypes: {
     };
 };
 type LicenseType = keyof typeof licenseTypes;
+/**
+ * Lifecycle status. Absent means `"active"`.
+ *
+ * `"retired"` entries are tombstones: they are kept so that a consumer can
+ * recognise a dead brand and redirect, and MUST NOT be rendered as products.
+ */
+declare const productStatuses: {
+    readonly active: {
+        readonly name: "Active";
+        readonly renderable: true;
+    };
+    readonly retired: {
+        readonly name: "Retired";
+        readonly renderable: false;
+    };
+};
+type ProductStatus = keyof typeof productStatuses;
 interface Product {
     /** Product identifier (used in code) */
     id: string;
     /** Display name */
     name: string;
+    /** Expanded acronym, where the display name is one */
+    acronym?: string;
     /** Brief description */
     description: string;
     /** Ecosystem layer */
     layer: EcosystemLayer;
-    /** Primary domain */
-    domain: string;
+    /**
+     * Primary routed domain. Optional: a product with no routed host omits it
+     * rather than carrying an invented one.
+     */
+    domain?: string;
     /** GitHub repository name */
     repo: string;
-    /** GitHub organization */
-    githubOrg: "madfam-org" | "madfam";
-    /** License type */
+    /**
+     * GitHub organization. `madfam-org` holds the ecosystem; the separate
+     * `legal-ops` org holds `leyes-como-codigo-mx`.
+     */
+    githubOrg: "madfam-org" | "legal-ops";
+    /** License type of the code */
     license: LicenseType;
+    /**
+     * Separate license governing distributed data, where the code license does
+     * not cover it (e.g. Forgesight's price corpus).
+     */
+    dataLicense?: string;
     /** Default port for local development */
     defaultPort?: number;
-    /** Whether this product is publicly available */
+    /** Whether the repository is publicly readable */
     isPublic: boolean;
     /** Roadmap phase (1-5) */
     phase: 1 | 2 | 3 | 4 | 5;
+    /** Lifecycle status; absent means active */
+    status?: ProductStatus;
+    /** For a retired product: the id/slug of the product that absorbed it */
+    successorSlug?: string;
+    /** For a retired product: where a visitor should be sent instead */
+    redirectTo?: string;
 }
 /**
  * Complete product registry
@@ -112,7 +171,7 @@ declare const products: {
         readonly layer: "roots";
         readonly domain: "fortuna.tube";
         readonly repo: "fortuna";
-        readonly githubOrg: "madfam";
+        readonly githubOrg: "madfam-org";
         readonly license: "Proprietary";
         readonly defaultPort: 4400;
         readonly isPublic: false;
@@ -120,13 +179,14 @@ declare const products: {
     };
     readonly forgesight: {
         readonly id: "forgesight";
-        readonly name: "ForgeSight";
+        readonly name: "Forgesight";
         readonly description: "The Pricer. Real-time manufacturing cost data.";
         readonly layer: "roots";
         readonly domain: "forgesight.quest";
         readonly repo: "forgesight";
-        readonly githubOrg: "madfam";
-        readonly license: "Proprietary";
+        readonly githubOrg: "madfam-org";
+        readonly license: "AGPL-3.0";
+        readonly dataLicense: "DATA_LICENSE";
         readonly defaultPort: 4300;
         readonly isPublic: false;
         readonly phase: 2;
@@ -138,7 +198,7 @@ declare const products: {
         readonly layer: "roots";
         readonly domain: "blueprint.tube";
         readonly repo: "blueprint-harvester";
-        readonly githubOrg: "madfam";
+        readonly githubOrg: "madfam-org";
         readonly license: "Proprietary";
         readonly isPublic: false;
         readonly phase: 2;
@@ -148,7 +208,7 @@ declare const products: {
         readonly name: "BloomScroll";
         readonly description: "The Filter. Slow Web content aggregator.";
         readonly layer: "roots";
-        readonly domain: "bloomscroll.app";
+        readonly domain: "almanac.solar";
         readonly repo: "bloom-scroll";
         readonly githubOrg: "madfam-org";
         readonly license: "MPL-2.0";
@@ -158,25 +218,25 @@ declare const products: {
     readonly geomCore: {
         readonly id: "geomCore";
         readonly name: "geom-core";
-        readonly description: "The Physics Standard. C++ geometry analysis library.";
+        readonly description: "The Physics Standard. C++ geometry analysis library (WASM + Python bindings). A library, not a deployed service: no domain.";
         readonly layer: "stem";
-        readonly domain: "geom-core.dev";
         readonly repo: "geom-core";
         readonly githubOrg: "madfam-org";
-        readonly license: "MPL-2.0";
+        readonly license: "Apache-2.0";
         readonly isPublic: true;
         readonly phase: 3;
     };
     readonly avala: {
         readonly id: "avala";
-        readonly name: "AVALA";
+        readonly name: "Avala";
+        readonly acronym: "Alineamiento y Verificación de Aprendizajes y Logros Acreditables";
         readonly description: "The Human Standard. Applied learning verification.";
         readonly layer: "stem";
         readonly domain: "avala.studio";
         readonly repo: "avala";
         readonly githubOrg: "madfam-org";
         readonly license: "AGPL-3.0";
-        readonly isPublic: true;
+        readonly isPublic: false;
         readonly phase: 3;
     };
     readonly sim4d: {
@@ -191,6 +251,8 @@ declare const products: {
         readonly defaultPort: 5173;
         readonly isPublic: true;
         readonly phase: 3;
+        readonly status: "retired";
+        readonly successorSlug: "yantra4d";
     };
     readonly forj: {
         readonly id: "forj";
@@ -199,19 +261,19 @@ declare const products: {
         readonly layer: "fruit";
         readonly domain: "forj.design";
         readonly repo: "forj";
-        readonly githubOrg: "madfam";
+        readonly githubOrg: "madfam-org";
         readonly license: "Proprietary";
         readonly isPublic: false;
         readonly phase: 4;
     };
     readonly cotiza: {
         readonly id: "cotiza";
-        readonly name: "Cotiza Studio";
+        readonly name: "Cotiza";
         readonly description: "The Merchant. Automated quoting engine.";
         readonly layer: "fruit";
         readonly domain: "cotiza.studio";
         readonly repo: "digifab-quoting";
-        readonly githubOrg: "madfam";
+        readonly githubOrg: "madfam-org";
         readonly license: "Proprietary";
         readonly defaultPort: 4500;
         readonly isPublic: false;
@@ -227,7 +289,7 @@ declare const products: {
         readonly githubOrg: "madfam-org";
         readonly license: "AGPL-3.0";
         readonly defaultPort: 4700;
-        readonly isPublic: true;
+        readonly isPublic: false;
         readonly phase: 1;
     };
     readonly coforma: {
@@ -237,7 +299,7 @@ declare const products: {
         readonly layer: "fruit";
         readonly domain: "coforma.studio";
         readonly repo: "coforma-studio";
-        readonly githubOrg: "madfam";
+        readonly githubOrg: "madfam-org";
         readonly license: "Proprietary";
         readonly isPublic: false;
         readonly phase: 1;
@@ -247,7 +309,6 @@ declare const products: {
         readonly name: "Galvana";
         readonly description: "The Reactor. Electrochemistry simulation platform.";
         readonly layer: "fruit";
-        readonly domain: "galvana.io";
         readonly repo: "electrochem-sim";
         readonly githubOrg: "madfam-org";
         readonly license: "MPL-2.0";
@@ -259,12 +320,26 @@ declare const products: {
         readonly name: "Primavera3D";
         readonly description: "Internal 3D printing operations (dogfooding target).";
         readonly layer: "fruit";
-        readonly domain: "primavera3d.com";
+        readonly domain: "primavera3d.pro";
         readonly repo: "primavera3d";
         readonly githubOrg: "madfam-org";
         readonly license: "Proprietary";
         readonly isPublic: false;
         readonly phase: 4;
+    };
+    readonly penny: {
+        readonly id: "penny";
+        readonly name: "PENNY";
+        readonly description: "RETIRED. Assistant platform; everything PENNY did is absorbed by Selva. Repository archived; penny.onl 301-redirects to selva.town.";
+        readonly layer: "fruit";
+        readonly repo: "penny";
+        readonly githubOrg: "madfam-org";
+        readonly license: "Proprietary";
+        readonly isPublic: true;
+        readonly phase: 4;
+        readonly status: "retired";
+        readonly successorSlug: "selva";
+        readonly redirectTo: "https://selva.town";
     };
 };
 /**
@@ -276,7 +351,16 @@ type ProductId = keyof typeof products;
  */
 declare const productIds: ProductId[];
 /**
- * Get products by ecosystem layer
+ * Whether a product entry is a tombstone for a retired product.
+ * Retired products must never be rendered as part of the catalog.
+ */
+declare function isRetired(product: Product): boolean;
+/**
+ * Every product that is still a product (tombstones excluded).
+ */
+declare function getActiveProducts(): Product[];
+/**
+ * Get active products by ecosystem layer
  */
 declare function getProductsByLayer(layer: EcosystemLayer): Product[];
 /**
@@ -284,7 +368,8 @@ declare function getProductsByLayer(layer: EcosystemLayer): Product[];
  */
 declare function getProductsByLicense(license: LicenseType): Product[];
 /**
- * Get public/open-source products
+ * Get products whose repository is publicly readable. Tombstones are excluded:
+ * `penny` is a public archived repo but must not appear in any catalog.
  */
 declare function getPublicProducts(): Product[];
 /**
@@ -304,8 +389,10 @@ declare function getProduct(id: ProductId): Product;
  */
 declare function getProductGitHubUrl(id: ProductId): string;
 /**
- * Get product website URL
+ * Get product website URL, or `null` when the product has no routed host.
+ * Libraries (geom-core) and roadmap-only entries (galvana) have none, and a
+ * fabricated hostname is worse than no link.
  */
-declare function getProductWebsiteUrl(id: ProductId): string;
+declare function getProductWebsiteUrl(id: ProductId): string | null;
 
-export { type EcosystemLayer, type LicenseType, type Product, type ProductId, ecosystemLayers, getProduct, getProductGitHubUrl, getProductWebsiteUrl, getProductsByLayer, getProductsByLicense, getProductsByPhase, getPublicProducts, isValidProductId, licenseTypes, productIds, products };
+export { type EcosystemLayer, type LicenseType, type Product, type ProductId, type ProductStatus, ecosystemLayers, getActiveProducts, getProduct, getProductGitHubUrl, getProductWebsiteUrl, getProductsByLayer, getProductsByLicense, getProductsByPhase, getPublicProducts, isRetired, isValidProductId, licenseTypes, productIds, productStatuses, products };
