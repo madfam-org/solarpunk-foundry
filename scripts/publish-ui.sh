@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# Boundary checkpoint (2026-09-04, platform ops): public operator tooling.
+# Public-safe abstractions only; node identities, credentials, provider account
+# detail and cost data stay in internal-devops.
+# Policy: docs/PUBLIC_REPO_BOUNDARY.md
+
 #
 # publish-ui.sh - Build and publish @madfam/ui to npm.madfam.io
 #

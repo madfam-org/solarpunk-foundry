@@ -1,4 +1,9 @@
 #!/bin/bash
+# Boundary checkpoint (2026-09-04, platform ops): public operator tooling.
+# Public-safe abstractions only; node identities, credentials, provider account
+# detail and cost data stay in internal-devops.
+# Policy: docs/PUBLIC_REPO_BOUNDARY.md
+
 # =============================================================================
 #  HISTORICAL — DO NOT RUN AGAINST MADFAM PRODUCTION.  Superseded 2026.
 #  Reviewed 2026-07-25.

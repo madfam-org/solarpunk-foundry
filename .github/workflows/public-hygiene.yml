@@ -32,5 +32,7 @@ jobs:
         run: bash ./scripts/tests/test-public-hygiene.sh
       - name: Check public repository hygiene
         run: ./scripts/public-hygiene-check.sh
+      - name: Boundary surface guard self-test
+        run: bash ./scripts/tests/test-boundary-surfaces.sh
       - name: Check boundary checkpoints
         run: bash ./scripts/boundary-checkpoint-check.sh

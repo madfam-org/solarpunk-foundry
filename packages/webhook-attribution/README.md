@@ -1,5 +1,10 @@
 # @madfam/webhook-attribution
 
+> **Boundary checkpoint (2026-09-04, platform ops):** public package surface.
+> Public-safe API and usage detail only; no private topology, node identities,
+> credentials or cost data.
+> Policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../../docs/PUBLIC_REPO_BOUNDARY.md)
+
 Shared, audited implementation of the MADFAM **signed payment-attribution
 fan-out** contract. One package so every emitter and receiver
 (`routecraft`, `dhanam`, `phynd-crm`, and future services) shares the same HMAC
