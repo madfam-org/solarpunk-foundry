@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Boundary checkpoint (2026-09-04, platform ops): public repo automation.
+# Public-safe abstractions only; the private literals this guard needs are read
+# from internal-devops, never written here.
+# Policy: docs/PUBLIC_REPO_BOUNDARY.md
 set -euo pipefail
 
 # Public-repo hygiene guard for solarpunk-foundry.

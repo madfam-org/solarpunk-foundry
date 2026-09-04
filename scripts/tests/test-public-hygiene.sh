@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Boundary checkpoint (2026-09-04, platform ops): public repo automation test.
+# All fixtures are synthetic; no real credential, host or address appears here.
+# Policy: docs/PUBLIC_REPO_BOUNDARY.md
 set -uo pipefail
 
 # Behavioural tests for scripts/public-hygiene-check.sh.
