@@ -7,7 +7,8 @@
 > access as platform bootstrap or documented break-glass only, and record any
 > missing Enclii adapter gap.
 
-**Last updated:** 2026-08-24
+**Last updated:** 2026-09-04 — reconciliation edition. No new probes were run; the
+verification anchors below are unchanged.
 
 **Verification anchors — every claim below inherits one of these, and each section says which:**
 
@@ -78,7 +79,7 @@ repo whose GitHub link 404s without org access — visibility re-checked 2026-07
 | Platform | Repo | Domains | Role |
 |---|---|---|---|
 | **Fortuna** 🔒 | `fortuna` | `fortuna.tube`, `api.fortuna.tube` | Problem intelligence — discovers and validates market gaps from multilingual signals. Absorbed the archived `social-sentiment-monitor` (Perception Index + anomaly detector) per RFC 0016 on 2026-05-03. Consumes inference through Selva (§3.2). |
-| **ForgeSight** 🔒 | `forgesight` | `forgesight.quest`, `app.`, `api.`, `admin.` | Manufacturing pricing intelligence; pricing/vendor feed into Cotiza. LICENSE file is AGPL-3.0 plus a separate `DATA_LICENSE` (checked 2026-07-25) — note `docs/LICENSING_STRATEGY.md` still lists it as Proprietary, which is wrong. |
+| **ForgeSight** 🔒 | `forgesight` | `forgesight.quest`, `app.`, `api.`, `admin.` | Manufacturing pricing intelligence; pricing/vendor feed into Cotiza. LICENSE file is AGPL-3.0 plus a separate `DATA_LICENSE` (checked 2026-07-25). |
 | **BlueprintTube** 🔒 | `blueprint-harvester` | `blueprint.tube`, `api.`, `app.`, `admin.` (`app.`/`admin.` recorded live 2026-07-09) | 3D-model indexer and printability analyzer. |
 | **BloomScroll** | [`bloom-scroll`](https://github.com/madfam-org/bloom-scroll) | `almanac.solar` | Slow-web content aggregator. A 2026-07-16 internal remediation found its OWID connector entirely broken and only 5 of 6 content types real after fixes — routes live is not the same as content healthy. |
 | **madfam-crawler** 🔒 | `madfam-crawler` | — | Scraping-as-a-service (Crawl4AI + ScrapegraphAI). Feeds Tezca's DOF/RMF fiscal monitoring and others. |
@@ -87,7 +88,7 @@ repo whose GitHub link 404s without org access — visibility re-checked 2026-07
 
 | Platform | Repo | Role |
 |---|---|---|
-| **geom-core** | [`geom-core`](https://github.com/madfam-org/geom-core) | Geometry-analysis core exposed to WASM + Python. Backs Sim4D and Yantra4D. LICENSE is Apache-2.0; the 2026-07-04 audit notes the README badge says MIT — an unresolved contradiction. |
+| **geom-core** | [`geom-core`](https://github.com/madfam-org/geom-core) | C++17 geometry-analysis library exposed to WASM + Python. Used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`). Apache-2.0 — LICENSE, `package.json` and `pyproject.toml` agree, and the README badge was corrected to Apache 2.0 on 2026-07-03, closing the 2026-07-04 MIT-badge contradiction. A library, not a service: no deployed domain. |
 | **AVALA** 🔒 | `avala` | Learning verification (Mexican EC/CONOCER + DC-3). **Repo flipped private 2026-07-16.** The 2026-07-09 platform audit records catalog surfaces with published counts of zero, validation-gated by policy. |
 | **routecraft** 🔒 | `routecraft` | Trip-engine SaaS. Today's payment-event emitter (§3.3); the ratified target moves emission to Dhanam. |
 
@@ -161,8 +162,11 @@ below; the "PRD-only, no working code" registry note is long superseded) · `dha
 (AGPLv3 open core — dormant since creation, its only CI run failed) · `meridian` (see below).
 
 **Private 🔒:** `factlas` (`factl.as`, `factlas.com`) · `gh-backups` ·
-`proton-bridge-pipeline` · `symbiosis-hcm` (Mexican payroll, Shapley compensation, ONA,
-wellbeing; human-facing surfaces live since 2026-08-04) · `tulana` (internal pricing
+`proton-bridge-pipeline` · `symbiosis-hcm` (Mexican payroll — ISR, IMSS, INFONAVIT, ISN —
+plus employees, time-off and recruiting; human-facing surfaces live since 2026-08-04. ONA,
+wellbeing and Shapley compensation remain empty package stubs, not shipped features) ·
+`lexidrop` (domain-acquisition intelligence; created 2026-08-25, live at `ld.madfam.io`) ·
+`tulana` (internal pricing
 intelligence; deployed, Janua-gated) · `converge-dash` (executive metrics; rollout blocked) ·
 the games cluster: `turnbased-engine` + `stratum-tcg` + `tablaco`/`tablaco-v2`/
 `tablaco-tabletop` + `arcanic-rosetta` + `madfam-baraja` · `zavlo` (→ Karafiel integration
@@ -203,11 +207,13 @@ law as code.
 | `slide-holder`, `yapp-box` | **ARCHIVED** Yantra4D Commons projects. |
 | `Auto-Claude`, `claudecodeui` | Both exist **as forks** (the old registry's "deleted" claim came from a fork-blind search API — the registry was rebuilt 2026-08-24 and now says so). `claudecodeui` is archived; its one unique piece of value, the `DiffViewer` component, lives on in `selva-office`. Neither is an active MADFAM project. |
 
-### 1.3 Repo counts — live enumeration, 2026-08-24
+### 1.3 Repo counts — as of 2026-08-29
 
-**Live GitHub enumeration, run 2026-08-24:** **115 repos**, 3 of them forks. Excluding
-forks: **112 = 43 private + 69 public**, with **8 archived** non-fork (plus the archived
-`claudecodeui` fork). Against the previous enumeration (2026-07-25: 96 = 27 + 69):
+**116 repos**, 3 of them forks. Excluding forks: **113 = 44 private + 69 public**, with
+**8 archived** non-fork (plus the archived `claudecodeui` fork). The base is the live
+GraphQL enumeration of **2026-08-24** (115 total; 112 non-fork = 43 + 69), plus one
+private repo created after it: `lexidrop`, created 2026-08-25. Against the previous
+enumeration (2026-07-25: 96 = 27 + 69):
 **+16 non-fork repos, all private, all created 2026-08-04 → 2026-08-22** — the
 vCTO/client-delivery cluster, the new platforms (Kalya, Acervo, Marca, Angelia, Fashion
 Cabinet, hyperobjects-spec, migration-platform, Nauta), and the games cluster. Inside the
@@ -349,7 +355,7 @@ each carry their own, byte-identical, implementation.
 | CFDI / SAT / tax filings | Karafiel | single authority; consumes Dhanam + Tezca |
 | Fabrication node capacity + pricing | Forj | consumes ForgeSight |
 | Manufacturing execution telemetry | Pravara MES | feeds PhyndCRM federation |
-| 3D geometry kernel | geom-core | used by Sim4D + Yantra4D |
+| 3D geometry kernel | geom-core | used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`) |
 
 ### 3.5 CORS
 
