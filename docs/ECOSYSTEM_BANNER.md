@@ -62,6 +62,50 @@ Two constraints that apply to anything the banner links to:
   (owner confirmation recorded 2026-07-09). The canonical company domain is
   `madfam.io`.
 
+## Platform list membership — generated, not hand-kept
+
+`DEFAULT_ECOSYSTEM_PLATFORMS` is generated. `packages/ecosystem-banner/src/platforms.generated.ts`
+is rendered from the product projection vendored in `@madfam/core`
+(`src/products/projection.public.json`) by `scripts/check-product-projection.mjs`,
+and Package Quality fails when the two drift apart. `platforms.ts` keeps only the
+public `EcosystemPlatform` type and the re-export, so no consumer import changes.
+
+**The filter.** A product is in the ticker when all of these hold:
+
+- it has a **public product surface** — a routed `domains.primary` — and that
+  domain is **not** one of its own `domains.infra_hosts` (this is why Janua links
+  `janua.dev` rather than an auth endpoint);
+- its `lifecycle` is `live` or `beta`;
+- it is not a tombstone;
+- `site.show_in_banner` is true.
+
+Order is the registry's `site.order`. "Public surface" is deliberately *not*
+`repo.visibility`: Dhanam and Forgesight are private repositories with live
+public products, and filtering on the repository would have deleted them.
+
+**19 platforms at registry version 4.** Against the hand-kept list this repo
+carried until 2026-09-05:
+
+| Change | Slugs |
+|---|---|
+| Added (7) | `avala`, `voxa`, `acervo`, `kalya`, `nauta`, `fashion-cabinet`, `factlas` |
+| Removed (1) | `routecraft` — it has no entry in the product registry at all, so nothing selects it; recorded as O25 |
+| Unchanged (12) | `enclii`, `janua`, `selva`, `forgesight`, `dhanam`, `rondelio`, `karafiel`, `tezca`, `yantra4d`, `cotiza`, `pravara-mes`, `phynd-crm` |
+
+A selected product with no `site.banner_keyword` is a **hard failure** of the
+check, never a silently dropped row: the seven added products had no keyword
+until the registry gained one on 2026-09-05, and the only safe answers are "add
+it to the registry" or "fail" — never "invent a keyword in a public repo". A
+shorter ticker that renders cleanly is indistinguishable from a correct one.
+
+**Probe, 2026-09-05 (HEAD, following no redirects).** The 19 primary domains
+answered: 17 × `200`, 1 × `307` (`dhan.am`), 1 × `404` (`cto.madfam.io`, Nauta).
+`forgesight.quest` returned no status at all from the probing environment (the
+connection was reset before any response), so it is **unverified here, not down**.
+Neither the 404 nor the unverified host is fixed by editing this list: the
+lifecycle and domain claims are registry facts, and `cto.madfam.io` answering 404
+while Nauta is `lifecycle: live` is a registry question.
+
 ## Rollout status
 
 Phase 1 and Phase 2 landings were remediated in **June 2026**. The full

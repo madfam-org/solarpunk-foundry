@@ -18,5 +18,6 @@ if [[ -z "$TARGET" ]]; then
 fi
 
 mkdir -p "$TARGET"
-cp "$ROOT/src/platforms.ts" "$ROOT/src/ecosystem-banner.tsx" "$ROOT/src/index.ts" "$TARGET/"
+cp "$ROOT/src/platforms.ts" "$ROOT/src/platforms.generated.ts" \
+   "$ROOT/src/ecosystem-banner.tsx" "$ROOT/src/index.ts" "$TARGET/"
 echo "Vendored ecosystem-banner source to $TARGET"

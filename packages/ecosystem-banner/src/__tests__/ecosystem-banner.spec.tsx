@@ -27,9 +27,10 @@ describe('EcosystemBanner', () => {
     });
 
     it('duplicates the track for seamless marquee looping', () => {
-      render(<EcosystemBanner platforms={DEFAULT_ECOSYSTEM_PLATFORMS.slice(0, 2)} />);
-      expect(screen.getAllByText('Dhanam')).toHaveLength(2);
-      expect(screen.getAllByText('Selva')).toHaveLength(2);
+      const [first, second] = DEFAULT_ECOSYSTEM_PLATFORMS;
+      render(<EcosystemBanner platforms={[first!, second!]} />);
+      expect(screen.getAllByText(first!.name)).toHaveLength(2);
+      expect(screen.getAllByText(second!.name)).toHaveLength(2);
     });
 
     it('renders dismiss button with proper aria-label', () => {
@@ -86,8 +87,37 @@ describe('EcosystemBanner', () => {
   });
 
   describe('platform list invariants', () => {
+    // The list is generated from the vendored product projection by
+    // scripts/check-product-projection.mjs; the freshness diff in Package
+    // Quality is what proves it matches the registry. These assertions cover
+    // what a diff cannot: the properties a banner entry must have whatever the
+    // registry says.
     it('keeps the default live platform count explicit', () => {
-      expect(DEFAULT_ECOSYSTEM_PLATFORMS).toHaveLength(13);
+      expect(DEFAULT_ECOSYSTEM_PLATFORMS).toHaveLength(19);
+    });
+
+    it('gives every entry a keyword, a name and an apex https url', () => {
+      for (const platform of DEFAULT_ECOSYSTEM_PLATFORMS) {
+        expect(platform.keyword.trim()).not.toBe('');
+        expect(platform.name.trim()).not.toBe('');
+        expect(platform.url).toMatch(/^https:\/\/[^/]+$/);
+      }
+    });
+
+    it('never links an infra endpoint', () => {
+      const urls = DEFAULT_ECOSYSTEM_PLATFORMS.map((p) => p.url);
+      for (const infra of [
+        'https://auth.madfam.io',
+        'https://npm.madfam.io',
+        'https://inference.selva.town',
+      ]) {
+        expect(urls).not.toContain(infra);
+      }
+    });
+
+    it('carries no duplicate platform', () => {
+      const names = DEFAULT_ECOSYSTEM_PLATFORMS.map((p) => p.name);
+      expect(new Set(names).size).toBe(names.length);
     });
 
     it('uses the canonical Forgesight name and landing domain', () => {
@@ -110,6 +140,14 @@ describe('EcosystemBanner', () => {
       for (const retired of ['Sim4D', 'PENNY', 'SPARK']) {
         expect(names).not.toContain(retired);
       }
+    });
+
+    it('carries no product that has no registry entry', () => {
+      // RouteCraft was hand-added to this list and has no entry in the product
+      // registry at all (recorded as O25). Generation removed it; this asserts
+      // it cannot be typed back in.
+      const names = DEFAULT_ECOSYSTEM_PLATFORMS.map((p) => p.name);
+      expect(names).not.toContain('RouteCraft');
     });
   });
 

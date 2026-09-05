@@ -78,7 +78,7 @@ attestation). `publishConfig` targets are inconsistent across the set.
 
 | Package | Version | Purpose |
 |---|---|---|
-| `@madfam/core` | 0.1.0 | Brand, locales, currencies, event taxonomy, product definitions |
+| `@madfam/core` | 0.1.0 | Brand, locales, currencies, event taxonomy, product registry (generated from the vendored projection; see `scripts/check-product-projection.mjs`) |
 | `@madfam/ui` | 0.2.0 | **Deprecated** — UI moved to a per-app "incubator" model (`packages/ui/README.md`) |
 | `@madfam/analytics` | 0.1.0 | PostHog instrumentation + event schema |
 | `@madfam/auth-resilience` | 0.1.0 | Janua circuit breaker + retry |

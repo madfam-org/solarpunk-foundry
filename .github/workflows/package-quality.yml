@@ -9,6 +9,9 @@ on:
       - "packages/**"
       - "scripts/check-package-scripts.mjs"
       - "scripts/check-package-scripts.test.mjs"
+      - "scripts/check-product-projection.mjs"
+      - "scripts/check-product-projection.test.mjs"
+      - "docs/LICENSING_STRATEGY.md"
       - ".github/workflows/package-quality.yml"
   push:
     branches: [main]
@@ -19,6 +22,9 @@ on:
       - "packages/**"
       - "scripts/check-package-scripts.mjs"
       - "scripts/check-package-scripts.test.mjs"
+      - "scripts/check-product-projection.mjs"
+      - "scripts/check-product-projection.test.mjs"
+      - "docs/LICENSING_STRATEGY.md"
       - ".github/workflows/package-quality.yml"
 
 permissions:
@@ -46,6 +52,16 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      # Runs BEFORE the typecheck. `packages/core/src/products.generated.ts` is
+      # rendered from the vendored public projection of the private product
+      # registry; a stale or hand-edited copy should be reported by its own guard
+      # with the fix in the message, not surface later as a type error.
+      - name: Product projection guard self-test
+        run: node --test scripts/check-product-projection.test.mjs
+
+      - name: Product projection freshness, retired-brand and boundary check
+        run: node scripts/check-product-projection.mjs
 
       - name: Typecheck
         run: pnpm -r typecheck

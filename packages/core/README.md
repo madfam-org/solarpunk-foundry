@@ -122,27 +122,50 @@ track('user.signed_up', {
 
 ### Product Registry
 
+**Generated, not hand-kept.** Product facts come from
+`src/products/projection.public.json`, the public-safe projection of the one
+private product registry, rendered into `src/products.generated.ts`. The
+hand-kept half (`src/products.ts`) is the `Product` type, the licence/layer/
+lifecycle vocabularies and the lookups. `scripts/check-product-projection.mjs`
+fails CI if the vendored projection is edited in place, if the generated module
+drifts from it, if a retired brand would render, or if a licence leaves the enum
+documented in [`LICENSING_STRATEGY.md`](../../docs/LICENSING_STRATEGY.md).
+
 ```typescript
-import { 
-  products, 
-  getProduct, 
+import {
+  products,
+  getProduct,
   getProductsByLayer,
+  getProductsByLifecycle,
   getProductGitHubUrl,
-  type ProductId 
+  getProductWebsiteUrl,
+  retiredProducts,
+  type ProductId,
 } from '@madfam/core';
 
-// Get product info
+// Get product info. Keys are registry slugs.
 const janua = getProduct('janua');
 console.log(janua.domain); // "janua.dev"
 console.log(janua.license); // "AGPL-3.0"
+console.log(janua.lifecycle); // "live"
 
 // Get products by layer
 const infrastructure = getProductsByLayer('soil');
-// [enclii, janua]
 
-// Generate URLs
-getProductGitHubUrl('sim4d'); // "https://github.com/madfam-org/sim4d"
+// Get products by lifecycle stage
+const shipping = getProductsByLifecycle('live', 'beta');
+
+// Generate URLs. `null`, never a fabricated one, when the fact is absent.
+getProductGitHubUrl('geom-core'); // "https://github.com/madfam-org/geom-core"
+getProductWebsiteUrl('geom-core'); // null — a library, no routed host
+
+// Retired brands are tombstones, never products: recognise and redirect.
+retiredProducts.sim4d.redirectTo; // "https://yantra4d.com"
 ```
+
+**Not carried, deliberately:** `description` (per-locale copy lives in the
+registry's copy bundles, not in the projection), `defaultPort` (private
+topology), `phase` (a roadmap number no record owned).
 
 ### Legal Information
 
@@ -175,7 +198,7 @@ function Footer() {
 | `locales` | Supported languages, metadata | Internationalization |
 | `currencies` | Supported currencies, formatting | Financial operations |
 | `events` | Analytics event taxonomy | Cross-app tracking |
-| `products` | Product registry, metadata | Ecosystem awareness |
+| `products` | Product registry (generated from the projection) | Ecosystem awareness |
 | `legal` | Company info, legal URLs | Compliance |
 
 ## What's NOT Included

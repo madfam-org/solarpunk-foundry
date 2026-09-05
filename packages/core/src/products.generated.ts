@@ -1,14 +1,33 @@
-// src/products.generated.ts
-var PRODUCT_PROJECTION = {
+/**
+ * GENERATED FILE - DO NOT EDIT BY HAND.
+ *
+ * Rendered from packages/core/src/products/projection.public.json by
+ * scripts/check-product-projection.mjs. That JSON is the public-safe projection
+ * of the private product registry; edit the registry, re-run the private
+ * generator, re-vendor the projection, then run this script with --write.
+ *
+ * A hand edit here is reverted by the next run and fails Package Quality.
+ *
+ * The hand-kept half of the module - the `Product` type, the licence and layer
+ * vocabularies and every lookup - lives next door in `products.ts`.
+ */
+
+/** The projection stamp, carried so a consumer can tell which registry version it holds. */
+export const PRODUCT_PROJECTION = {
   schema: "madfam-product-projection/v1",
   generatedFrom: "internal-devops/ecosystem/registry/products.yaml",
   registryVersion: 4,
   lastUpdated: "2026-09-05",
   exportPrivateRepoNames: true,
   /** sha256 of the vendored projection.public.json this module was rendered from. */
-  sourceSha256: "759119046a21d7bb36e453b0133a8654d38c0d321a90ae0c0c933255294fad10"
-};
-var generatedProducts = {
+  sourceSha256: "759119046a21d7bb36e453b0133a8654d38c0d321a90ae0c0c933255294fad10",
+} as const;
+
+/**
+ * Every renderable product, keyed by registry slug, in registry order.
+ * Retired products are NOT here by construction - see `generatedRetiredProducts`.
+ */
+export const generatedProducts = {
   enclii: {
     id: "enclii",
     name: "Enclii",
@@ -26,31 +45,31 @@ var generatedProducts = {
       "api.enclii.dev",
       "admin.enclii.dev",
       "status.enclii.dev",
-      "docs.enclii.dev"
+      "docs.enclii.dev",
     ],
     infraHosts: [
       "npm.madfam.io",
       "status.madfam.io",
       "grafana.enclii.dev",
       "prometheus.enclii.dev",
-      "alertmanager.enclii.dev"
+      "alertmanager.enclii.dev",
     ],
     site: {
       category: "Infrastructure",
       track: "platform",
       order: 1,
-      icon: "\u2601\uFE0F",
+      icon: "☁️",
       bannerKeyword: "DEPLOYMENT",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "community",
         "pro",
-        "madfam"
+        "madfam",
       ],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   janua: {
     id: "janua",
@@ -65,33 +84,33 @@ var generatedProducts = {
     isPublic: true,
     domain: "janua.dev",
     hosts: [
-      "docs.janua.dev"
+      "docs.janua.dev",
     ],
     infraHosts: [
-      "auth.madfam.io"
+      "auth.madfam.io",
     ],
     site: {
       category: "Infrastructure",
       track: "platform",
       order: 2,
-      icon: "\u{1F510}",
+      icon: "🔐",
       bannerKeyword: "AUTHENTICATION",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "community",
         "pro",
-        "enterprise"
+        "enterprise",
       ],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   selva: {
     id: "selva",
     name: "Selva",
     aliases: [
-      "Selva Office"
+      "Selva Office",
     ],
     lifecycle: "live",
     lifecycleVerified: "2026-08-24",
@@ -108,35 +127,35 @@ var generatedProducts = {
       "api.selva.town",
       "admin.selva.town",
       "ws.selva.town",
-      "gw.selva.town"
+      "gw.selva.town",
     ],
     infraHosts: [
-      "inference.selva.town"
+      "inference.selva.town",
     ],
     site: {
       category: "Infrastructure",
       track: "platform",
       order: 3,
-      icon: "\u{1F333}",
+      icon: "🌳",
       bannerKeyword: "AI AGENT OFFICE",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "maker",
         "studio",
-        "enterprise"
+        "enterprise",
       ],
       adminTier: "admin",
-      checkoutSlug: "selva"
-    }
+      checkoutSlug: "selva",
+    },
   },
   forgesight: {
     id: "forgesight",
     name: "Forgesight",
     aliases: [
       "Forge Sight",
-      "ForgeSight"
+      "ForgeSight",
     ],
     siteSlug: "forge-sight",
     lifecycle: "live",
@@ -152,26 +171,26 @@ var generatedProducts = {
     hosts: [
       "app.forgesight.quest",
       "api.forgesight.quest",
-      "admin.forgesight.quest"
+      "admin.forgesight.quest",
     ],
     infraHosts: [],
     site: {
       category: "Intelligence",
       track: "self-serve",
       order: 4,
-      icon: "\u{1F3ED}",
+      icon: "🏭",
       bannerKeyword: "INDUSTRY INTELLIGENCE",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "essentials",
         "pro",
-        "madfam"
+        "madfam",
       ],
       adminTier: "admin",
-      checkoutSlug: "forgesight"
-    }
+      checkoutSlug: "forgesight",
+    },
   },
   dhanam: {
     id: "dhanam",
@@ -189,27 +208,27 @@ var generatedProducts = {
     hosts: [
       "app.dhan.am",
       "api.dhan.am",
-      "admin.dhan.am"
+      "admin.dhan.am",
     ],
     infraHosts: [],
     site: {
       category: "Intelligence",
       track: "self-serve",
       order: 5,
-      icon: "\u{1F4B0}",
+      icon: "💰",
       bannerKeyword: "BUDGETING & WEALTH",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "community",
         "essentials",
         "pro",
-        "madfam"
+        "madfam",
       ],
       adminTier: "admin",
-      checkoutSlug: "dhanam"
-    }
+      checkoutSlug: "dhanam",
+    },
   },
   fortuna: {
     id: "fortuna",
@@ -224,24 +243,24 @@ var generatedProducts = {
     isPublic: false,
     domain: "fortuna.tube",
     hosts: [
-      "api.fortuna.tube"
+      "api.fortuna.tube",
     ],
     infraHosts: [],
     site: {
       category: "Intelligence",
       track: "self-serve",
       order: 6,
-      icon: "\u{1F52E}",
-      showInBanner: true
+      icon: "🔮",
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "free",
         "pro",
-        "madfam"
+        "madfam",
       ],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   rondelio: {
     id: "rondelio",
@@ -261,25 +280,25 @@ var generatedProducts = {
       "play.rondel.io",
       "studio.rondel.io",
       "admin.rondel.io",
-      "sim.rondel.io"
+      "sim.rondel.io",
     ],
     infraHosts: [],
     site: {
       category: "Intelligence",
       track: "self-serve",
       order: 7,
-      icon: "\u{1F3B2}",
+      icon: "🎲",
       bannerKeyword: "GAMES",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "free",
         "pro",
-        "madfam"
+        "madfam",
       ],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   karafiel: {
     id: "karafiel",
@@ -296,27 +315,27 @@ var generatedProducts = {
     hosts: [
       "app.karafiel.mx",
       "api.karafiel.mx",
-      "admin.karafiel.mx"
+      "admin.karafiel.mx",
     ],
     infraHosts: [],
     site: {
       category: "Standards",
       track: "self-serve",
       order: 8,
-      icon: "\u{1F4DC}",
+      icon: "📜",
       bannerKeyword: "COMPLIANCE & CFDI",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "free",
         "contador",
         "despacho",
-        "firma"
+        "firma",
       ],
       adminTier: "admin",
-      checkoutSlug: "karafiel"
-    }
+      checkoutSlug: "karafiel",
+    },
   },
   tezca: {
     id: "tezca",
@@ -332,33 +351,33 @@ var generatedProducts = {
     domain: "tezca.mx",
     hosts: [
       "api.tezca.mx",
-      "admin.tezca.mx"
+      "admin.tezca.mx",
     ],
     infraHosts: [],
     site: {
       category: "Standards",
       track: "self-serve",
       order: 9,
-      icon: "\u2696\uFE0F",
+      icon: "⚖️",
       bannerKeyword: "LEGAL OPS",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "community",
         "essentials",
-        "institutional"
+        "institutional",
       ],
       adminTier: "admin",
-      checkoutSlug: "tezca"
-    }
+      checkoutSlug: "tezca",
+    },
   },
   avala: {
     id: "avala",
     name: "Avala",
-    acronym: "Alineamiento y Verificaci\xF3n de Aprendizajes y Logros Acreditables",
+    acronym: "Alineamiento y Verificación de Aprendizajes y Logros Acreditables",
     aliases: [
-      "AVALA"
+      "AVALA",
     ],
     lifecycle: "live",
     lifecycleVerified: "2026-08-24",
@@ -372,25 +391,25 @@ var generatedProducts = {
     hosts: [
       "app.avala.studio",
       "admin.avala.studio",
-      "api.avala.studio"
+      "api.avala.studio",
     ],
     infraHosts: [],
     site: {
       category: "Standards",
       track: "ecosystem",
       order: 10,
-      icon: "\u{1F393}",
+      icon: "🎓",
       bannerKeyword: "COMPETENCY TRAINING",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "institution",
         "issuer",
-        "enterprise"
+        "enterprise",
       ],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   yantra4d: {
     id: "yantra4d",
@@ -407,33 +426,33 @@ var generatedProducts = {
     hosts: [
       "app.yantra4d.com",
       "api.yantra4d.com",
-      "admin.yantra4d.com"
+      "admin.yantra4d.com",
     ],
     infraHosts: [],
     site: {
       category: "Applications",
       track: "ecosystem",
       order: 11,
-      icon: "\u{1F4D0}",
+      icon: "📐",
       bannerKeyword: "PHYGITAL FABRICATION",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "guest",
         "essentials",
         "pro",
-        "madfam"
+        "madfam",
       ],
       adminTier: "admin",
-      checkoutSlug: "yantra4d"
-    }
+      checkoutSlug: "yantra4d",
+    },
   },
   cotiza: {
     id: "cotiza",
     name: "Cotiza",
     aliases: [
-      "Cotiza Studio"
+      "Cotiza Studio",
     ],
     siteSlug: "cotiza-studio",
     lifecycle: "live",
@@ -446,33 +465,33 @@ var generatedProducts = {
     isPublic: true,
     domain: "cotiza.studio",
     hosts: [
-      "api.cotiza.studio"
+      "api.cotiza.studio",
     ],
     infraHosts: [],
     site: {
       category: "Applications",
       track: "ecosystem",
       order: 12,
-      icon: "\u{1F4CA}",
+      icon: "📊",
       bannerKeyword: "QUOTING ENGINE",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "maker",
         "creator-pro",
         "business",
-        "enterprise"
+        "enterprise",
       ],
       adminTier: "admin",
-      checkoutSlug: "cotiza"
-    }
+      checkoutSlug: "cotiza",
+    },
   },
   "pravara-mes": {
     id: "pravara-mes",
     name: "Pravara MES",
     aliases: [
-      "Pravara-MES"
+      "Pravara-MES",
     ],
     lifecycle: "live",
     lifecycleVerified: "2026-08-24",
@@ -484,25 +503,25 @@ var generatedProducts = {
     isPublic: true,
     domain: "mes.madfam.io",
     hosts: [
-      "mes-api.madfam.io"
+      "mes-api.madfam.io",
     ],
     infraHosts: [],
     site: {
       category: "Applications",
       track: "ecosystem",
       order: 13,
-      icon: "\u2699\uFE0F",
+      icon: "⚙️",
       bannerKeyword: "MANUFACTURING",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "free",
         "pro",
-        "madfam"
+        "madfam",
       ],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   voxa: {
     id: "voxa",
@@ -522,19 +541,19 @@ var generatedProducts = {
       category: "Applications",
       track: "self-serve",
       order: 14,
-      icon: "\u{1F5E3}\uFE0F",
+      icon: "🗣️",
       bannerKeyword: "ASSISTIVE COMMUNICATION",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "free",
         "family",
-        "clinic"
+        "clinic",
       ],
       adminTier: "admin",
-      checkoutSlug: "voxa"
-    }
+      checkoutSlug: "voxa",
+    },
   },
   "phynd-crm": {
     id: "phynd-crm",
@@ -549,25 +568,25 @@ var generatedProducts = {
     isPublic: true,
     domain: "phynd.app",
     hosts: [
-      "crm.madfam.io"
+      "crm.madfam.io",
     ],
     infraHosts: [],
     site: {
       category: "Applications",
       track: "self-serve",
       order: 15,
-      icon: "\u{1F91D}",
+      icon: "🤝",
       bannerKeyword: "CLIENT PORTAL & CRM",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "free",
         "pro",
-        "madfam"
+        "madfam",
       ],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   ceq: {
     id: "ceq",
@@ -584,24 +603,24 @@ var generatedProducts = {
     hosts: [
       "app.ceq.lol",
       "api.ceq.lol",
-      "ws.ceq.lol"
+      "ws.ceq.lol",
     ],
     infraHosts: [],
     site: {
       category: "Applications",
       track: "self-serve",
       order: 16,
-      icon: "\u{1F3A8}",
-      showInBanner: true
+      icon: "🎨",
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "free",
         "pro",
-        "madfam"
+        "madfam",
       ],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   acervo: {
     id: "acervo",
@@ -621,14 +640,14 @@ var generatedProducts = {
       category: "Applications",
       track: "self-serve",
       order: 17,
-      icon: "\u{1F4DA}",
+      icon: "📚",
       bannerKeyword: "RECORDS ENGINE",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   kalya: {
     id: "kalya",
@@ -644,23 +663,23 @@ var generatedProducts = {
     domain: "kalya.app",
     hosts: [
       "www.kalya.app",
-      "kalya.madfam.io"
+      "kalya.madfam.io",
     ],
     infraHosts: [],
     site: {
       category: "Applications",
       track: "self-serve",
       order: 18,
-      icon: "\u{1F4C5}",
+      icon: "📅",
       bannerKeyword: "BOOKING & SCHEDULING",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "free",
         "solo",
         "team",
-        "biz"
+        "biz",
       ],
       adminTier: "admin",
       checkoutSlug: "kalya",
@@ -668,9 +687,9 @@ var generatedProducts = {
         free: "Gratis",
         solo: "Solo",
         team: "Equipo",
-        biz: "Negocio"
-      }
-    }
+        biz: "Negocio",
+      },
+    },
   },
   symbiosis: {
     id: "symbiosis",
@@ -687,34 +706,34 @@ var generatedProducts = {
     hosts: [
       "hcm-app.madfam.io",
       "hcm-admin.madfam.io",
-      "hcm-api.madfam.io"
+      "hcm-api.madfam.io",
     ],
     infraHosts: [],
     site: {
       category: "Applications",
       track: "self-serve",
       order: 19,
-      icon: "\u{1F9EC}",
-      showInBanner: false
+      icon: "🧬",
+      showInBanner: false,
     },
     commerce: {
       tiers: [
         "free",
         "team",
-        "biz"
+        "biz",
       ],
       adminTier: "admin",
       checkoutSlug: "symbiosis",
       tierLabels: {
         free: "Gratis",
         team: "Equipo",
-        biz: "Negocio"
-      }
-    }
+        biz: "Negocio",
+      },
+    },
   },
   "crea-map": {
     id: "crea-map",
-    name: "MAP \u2014 Modelo de Acompa\xF1amiento Personalizado",
+    name: "MAP — Modelo de Acompañamiento Personalizado",
     lifecycle: "live",
     lifecycleVerified: "2026-08-24",
     license: "UNLICENSED",
@@ -730,19 +749,19 @@ var generatedProducts = {
       category: "Applications",
       track: "ecosystem",
       order: 20,
-      icon: "\u{1F5FA}\uFE0F",
-      showInBanner: false
+      icon: "🗺️",
+      showInBanner: false,
     },
     commerce: {
       tiers: [
-        "membership"
+        "membership",
       ],
       adminTier: "admin",
       checkoutSlug: "crea-map",
       tierLabels: {
-        membership: "Acceso de equipo"
-      }
-    }
+        membership: "Acceso de equipo",
+      },
+    },
   },
   nauta: {
     id: "nauta",
@@ -757,28 +776,28 @@ var generatedProducts = {
     isPublic: false,
     domain: "cto.madfam.io",
     hosts: [
-      "crea.madfam.io"
+      "crea.madfam.io",
     ],
     infraHosts: [],
     site: {
       category: "Applications",
       track: "platform",
       order: 21,
-      icon: "\u{1F9ED}",
+      icon: "🧭",
       bannerKeyword: "FRACTIONAL CTO",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "erp",
-        "vcto"
+        "vcto",
       ],
       adminTier: "admin",
       tierLabels: {
         erp: "ERP",
-        vcto: "vCTO"
-      }
-    }
+        vcto: "vCTO",
+      },
+    },
   },
   meridian: {
     id: "meridian",
@@ -795,20 +814,20 @@ var generatedProducts = {
     hosts: [
       "meridian-app.madfam.io",
       "meridian-api.madfam.io",
-      "meridian-admin.madfam.io"
+      "meridian-admin.madfam.io",
     ],
     infraHosts: [],
     site: {
       category: "Standards",
       track: "ecosystem",
       order: 22,
-      icon: "\u{1F6C2}",
-      showInBanner: true
+      icon: "🛂",
+      showInBanner: true,
     },
     commerce: {
       tiers: [],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   "fashion-cabinet": {
     id: "fashion-cabinet",
@@ -824,21 +843,21 @@ var generatedProducts = {
     domain: "fashioncabi.net",
     hosts: [
       "www.fashioncabi.net",
-      "fc.madfam.io"
+      "fc.madfam.io",
     ],
     infraHosts: [],
     site: {
       category: "Applications",
       track: "ecosystem",
       order: 23,
-      icon: "\u{1F457}",
+      icon: "👗",
       bannerKeyword: "PARAMETRIC FASHION",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   factlas: {
     id: "factlas",
@@ -853,25 +872,25 @@ var generatedProducts = {
     isPublic: false,
     domain: "factl.as",
     hosts: [
-      "api.factl.as"
+      "api.factl.as",
     ],
     infraHosts: [],
     site: {
       category: "Intelligence",
       track: "ecosystem",
       order: 24,
-      icon: "\u{1F30E}",
+      icon: "🌎",
       bannerKeyword: "GEOSPATIAL FACTS",
-      showInBanner: true
+      showInBanner: true,
     },
     commerce: {
       tiers: [
         "pilot",
         "analyst",
-        "institutional"
+        "institutional",
       ],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   periplo: {
     id: "periplo",
@@ -890,17 +909,17 @@ var generatedProducts = {
       category: "Applications",
       track: "self-serve",
       order: 25,
-      icon: "\u{1F4CD}",
-      showInBanner: false
+      icon: "📍",
+      showInBanner: false,
     },
     commerce: {
       tiers: [
         "free",
         "essentials",
-        "pro"
+        "pro",
       ],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   "geom-core": {
     id: "geom-core",
@@ -919,13 +938,13 @@ var generatedProducts = {
       category: "Standards",
       track: "ecosystem",
       order: 26,
-      icon: "\u{1F9EE}",
-      showInBanner: false
+      icon: "🧮",
+      showInBanner: false,
     },
     commerce: {
       tiers: [],
-      adminTier: "admin"
-    }
+      adminTier: "admin",
+    },
   },
   fragua: {
     id: "fragua",
@@ -944,24 +963,24 @@ var generatedProducts = {
       category: "Infrastructure",
       track: "platform",
       order: 27,
-      icon: "\u2692\uFE0F",
-      showInBanner: false
+      icon: "⚒️",
+      showInBanner: false,
     },
     commerce: {
       tiers: [
         "arranque",
         "equipo",
         "escala",
-        "dedicada"
+        "dedicada",
       ],
       adminTier: "admin",
       tierLabels: {
         arranque: "Arranque",
         equipo: "Equipo",
         escala: "Escala",
-        dedicada: "Dedicada"
-      }
-    }
+        dedicada: "Dedicada",
+      },
+    },
   },
   enclii_depot: {
     id: "enclii_depot",
@@ -980,34 +999,39 @@ var generatedProducts = {
       category: "Infrastructure",
       track: "platform",
       order: 28,
-      icon: "\u{1F5C4}\uFE0F",
-      showInBanner: false
+      icon: "🗄️",
+      showInBanner: false,
     },
     commerce: {
       tiers: [
         "community",
         "pro",
         "premium",
-        "madfam"
+        "madfam",
       ],
       adminTier: "admin",
       tierLabels: {
         community: "Comunidad",
-        pro: "Est\xE1ndar",
+        pro: "Estándar",
         premium: "Alta disponibilidad",
-        madfam: "Dedicado"
-      }
-    }
-  }
-};
-var generatedRetiredProducts = {
+        madfam: "Dedicado",
+      },
+    },
+  },
+} as const;
+
+/**
+ * Tombstones. A retired brand is kept so a consumer can recognise it and
+ * redirect, which is how it stops silently reappearing in a catalog.
+ */
+export const generatedRetiredProducts = {
   penny: {
     id: "penny",
     name: "PENNY",
     lifecycle: "retired",
     retiredOn: "2026-07-25",
     successorSlug: "selva",
-    redirectTo: "https://selva.town"
+    redirectTo: "https://selva.town",
   },
   sim4d: {
     id: "sim4d",
@@ -1015,140 +1039,12 @@ var generatedRetiredProducts = {
     lifecycle: "retired",
     retiredOn: "2026-08-30",
     successorSlug: "yantra4d",
-    redirectTo: "https://yantra4d.com"
+    redirectTo: "https://yantra4d.com",
   },
   spark: {
     id: "spark",
     name: "SPARK",
     lifecycle: "retired",
-    retiredOn: "2026-04-08"
-  }
-};
-
-// src/products.ts
-var ecosystemLayers = {
-  soil: {
-    name: "The Soil",
-    description: "The bedrock. Infrastructure layer.",
-    order: 1
+    retiredOn: "2026-04-08",
   },
-  roots: {
-    name: "The Roots",
-    description: "Sensing & Input. Data harvesting layer.",
-    order: 2
-  },
-  stem: {
-    name: "The Stem",
-    description: "Core Standards & Verification. Structural logic layer.",
-    order: 3
-  },
-  fruit: {
-    name: "The Fruit",
-    description: "User Platforms. Value creation layer.",
-    order: 4
-  }
-};
-var licenseTypes = {
-  "AGPL-3.0": {
-    name: "GNU Affero General Public License v3.0",
-    openSource: true,
-    purpose: "Prevents cloud capture, ensures source availability"
-  },
-  "MPL-2.0": {
-    name: "Mozilla Public License 2.0",
-    openSource: true,
-    purpose: "File-level copyleft, allows proprietary integration"
-  },
-  "Apache-2.0": {
-    name: "Apache License 2.0",
-    openSource: true,
-    purpose: "Permissive with an explicit patent grant; libraries meant to be embedded"
-  },
-  MIT: {
-    name: "MIT License",
-    openSource: true,
-    purpose: "Maximally permissive; shared packages and developer tooling"
-  },
-  "CERN-OHL-W-2.0": {
-    name: "CERN Open Hardware Licence Version 2 - Weakly Reciprocal",
-    openSource: true,
-    purpose: "Open hardware designs; reciprocal for the design itself"
-  },
-  Proprietary: {
-    name: "Proprietary",
-    openSource: false,
-    purpose: "Commercial protection for competitive advantage"
-  },
-  UNLICENSED: {
-    name: "Proprietary (no licence granted)",
-    openSource: false,
-    purpose: "The SPDX form docs/LICENSING_STRATEGY.md prescribes for a proprietary manifest; a product carrying it grants no licence at all"
-  }
-};
-var lifecycles = {
-  incubating: { name: "Incubating", renderable: true, live: false },
-  beta: { name: "Beta", renderable: true, live: true },
-  live: { name: "Live", renderable: true, live: true },
-  degraded: { name: "Degraded", renderable: true, live: false },
-  retired: { name: "Retired", renderable: false, live: false }
-};
-var productStatuses = {
-  active: { name: "Active", renderable: true },
-  retired: { name: "Retired", renderable: false }
-};
-var products = generatedProducts;
-var retiredProducts = generatedRetiredProducts;
-var productIds = Object.keys(products);
-function isRetired(product) {
-  return product.lifecycle === "retired";
-}
-function getActiveProducts() {
-  return Object.values(products).filter((p) => !isRetired(p));
-}
-function getProductsByLayer(layer) {
-  return getActiveProducts().filter((p) => p.layer === layer);
-}
-function getProductsByLicense(license) {
-  return getActiveProducts().filter((p) => p.license === license);
-}
-function getProductsByLifecycle(...stages) {
-  return getActiveProducts().filter((p) => stages.includes(p.lifecycle));
-}
-function getPublicProducts() {
-  return getActiveProducts().filter((p) => p.isPublic === true);
-}
-function getSurfaceProducts() {
-  return getActiveProducts().filter(
-    (p) => typeof p.domain === "string" && !p.infraHosts.includes(p.domain)
-  );
-}
-function isValidProductId(value) {
-  return value in products;
-}
-function isRetiredProductId(value) {
-  return value in retiredProducts;
-}
-function getProduct(id) {
-  return products[id];
-}
-function getRetiredProduct(id) {
-  return retiredProducts[id];
-}
-function getProductGitHubUrl(id) {
-  const product = products[id];
-  if (!product.repo || !product.githubOrg) return null;
-  return `https://github.com/${product.githubOrg}/${product.repo}`;
-}
-function getProductWebsiteUrl(id) {
-  if (isRetiredProductId(id)) {
-    const tombstone = retiredProducts[id];
-    return tombstone.redirectTo ?? null;
-  }
-  const product = products[id];
-  return product.domain ? `https://${product.domain}` : null;
-}
-var registryVersion = PRODUCT_PROJECTION.registryVersion;
-
-export { PRODUCT_PROJECTION, ecosystemLayers, getActiveProducts, getProduct, getProductGitHubUrl, getProductWebsiteUrl, getProductsByLayer, getProductsByLicense, getProductsByLifecycle, getPublicProducts, getRetiredProduct, getSurfaceProducts, isRetired, isRetiredProductId, isValidProductId, licenseTypes, lifecycles, productIds, productStatuses, products, registryVersion, retiredProducts };
-//# sourceMappingURL=products.js.map
-//# sourceMappingURL=products.js.map
+} as const;

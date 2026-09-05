@@ -1,19 +1,31 @@
 /**
- * MADFAM Ecosystem Platform List — Source of Truth
+ * MADFAM Ecosystem Platform List
  *
- * Add/edit a platform here and it propagates to every landing that imports
- * `EcosystemBanner` from `@madfam/ecosystem-banner`. That is the canonical
- * package; the older `@dhanam/ui` copy this header used to name is the stale
- * one the 2026-06-15 banner/footer audit was written to retire.
+ * GENERATED MEMBERSHIP. `DEFAULT_ECOSYSTEM_PLATFORMS` is no longer typed here:
+ * it is `platforms.generated.ts`, rendered from the product projection vendored
+ * in `@madfam/core` (`src/products/projection.public.json`) by
+ * `scripts/check-product-projection.mjs`, which fails Package Quality when this
+ * list drifts from the registry. To add, remove or rename a platform, change the
+ * private product registry and re-vendor - editing a list here is what made six
+ * product lists disagree across three repos in the first place.
  *
- * URLs were last probed live on 2026-05-04 (HEAD, accepting
- * 200/301/302/405-method-allowed). Names, membership and the Janua URL were
- * reconciled against the ecosystem domain map and brand records on
- * 2026-09-04 — a records check, not a re-probe. A full re-probe and a
- * membership refresh (several live platforms are still missing from this list)
- * are pending; this list is scheduled to become generated from the single
- * product registry, at which point membership stops being hand-kept.
+ * The filter: public product surface (a routed primary domain that is not one of
+ * the product's own infra endpoints) AND lifecycle live or beta AND not retired
+ * AND `site.show_in_banner`, ordered by the registry's `site.order`. The
+ * infra-host clause is why Janua links `janua.dev` and not an auth endpoint; the
+ * retired clause is why no Sim4D, PENNY or SPARK entry can come back.
+ *
+ * URLs were re-probed on 2026-09-05 (HEAD, no redirects followed): 17 of the 19
+ * answered 200, `dhan.am` answered 307 and `cto.madfam.io` answered 404.
+ * `forgesight.quest` returned no status at all from the probing environment, so
+ * it is recorded as unverified rather than down. The 404 and the unverified host
+ * are registry facts to fix in the registry, not entries to drop here.
+ *
+ * This file keeps the public type and the vendor-friendly re-export, so a
+ * consumer's import path never changes.
  */
+import { GENERATED_ECOSYSTEM_PLATFORMS } from './platforms.generated';
+
 export interface EcosystemPlatform {
   /** Short uppercase keyword shown before the colon, e.g. "BUDGETING & WEALTH". */
   keyword: string;
@@ -23,18 +35,5 @@ export interface EcosystemPlatform {
   url: string;
 }
 
-export const DEFAULT_ECOSYSTEM_PLATFORMS: readonly EcosystemPlatform[] = [
-  { keyword: 'BUDGETING & WEALTH', name: 'Dhanam', url: 'https://dhan.am' },
-  { keyword: 'AI AGENT OFFICE', name: 'Selva', url: 'https://selva.town' },
-  { keyword: 'COMPLIANCE & CFDI', name: 'Karafiel', url: 'https://karafiel.mx' },
-  { keyword: 'AUTHENTICATION', name: 'Janua', url: 'https://janua.dev' },
-  { keyword: 'DEPLOYMENT', name: 'Enclii', url: 'https://enclii.dev' },
-  { keyword: 'LEGAL OPS', name: 'Tezca', url: 'https://tezca.mx' },
-  { keyword: 'PHYGITAL FABRICATION', name: 'Yantra4D', url: 'https://yantra4d.com' },
-  { keyword: 'QUOTING ENGINE', name: 'Cotiza', url: 'https://cotiza.studio' },
-  { keyword: 'INDUSTRY INTELLIGENCE', name: 'Forgesight', url: 'https://forgesight.quest' },
-  { keyword: 'MANUFACTURING', name: 'Pravara MES', url: 'https://mes.madfam.io' },
-  { keyword: 'GAMES', name: 'Rondelio', url: 'https://rondel.io' },
-  { keyword: 'ROUTING & LOGISTICS', name: 'RouteCraft', url: 'https://routecraft.app' },
-  { keyword: 'CLIENT PORTAL & CRM', name: 'PhyndCRM', url: 'https://phynd.app' },
-] as const;
+export const DEFAULT_ECOSYSTEM_PLATFORMS: readonly EcosystemPlatform[] =
+  GENERATED_ECOSYSTEM_PLATFORMS;

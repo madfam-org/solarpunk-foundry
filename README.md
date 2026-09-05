@@ -623,7 +623,7 @@ registry. Directory listing and versions re-verified 2026-08-24.
 
 | Package | Version | Purpose |
 |---|---|---|
-| `@madfam/core` | 0.1.0 | Brand, locales, currencies, event taxonomy, product definitions — decisions, not implementations |
+| `@madfam/core` | 0.1.0 | Brand, locales, currencies, event taxonomy, product registry — decisions, not implementations. The product half is **generated** from the vendored registry projection (`packages/core/src/products/projection.public.json`), guarded by `scripts/check-product-projection.mjs` |
 | `@madfam/ui` | 0.2.0 | **Deprecated** — the UI system moved to a decentralized per-app "incubator" model (`packages/ui/README.md`) |
 | `@madfam/analytics` | 0.1.0 | PostHog instrumentation + event-schema enforcement |
 | `@madfam/auth-resilience` | 0.1.0 | Circuit breaker + retry for Janua calls |

@@ -14,6 +14,50 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-09-05 — the product registry becomes generated (`@madfam/core`)
+
+- **Vendored the public product projection.**
+  `packages/core/src/products/projection.public.json` is a verbatim copy of the
+  public-safe projection of the one private product registry (registry version
+  4), committed alongside its `.sha256`. Nothing in this repo hand-types a
+  product fact any more.
+- **`packages/core/src/products.ts` is now the hand-kept half only** — the
+  `Product` type, the licence / layer / lifecycle vocabularies and the lookups.
+  Every product fact lives in the generated `products.generated.ts`.
+- **New guard, wired into Package Quality:**
+  `scripts/check-product-projection.mjs` (with a `node --test` self-test) fails
+  when the vendored projection is edited in place (hash), when the generated
+  module drifts from it (byte diff), when a `lifecycle: retired` product or a
+  tombstone slug would render, when a licence leaves the enum documented in
+  `docs/LICENSING_STRATEGY.md`, or when the projection carries an IP literal, an
+  undeclared hostname, a private-only field or a credential shape. Every run
+  prints a read-proof (`products_scanned=`, `hosts_checked=`), so "I read
+  nothing" cannot look like "I read everything and it was clean".
+- **Consumer-visible changes to `@madfam/core`'s product exports**: product keys
+  are registry slugs (`geom-core`, not `geomCore`); the registry now carries 28
+  products instead of 16; `PENNY` and `Sim4D` moved out of `products` into
+  `retiredProducts` tombstones; `Product` gained `lifecycle`,
+  `lifecycleVerified`, `hosts`, `infraHosts`, `site` and `commerce`, and lost
+  `description`, `defaultPort` and `phase`; `getProductsByPhase` is gone and
+  `getProductsByLifecycle` / `getSurfaceProducts` / `getRetiredProduct` are new;
+  `getProductGitHubUrl` now returns `string | null`.
+- **The ecosystem banner's platform list is generated from the same projection.**
+  `packages/ecosystem-banner/src/platforms.generated.ts` is a filter over the
+  vendored projection — public product surface ∧ lifecycle live/beta ∧ not
+  retired ∧ `site.show_in_banner` ∧ primary domain not one of the product's own
+  infra hosts, ordered by `site.order`. `platforms.ts` keeps the public
+  `EcosystemPlatform` type and the re-export, so no consumer import changes and
+  `@madfam/ecosystem-banner` stays at `0.1.4`.
+  13 hand-kept entries become 19: `avala`, `voxa`, `acervo`, `kalya`, `nauta`,
+  `fashion-cabinet` and `factlas` join; `routecraft` leaves because no registry
+  entry selects it (O25). A selected product with no `site.banner_keyword` fails
+  the check rather than being dropped from the list — a shorter ticker that
+  renders cleanly is indistinguishable from a correct one.
+- URLs re-probed 2026-09-05 (HEAD): 17 of the 19 answered 200, `dhan.am` 307,
+  `cto.madfam.io` 404, and `forgesight.quest` returned no status at all from the
+  probing environment (recorded as unverified, not down). Those are registry
+  facts, not banner edits.
+
 ### 2026-08-24 — re-verification pass (recon-driven)
 
 Driven by a same-day full refresh of the private registries: live GitHub

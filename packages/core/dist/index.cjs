@@ -377,6 +377,1033 @@ var analyticsEvents = {
   "feedback.submitted": {}
 };
 
+// src/products.generated.ts
+var PRODUCT_PROJECTION = {
+  schema: "madfam-product-projection/v1",
+  generatedFrom: "internal-devops/ecosystem/registry/products.yaml",
+  registryVersion: 4,
+  lastUpdated: "2026-09-05",
+  exportPrivateRepoNames: true,
+  /** sha256 of the vendored projection.public.json this module was rendered from. */
+  sourceSha256: "759119046a21d7bb36e453b0133a8654d38c0d321a90ae0c0c933255294fad10"
+};
+var generatedProducts = {
+  enclii: {
+    id: "enclii",
+    name: "Enclii",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "soil",
+    repo: "enclii",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "enclii.dev",
+    hosts: [
+      "app.enclii.dev",
+      "api.enclii.dev",
+      "admin.enclii.dev",
+      "status.enclii.dev",
+      "docs.enclii.dev"
+    ],
+    infraHosts: [
+      "npm.madfam.io",
+      "status.madfam.io",
+      "grafana.enclii.dev",
+      "prometheus.enclii.dev",
+      "alertmanager.enclii.dev"
+    ],
+    site: {
+      category: "Infrastructure",
+      track: "platform",
+      order: 1,
+      icon: "\u2601\uFE0F",
+      bannerKeyword: "DEPLOYMENT",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "community",
+        "pro",
+        "madfam"
+      ],
+      adminTier: "admin"
+    }
+  },
+  janua: {
+    id: "janua",
+    name: "Janua",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "soil",
+    repo: "janua",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "janua.dev",
+    hosts: [
+      "docs.janua.dev"
+    ],
+    infraHosts: [
+      "auth.madfam.io"
+    ],
+    site: {
+      category: "Infrastructure",
+      track: "platform",
+      order: 2,
+      icon: "\u{1F510}",
+      bannerKeyword: "AUTHENTICATION",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "community",
+        "pro",
+        "enterprise"
+      ],
+      adminTier: "admin"
+    }
+  },
+  selva: {
+    id: "selva",
+    name: "Selva",
+    aliases: [
+      "Selva Office"
+    ],
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "fruit",
+    repo: "selva-office",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "selva.town",
+    hosts: [
+      "www.selva.town",
+      "app.selva.town",
+      "api.selva.town",
+      "admin.selva.town",
+      "ws.selva.town",
+      "gw.selva.town"
+    ],
+    infraHosts: [
+      "inference.selva.town"
+    ],
+    site: {
+      category: "Infrastructure",
+      track: "platform",
+      order: 3,
+      icon: "\u{1F333}",
+      bannerKeyword: "AI AGENT OFFICE",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "maker",
+        "studio",
+        "enterprise"
+      ],
+      adminTier: "admin",
+      checkoutSlug: "selva"
+    }
+  },
+  forgesight: {
+    id: "forgesight",
+    name: "Forgesight",
+    aliases: [
+      "Forge Sight",
+      "ForgeSight"
+    ],
+    siteSlug: "forge-sight",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    dataLicense: "DATA_LICENSE",
+    layer: "roots",
+    repo: "forgesight",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    domain: "forgesight.quest",
+    hosts: [
+      "app.forgesight.quest",
+      "api.forgesight.quest",
+      "admin.forgesight.quest"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Intelligence",
+      track: "self-serve",
+      order: 4,
+      icon: "\u{1F3ED}",
+      bannerKeyword: "INDUSTRY INTELLIGENCE",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "essentials",
+        "pro",
+        "madfam"
+      ],
+      adminTier: "admin",
+      checkoutSlug: "forgesight"
+    }
+  },
+  dhanam: {
+    id: "dhanam",
+    name: "Dhanam",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "fruit",
+    repo: "dhanam",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    openCoreRepo: "dhanam-core",
+    isPublic: false,
+    domain: "dhan.am",
+    hosts: [
+      "app.dhan.am",
+      "api.dhan.am",
+      "admin.dhan.am"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Intelligence",
+      track: "self-serve",
+      order: 5,
+      icon: "\u{1F4B0}",
+      bannerKeyword: "BUDGETING & WEALTH",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "community",
+        "essentials",
+        "pro",
+        "madfam"
+      ],
+      adminTier: "admin",
+      checkoutSlug: "dhanam"
+    }
+  },
+  fortuna: {
+    id: "fortuna",
+    name: "Fortuna",
+    lifecycle: "degraded",
+    lifecycleVerified: "2026-08-24",
+    license: "Proprietary",
+    layer: "roots",
+    repo: "fortuna",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    domain: "fortuna.tube",
+    hosts: [
+      "api.fortuna.tube"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Intelligence",
+      track: "self-serve",
+      order: 6,
+      icon: "\u{1F52E}",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "free",
+        "pro",
+        "madfam"
+      ],
+      adminTier: "admin"
+    }
+  },
+  rondelio: {
+    id: "rondelio",
+    name: "Rondelio",
+    lifecycle: "live",
+    lifecycleVerified: "2026-07-09",
+    license: "Proprietary",
+    layer: "fruit",
+    repo: "rondelio",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    domain: "rondel.io",
+    hosts: [
+      "www.rondel.io",
+      "api.rondel.io",
+      "play.rondel.io",
+      "studio.rondel.io",
+      "admin.rondel.io",
+      "sim.rondel.io"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Intelligence",
+      track: "self-serve",
+      order: 7,
+      icon: "\u{1F3B2}",
+      bannerKeyword: "GAMES",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "free",
+        "pro",
+        "madfam"
+      ],
+      adminTier: "admin"
+    }
+  },
+  karafiel: {
+    id: "karafiel",
+    name: "Karafiel",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "stem",
+    repo: "karafiel",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    domain: "karafiel.mx",
+    hosts: [
+      "app.karafiel.mx",
+      "api.karafiel.mx",
+      "admin.karafiel.mx"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Standards",
+      track: "self-serve",
+      order: 8,
+      icon: "\u{1F4DC}",
+      bannerKeyword: "COMPLIANCE & CFDI",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "free",
+        "contador",
+        "despacho",
+        "firma"
+      ],
+      adminTier: "admin",
+      checkoutSlug: "karafiel"
+    }
+  },
+  tezca: {
+    id: "tezca",
+    name: "Tezca",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "stem",
+    repo: "tezca",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "tezca.mx",
+    hosts: [
+      "api.tezca.mx",
+      "admin.tezca.mx"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Standards",
+      track: "self-serve",
+      order: 9,
+      icon: "\u2696\uFE0F",
+      bannerKeyword: "LEGAL OPS",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "community",
+        "essentials",
+        "institutional"
+      ],
+      adminTier: "admin",
+      checkoutSlug: "tezca"
+    }
+  },
+  avala: {
+    id: "avala",
+    name: "Avala",
+    acronym: "Alineamiento y Verificaci\xF3n de Aprendizajes y Logros Acreditables",
+    aliases: [
+      "AVALA"
+    ],
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "stem",
+    repo: "avala",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    domain: "avala.studio",
+    hosts: [
+      "app.avala.studio",
+      "admin.avala.studio",
+      "api.avala.studio"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Standards",
+      track: "ecosystem",
+      order: 10,
+      icon: "\u{1F393}",
+      bannerKeyword: "COMPETENCY TRAINING",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "institution",
+        "issuer",
+        "enterprise"
+      ],
+      adminTier: "admin"
+    }
+  },
+  yantra4d: {
+    id: "yantra4d",
+    name: "Yantra4D",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "fruit",
+    repo: "yantra4d",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "yantra4d.com",
+    hosts: [
+      "app.yantra4d.com",
+      "api.yantra4d.com",
+      "admin.yantra4d.com"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "ecosystem",
+      order: 11,
+      icon: "\u{1F4D0}",
+      bannerKeyword: "PHYGITAL FABRICATION",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "guest",
+        "essentials",
+        "pro",
+        "madfam"
+      ],
+      adminTier: "admin",
+      checkoutSlug: "yantra4d"
+    }
+  },
+  cotiza: {
+    id: "cotiza",
+    name: "Cotiza",
+    aliases: [
+      "Cotiza Studio"
+    ],
+    siteSlug: "cotiza-studio",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "Proprietary",
+    layer: "fruit",
+    repo: "digifab-quoting",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "cotiza.studio",
+    hosts: [
+      "api.cotiza.studio"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "ecosystem",
+      order: 12,
+      icon: "\u{1F4CA}",
+      bannerKeyword: "QUOTING ENGINE",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "maker",
+        "creator-pro",
+        "business",
+        "enterprise"
+      ],
+      adminTier: "admin",
+      checkoutSlug: "cotiza"
+    }
+  },
+  "pravara-mes": {
+    id: "pravara-mes",
+    name: "Pravara MES",
+    aliases: [
+      "Pravara-MES"
+    ],
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "fruit",
+    repo: "pravara-mes",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "mes.madfam.io",
+    hosts: [
+      "mes-api.madfam.io"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "ecosystem",
+      order: 13,
+      icon: "\u2699\uFE0F",
+      bannerKeyword: "MANUFACTURING",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "free",
+        "pro",
+        "madfam"
+      ],
+      adminTier: "admin"
+    }
+  },
+  voxa: {
+    id: "voxa",
+    name: "Voxa",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "Apache-2.0",
+    layer: "fruit",
+    repo: "voxa",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "voxa.madfam.io",
+    hosts: [],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "self-serve",
+      order: 14,
+      icon: "\u{1F5E3}\uFE0F",
+      bannerKeyword: "ASSISTIVE COMMUNICATION",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "free",
+        "family",
+        "clinic"
+      ],
+      adminTier: "admin",
+      checkoutSlug: "voxa"
+    }
+  },
+  "phynd-crm": {
+    id: "phynd-crm",
+    name: "PhyndCRM",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "fruit",
+    repo: "phynd-crm",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "phynd.app",
+    hosts: [
+      "crm.madfam.io"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "self-serve",
+      order: 15,
+      icon: "\u{1F91D}",
+      bannerKeyword: "CLIENT PORTAL & CRM",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "free",
+        "pro",
+        "madfam"
+      ],
+      adminTier: "admin"
+    }
+  },
+  ceq: {
+    id: "ceq",
+    name: "CEQ",
+    lifecycle: "degraded",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "fruit",
+    repo: "ceq",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "ceq.lol",
+    hosts: [
+      "app.ceq.lol",
+      "api.ceq.lol",
+      "ws.ceq.lol"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "self-serve",
+      order: 16,
+      icon: "\u{1F3A8}",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "free",
+        "pro",
+        "madfam"
+      ],
+      adminTier: "admin"
+    }
+  },
+  acervo: {
+    id: "acervo",
+    name: "Acervo",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "UNLICENSED",
+    layer: "fruit",
+    repo: "acervo",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    domain: "acervo.madfam.io",
+    hosts: [],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "self-serve",
+      order: 17,
+      icon: "\u{1F4DA}",
+      bannerKeyword: "RECORDS ENGINE",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [],
+      adminTier: "admin"
+    }
+  },
+  kalya: {
+    id: "kalya",
+    name: "kalya",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "UNLICENSED",
+    layer: "fruit",
+    repo: "kalya",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    domain: "kalya.app",
+    hosts: [
+      "www.kalya.app",
+      "kalya.madfam.io"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "self-serve",
+      order: 18,
+      icon: "\u{1F4C5}",
+      bannerKeyword: "BOOKING & SCHEDULING",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "free",
+        "solo",
+        "team",
+        "biz"
+      ],
+      adminTier: "admin",
+      checkoutSlug: "kalya",
+      tierLabels: {
+        free: "Gratis",
+        solo: "Solo",
+        team: "Equipo",
+        biz: "Negocio"
+      }
+    }
+  },
+  symbiosis: {
+    id: "symbiosis",
+    name: "Symbiosis HCM",
+    lifecycle: "live",
+    lifecycleVerified: "2026-09-05",
+    license: "AGPL-3.0",
+    layer: "fruit",
+    repo: "symbiosis-hcm",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    domain: "hcm.madfam.io",
+    hosts: [
+      "hcm-app.madfam.io",
+      "hcm-admin.madfam.io",
+      "hcm-api.madfam.io"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "self-serve",
+      order: 19,
+      icon: "\u{1F9EC}",
+      showInBanner: false
+    },
+    commerce: {
+      tiers: [
+        "free",
+        "team",
+        "biz"
+      ],
+      adminTier: "admin",
+      checkoutSlug: "symbiosis",
+      tierLabels: {
+        free: "Gratis",
+        team: "Equipo",
+        biz: "Negocio"
+      }
+    }
+  },
+  "crea-map": {
+    id: "crea-map",
+    name: "MAP \u2014 Modelo de Acompa\xF1amiento Personalizado",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "UNLICENSED",
+    layer: "fruit",
+    repo: "crea-map",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    domain: "crea-map.madfam.io",
+    hosts: [],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "ecosystem",
+      order: 20,
+      icon: "\u{1F5FA}\uFE0F",
+      showInBanner: false
+    },
+    commerce: {
+      tiers: [
+        "membership"
+      ],
+      adminTier: "admin",
+      checkoutSlug: "crea-map",
+      tierLabels: {
+        membership: "Acceso de equipo"
+      }
+    }
+  },
+  nauta: {
+    id: "nauta",
+    name: "Nauta",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "UNLICENSED",
+    layer: "fruit",
+    repo: "nauta",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    domain: "cto.madfam.io",
+    hosts: [
+      "crea.madfam.io"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "platform",
+      order: 21,
+      icon: "\u{1F9ED}",
+      bannerKeyword: "FRACTIONAL CTO",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "erp",
+        "vcto"
+      ],
+      adminTier: "admin",
+      tierLabels: {
+        erp: "ERP",
+        vcto: "vCTO"
+      }
+    }
+  },
+  meridian: {
+    id: "meridian",
+    name: "Meridian",
+    lifecycle: "degraded",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "stem",
+    repo: "meridian",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "meridian.madfam.io",
+    hosts: [
+      "meridian-app.madfam.io",
+      "meridian-api.madfam.io",
+      "meridian-admin.madfam.io"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Standards",
+      track: "ecosystem",
+      order: 22,
+      icon: "\u{1F6C2}",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [],
+      adminTier: "admin"
+    }
+  },
+  "fashion-cabinet": {
+    id: "fashion-cabinet",
+    name: "Fashion Cabinet",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "AGPL-3.0",
+    layer: "stem",
+    repo: "fashion-cabinet",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    domain: "fashioncabi.net",
+    hosts: [
+      "www.fashioncabi.net",
+      "fc.madfam.io"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "ecosystem",
+      order: 23,
+      icon: "\u{1F457}",
+      bannerKeyword: "PARAMETRIC FASHION",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [],
+      adminTier: "admin"
+    }
+  },
+  factlas: {
+    id: "factlas",
+    name: "Factlas",
+    lifecycle: "live",
+    lifecycleVerified: "2026-08-24",
+    license: "Proprietary",
+    layer: "roots",
+    repo: "factlas",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    domain: "factl.as",
+    hosts: [
+      "api.factl.as"
+    ],
+    infraHosts: [],
+    site: {
+      category: "Intelligence",
+      track: "ecosystem",
+      order: 24,
+      icon: "\u{1F30E}",
+      bannerKeyword: "GEOSPATIAL FACTS",
+      showInBanner: true
+    },
+    commerce: {
+      tiers: [
+        "pilot",
+        "analyst",
+        "institutional"
+      ],
+      adminTier: "admin"
+    }
+  },
+  periplo: {
+    id: "periplo",
+    name: "Periplo",
+    lifecycle: "incubating",
+    lifecycleVerified: "2026-08-24",
+    license: "UNLICENSED",
+    layer: "fruit",
+    repo: "periplo",
+    githubOrg: "madfam-org",
+    repoVisibility: "private",
+    isPublic: false,
+    hosts: [],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "self-serve",
+      order: 25,
+      icon: "\u{1F4CD}",
+      showInBanner: false
+    },
+    commerce: {
+      tiers: [
+        "free",
+        "essentials",
+        "pro"
+      ],
+      adminTier: "admin"
+    }
+  },
+  "geom-core": {
+    id: "geom-core",
+    name: "geom-core",
+    lifecycle: "incubating",
+    lifecycleVerified: "2026-09-04",
+    license: "Apache-2.0",
+    layer: "stem",
+    repo: "geom-core",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    hosts: [],
+    infraHosts: [],
+    site: {
+      category: "Standards",
+      track: "ecosystem",
+      order: 26,
+      icon: "\u{1F9EE}",
+      showInBanner: false
+    },
+    commerce: {
+      tiers: [],
+      adminTier: "admin"
+    }
+  },
+  fragua: {
+    id: "fragua",
+    name: "Fragua",
+    lifecycle: "incubating",
+    lifecycleVerified: "2026-09-04",
+    license: "AGPL-3.0",
+    layer: "soil",
+    repo: "enclii",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    hosts: [],
+    infraHosts: [],
+    site: {
+      category: "Infrastructure",
+      track: "platform",
+      order: 27,
+      icon: "\u2692\uFE0F",
+      showInBanner: false
+    },
+    commerce: {
+      tiers: [
+        "arranque",
+        "equipo",
+        "escala",
+        "dedicada"
+      ],
+      adminTier: "admin",
+      tierLabels: {
+        arranque: "Arranque",
+        equipo: "Equipo",
+        escala: "Escala",
+        dedicada: "Dedicada"
+      }
+    }
+  },
+  enclii_depot: {
+    id: "enclii_depot",
+    name: "Enclii Depot",
+    lifecycle: "incubating",
+    lifecycleVerified: "2026-09-04",
+    license: "AGPL-3.0",
+    layer: "soil",
+    repo: "enclii",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    hosts: [],
+    infraHosts: [],
+    site: {
+      category: "Infrastructure",
+      track: "platform",
+      order: 28,
+      icon: "\u{1F5C4}\uFE0F",
+      showInBanner: false
+    },
+    commerce: {
+      tiers: [
+        "community",
+        "pro",
+        "premium",
+        "madfam"
+      ],
+      adminTier: "admin",
+      tierLabels: {
+        community: "Comunidad",
+        pro: "Est\xE1ndar",
+        premium: "Alta disponibilidad",
+        madfam: "Dedicado"
+      }
+    }
+  }
+};
+var generatedRetiredProducts = {
+  penny: {
+    id: "penny",
+    name: "PENNY",
+    lifecycle: "retired",
+    retiredOn: "2026-07-25",
+    successorSlug: "selva",
+    redirectTo: "https://selva.town"
+  },
+  sim4d: {
+    id: "sim4d",
+    name: "Sim4D",
+    lifecycle: "retired",
+    retiredOn: "2026-08-30",
+    successorSlug: "yantra4d",
+    redirectTo: "https://yantra4d.com"
+  },
+  spark: {
+    id: "spark",
+    name: "SPARK",
+    lifecycle: "retired",
+    retiredOn: "2026-04-08"
+  }
+};
+
 // src/products.ts
 var ecosystemLayers = {
   soil: {
@@ -430,249 +1457,29 @@ var licenseTypes = {
     name: "Proprietary",
     openSource: false,
     purpose: "Commercial protection for competitive advantage"
+  },
+  UNLICENSED: {
+    name: "Proprietary (no licence granted)",
+    openSource: false,
+    purpose: "The SPDX form docs/LICENSING_STRATEGY.md prescribes for a proprietary manifest; a product carrying it grants no licence at all"
   }
+};
+var lifecycles = {
+  incubating: { name: "Incubating", renderable: true, live: false },
+  beta: { name: "Beta", renderable: true, live: true },
+  live: { name: "Live", renderable: true, live: true },
+  degraded: { name: "Degraded", renderable: true, live: false },
+  retired: { name: "Retired", renderable: false, live: false }
 };
 var productStatuses = {
   active: { name: "Active", renderable: true },
   retired: { name: "Retired", renderable: false }
 };
-var products = {
-  // ─────────────────────────────────────────────────────────────────────────────
-  // Layer 1: The Soil (Infrastructure)
-  // ─────────────────────────────────────────────────────────────────────────────
-  enclii: {
-    id: "enclii",
-    name: "Enclii",
-    description: "Sovereign PaaS. Bare-metal hosting.",
-    layer: "soil",
-    domain: "enclii.dev",
-    repo: "enclii",
-    githubOrg: "madfam-org",
-    license: "AGPL-3.0",
-    defaultPort: 4200,
-    isPublic: true,
-    phase: 1
-  },
-  janua: {
-    id: "janua",
-    name: "Janua",
-    description: "The Gatekeeper. Identity, SSO, and Revenue Management.",
-    layer: "soil",
-    domain: "janua.dev",
-    repo: "janua",
-    githubOrg: "madfam-org",
-    license: "AGPL-3.0",
-    defaultPort: 4100,
-    isPublic: true,
-    phase: 1
-  },
-  // ─────────────────────────────────────────────────────────────────────────────
-  // Layer 2: The Roots (Sensing & Input)
-  // ─────────────────────────────────────────────────────────────────────────────
-  fortuna: {
-    id: "fortuna",
-    name: "Fortuna",
-    description: "The Problem Hunter. Market gap intelligence.",
-    layer: "roots",
-    domain: "fortuna.tube",
-    repo: "fortuna",
-    githubOrg: "madfam-org",
-    license: "Proprietary",
-    defaultPort: 4400,
-    isPublic: false,
-    phase: 2
-  },
-  forgesight: {
-    id: "forgesight",
-    name: "Forgesight",
-    description: "The Pricer. Real-time manufacturing cost data.",
-    layer: "roots",
-    domain: "forgesight.quest",
-    repo: "forgesight",
-    githubOrg: "madfam-org",
-    // The code is AGPL-3.0 (LICENSE file); the price corpus ships under a
-    // separate DATA_LICENSE. The older "proprietary edge" note was wrong.
-    license: "AGPL-3.0",
-    dataLicense: "DATA_LICENSE",
-    defaultPort: 4300,
-    isPublic: false,
-    phase: 2
-  },
-  blueprintTube: {
-    id: "blueprintTube",
-    name: "BlueprintTube",
-    description: "The Librarian. 3D model indexing and rating.",
-    layer: "roots",
-    domain: "blueprint.tube",
-    repo: "blueprint-harvester",
-    githubOrg: "madfam-org",
-    license: "Proprietary",
-    isPublic: false,
-    phase: 2
-  },
-  bloomScroll: {
-    id: "bloomScroll",
-    name: "BloomScroll",
-    description: "The Filter. Slow Web content aggregator.",
-    layer: "roots",
-    domain: "almanac.solar",
-    repo: "bloom-scroll",
-    githubOrg: "madfam-org",
-    license: "MPL-2.0",
-    isPublic: true,
-    phase: 2
-  },
-  // ─────────────────────────────────────────────────────────────────────────────
-  // Layer 3: The Stem (Core Standards & Verification)
-  // ─────────────────────────────────────────────────────────────────────────────
-  geomCore: {
-    id: "geomCore",
-    name: "geom-core",
-    description: "The Physics Standard. C++ geometry analysis library (WASM + Python bindings). A library, not a deployed service: no domain.",
-    layer: "stem",
-    // No routed host. `geom-core.dev` was never registered.
-    repo: "geom-core",
-    githubOrg: "madfam-org",
-    // Apache-2.0 per the repository LICENSE file, which wins over any badge.
-    license: "Apache-2.0",
-    isPublic: true,
-    phase: 3
-  },
-  avala: {
-    id: "avala",
-    name: "Avala",
-    acronym: "Alineamiento y Verificaci\xF3n de Aprendizajes y Logros Acreditables",
-    description: "The Human Standard. Applied learning verification.",
-    layer: "stem",
-    domain: "avala.studio",
-    repo: "avala",
-    githubOrg: "madfam-org",
-    license: "AGPL-3.0",
-    // Repository flipped private 2026-07-16. The product surface is live.
-    isPublic: false,
-    phase: 3
-  },
-  // ─────────────────────────────────────────────────────────────────────────────
-  // Layer 4: The Fruit (User Platforms)
-  // ─────────────────────────────────────────────────────────────────────────────
-  // ARCHIVED: the sim4d repo was archived by 2026-08-07 and the platform is
-  // retired (parametric design continues in yantra4d). Entry retained for type
-  // stability — consumers must not render Sim4D as an active product.
-  sim4d: {
-    id: "sim4d",
-    name: "Sim4D",
-    description: "ARCHIVED (2026-08). Web-based CAD guided by geom-core; superseded by Yantra4D.",
-    layer: "fruit",
-    domain: "sim4d.io",
-    repo: "sim4d",
-    githubOrg: "madfam-org",
-    license: "MPL-2.0",
-    defaultPort: 5173,
-    isPublic: true,
-    phase: 3,
-    status: "retired",
-    successorSlug: "yantra4d"
-  },
-  forj: {
-    id: "forj",
-    name: "Forj",
-    description: "The Bazaar. Decentralized fabrication storefronts.",
-    layer: "fruit",
-    domain: "forj.design",
-    repo: "forj",
-    githubOrg: "madfam-org",
-    license: "Proprietary",
-    isPublic: false,
-    phase: 4
-  },
-  cotiza: {
-    id: "cotiza",
-    name: "Cotiza",
-    description: "The Merchant. Automated quoting engine.",
-    layer: "fruit",
-    domain: "cotiza.studio",
-    repo: "digifab-quoting",
-    githubOrg: "madfam-org",
-    license: "Proprietary",
-    defaultPort: 4500,
-    isPublic: false,
-    phase: 4
-  },
-  dhanam: {
-    id: "dhanam",
-    name: "Dhanam",
-    description: "The Treasury. Unified budgeting and wealth tracking.",
-    layer: "fruit",
-    domain: "dhan.am",
-    repo: "dhanam",
-    githubOrg: "madfam-org",
-    license: "AGPL-3.0",
-    defaultPort: 4700,
-    // Repository flipped private by 2026-07-25. The product surface is live.
-    isPublic: false,
-    phase: 1
-  },
-  coforma: {
-    id: "coforma",
-    name: "Coforma Studio",
-    description: "The Ear. Customer Advisory Board and feedback.",
-    layer: "fruit",
-    domain: "coforma.studio",
-    repo: "coforma-studio",
-    githubOrg: "madfam-org",
-    license: "Proprietary",
-    isPublic: false,
-    phase: 1
-  },
-  galvana: {
-    id: "galvana",
-    name: "Galvana",
-    description: "The Reactor. Electrochemistry simulation platform.",
-    layer: "fruit",
-    // No routed host. `galvana.io` was never registered; roadmap only.
-    repo: "electrochem-sim",
-    githubOrg: "madfam-org",
-    license: "MPL-2.0",
-    isPublic: true,
-    phase: 5
-  },
-  // ─────────────────────────────────────────────────────────────────────────────
-  // Operations (not in biological layers but essential)
-  // ─────────────────────────────────────────────────────────────────────────────
-  primavera3d: {
-    id: "primavera3d",
-    name: "Primavera3D",
-    description: "Internal 3D printing operations (dogfooding target).",
-    layer: "fruit",
-    domain: "primavera3d.pro",
-    repo: "primavera3d",
-    githubOrg: "madfam-org",
-    license: "Proprietary",
-    isPublic: false,
-    phase: 4
-  },
-  // ─────────────────────────────────────────────────────────────────────────────
-  // Tombstones — retired products. Kept so a consumer can recognise a dead brand
-  // and redirect. `status: "retired"` entries MUST NOT be rendered as products.
-  // ─────────────────────────────────────────────────────────────────────────────
-  penny: {
-    id: "penny",
-    name: "PENNY",
-    description: "RETIRED. Assistant platform; everything PENNY did is absorbed by Selva. Repository archived; penny.onl 301-redirects to selva.town.",
-    layer: "fruit",
-    repo: "penny",
-    githubOrg: "madfam-org",
-    license: "Proprietary",
-    isPublic: true,
-    phase: 4,
-    status: "retired",
-    successorSlug: "selva",
-    redirectTo: "https://selva.town"
-  }
-};
+var products = generatedProducts;
+var retiredProducts = generatedRetiredProducts;
 var productIds = Object.keys(products);
 function isRetired(product) {
-  return product.status === "retired";
+  return product.lifecycle === "retired";
 }
 function getActiveProducts() {
   return Object.values(products).filter((p) => !isRetired(p));
@@ -683,29 +1490,43 @@ function getProductsByLayer(layer) {
 function getProductsByLicense(license) {
   return getActiveProducts().filter((p) => p.license === license);
 }
-function getPublicProducts() {
-  return getActiveProducts().filter((p) => p.isPublic);
+function getProductsByLifecycle(...stages) {
+  return getActiveProducts().filter((p) => stages.includes(p.lifecycle));
 }
-function getProductsByPhase(phase) {
-  return getActiveProducts().filter((p) => p.phase === phase);
+function getPublicProducts() {
+  return getActiveProducts().filter((p) => p.isPublic === true);
+}
+function getSurfaceProducts() {
+  return getActiveProducts().filter(
+    (p) => typeof p.domain === "string" && !p.infraHosts.includes(p.domain)
+  );
 }
 function isValidProductId(value) {
   return value in products;
 }
+function isRetiredProductId(value) {
+  return value in retiredProducts;
+}
 function getProduct(id) {
   return products[id];
 }
+function getRetiredProduct(id) {
+  return retiredProducts[id];
+}
 function getProductGitHubUrl(id) {
   const product = products[id];
+  if (!product.repo || !product.githubOrg) return null;
   return `https://github.com/${product.githubOrg}/${product.repo}`;
 }
 function getProductWebsiteUrl(id) {
-  const product = products[id];
-  if (product.status === "retired" && product.redirectTo) {
-    return product.redirectTo;
+  if (isRetiredProductId(id)) {
+    const tombstone = retiredProducts[id];
+    return tombstone.redirectTo ?? null;
   }
+  const product = products[id];
   return product.domain ? `https://${product.domain}` : null;
 }
+var registryVersion = PRODUCT_PROJECTION.registryVersion;
 
 // src/legal.ts
 var company = {
@@ -848,6 +1669,7 @@ var footerLinks = {
   ]
 };
 
+exports.PRODUCT_PROJECTION = PRODUCT_PROJECTION;
 exports.analyticsEvents = analyticsEvents;
 exports.brand = brand;
 exports.breakpoints = breakpoints;
@@ -874,16 +1696,20 @@ exports.getProductGitHubUrl = getProductGitHubUrl;
 exports.getProductWebsiteUrl = getProductWebsiteUrl;
 exports.getProductsByLayer = getProductsByLayer;
 exports.getProductsByLicense = getProductsByLicense;
-exports.getProductsByPhase = getProductsByPhase;
+exports.getProductsByLifecycle = getProductsByLifecycle;
 exports.getPublicProducts = getPublicProducts;
+exports.getRetiredProduct = getRetiredProduct;
+exports.getSurfaceProducts = getSurfaceProducts;
 exports.gradients = gradients;
 exports.isRetired = isRetired;
+exports.isRetiredProductId = isRetiredProductId;
 exports.isValidCurrency = isValidCurrency;
 exports.isValidLocale = isValidLocale;
 exports.isValidProductId = isValidProductId;
 exports.legalUrls = legalUrls;
 exports.licenseHeaders = licenseHeaders;
 exports.licenseTypes = licenseTypes;
+exports.lifecycles = lifecycles;
 exports.localeMetadata = localeMetadata;
 exports.locales = locales;
 exports.parseCurrency = parseCurrency;
@@ -892,6 +1718,8 @@ exports.productIds = productIds;
 exports.productStatuses = productStatuses;
 exports.products = products;
 exports.radii = radii;
+exports.registryVersion = registryVersion;
+exports.retiredProducts = retiredProducts;
 exports.shadows = shadows;
 exports.socialLinks = socialLinks;
 exports.spacing = spacing;
