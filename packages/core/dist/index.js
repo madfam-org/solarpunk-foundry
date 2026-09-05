@@ -1499,6 +1499,9 @@ function getSurfaceProducts() {
     (p) => typeof p.domain === "string" && !p.infraHosts.includes(p.domain)
   );
 }
+function getBannerProducts() {
+  return getSurfaceProducts().filter((p) => p.site.showInBanner && (p.lifecycle === "live" || p.lifecycle === "beta")).sort((a, b) => (a.site.order ?? 0) - (b.site.order ?? 0));
+}
 function isValidProductId(value) {
   return value in products;
 }
@@ -1667,6 +1670,6 @@ var footerLinks = {
   ]
 };
 
-export { PRODUCT_PROJECTION, analyticsEvents, brand, breakpoints, colors, company, compliance, contacts, currencies, currencyMetadata, defaultCurrency, defaultLocale, ecosystemLayers, eventCategories, fallbackCurrency, fallbackLocale, footerLinks, formatCurrency, getActiveProducts, getCopyrightNotice, getCurrencyMetadata, getLocaleMetadata, getProduct, getProductGitHubUrl, getProductWebsiteUrl, getProductsByLayer, getProductsByLicense, getProductsByLifecycle, getPublicProducts, getRetiredProduct, getSurfaceProducts, gradients, isRetired, isRetiredProductId, isValidCurrency, isValidLocale, isValidProductId, legalUrls, licenseHeaders, licenseTypes, lifecycles, localeMetadata, locales, parseCurrency, parseLocale, productIds, productStatuses, products, radii, registryVersion, retiredProducts, shadows, socialLinks, spacing, typography, zIndex };
+export { PRODUCT_PROJECTION, analyticsEvents, brand, breakpoints, colors, company, compliance, contacts, currencies, currencyMetadata, defaultCurrency, defaultLocale, ecosystemLayers, eventCategories, fallbackCurrency, fallbackLocale, footerLinks, formatCurrency, getActiveProducts, getBannerProducts, getCopyrightNotice, getCurrencyMetadata, getLocaleMetadata, getProduct, getProductGitHubUrl, getProductWebsiteUrl, getProductsByLayer, getProductsByLicense, getProductsByLifecycle, getPublicProducts, getRetiredProduct, getSurfaceProducts, gradients, isRetired, isRetiredProductId, isValidCurrency, isValidLocale, isValidProductId, legalUrls, licenseHeaders, licenseTypes, lifecycles, localeMetadata, locales, parseCurrency, parseLocale, productIds, productStatuses, products, radii, registryVersion, retiredProducts, shadows, socialLinks, spacing, typography, zIndex };
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

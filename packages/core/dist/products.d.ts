@@ -1136,6 +1136,31 @@ declare function getPublicProducts(): Product[];
  */
 declare function getSurfaceProducts(): Product[];
 /**
+ * The ecosystem-ticker membership, as one filter over one registry.
+ *
+ * A product is in the ticker when all of these hold:
+ * - it has a **public product surface** - a routed `domain` that is not one of
+ *   its own `infraHosts` (this is why Janua links `janua.dev` and not an auth
+ *   endpoint);
+ * - its `lifecycle` is `live` or `beta`;
+ * - it is not a tombstone (`getActiveProducts` excludes those by construction);
+ * - `site.showInBanner` is true.
+ *
+ * Order is the registry's `site.order`.
+ *
+ * "Public surface" is deliberately NOT `repoVisibility`: Dhanam and Forgesight
+ * are private repositories with live public products, and filtering on the
+ * repository would have deleted them from the ticker.
+ *
+ * This function is the contract `@madfam/ecosystem-banner` and every downstream
+ * repo consume. It exists here, once, because the same filter used to be
+ * re-implemented per consumer - which is how six product lists came to disagree.
+ * A selected product carrying no `site.bannerKeyword` is still returned here:
+ * dropping it silently would make a shorter ticker indistinguishable from a
+ * correct one. `scripts/check-product-projection.mjs` fails CI on that case.
+ */
+declare function getBannerProducts(): Product[];
+/**
  * Check if a string is a valid product ID
  */
 declare function isValidProductId(value: string): value is ProductId;
@@ -1165,4 +1190,4 @@ declare function getProductWebsiteUrl(id: ProductId | RetiredProductId): string 
 /** The registry version this build carries, for a consumer that wants to log it. */
 declare const registryVersion: 4;
 
-export { type EcosystemLayer, type GithubOrg, type LicenseType, type Lifecycle, PRODUCT_PROJECTION, type Product, type ProductCommerce, type ProductId, type ProductStatus, type ProductSurface, type RepoVisibility, type RetiredProduct, type RetiredProductId, type SiteCategory, type SiteTrack, ecosystemLayers, getActiveProducts, getProduct, getProductGitHubUrl, getProductWebsiteUrl, getProductsByLayer, getProductsByLicense, getProductsByLifecycle, getPublicProducts, getRetiredProduct, getSurfaceProducts, isRetired, isRetiredProductId, isValidProductId, licenseTypes, lifecycles, productIds, productStatuses, products, registryVersion, retiredProducts };
+export { type EcosystemLayer, type GithubOrg, type LicenseType, type Lifecycle, PRODUCT_PROJECTION, type Product, type ProductCommerce, type ProductId, type ProductStatus, type ProductSurface, type RepoVisibility, type RetiredProduct, type RetiredProductId, type SiteCategory, type SiteTrack, ecosystemLayers, getActiveProducts, getBannerProducts, getProduct, getProductGitHubUrl, getProductWebsiteUrl, getProductsByLayer, getProductsByLicense, getProductsByLifecycle, getPublicProducts, getRetiredProduct, getSurfaceProducts, isRetired, isRetiredProductId, isValidProductId, licenseTypes, lifecycles, productIds, productStatuses, products, registryVersion, retiredProducts };

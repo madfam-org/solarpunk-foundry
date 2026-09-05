@@ -137,6 +137,7 @@ import {
   getProduct,
   getProductsByLayer,
   getProductsByLifecycle,
+  getBannerProducts,
   getProductGitHubUrl,
   getProductWebsiteUrl,
   retiredProducts,
@@ -155,6 +156,9 @@ const infrastructure = getProductsByLayer('soil');
 // Get products by lifecycle stage
 const shipping = getProductsByLifecycle('live', 'beta');
 
+// The ecosystem-ticker membership, as one shared filter (see "Downstream contract")
+const ticker = getBannerProducts();
+
 // Generate URLs. `null`, never a fabricated one, when the fact is absent.
 getProductGitHubUrl('geom-core'); // "https://github.com/madfam-org/geom-core"
 getProductWebsiteUrl('geom-core'); // null — a library, no routed host
@@ -166,6 +170,100 @@ retiredProducts.sim4d.redirectTo; // "https://yantra4d.com"
 **Not carried, deliberately:** `description` (per-locale copy lives in the
 registry's copy bundles, not in the projection), `defaultPort` (private
 topology), `phase` (a roadmap number no record owned).
+
+<a id="downstream-contract"></a>
+
+### Downstream contract
+
+What a consuming repo imports, and what it must not re-implement. This is the
+contract `@madfam/ecosystem-banner` already consumes inside this monorepo and
+the one `madfam-site` consumes in its own migration step. **A consumer keeps no
+product list, no product JSON and no copy of the filters.** Six such lists across
+three repos is the defect this shape exists to end.
+
+**1. Import path.** `@madfam/core/products` (or the package root, which
+re-exports the same names). Product facts:
+
+| Export | What it is |
+|---|---|
+| `products` | `Record<ProductId, Product>` — every renderable product, keyed by registry slug, in registry order. Never contains a retired brand. |
+| `productIds`, `isValidProductId` | the slug list and its type guard |
+| `getProduct(id)` | one product, typed |
+| `retiredProducts`, `getRetiredProduct(id)`, `isRetiredProductId(v)` | tombstones for retired brands, so a consumer can **recognise and redirect** rather than fail to recognise and render |
+| `getProductGitHubUrl(id)`, `getProductWebsiteUrl(id)` | `string \| null` — `null`, never a fabricated URL, when the registry carries no repo or no routed host |
+| `ecosystemLayers`, `licenseTypes`, `lifecycles` | the vocabularies |
+| `PRODUCT_PROJECTION`, `registryVersion` | the projection stamp (see 4) |
+
+**2. The `Product` type.** `id`, `name`, optional `acronym` / `aliases` /
+`siteSlug`; `lifecycle` + `lifecycleVerified` (the ISO date the claim was last
+probed — render the date, not the word "live"); `license`, optional
+`dataLicense`; `layer`; optional `repo` / `githubOrg` / `repoVisibility` /
+`openCoreRepo` / `isPublic` (present only while the registry's
+`export_private_repo_names` flag is set — ruling R15 — so treat them as
+optional, always); optional `domain` plus `hosts` and `infraHosts`; `site`
+(`category`, `track`, `order`, `icon`, `bannerKeyword`, `showInBanner`); and
+`commerce` (`tiers`, `adminTier`, `checkoutSlug`, `tierLabels`). Deliberately
+absent: `description` (per-locale copy), `defaultPort` (private topology),
+`phase`. `RetiredProduct` carries `id`, `name`, `lifecycle: "retired"`,
+`retiredOn`, optional `successorSlug` and `redirectTo`.
+
+**3. The filters — use these, do not re-derive them.**
+
+| Filter | Selects |
+|---|---|
+| `getActiveProducts()` | everything renderable (tombstones excluded by construction) |
+| `getProductsByLifecycle('live', 'beta')` | shipping products. `lifecycles` also carries `renderable` / `live` flags — read those rather than hard-coding a lifecycle set |
+| `getSurfaceProducts()` | products with a **public surface**: a routed `domain` that is not one of that product's own `infraHosts`. This is the clause that makes Janua link `janua.dev` instead of an auth endpoint |
+| `getBannerProducts()` | the ecosystem-ticker membership: public surface ∧ lifecycle `live`\|`beta` ∧ `site.showInBanner`, ordered by `site.order` |
+| `getProductsByLayer(layer)`, `getProductsByLicense(licence)`, `getPublicProducts()` | layer, licence, publicly-readable repo |
+
+Two rules carried with them. **Public surface is not `repoVisibility`** — Dhanam
+and Forgesight are private repositories with live public products, and filtering
+on the repository deletes them from every catalog. And a selected product with a
+missing field (a banner entry with no `site.bannerKeyword`) is a **failure to
+fix in the registry**, never a row to drop quietly or a value to invent
+downstream: a short list that renders cleanly is indistinguishable from a
+correct one.
+
+**4. Stamping the projection version in a downstream freshness check.** Every
+build carries its provenance:
+
+```typescript
+import { PRODUCT_PROJECTION, registryVersion } from '@madfam/core/products';
+
+PRODUCT_PROJECTION.schema;          // "madfam-product-projection/v1"
+PRODUCT_PROJECTION.registryVersion; // 4  — also exported as `registryVersion`
+PRODUCT_PROJECTION.lastUpdated;     // "2026-09-05"
+PRODUCT_PROJECTION.sourceSha256;    // sha256 of the projection this build was rendered from
+PRODUCT_PROJECTION.exportPrivateRepoNames; // whether `repo` fields are present at all
+```
+
+A downstream freshness check is a test that pins the two it read and fails on a
+drift it did not review:
+
+```typescript
+// apps/www/src/__tests__/product-registry-freshness.spec.ts
+const EXPECTED_REGISTRY_VERSION = 4;
+const EXPECTED_PROJECTION_SHA = '759119046a…'; // paste the full 64 hex chars
+
+expect(PRODUCT_PROJECTION.schema).toBe('madfam-product-projection/v1');
+expect(PRODUCT_PROJECTION.registryVersion).toBe(EXPECTED_REGISTRY_VERSION);
+expect(PRODUCT_PROJECTION.sourceSha256).toBe(EXPECTED_PROJECTION_SHA);
+```
+
+Bumping those two constants is the review surface: a product fact changed
+upstream, someone read the diff, and the copy deck and routes were checked
+against it. Do **not** assert on product counts or on a slug list — that is a
+second registry in test form, and it is how the lists drifted in the first place.
+Assert on the stamp, and let the types fail the build when a slug goes away.
+
+**5. What stays out of a consumer.** No vendored `projection.public.json`, no
+generated product module, no re-implemented filter, no hand-typed brand name in
+a catalog, and no product copy in this package (copy is per-locale and lives in
+the registry's copy bundles). To change a product fact: change the private
+registry, re-run its generator, re-vendor the projection here, run
+`node scripts/check-product-projection.mjs --write`, publish `@madfam/core`, and
+bump the pin in step 4.
 
 ### Legal Information
 

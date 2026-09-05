@@ -128,6 +128,7 @@ export {
   getProductsByLifecycle,
   getPublicProducts,
   getSurfaceProducts,
+  getBannerProducts,
   isValidProductId,
   getProduct,
   getRetiredProduct,

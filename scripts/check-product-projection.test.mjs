@@ -10,6 +10,7 @@ import { dirname, join } from 'node:path';
 
 import {
   BANNER_GENERATED_PATH,
+  BANNER_PLATFORMS_PATH,
   GENERATED_PATH,
   LICENSE_ENUM,
   LICENSING_DOC,
@@ -62,8 +63,14 @@ function baseProjection(overrides = {}) {
 function fixture(projection = baseProjection()) {
   const root = mkdtempSync(join(tmpdir(), 'projection-'));
   mkdirSync(dirname(join(root, PROJECTION_PATH)), { recursive: true });
-  mkdirSync(dirname(join(root, BANNER_GENERATED_PATH)), { recursive: true });
+  mkdirSync(dirname(join(root, BANNER_PLATFORMS_PATH)), { recursive: true });
   mkdirSync(dirname(join(root, LICENSING_DOC)), { recursive: true });
+  // The banner module as Wave 2.7 leaves it: a derivation, not a list.
+  writeFileSync(
+    join(root, BANNER_PLATFORMS_PATH),
+    "import { getBannerProducts } from '@madfam/core/products';\n" +
+      'export const DEFAULT_ECOSYSTEM_PLATFORMS = getBannerProducts();\n'
+  );
   writeFileSync(
     join(root, LICENSING_DOC),
     `# Licensing\n\n${LICENSE_ENUM.map((l) => `- ${l}`).join('\n')}\n`
@@ -274,35 +281,54 @@ test('a private repository with a live public surface stays in the banner', () =
   assert.deepEqual(selectedSlugs([closed]), ['closed']);
 });
 
-test('a selected product with no banner keyword is a finding, and the list is NOT written short', () => {
+test('a selected product with no banner keyword is a finding', () => {
   const projection = baseProjection({ products: [bannerProduct('mute', { site: { banner_keyword: undefined } })] });
-  const root = fixture(projection);
-  const r = check(root);
+  const r = check(fixture(projection));
   assert.ok(r.findings.some((f) => f.includes('mute') && f.includes('site.banner_keyword')));
-  assert.ok(!existsSync(join(root, BANNER_GENERATED_PATH)), 'a short list must not be written');
 });
 
-test('a hand edit of the generated banner list is caught by the freshness diff', () => {
+test('the retired second copy of the platform list is a finding if it comes back', () => {
   const root = fixture();
-  const generated = readFileSync(join(root, BANNER_GENERATED_PATH), 'utf8');
-  writeFileSync(join(root, BANNER_GENERATED_PATH), generated.replace('ALPHA THINGS', 'HAND TYPED'));
-  const r = check(root);
-  assert.ok(r.findings.some((f) => f.includes(BANNER_GENERATED_PATH) && f.includes('stale or hand-edited')));
-});
-
-test('a retired brand hand-typed back into the banner list is a finding', () => {
-  const root = fixture();
-  const generated = readFileSync(join(root, BANNER_GENERATED_PATH), 'utf8');
   writeFileSync(
     join(root, BANNER_GENERATED_PATH),
-    generated.replace('] as const;', '  { keyword: "GONE", name: "Omega", url: "https://alpha.example" },\n] as const;')
+    'export const GENERATED_ECOSYSTEM_PLATFORMS = [] as const;\n'
+  );
+  const r = check(root);
+  assert.ok(r.findings.some((f) => f.includes(BANNER_GENERATED_PATH) && f.includes('is back')));
+});
+
+test('a banner module that stops importing the core filter is a finding', () => {
+  const root = fixture();
+  writeFileSync(join(root, BANNER_PLATFORMS_PATH), 'export const DEFAULT_ECOSYSTEM_PLATFORMS = [];\n');
+  const r = check(root);
+  assert.ok(r.findings.some((f) => f.includes(BANNER_PLATFORMS_PATH) && f.includes('@madfam/core/products')));
+});
+
+test('a hand-typed ticker row in the banner module is a finding', () => {
+  const root = fixture();
+  const source = readFileSync(join(root, BANNER_PLATFORMS_PATH), 'utf8');
+  writeFileSync(
+    join(root, BANNER_PLATFORMS_PATH),
+    `${source}const extra = [{ keyword: 'HAND TYPED', name: 'Alpha', url: 'https://alpha.example' }];\n`
+  );
+  const r = check(root);
+  assert.ok(r.findings.some((f) => f.includes(BANNER_PLATFORMS_PATH) && f.includes('literal ticker')));
+});
+
+test('a retired brand hand-typed back into the banner module is a finding', () => {
+  const root = fixture();
+  const source = readFileSync(join(root, BANNER_PLATFORMS_PATH), 'utf8');
+  writeFileSync(
+    join(root, BANNER_PLATFORMS_PATH),
+    `${source}const tombstone = { name: 'Omega', url: 'https://alpha.example' };\n`
   );
   const r = check(root);
   assert.ok(r.findings.some((f) => f.includes('retired brand `Omega` appears in the ecosystem banner')));
 });
 
-test('a passing run proves it looked at the banner list', () => {
+test('a passing run proves it looked at the banner selection and the banner module', () => {
   const r = check(fixture());
   assert.deepEqual(r.findings, []);
   assert.equal(r.bannerPlatforms, 1);
+  assert.equal(r.bannerModuleChecked, true);
 });

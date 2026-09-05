@@ -1124,6 +1124,9 @@ function getSurfaceProducts() {
     (p) => typeof p.domain === "string" && !p.infraHosts.includes(p.domain)
   );
 }
+function getBannerProducts() {
+  return getSurfaceProducts().filter((p) => p.site.showInBanner && (p.lifecycle === "live" || p.lifecycle === "beta")).sort((a, b) => (a.site.order ?? 0) - (b.site.order ?? 0));
+}
 function isValidProductId(value) {
   return value in products;
 }
@@ -1154,6 +1157,7 @@ var registryVersion = PRODUCT_PROJECTION.registryVersion;
 exports.PRODUCT_PROJECTION = PRODUCT_PROJECTION;
 exports.ecosystemLayers = ecosystemLayers;
 exports.getActiveProducts = getActiveProducts;
+exports.getBannerProducts = getBannerProducts;
 exports.getProduct = getProduct;
 exports.getProductGitHubUrl = getProductGitHubUrl;
 exports.getProductWebsiteUrl = getProductWebsiteUrl;
