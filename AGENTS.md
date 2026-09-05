@@ -93,9 +93,26 @@ node ports, Longhorn CSI block storage, Cloudflare R2 object storage, ArgoCD
 GitOps with self-heal. See [`MADFAM.md`](MADFAM.md) §1.2 and
 [`ECOSYSTEM.md`](ECOSYSTEM.md) §4 for the maintained statement of this shape.
 
-Note that CI does not enforce this for you: `scripts/public-hygiene-check.sh`
-scans `.md`/`.mdx`/`.txt` only and has no pattern for infrastructure
-identifiers. A green CI run is not proof a change is boundary-clean.
+CI covers part of this for you, but not all of it. As of 2026-09-04
+(`scripts/public-hygiene-check.sh`, read 2026-09-05):
+
+- The scan is `git ls-files` filtered to text files — **every tracked text
+  file**, not the former `.md`/`.mdx`/`.txt` subset.
+- Public IPv4 literals are a pattern class, with RFC1918, loopback, link-local,
+  TEST-NET and reserved ranges excluded so illustrative addresses stay usable.
+- Node identity — hostnames, node IPs and hardware SKUs — is checked against a
+  private pattern file read through `MADFAM_HYGIENE_PATTERNS`, defaulting to
+  `../internal-devops/security/public-hygiene-private-patterns.txt`. The
+  literals are not in this repo by design. Matches print `file:line` only,
+  never the matched text, because this repo's CI logs are public.
+- **When that file is unreadable the class is not checked at all**: the run
+  prints `node-identity class SKIPPED` and ends with `classes_skipped=1`. Read
+  the trailing `files_scanned=<n> classes_skipped=<n>` line before trusting a
+  green run — `classes_skipped=1` is not a clean bill of health for that class.
+
+Passing CI is still not proof a change is boundary-clean: human review against
+the "never publish" list above is the control that matters. Coverage detail:
+[`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md).
 
 ## Maintenance
 

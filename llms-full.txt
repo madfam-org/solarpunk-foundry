@@ -248,9 +248,14 @@ State these rather than let an agent trip over them:
 - `ops/docker/docker-compose.production.yml` and `ops/db/init-shared-dbs.sql`
   carry DO-NOT-USE banners (added 2026-08-24): there is no Docker-Compose
   production, and the `*_db` database names are superseded by the `*_dev` set.
-- `scripts/public-hygiene-check.sh` scans .md/.mdx/.txt only and has no pattern
-  for infrastructure identifiers, IPs or node hostnames. A green CI run is not
-  proof a change is boundary-clean.
+- `scripts/public-hygiene-check.sh` reads every tracked text file (since
+  2026-09-04; it was .md/.mdx/.txt only before that), flags public IPv4
+  literals, and checks node identity — hostnames, node IPs and hardware SKUs —
+  against a private pattern file named by MADFAM_HYGIENE_PATTERNS and held in
+  internal-devops. When that file is unreadable the class is skipped and the run
+  reports classes_skipped=1, which means unchecked, not clean. A green CI run is
+  still not proof a change is boundary-clean; human review against the boundary
+  list is the control that matters.
 - `docs/LICENSING_STRATEGY.md` is stale and in at least one case wrong (it lists
   ForgeSight as Proprietary; its LICENSE file is AGPL-3.0). README.md §V carries
   a table of what the LICENSE files actually say, checked 2026-07-25.
