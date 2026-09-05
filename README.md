@@ -672,14 +672,18 @@ If you have operator access, start at `internal-devops/README.md`. Otherwise, co
 `admin@madfam.io`. (Do **not** use any `@innovacionesmadfam.dev` address — that domain was
 never owned; owner confirmation 2026-07-09.)
 
-> **Exposure status, updated 2026-08-24.** The `infrastructure/` scrub that was "in flight"
-> in the previous edition **landed on 2026-07-25**: the tree now carries historical banners
+> **Exposure status, updated 2026-09-05.** The `infrastructure/` scrub that was "in flight"
+> in the 2026-08-24 edition **landed on 2026-07-25**: the tree now carries historical banners
 > and a removal ledger documenting what was deleted and why (including the tunnel identifier
 > and admin roster), and a 2026-08-24 sweep of the working tree found no live credentials,
-> internal IPs, or client identifiers. Two caveats stand: removing material from HEAD does
-> **not** undo git history — **identifier rotation is an operator action and remains owed**,
-> tracked in `internal-devops`; and `scripts/public-hygiene-check.sh` still scans only
-> `.md`/`.mdx`/`.txt`, so a green CI run is not proof a change is boundary-clean.
+> internal IPs, or client identifiers. The scanner caveat that stood in the previous edition
+> is **closed**: since 2026-09-04 `scripts/public-hygiene-check.sh` reads every tracked text
+> file, carries a public-IPv4 class, and checks node identity — hostnames, node IPs and
+> hardware SKUs — against a private pattern file supplied via `MADFAM_HYGIENE_PATTERNS`
+> (§IX below). The hosting **provider name** was ruled public on 2026-09-05 and is not one of
+> those private patterns; node hostnames, IP literals and server SKUs remain forbidden here.
+> One caveat still stands: removing material from HEAD does **not** undo git history —
+> **identifier rotation is an operator action and remains owed**, tracked in `internal-devops`.
 
 ---
 
@@ -697,9 +701,14 @@ never owned; owner confirmation 2026-07-09.)
 8. **No marketing language.** No superlatives, no invented metrics, no adoption numbers.
 
 CI on this repo runs documentation lint, package quality, a production-readiness ratchet,
-public-hygiene scanning and repository hygiene (`.github/workflows/`). Note that the
-public-hygiene scanner covers `.md` / `.mdx` / `.txt` only and has no pattern for
-infrastructure identifiers — passing CI is not proof a change is boundary-clean.
+public-hygiene scanning and repository hygiene (`.github/workflows/`). Since 2026-09-04 the
+public-hygiene scanner reads **every tracked text file** (not just `.md` / `.mdx` / `.txt`),
+flags public IPv4 literals, and checks node identity against a private pattern file passed
+through `MADFAM_HYGIENE_PATTERNS`. That file lives outside this repo, so when it is not
+readable the class is skipped and the run ends with `classes_skipped=1` — read that line, and
+treat a green run with a skipped class as unchecked, not clean. Passing CI is still not proof
+a change is boundary-clean; human review against §IX is the control that matters. Coverage
+detail: [`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md).
 
 ---
 
