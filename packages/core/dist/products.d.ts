@@ -19,7 +19,7 @@ declare const PRODUCT_PROJECTION: {
     readonly lastUpdated: "2026-09-05";
     readonly exportPrivateRepoNames: true;
     /** sha256 of the vendored projection.public.json this module was rendered from. */
-    readonly sourceSha256: "b9a1a315eedcb1c3c3cf13fc7c8c17a0fa12048f51750488885192594091cb6e";
+    readonly sourceSha256: "759119046a21d7bb36e453b0133a8654d38c0d321a90ae0c0c933255294fad10";
 };
 
 /**
@@ -542,6 +542,7 @@ declare const products: {
             readonly track: "ecosystem";
             readonly order: 10;
             readonly icon: "🎓";
+            readonly bannerKeyword: "COMPETENCY TRAINING";
             readonly showInBanner: true;
         };
         readonly commerce: {
@@ -654,6 +655,7 @@ declare const products: {
             readonly track: "self-serve";
             readonly order: 14;
             readonly icon: "🗣️";
+            readonly bannerKeyword: "ASSISTIVE COMMUNICATION";
             readonly showInBanner: true;
         };
         readonly commerce: {
@@ -734,6 +736,7 @@ declare const products: {
             readonly track: "self-serve";
             readonly order: 17;
             readonly icon: "📚";
+            readonly bannerKeyword: "RECORDS ENGINE";
             readonly showInBanner: true;
         };
         readonly commerce: {
@@ -760,6 +763,7 @@ declare const products: {
             readonly track: "self-serve";
             readonly order: 18;
             readonly icon: "📅";
+            readonly bannerKeyword: "BOOKING & SCHEDULING";
             readonly showInBanner: true;
         };
         readonly commerce: {
@@ -855,6 +859,7 @@ declare const products: {
             readonly track: "platform";
             readonly order: 21;
             readonly icon: "🧭";
+            readonly bannerKeyword: "FRACTIONAL CTO";
             readonly showInBanner: true;
         };
         readonly commerce: {
@@ -911,6 +916,7 @@ declare const products: {
             readonly track: "ecosystem";
             readonly order: 23;
             readonly icon: "👗";
+            readonly bannerKeyword: "PARAMETRIC FASHION";
             readonly showInBanner: true;
         };
         readonly commerce: {
@@ -937,6 +943,7 @@ declare const products: {
             readonly track: "ecosystem";
             readonly order: 24;
             readonly icon: "🌎";
+            readonly bannerKeyword: "GEOSPATIAL FACTS";
             readonly showInBanner: true;
         };
         readonly commerce: {

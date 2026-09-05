@@ -20,7 +20,7 @@ export const PRODUCT_PROJECTION = {
   lastUpdated: "2026-09-05",
   exportPrivateRepoNames: true,
   /** sha256 of the vendored projection.public.json this module was rendered from. */
-  sourceSha256: "b9a1a315eedcb1c3c3cf13fc7c8c17a0fa12048f51750488885192594091cb6e",
+  sourceSha256: "759119046a21d7bb36e453b0133a8654d38c0d321a90ae0c0c933255294fad10",
 } as const;
 
 /**
@@ -399,6 +399,7 @@ export const generatedProducts = {
       track: "ecosystem",
       order: 10,
       icon: "🎓",
+      bannerKeyword: "COMPETENCY TRAINING",
       showInBanner: true,
     },
     commerce: {
@@ -541,6 +542,7 @@ export const generatedProducts = {
       track: "self-serve",
       order: 14,
       icon: "🗣️",
+      bannerKeyword: "ASSISTIVE COMMUNICATION",
       showInBanner: true,
     },
     commerce: {
@@ -639,6 +641,7 @@ export const generatedProducts = {
       track: "self-serve",
       order: 17,
       icon: "📚",
+      bannerKeyword: "RECORDS ENGINE",
       showInBanner: true,
     },
     commerce: {
@@ -668,6 +671,7 @@ export const generatedProducts = {
       track: "self-serve",
       order: 18,
       icon: "📅",
+      bannerKeyword: "BOOKING & SCHEDULING",
       showInBanner: true,
     },
     commerce: {
@@ -780,6 +784,7 @@ export const generatedProducts = {
       track: "platform",
       order: 21,
       icon: "🧭",
+      bannerKeyword: "FRACTIONAL CTO",
       showInBanner: true,
     },
     commerce: {
@@ -846,6 +851,7 @@ export const generatedProducts = {
       track: "ecosystem",
       order: 23,
       icon: "👗",
+      bannerKeyword: "PARAMETRIC FASHION",
       showInBanner: true,
     },
     commerce: {
@@ -874,6 +880,7 @@ export const generatedProducts = {
       track: "ecosystem",
       order: 24,
       icon: "🌎",
+      bannerKeyword: "GEOSPATIAL FACTS",
       showInBanner: true,
     },
     commerce: {

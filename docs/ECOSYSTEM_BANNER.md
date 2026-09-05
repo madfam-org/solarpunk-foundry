@@ -62,37 +62,49 @@ Two constraints that apply to anything the banner links to:
   (owner confirmation recorded 2026-07-09). The canonical company domain is
   `madfam.io`.
 
-## Platform list membership — still hand-kept, and exactly why
+## Platform list membership — generated, not hand-kept
 
-`DEFAULT_ECOSYSTEM_PLATFORMS` in `packages/ecosystem-banner/src/platforms.ts` is
-scheduled to become a filter over the vendored product projection
-(`packages/core/src/products/projection.public.json`), so that membership stops
-being typed by hand. The filter is: public product surface ∧ lifecycle live or
-beta ∧ not retired ∧ `site.show_in_banner` ∧ primary domain not one of the
-product's own infra hosts.
+`DEFAULT_ECOSYSTEM_PLATFORMS` is generated. `packages/ecosystem-banner/src/platforms.generated.ts`
+is rendered from the product projection vendored in `@madfam/core`
+(`src/products/projection.public.json`) by `scripts/check-product-projection.mjs`,
+and Package Quality fails when the two drift apart. `platforms.ts` keeps only the
+public `EcosystemPlatform` type and the re-export, so no consumer import changes.
 
-**It is not generated yet, and the blocker is one field.** Applying that filter
-to registry version 4 selects 19 products, and 7 of them carry no
-`site.banner_keyword` in the projection: `avala`, `voxa`, `acervo`, `kalya`,
-`nauta`, `fashion-cabinet`, `factlas`. The banner renders
-`KEYWORD: Name`, so a generated entry for those seven would need a keyword
-invented here — which is precisely the hand-authored, unowned copy this pipeline
-exists to remove. The keyword is brand copy and belongs in the registry.
+**The filter.** A product is in the ticker when all of these hold:
 
-**What would settle it:** add `site.banner_keyword` for those seven products in
-`internal-devops/ecosystem/registry/products.yaml`, re-emit the projection,
-re-vendor it here; the list can then be generated in full and this section
-deleted. Until then the hand-kept list stands and the count is asserted in
-`packages/ecosystem-banner/src/__tests__/ecosystem-banner.spec.tsx`.
+- it has a **public product surface** — a routed `domains.primary` — and that
+  domain is **not** one of its own `domains.infra_hosts` (this is why Janua links
+  `janua.dev` rather than an auth endpoint);
+- its `lifecycle` is `live` or `beta`;
+- it is not a tombstone;
+- `site.show_in_banner` is true.
 
-**Probe, 2026-09-05 (HEAD, following no redirects).** The 19 candidate primary
-domains answered: 17 × `200`, 1 × `307` (`dhan.am`), 1 × `404`
-(`cto.madfam.io`, Nauta). `forgesight.quest` returned no status at all from the
-probing environment (the connection was reset before any response), so it is
-**unverified here, not down** — the current banner entry for it is unchanged.
-`routecraft.app`, which the hand-kept list carries today, answered `200` but has
-no entry in the registry projection at all; whether RouteCraft belongs in the
-registry is a registry question, not a banner one.
+Order is the registry's `site.order`. "Public surface" is deliberately *not*
+`repo.visibility`: Dhanam and Forgesight are private repositories with live
+public products, and filtering on the repository would have deleted them.
+
+**19 platforms at registry version 4.** Against the hand-kept list this repo
+carried until 2026-09-05:
+
+| Change | Slugs |
+|---|---|
+| Added (7) | `avala`, `voxa`, `acervo`, `kalya`, `nauta`, `fashion-cabinet`, `factlas` |
+| Removed (1) | `routecraft` — it has no entry in the product registry at all, so nothing selects it; recorded as O25 |
+| Unchanged (12) | `enclii`, `janua`, `selva`, `forgesight`, `dhanam`, `rondelio`, `karafiel`, `tezca`, `yantra4d`, `cotiza`, `pravara-mes`, `phynd-crm` |
+
+A selected product with no `site.banner_keyword` is a **hard failure** of the
+check, never a silently dropped row: the seven added products had no keyword
+until the registry gained one on 2026-09-05, and the only safe answers are "add
+it to the registry" or "fail" — never "invent a keyword in a public repo". A
+shorter ticker that renders cleanly is indistinguishable from a correct one.
+
+**Probe, 2026-09-05 (HEAD, following no redirects).** The 19 primary domains
+answered: 17 × `200`, 1 × `307` (`dhan.am`), 1 × `404` (`cto.madfam.io`, Nauta).
+`forgesight.quest` returned no status at all from the probing environment (the
+connection was reset before any response), so it is **unverified here, not down**.
+Neither the 404 nor the unverified host is fixed by editing this list: the
+lifecycle and domain claims are registry facts, and `cto.madfam.io` answering 404
+while Nauta is `lifecycle: live` is a registry question.
 
 ## Rollout status
 
