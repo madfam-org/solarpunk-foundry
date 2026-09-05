@@ -1501,6 +1501,9 @@ function getSurfaceProducts() {
     (p) => typeof p.domain === "string" && !p.infraHosts.includes(p.domain)
   );
 }
+function getBannerProducts() {
+  return getSurfaceProducts().filter((p) => p.site.showInBanner && (p.lifecycle === "live" || p.lifecycle === "beta")).sort((a, b) => (a.site.order ?? 0) - (b.site.order ?? 0));
+}
 function isValidProductId(value) {
   return value in products;
 }
@@ -1688,6 +1691,7 @@ exports.fallbackLocale = fallbackLocale;
 exports.footerLinks = footerLinks;
 exports.formatCurrency = formatCurrency;
 exports.getActiveProducts = getActiveProducts;
+exports.getBannerProducts = getBannerProducts;
 exports.getCopyrightNotice = getCopyrightNotice;
 exports.getCurrencyMetadata = getCurrencyMetadata;
 exports.getLocaleMetadata = getLocaleMetadata;

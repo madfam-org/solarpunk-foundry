@@ -131,6 +131,10 @@ importers:
         version: 5.9.3
 
   packages/ecosystem-banner:
+    dependencies:
+      '@madfam/core':
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@madfam/eslint-config':
         specifier: workspace:*

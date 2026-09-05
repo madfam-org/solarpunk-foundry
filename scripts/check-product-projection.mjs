@@ -20,10 +20,13 @@
  *              hand edit of the vendored copy is a red check.
  *   stamp      the JSON carries its `schema`/`generated_from`/`registry_version`
  *              stamp and the generated module records the same one.
- *   freshness  re-rendering the generated modules from the JSON reproduces the
- *              committed files byte for byte. Two are generated: the product
- *              registry in `@madfam/core` and the ecosystem banner's platform
- *              list, which is a filter over the same projection.
+ *   freshness  re-rendering the generated module from the JSON reproduces the
+ *              committed file byte for byte. Exactly one file is generated: the
+ *              product registry in `@madfam/core`. The ecosystem banner's
+ *              membership is NOT a second generated file - since Wave 2.7 it is
+ *              `getBannerProducts()` from `@madfam/core/products`, evaluated at
+ *              import time - and this check asserts the retired second copy has
+ *              not come back and that the module carries no list of its own.
  *   retired    no `lifecycle: retired` product and no tombstone slug reaches the
  *              renderable product map. Tombstones exist so a consumer can
  *              recognise a dead brand and redirect; they must never render.
@@ -32,7 +35,11 @@
  *              `site.banner_keyword` is a FINDING, not a silently dropped row:
  *              that field was missing for seven products on 2026-09-05 and the
  *              only safe answers are "add it to the registry" or "fail" - never
- *              "invent a keyword in a public repo".
+ *              "invent a keyword in a public repo". The membership itself is
+ *              cross-checked in `@madfam/ecosystem-banner`'s own suite
+ *              (`src/__tests__/platforms.spec.ts`), which applies
+ *              `selectBannerPlatforms` here as an oracle against the TypeScript
+ *              filter in `@madfam/core` - two implementations, one source.
  *   licences   every licence in the projection is a member of the enum, and
  *              every enum member is documented in docs/LICENSING_STRATEGY.md.
  *   boundary   the projection carries nothing the repo-boundary contract keeps
@@ -67,6 +74,13 @@ import { fileURLToPath } from 'node:url';
 export const PROJECTION_PATH = 'packages/core/src/products/projection.public.json';
 export const SHA_PATH = 'packages/core/src/products/projection.public.json.sha256';
 export const GENERATED_PATH = 'packages/core/src/products.generated.ts';
+/** The banner's derived membership module. It must hold no list of its own. */
+export const BANNER_PLATFORMS_PATH = 'packages/ecosystem-banner/src/platforms.ts';
+/**
+ * The rendered second copy this repo carried between #46 and Wave 2.7. It is
+ * retired: the check now fails if it comes back, because one registry projected
+ * into two rendered files is still two files to disagree with each other.
+ */
 export const BANNER_GENERATED_PATH = 'packages/ecosystem-banner/src/platforms.generated.ts';
 export const LICENSING_DOC = 'docs/LICENSING_STRATEGY.md';
 
@@ -282,38 +296,6 @@ export function selectBannerPlatforms(projection) {
     .sort((a, b) => (a.site?.order ?? 0) - (b.site?.order ?? 0));
 }
 
-export function renderBannerModule(projection, sha256) {
-  const selected = selectBannerPlatforms(projection);
-  const rows = selected
-    .map(
-      (p) =>
-        `  { keyword: ${str(p.site.banner_keyword)}, name: ${str(p.display_name)}, ` +
-        `url: ${str(`https://${p.domains.primary}`)} },`
-    )
-    .join('\n');
-
-  return `/**
- * GENERATED FILE - DO NOT EDIT BY HAND.
- *
- * The ecosystem ticker's membership, rendered from the product projection
- * vendored at ${PROJECTION_PATH}
- * by scripts/check-product-projection.mjs. Add or remove a platform in the
- * private product registry, not here; a hand edit is reverted by the next run
- * and fails Package Quality.
- *
- * The filter: public product surface (a routed primary domain that is not one of
- * the product's own infra endpoints) AND lifecycle live or beta AND not retired
- * AND site.show_in_banner. Order is the registry's site.order.
- *
- * Registry version ${String(projection.registry_version)}, projection ${projection.last_updated},
- * projection sha256 ${sha256}.
- */
-export const GENERATED_ECOSYSTEM_PLATFORMS = [
-${rows}
-] as const;
-`;
-}
-
 // ── checking ─────────────────────────────────────────────────────────────────
 
 function collectStrings(node, path, out) {
@@ -410,11 +392,14 @@ export function checkProjection(root, { write = false } = {}) {
   }
 
   // ── banner ─────────────────────────────────────────────────────────────────
-  // The ticker's membership is the same projection under a filter, so it gets
-  // the same freshness treatment. The keyword assertion runs FIRST and is fatal:
-  // a selected product with no keyword must stop the render, not be dropped from
-  // the list quietly - a silently shorter ticker is indistinguishable from a
-  // correct one.
+  // The ticker's membership is the same projection under a filter. Since Wave
+  // 2.7 that filter is `getBannerProducts()` in `@madfam/core`, applied at
+  // import time by `@madfam/ecosystem-banner` - there is no second generated
+  // file to keep fresh, and this section asserts it stays that way.
+  //
+  // The keyword assertion is fatal: a selected product with no keyword must stop
+  // the ticker, not be dropped from it quietly - a silently shorter ticker is
+  // indistinguishable from a correct one.
   const bannerSelection = selectBannerPlatforms(projection);
   for (const product of bannerSelection) {
     if (!product.site?.banner_keyword) {
@@ -426,18 +411,35 @@ export function checkProjection(root, { write = false } = {}) {
     }
   }
 
-  const bannerFile = join(root, BANNER_GENERATED_PATH);
-  const bannerRendered = renderBannerModule(projection, sha256);
-  const bannerRenderable = bannerSelection.every((p) => Boolean(p.site?.banner_keyword));
-  if (write) {
-    if (bannerRenderable) writeFileSync(bannerFile, bannerRendered);
-  } else if (!existsSync(bannerFile)) {
-    findings.push(`${BANNER_GENERATED_PATH} is missing - run this script with --write`);
-  } else if (bannerRenderable && readFileSync(bannerFile, 'utf8') !== bannerRendered) {
+  if (existsSync(join(root, BANNER_GENERATED_PATH))) {
     findings.push(
-      `${BANNER_GENERATED_PATH} is stale or hand-edited: re-rendering it from the vendored ` +
-        'projection produces different bytes. Run `node scripts/check-product-projection.mjs --write`.'
+      `${BANNER_GENERATED_PATH} is back. The ecosystem banner derives its membership from ` +
+        '`getBannerProducts()` in `@madfam/core/products`; a rendered second copy of the same ' +
+        'registry is the duplication Wave 2.7 removed. Delete the file.'
     );
+  }
+
+  const bannerModule = join(root, BANNER_PLATFORMS_PATH);
+  let bannerModuleChecked = false;
+  if (existsSync(bannerModule)) {
+    bannerModuleChecked = true;
+    const source = readFileSync(bannerModule, 'utf8');
+    if (!/from\s+'@madfam\/core\/products'/.test(source)) {
+      findings.push(
+        `${BANNER_PLATFORMS_PATH} does not import from \`@madfam/core/products\`. The banner's ` +
+          'membership is the core filter, not a list of its own.'
+      );
+    }
+    // A hand-typed entry looks exactly like a rendered one, so the shape is what
+    // is banned, not the provenance: no ticker row may be written here at all.
+    const handTyped = source.split('\n').filter((line) => /keyword:\s*['"]/.test(line));
+    if (handTyped.length > 0) {
+      findings.push(
+        `${BANNER_PLATFORMS_PATH} carries ${handTyped.length} literal ticker ` +
+          'entr' + (handTyped.length === 1 ? 'y' : 'ies') + '. Platform facts belong in the ' +
+          'private registry and reach this package through the vendored projection.'
+      );
+    }
   }
 
   // ── retired ────────────────────────────────────────────────────────────────
@@ -453,10 +455,12 @@ export function checkProjection(root, { write = false } = {}) {
       findings.push(`\`${product.slug}\` is both a renderable product and a tombstone`);
     }
   }
-  if (!write && existsSync(bannerFile)) {
-    const bannerOnDisk = readFileSync(bannerFile, 'utf8');
+  if (bannerModuleChecked) {
+    const bannerOnDisk = readFileSync(bannerModule, 'utf8');
     for (const entry of projection.retired ?? []) {
-      if (bannerOnDisk.includes(`name: ${JSON.stringify(entry.display_name)}`)) {
+      // A tombstone's display name must not appear as a ticker row. The filter
+      // cannot select one, so its presence here means someone wrote it in.
+      if (new RegExp(`name:\\s*['\"]${entry.display_name}['\"]`).test(bannerOnDisk)) {
         retiredRendered += 1;
         findings.push(`retired brand \`${entry.display_name}\` appears in the ecosystem banner list`);
       }
@@ -555,6 +559,7 @@ export function checkProjection(root, { write = false } = {}) {
     productsScanned: projection.products.length,
     tombstones: tombstones.size,
     bannerPlatforms: bannerSelection.length,
+    bannerModuleChecked,
     retiredRendered,
     hostsChecked,
     declaredHosts: declaredHosts.size,
@@ -587,6 +592,7 @@ export function main(argv = []) {
     `Product projection check${result.wrote ? ' (--write)' : ''}: ` +
       `products_scanned=${result.productsScanned} tombstones=${result.tombstones} ` +
       `banner_platforms=${result.bannerPlatforms} ` +
+      `banner_module_checked=${result.bannerModuleChecked ? 1 : 0} ` +
       `retired_rendered=${result.retiredRendered} hosts_checked=${result.hostsChecked} ` +
       `declared_hosts=${result.declaredHosts} licences_checked=${result.licencesChecked} ` +
       `keys_scanned=${result.keysScanned} findings=${result.findings.length} ` +

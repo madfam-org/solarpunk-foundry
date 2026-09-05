@@ -29,6 +29,9 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
+  "dependencies": {
+    "@madfam/core": "workspace:*"
+  },
   "peerDependencies": {
     "react": "^18 || ^19"
   },

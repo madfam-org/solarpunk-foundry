@@ -14,6 +14,51 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-09-05 — one product filter, no second copy (Wave 2.7)
+
+- **`@madfam/ecosystem-banner` consumes `@madfam/core/products`.**
+  `DEFAULT_ECOSYSTEM_PLATFORMS` is now `getBannerProducts()` mapped into the
+  ticker's `{ keyword, name, url }` shape, evaluated at import time.
+  `packages/ecosystem-banner/src/platforms.generated.ts` — the second file
+  rendered from the same projection, added hours earlier by #46 — is **deleted**.
+  One registry projected into two rendered files is still two files that can
+  disagree; the estate now has one vendored JSON, one committed hash and one
+  filter. The 19-platform membership is unchanged by this: the same products in
+  the same order, from the same projection.
+- **The filter moved into `@madfam/core` as `getBannerProducts()`**, exported
+  from `@madfam/core` and `@madfam/core/products`, so downstream repos apply the
+  shared filter instead of re-implementing it. `@madfam/core` is now a runtime
+  dependency of `@madfam/ecosystem-banner`.
+- **The guard changed shape with it.** `scripts/check-product-projection.mjs` no
+  longer renders a banner module; it now fails if `platforms.generated.ts`
+  reappears, if `platforms.ts` stops importing the core filter, or if a literal
+  ticker row is typed into it, and it still fails when a selected product carries
+  no `site.banner_keyword`. The read-proof gained `banner_module_checked=`.
+- **The membership is cross-checked by two implementations over one source.**
+  `packages/ecosystem-banner/src/__tests__/platforms.spec.ts` applies the guard's
+  `selectBannerPlatforms` (JavaScript, over the raw vendored JSON) as an oracle
+  against the TypeScript filter in `@madfam/core`, asserting name, URL, keyword
+  and order one for one — the freshness property the deleted byte-compare used to
+  carry.
+- **`vendor-ecosystem-banner.sh` vendors no product facts.** It copies three
+  source files, requires the consumer to depend on `@madfam/core`, and prints a
+  read-proof (`files=3 platform_lists=0 madfam_core_dependency=present|absent|undetermined`)
+  rather than a bare "done".
+- **`packages/core/README.md` states the downstream contract** consumed by
+  `madfam-site` in its own migration step: the export names, the `Product` and
+  `RetiredProduct` shapes, the lifecycle/surface filters (with the "public
+  surface is not repo visibility" rule), and how a downstream freshness check
+  pins `PRODUCT_PROJECTION.registryVersion` and `.sourceSha256` rather than
+  asserting a product count or a slug list.
+- **`templates/env/madfam-integrations.env`** stopped naming example product IDs:
+  the line named `sim4d`, a retired brand with a tombstone, and `primavera3d`,
+  which has no registry entry. It now points at `productIds` in `@madfam/core`.
+- Not migrated, deliberately: `packages/types`' `MadfamService` union is the
+  event-schema registry's service vocabulary (`internal-devops/ecosystem/event-schemas.yaml`),
+  not the product registry's. Deriving it from `products` would silently equate
+  two different records; it stays where it is until that registry is projected
+  too.
+
 ### 2026-09-05 — the product registry becomes generated (`@madfam/core`)
 
 - **Vendored the public product projection.**
