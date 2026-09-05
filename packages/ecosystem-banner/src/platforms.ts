@@ -6,13 +6,20 @@
  * package; the older `@dhanam/ui` copy this header used to name is the stale
  * one the 2026-06-15 banner/footer audit was written to retire.
  *
- * URLs were last probed live on 2026-05-04 (HEAD, accepting
- * 200/301/302/405-method-allowed). Names, membership and the Janua URL were
- * reconciled against the ecosystem domain map and brand records on
- * 2026-09-04 — a records check, not a re-probe. A full re-probe and a
- * membership refresh (several live platforms are still missing from this list)
- * are pending; this list is scheduled to become generated from the single
- * product registry, at which point membership stops being hand-kept.
+ * URLs were re-probed on 2026-09-05 (HEAD): every entry here answered 200
+ * except `dhan.am` (307) and `forgesight.quest`, which returned no status at
+ * all from the probing environment — unverified, not known-down.
+ *
+ * STILL HAND-KEPT, AND WHY. This list is meant to be a filter over the vendored
+ * product projection (`@madfam/core`'s `products/projection.public.json`):
+ * public surface ∧ lifecycle live/beta ∧ not retired ∧ `site.show_in_banner` ∧
+ * primary domain not one of the product's own infra hosts. That filter selects
+ * 19 products at registry version 4, and 7 of them carry no
+ * `site.banner_keyword` in the projection (avala, voxa, acervo, kalya, nauta,
+ * fashion-cabinet, factlas). A banner entry needs a keyword, and inventing one
+ * here is exactly the unowned hand-authored copy the registry pipeline exists to
+ * remove — so the generation is blocked on that one field rather than guessed
+ * around. See docs/ECOSYSTEM_BANNER.md, "Platform list membership".
  */
 export interface EcosystemPlatform {
   /** Short uppercase keyword shown before the colon, e.g. "BUDGETING & WEALTH". */
