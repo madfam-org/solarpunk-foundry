@@ -14,6 +14,39 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-09-05 — the product registry becomes generated (`@madfam/core`)
+
+- **Vendored the public product projection.**
+  `packages/core/src/products/projection.public.json` is a verbatim copy of the
+  public-safe projection of the one private product registry (registry version
+  4), committed alongside its `.sha256`. Nothing in this repo hand-types a
+  product fact any more.
+- **`packages/core/src/products.ts` is now the hand-kept half only** — the
+  `Product` type, the licence / layer / lifecycle vocabularies and the lookups.
+  Every product fact lives in the generated `products.generated.ts`.
+- **New guard, wired into Package Quality:**
+  `scripts/check-product-projection.mjs` (with a `node --test` self-test) fails
+  when the vendored projection is edited in place (hash), when the generated
+  module drifts from it (byte diff), when a `lifecycle: retired` product or a
+  tombstone slug would render, when a licence leaves the enum documented in
+  `docs/LICENSING_STRATEGY.md`, or when the projection carries an IP literal, an
+  undeclared hostname, a private-only field or a credential shape. Every run
+  prints a read-proof (`products_scanned=`, `hosts_checked=`), so "I read
+  nothing" cannot look like "I read everything and it was clean".
+- **Consumer-visible changes to `@madfam/core`'s product exports**: product keys
+  are registry slugs (`geom-core`, not `geomCore`); the registry now carries 28
+  products instead of 16; `PENNY` and `Sim4D` moved out of `products` into
+  `retiredProducts` tombstones; `Product` gained `lifecycle`,
+  `lifecycleVerified`, `hosts`, `infraHosts`, `site` and `commerce`, and lost
+  `description`, `defaultPort` and `phase`; `getProductsByPhase` is gone and
+  `getProductsByLifecycle` / `getSurfaceProducts` / `getRetiredProduct` are new;
+  `getProductGitHubUrl` now returns `string | null`.
+- **The ecosystem banner's platform list is unchanged and still hand-kept.**
+  Generating it is blocked on one registry field — `site.banner_keyword` is
+  absent for 7 of the 19 products the membership filter selects — and inventing
+  those keywords here is the exact failure the pipeline exists to remove. Stated
+  with the unblocking step in `docs/ECOSYSTEM_BANNER.md`.
+
 ### 2026-08-24 — re-verification pass (recon-driven)
 
 Driven by a same-day full refresh of the private registries: live GitHub
