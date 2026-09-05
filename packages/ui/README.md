@@ -1,64 +1,63 @@
-# @madfam/ui - DEPRECATED
+# @madfam/ui — RETIRED
 
-> **Boundary checkpoint (2026-09-04, platform ops):** public package surface.
-> Public-safe API and usage detail only; no private topology, node identities,
-> credentials or cost data.
+> **Boundary checkpoint (2026-09-05, platform ops):** public package surface.
+> A tombstone record only; no private topology, node identities, credentials or
+> cost data.
 > Policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../../docs/PUBLIC_REPO_BOUNDARY.md)
 
-> **This package is deprecated.** The MADFAM UI system has moved to a decentralized "incubator" model.
+|                |                                                                                                                                                          |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Lifecycle**  | `retired`                                                                                                                                                |
+| **Retired on** | 2026-09-05 (Wave 4.5). Deprecated in this README since 2026-05; the retirement is the formal act.                                                        |
+| **Successor**  | `@dhanam/ui` — the per-app UI incubator (`labspace/dhanam/packages/ui`)                                                                                  |
+| **Source**     | removed from `main` on 2026-09-05; recoverable from git history at the commit before this one                                                            |
+| **Published**  | never confirmed on any registry. `@madfam/ui` returns 404 on public npm; presence on the private `npm.madfam.io` Verdaccio is unverified from this repo. |
 
-## New Architecture
+## Why this directory still exists
 
-Instead of a centralized npm package, each MADFAM app maintains its own UI package with:
-- **Shared foundation**: Radix + Tailwind + CVA (shadcn/ui patterns)
-- **Shared tokens**: Golden ratio design system
-- **App-specific aesthetics**: Unique colors, shadows, and styles per app
+The same reason a retired **product** keeps a tombstone in the registry: so a
+consumer that meets the name can recognise it as dead and be redirected, instead
+of failing to recognise it and treating a stale copy as current. `packages/ui`
+carries the record — this README and a `private: true` `package.json` with the
+retirement metadata — and no source, no build, no publish path.
 
-## The Incubator: @dhanam/ui
+**It is not counted in the package set.** `packages/` holds 16 directories: 15
+shared packages and this tombstone.
 
-**Dhanam** (`/labspace/dhanam/packages/ui`) serves as the UI incubator where:
-- New components are battle-tested in a real application
-- Golden ratio tokens are defined and refined
-- Patterns are documented for other repos to copy
+## What replaced it
 
-## Why This Change?
+The UI system moved to a decentralised **incubator** model. Each app owns its own
+UI package, built on the shared foundation (Radix + Tailwind + CVA, shadcn/ui
+patterns) and the golden-ratio token set. **Dhanam** is the incubator where
+components are battle-tested and tokens are refined; other repos copy from it.
 
-1. **Premature abstraction** - 3 components didn't justify npm package overhead
-2. **Release friction** - npm publish cycle slowed iteration
-3. **Fragmentation** - Multiple @madfam/ui packages caused confusion
-4. **Ownership** - Copy-paste model aligns with shadcn/ui philosophy
+Why the change, as recorded when the package was deprecated:
 
-## Migration
+1. **Premature abstraction** — three components did not justify the overhead of a published package.
+2. **Release friction** — the publish cycle slowed iteration more than the sharing saved.
+3. **Fragmentation** — several `@madfam/ui` packages existed and caused confusion.
+4. **Ownership** — the copy-and-own model matches how these components are actually maintained.
 
-If you were using `@madfam/ui`:
+## If you were using it
 
-1. Remove the dependency:
-   ```bash
-   pnpm remove @madfam/ui
-   ```
-
-2. Copy components you need from `@dhanam/ui`:
-   - `packages/ui/src/components/` - UI components
-   - `packages/ui/src/tokens/` - Golden ratio tokens
-   - `packages/ui/src/lib/utils.ts` - The `cn()` utility
-
-3. See `/labspace/dhanam/packages/ui/README.md` for setup guide.
-
-## Golden Ratio Tokens
-
-The golden ratio token system lives in `@dhanam/ui/tokens`:
-
-```ts
-import { 
-  PHI,
-  goldenSpacing,
-  goldenTypography,
-  madfamPreset 
-} from '@dhanam/ui/tokens';
+```bash
+pnpm remove @madfam/ui
 ```
 
-Copy the `/tokens` directory to your repo for local usage.
+Then copy what you need from the incubator (`packages/ui/src/components/`,
+`packages/ui/src/tokens/`, `packages/ui/src/lib/utils.ts` in `dhanam`) and own it
+in your repo. The golden-ratio tokens (`PHI`, `goldenSpacing`,
+`goldenTypography`, `madfamPreset`) live in `@dhanam/ui/tokens`.
 
----
+Design tokens that are **organizational decisions** — brand colours, typography
+scale, spacing — are in [`@madfam/core`](../core/README.md) and are imported, not
+copied. Only the components are copy-and-own.
 
-*This package will not receive updates. Use the incubator model instead.*
+## What was retired with it
+
+- `scripts/publish-ui.sh` → [`scripts/archive/publish-ui.sh`](../../scripts/archive/publish-ui.sh)
+- `scripts/link-ecosystem.sh` → [`scripts/archive/link-ecosystem.sh`](../../scripts/archive/link-ecosystem.sh)
+  (it existed only to link this package into other checkouts)
+
+Both are archived rather than deleted: they are the record of how the package was
+released. See [`scripts/archive/README.md`](../../scripts/archive/README.md).

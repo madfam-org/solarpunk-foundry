@@ -36,7 +36,12 @@ this; the manifests are the ground truth.
 - **Stack:** TypeScript monorepo (pnpm workspace).
 - **Pattern:** shared packages published to `npm.madfam.io`, consumed by ecosystem apps.
 - **Design tokens:** φ-ratio scale and glassmorphism surfaces, originally carried by
-  `@madfam/ui` — which is now deprecated in favour of a per-app "incubator" model.
+  `@madfam/ui` — **retired 2026-09-05** in favour of the per-app "incubator" model
+  (`@dhanam/ui`). Organizational tokens (brand colours, typography, spacing) are in
+  `@madfam/core` and are imported, not copied.
+- **Shared configs:** `@madfam/tsconfig`, `@madfam/eslint-config` and
+  `@madfam/prettier-config`. The repo adopts them on itself; every package extends the
+  first two.
 
 ## Critical paths
 
@@ -47,11 +52,13 @@ this; the manifests are the ground truth.
 | Workspace config | `pnpm-workspace.yaml` |
 | Registry config | `.npmrc` |
 | Core constants | `packages/core/` |
-| UI package (deprecated) | `packages/ui/` |
-| Publish `@madfam/ui` | `scripts/publish-ui.sh` |
+| UI package (RETIRED 2026-09-05, tombstone) | `packages/ui/` |
+| Shared TypeScript / ESLint / Prettier configs | `packages/tsconfig/`, `packages/eslint-config/`, `packages/prettier-config/` |
+| Shared config adoption guard | `scripts/check-shared-configs.mjs` |
+| Consumer CI contract | `templates/ci/README.md` |
+| Retired scripts (record only, do not run) | `scripts/archive/` |
 | Publish per-platform client SDKs | `scripts/publish-all-sdks.sh` (`pnpm publish:all`) |
 | CI publish (manual dispatch, has `dry_run`) | `.github/workflows/publish-package.yml` |
-| Local cross-repo linking | `scripts/link-ecosystem.sh` |
 | Public-hygiene scan | `scripts/public-hygiene-check.sh` |
 | Enclii service spec (unreconciled — see note) | `.enclii.yml` |
 | Orchestration script | `ops/bin/madfam.sh` (symlinked to `../madfam` at labspace root) |
@@ -69,17 +76,18 @@ Two caveats on that table:
 
 ## `@madfam/*` packages
 
-Thirteen packages, intended for `https://npm.madfam.io`. Versions are what
-`package.json` declares in the working tree as of 2026-08-24. **Registry
-reality (checked 2026-08-24): only `@madfam/core@0.1.0` is published on public
-npmjs.org; the other twelve 404 there**, and their presence on the private
-`npm.madfam.io` is still unverified (needs a registry query or a dated operator
-attestation). `publishConfig` targets are inconsistent across the set.
+Fifteen packages, intended for `https://npm.madfam.io`, plus one tombstone —
+`ls packages | wc -l` returns 16. Versions are what `package.json` declares in
+the working tree as of 2026-09-05. **Registry reality (checked 2026-08-24): only
+`@madfam/core@0.1.0` is published on public npmjs.org; the others 404 there**,
+and their presence on the private `npm.madfam.io` is still unverified (needs a
+registry query or a dated operator attestation). The three config packages have
+never been published at all. `publishConfig` targets are inconsistent across the
+set.
 
 | Package | Version | Purpose |
 |---|---|---|
 | `@madfam/core` | 0.1.0 | Brand, locales, currencies, event taxonomy, product registry (generated from the vendored projection; see `scripts/check-product-projection.mjs`) |
-| `@madfam/ui` | 0.2.0 | **Deprecated** — UI moved to a per-app "incubator" model (`packages/ui/README.md`) |
 | `@madfam/analytics` | 0.1.0 | PostHog instrumentation + event schema |
 | `@madfam/auth-resilience` | 0.1.0 | Janua circuit breaker + retry |
 | `@madfam/sentry` | 0.1.0 | Sentry init + context enrichment |
@@ -91,6 +99,12 @@ attestation). `publishConfig` targets are inconsistent across the set.
 | `@madfam/telemetry` | 0.1.0 | OpenTelemetry tracing + W3C trace-context propagation |
 | `@madfam/webhook-attribution` | 0.1.0 | Signed payment-attribution HMAC sign/verify + idempotency |
 | `@madfam/ecosystem-banner` | 0.1.4 | Bottom ticker for ecosystem offers/links on product landings — **not** a footer; product footers exclude platform links ([docs/ECOSYSTEM_BANNER.md](docs/ECOSYSTEM_BANNER.md)) |
+| `@madfam/tsconfig` | 0.1.0 | Shared TypeScript baseline; every package here extends it |
+| `@madfam/eslint-config` | 0.1.0 | Shared ESLint baseline (eslintrc shape, ESLint 8) |
+| `@madfam/prettier-config` | 0.1.0 | Shared Prettier baseline; referenced from the root `package.json` |
+
+**Tombstone:** `@madfam/ui@0.2.0`, retired 2026-09-05 (Wave 4.5). `packages/ui/`
+carries the record and no source. See [`packages/ui/README.md`](packages/ui/README.md).
 
 `@madfam/webhook-attribution` packages the ecosystem's signed payment-attribution
 contract so it is not reimplemented per repo. As of the 2026-07-08 internal
@@ -114,7 +128,7 @@ pod's actual `containerPort`, the CNI drops traffic silently.
 - **Provides:** the `@madfam/*` packages
 - **Publishes to:** `npm.madfam.io` (operated from the `enclii` repo)
 - **Consumed by:** MADFAM apps across the org
-- **Local linking:** `scripts/link-ecosystem.sh`
+- **Consumer CI contract:** `templates/ci/README.md`
 
 ## Agent directives
 
@@ -122,7 +136,10 @@ pod's actual `containerPort`, the CNI drops traffic silently.
    AGENTS.md is canonical.
 2. **Feature branches only.** Never commit directly to `main`.
 3. `pnpm build` before publish; bump the package version first.
-4. `./scripts/publish-ui.sh --dry-run` to test a `@madfam/ui` publish.
+4. Publishing goes through `.github/workflows/publish-package.yml`
+   (`workflow_dispatch`, `dry_run` first). The config packages are
+   publishable-shaped and deliberately unpublished; publishing one is a
+   deliberate act, not a side effect of a PR.
 5. **Date every factual claim.** Name the source and when it was last verified.
    Distinguish *verified* / *documented but unverified* / *aspirational*. Never
    invent verification — you cannot probe production from this repo.
@@ -152,12 +169,13 @@ pnpm build
 pnpm typecheck
 pnpm lint
 
-# Publish @madfam/ui (dry-run first, always)
-./scripts/publish-ui.sh --dry-run
-./scripts/publish-ui.sh
+# Format (check only in CI; --write locally)
+pnpm format:check
 
-# Local cross-repo linking
-./scripts/link-ecosystem.sh
+# The guards Package Quality runs
+node scripts/check-shared-configs.mjs
+node scripts/check-product-projection.mjs
+node scripts/check-package-scripts.mjs
 
 # Start the canonical shared infra
 enclii local infra

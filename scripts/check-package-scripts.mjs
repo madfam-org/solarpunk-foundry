@@ -30,9 +30,17 @@ export const REQUIRED_SCRIPTS = ['lint', 'test'];
 
 /**
  * Reasoned exemptions: { "<package name>": { "<script>": "<reason>" } }.
- * A reason is mandatory. Empty today - every package defines both.
+ * A reason is mandatory, and the entry dies with the thing it excuses.
  */
-export const ALLOW = {};
+export const ALLOW = {
+  '@madfam/ui': {
+    lint: 'retired 2026-09-05 (Wave 4.5): a tombstone directory with no source - see packages/ui/README.md',
+    test: 'retired 2026-09-05 (Wave 4.5): a tombstone directory with no source - see packages/ui/README.md',
+  },
+  '@madfam/tsconfig': {
+    lint: 'JSON only; there is nothing for ESLint to read. `test` runs and asserts the configs parse, export and stay strict.',
+  },
+};
 
 function parseWorkspaceGlobs(root) {
   const file = join(root, 'pnpm-workspace.yaml');

@@ -29,6 +29,8 @@
     "test": "vitest run --passWithNoTests"
   },
   "devDependencies": {
+    "@madfam/eslint-config": "workspace:*",
+    "@madfam/tsconfig": "workspace:*",
     "tsup": "^8.0.0",
     "typescript": "^5.4.0"
   }

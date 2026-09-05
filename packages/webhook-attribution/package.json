@@ -48,6 +48,8 @@
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
+    "@madfam/eslint-config": "workspace:*",
+    "@madfam/tsconfig": "workspace:*",
     "@types/node": "^22.0.0",
     "tsup": "^8.5.0",
     "typescript": "^5.7.2",

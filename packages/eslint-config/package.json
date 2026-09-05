@@ -1,0 +1,43 @@
+{
+  "name": "@madfam/eslint-config",
+  "version": "0.1.0",
+  "description": "Shared ESLint baseline for the MADFAM ecosystem (eslintrc shape, ESLint 8).",
+  "private": false,
+  "license": "MIT",
+  "author": "MADFAM <tech@madfam.io>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madfam-org/solarpunk-foundry.git",
+    "directory": "packages/eslint-config"
+  },
+  "homepage": "https://github.com/madfam-org/solarpunk-foundry/tree/main/packages/eslint-config",
+  "bugs": {
+    "url": "https://github.com/madfam-org/solarpunk-foundry/issues"
+  },
+  "keywords": [
+    "madfam",
+    "eslint",
+    "eslint-config",
+    "config"
+  ],
+  "main": "index.cjs",
+  "files": [
+    "index.cjs",
+    "README.md"
+  ],
+  "scripts": {
+    "lint": "eslint index.cjs --no-eslintrc --parser-options=ecmaVersion:2022 --env node --max-warnings=0",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0"
+  },
+  "peerDependencies": {
+    "eslint": "^8.54.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.madfam.io/",
+    "access": "restricted"
+  }
+}

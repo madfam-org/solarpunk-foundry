@@ -49,6 +49,8 @@
     }
   },
   "devDependencies": {
+    "@madfam/eslint-config": "workspace:*",
+    "@madfam/tsconfig": "workspace:*",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.0",
     "tsup": "^8.0.0",

@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# RETIRED 2026-09-05 - DO NOT RUN.
+# Archived record only: this published @madfam/ui, which was retired in Wave 4.5. The package is now a tombstone with no source and no publish path.
+# See scripts/archive/README.md and packages/ui/README.md.
+#
 # Boundary checkpoint (2026-09-04, platform ops): public operator tooling.
 # Public-safe abstractions only; node identities, credentials, provider account
 # detail and cost data stay in internal-devops.

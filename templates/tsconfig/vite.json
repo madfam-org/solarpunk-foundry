@@ -1,36 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "_comment": "TypeScript config for Vite/React apps. Copy to your app's tsconfig.json.",
-  "display": "Solarpunk Vite",
-  "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "jsx": "react-jsx",
-    "allowJs": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  },
+  "_comment": "Template for a Vite/React app. The settings are NOT here: they live in @madfam/tsconfig, so a change to the shared baseline reaches every repo instead of stopping at the copy someone took. Run `pnpm add -D @madfam/tsconfig`, copy this file to your repo as tsconfig.json, and add your own compilerOptions (outDir, rootDir, baseUrl, paths) and include/exclude - TypeScript resolves relative paths against the file they are written in, so those four cannot come from the shared config.",
+  "extends": "@madfam/tsconfig/vite.json",
+  "compilerOptions": {},
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "vite.config.ts"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",

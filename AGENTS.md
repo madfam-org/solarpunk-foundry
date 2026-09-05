@@ -47,9 +47,15 @@ redirect and should not become the source of truth again.
   conventions, sanitized production topology, and the Enclii CLI reference.
 - `MADFAM.md` — the fuller per-platform master reference.
 - `docs/` — port registry, licensing, integration and architecture material.
-- `packages/` — the `@madfam/*` shared package set.
+- `packages/` — the `@madfam/*` shared package set: 15 packages and one tombstone
+  (`ui/`, retired 2026-09-05). `ls packages | wc -l` returns 16. Every package
+  extends `@madfam/tsconfig` and `@madfam/eslint-config`, and
+  `scripts/check-shared-configs.mjs` fails CI if one stops.
 - `.github/workflows/` — CI: doc lint, package quality, production-readiness
   ratchet, public hygiene, repository hygiene, package publish.
+- `templates/ci/README.md` — the **consumer CI contract**: the seven checks a
+  repo consuming these packages must run, the exact commands, and the exit-code
+  contract (0 pass / 1 findings / **2 UNDETERMINED, which is also a failure**).
 
 ## LLM context files
 
@@ -210,9 +216,9 @@ solarpunk-foundry/
 ├── MADFAM.md                        # Per-platform master reference
 ├── AI_CONTEXT.md                    # Package/registry quick reference
 ├── llms.txt / llms-full.txt         # LLM context index + durable map
-├── packages/                        # 13 packages
-│   ├── core/                        # @madfam/core — brand, locales, currencies, events
-│   ├── ui/                          # @madfam/ui — DEPRECATED (see packages/ui/README.md)
+├── packages/                        # 16 directories: 15 packages + 1 tombstone
+│   ├── core/                        # @madfam/core — brand, locales, currencies, events, product registry
+│   ├── ui/                          # @madfam/ui — RETIRED 2026-09-05, tombstone only (packages/ui/README.md)
 │   ├── analytics/                   # @madfam/analytics — PostHog + event schema
 │   ├── auth-resilience/             # @madfam/auth-resilience — Janua circuit breaker
 │   ├── sentry/                      # @madfam/sentry — Sentry init
@@ -223,7 +229,10 @@ solarpunk-foundry/
 │   ├── types/                       # @madfam/types — cross-repo shared types
 │   ├── telemetry/                   # @madfam/telemetry — OTel tracing + W3C trace context
 │   ├── webhook-attribution/         # @madfam/webhook-attribution — the signed-fan-out contract, packaged
-│   └── ecosystem-banner/            # @madfam/ecosystem-banner — landing-page ticker
+│   ├── ecosystem-banner/            # @madfam/ecosystem-banner — landing-page ticker
+│   ├── tsconfig/                    # @madfam/tsconfig — shared TypeScript baseline
+│   ├── eslint-config/               # @madfam/eslint-config — shared ESLint baseline
+│   └── prettier-config/             # @madfam/prettier-config — shared Prettier baseline
 ├── ops/
 │   ├── bin/                         # madfam.sh orchestration + debug scripts
 │   ├── local/                       # docker-compose.shared.yml (the canonical local stack), init-databases.sql
@@ -317,8 +326,9 @@ changes.
 **During session**
 
 1. **Feature branches only.** Never commit directly to `main`.
-2. **Validate before commit:** `pnpm typecheck && pnpm lint`; `bash -n <script>`
-   for shell; `./scripts/publish-ui.sh --dry-run` before any `@madfam/ui` publish.
+2. **Validate before commit:** `pnpm typecheck && pnpm lint && pnpm format:check`;
+   `bash -n <script>` for shell; `node scripts/check-shared-configs.mjs` after
+   touching any package's `tsconfig.json`, `.eslintrc.cjs` or manifest.
 3. Update TodoWrite after each task; checkpoint roughly every 30 minutes.
 4. **Prefer the `enclii` CLI over `kubectl`** for any operational task — it
    routes through the Switchyard API with audit logging and lifecycle tracking.
@@ -349,7 +359,8 @@ You may edit `.env` and `.env.local` files, but:
 | Change type | Required validation |
 |---|---|
 | Package code | `pnpm build` in the package directory |
-| `@madfam/ui` publish | `./scripts/publish-ui.sh --dry-run` |
+| Package publish | `.github/workflows/publish-package.yml` with `dry_run: true` first |
+| A package's tsconfig / eslintrc / manifest | `node scripts/check-shared-configs.mjs` |
 | Shell scripts | `bash -n <script>` syntax check |
 | `.enclii.yml` / docker-compose | `enclii local status` round-trip |
 | Docs | Manual review. If it touches a cross-repo contract, cross-check every affected service. If it asserts a status, it must carry a source and a verification date. |

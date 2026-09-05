@@ -1,19 +1,8 @@
+// The rule set itself lives in `@madfam/eslint-config` (packages/eslint-config),
+// so this repo eats its own baseline before asking a consumer to. Every package
+// under `packages/` extends the same config; `scripts/check-shared-configs.mjs`
+// fails Package Quality if one stops.
 module.exports = {
   root: true,
-  parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
-  parserOptions: {
-    ecmaVersion: 2022,
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-  env: {
-    browser: true,
-    es2022: true,
-    node: true,
-  },
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
-  ignorePatterns: ['dist/', 'node_modules/', '*.config.*'],
+  extends: ['@madfam/eslint-config'],
 };

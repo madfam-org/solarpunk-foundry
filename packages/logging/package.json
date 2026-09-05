@@ -60,6 +60,8 @@
     "pino": "^9.0.0"
   },
   "devDependencies": {
+    "@madfam/eslint-config": "workspace:*",
+    "@madfam/tsconfig": "workspace:*",
     "@types/node": "^22.0.0",
     "tsup": "^8.0.2",
     "typescript": "^5.7.2"

@@ -36,7 +36,8 @@ hub — Lane B in the repo-boundary contract. It holds:
 
 - the canonical ecosystem map at a platform-public level
 - the cross-repo conventions every platform implements
-- the `@madfam/*` shared package set (13 packages under `packages/`)
+- the `@madfam/*` shared package set (15 packages under `packages/`, plus one
+  tombstone: `ls packages | wc -l` returns 16)
 - the port registry (`docs/PORT_ALLOCATION.md`)
 - local dogfooding scaffolds (`ops/`)
 - sanitized architecture narrative and redacted pointers into the private repo
@@ -182,10 +183,22 @@ Root documents:
 - docker-compose.yml (currently broken — see below)
 - .env.example, playwright.config.ts, .eslintrc.cjs
 
-packages/ — 13 packages: analytics, auth-resilience, constants, core,
-ecosystem-banner, env, error-boundary, logging, sentry, telemetry, types, ui,
-webhook-attribution. `@madfam/ui` is DEPRECATED; the UI system moved to a
-per-app "incubator" model (packages/ui/README.md).
+packages/ — 16 directories: 15 packages and one tombstone. analytics,
+auth-resilience, constants, core, ecosystem-banner, env, error-boundary,
+eslint-config, logging, prettier-config, sentry, telemetry, tsconfig, types,
+webhook-attribution — plus ui/, RETIRED 2026-09-05 (Wave 4.5), a tombstone
+directory carrying a README and a private manifest and no source, build or
+publish path; the UI system moved to the per-app "incubator" model
+(packages/ui/README.md), and scripts/publish-ui.sh and scripts/link-ecosystem.sh
+moved to scripts/archive/.
+
+The last three of the fifteen are the shared configs the repo adopts on itself:
+@madfam/tsconfig (base / library / react-library / next / node / vite),
+@madfam/eslint-config (eslintrc shape, ESLint 8) and @madfam/prettier-config.
+Every package extends the first two, the root package.json points prettier at the
+third, and scripts/check-shared-configs.mjs fails Package Quality if one stops.
+They are publishable-shaped and NOT published as of 2026-09-05. The CI contract a
+consuming repo must run is templates/ci/README.md, "Consumer CI contract".
 
 ops/
 - ops/bin/ — madfam.sh (symlinked to ../madfam at labspace root) plus debug and
@@ -207,11 +220,21 @@ docs/
 - docs/runbooks/ — UNDER REVIEW, see caveats below
 
 scripts/ — backup-registry.sh, boundary-checkpoint-check.sh, build-and-tag.sh,
-check-production-readiness-ratchet.py, cleanup-legacy-deployments.sh,
-link-ecosystem.sh, public-hygiene-check.sh, publish-all-sdks.sh, publish-ui.sh
+check-action-pins.sh, check-package-scripts.mjs, check-product-projection.mjs,
+check-production-readiness-ratchet.py, check-shared-configs.mjs,
+cleanup-legacy-deployments.sh, public-hygiene-check.sh, publish-all-sdks.sh.
+Each guard has a self-test beside it (check-*.test.mjs, scripts/tests/*.sh) that
+CI runs BEFORE the guard. scripts/archive/ holds retired scripts — record only,
+never run: publish-ui.sh and link-ecosystem.sh, both retired with @madfam/ui on
+2026-09-05
 
 templates/ — HONEST_STATUS_SCORECARD.md, README.md, plus analytics, ci, env,
-providers, tailwind and tsconfig starters
+providers, tailwind and tsconfig starters. templates/ci/README.md carries the
+CONSUMER CI CONTRACT: the seven checks a consuming repo must run (typecheck,
+lint, test, format, boundary checkpoint, action pins, projection freshness), the
+exact commands, and the exit-code contract — 0 pass, 1 findings, 2 UNDETERMINED,
+and 2 is a failure, never a pass. templates/tsconfig/*.json are three-line stubs
+extending @madfam/tsconfig; the configs themselves live in packages/tsconfig
 
 .github/workflows/ — doc-lint.yml, package-quality.yml,
 production-readiness-ratchet.yml, public-hygiene.yml, publish-package.yml,
