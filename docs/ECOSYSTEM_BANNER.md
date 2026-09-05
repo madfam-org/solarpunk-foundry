@@ -62,13 +62,24 @@ Two constraints that apply to anything the banner links to:
   (owner confirmation recorded 2026-07-09). The canonical company domain is
   `madfam.io`.
 
-## Platform list membership — generated, not hand-kept
+## Platform list membership — derived, not hand-kept
 
-`DEFAULT_ECOSYSTEM_PLATFORMS` is generated. `packages/ecosystem-banner/src/platforms.generated.ts`
-is rendered from the product projection vendored in `@madfam/core`
-(`src/products/projection.public.json`) by `scripts/check-product-projection.mjs`,
-and Package Quality fails when the two drift apart. `platforms.ts` keeps only the
-public `EcosystemPlatform` type and the re-export, so no consumer import changes.
+`DEFAULT_ECOSYSTEM_PLATFORMS` is **derived at import time**: it is
+`getBannerProducts()` from `@madfam/core/products`, mapped into the ticker's
+`{ keyword, name, url }` shape by `packages/ecosystem-banner/src/platforms.ts`.
+The banner package carries no product facts of its own — no hand list, and since
+Wave 2.7 no generated second copy either. There is one vendored projection
+(`packages/core/src/products/projection.public.json`) with one committed hash,
+and one filter, in `@madfam/core`, that this package and every downstream repo
+apply rather than re-implement.
+
+Package Quality holds that shape from two directions:
+`scripts/check-product-projection.mjs` fails if `platforms.generated.ts`
+reappears, if `platforms.ts` stops importing the core filter, or if a literal
+ticker row is typed into it; and the banner package's own
+`src/__tests__/platforms.spec.ts` asserts the derived list matches the guard's
+independent selection over the vendored JSON — two implementations of the filter,
+one source, compared every run.
 
 **The filter.** A product is in the ticker when all of these hold:
 
@@ -84,7 +95,8 @@ Order is the registry's `site.order`. "Public surface" is deliberately *not*
 public products, and filtering on the repository would have deleted them.
 
 **19 platforms at registry version 4.** Against the hand-kept list this repo
-carried until 2026-09-05:
+carried until 2026-09-05 (the list #46 first generated, and 2.7 turned into a
+derivation — the membership is unchanged by 2.7):
 
 | Change | Slugs |
 |---|---|

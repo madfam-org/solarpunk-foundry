@@ -1122,6 +1122,9 @@ function getSurfaceProducts() {
     (p) => typeof p.domain === "string" && !p.infraHosts.includes(p.domain)
   );
 }
+function getBannerProducts() {
+  return getSurfaceProducts().filter((p) => p.site.showInBanner && (p.lifecycle === "live" || p.lifecycle === "beta")).sort((a, b) => (a.site.order ?? 0) - (b.site.order ?? 0));
+}
 function isValidProductId(value) {
   return value in products;
 }
@@ -1149,6 +1152,6 @@ function getProductWebsiteUrl(id) {
 }
 var registryVersion = PRODUCT_PROJECTION.registryVersion;
 
-export { PRODUCT_PROJECTION, ecosystemLayers, getActiveProducts, getProduct, getProductGitHubUrl, getProductWebsiteUrl, getProductsByLayer, getProductsByLicense, getProductsByLifecycle, getPublicProducts, getRetiredProduct, getSurfaceProducts, isRetired, isRetiredProductId, isValidProductId, licenseTypes, lifecycles, productIds, productStatuses, products, registryVersion, retiredProducts };
+export { PRODUCT_PROJECTION, ecosystemLayers, getActiveProducts, getBannerProducts, getProduct, getProductGitHubUrl, getProductWebsiteUrl, getProductsByLayer, getProductsByLicense, getProductsByLifecycle, getPublicProducts, getRetiredProduct, getSurfaceProducts, isRetired, isRetiredProductId, isValidProductId, licenseTypes, lifecycles, productIds, productStatuses, products, registryVersion, retiredProducts };
 //# sourceMappingURL=products.js.map
 //# sourceMappingURL=products.js.map
