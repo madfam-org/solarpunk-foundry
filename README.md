@@ -618,13 +618,13 @@ presents as a rendering or timeout bug rather than a network one.
 
 ## 📦 VIII. Shared packages (`@madfam/*`)
 
-Thirteen packages under `packages/`, intended for the private `npm.madfam.io` Verdaccio
-registry. Directory listing and versions re-verified 2026-08-24.
+**Fifteen** packages under `packages/`, intended for the private `npm.madfam.io` Verdaccio
+registry, plus **one tombstone**. `ls packages | wc -l` returns **16**: the fifteen below and
+retired `ui/`. Directory listing and versions re-verified 2026-09-05.
 
 | Package | Version | Purpose |
 |---|---|---|
 | `@madfam/core` | 0.1.0 | Brand, locales, currencies, event taxonomy, product registry — decisions, not implementations. The product half is **generated** from the vendored registry projection (`packages/core/src/products/projection.public.json`), guarded by `scripts/check-product-projection.mjs` |
-| `@madfam/ui` | 0.2.0 | **Deprecated** — the UI system moved to a decentralized per-app "incubator" model (`packages/ui/README.md`) |
 | `@madfam/analytics` | 0.1.0 | PostHog instrumentation + event-schema enforcement |
 | `@madfam/auth-resilience` | 0.1.0 | Circuit breaker + retry for Janua calls |
 | `@madfam/sentry` | 0.1.0 | Standardised Sentry init + context enrichment |
@@ -636,10 +636,20 @@ registry. Directory listing and versions re-verified 2026-08-24.
 | `@madfam/telemetry` | 0.1.0 | Shared OpenTelemetry tracing + W3C trace-context propagation |
 | `@madfam/webhook-attribution` | 0.1.0 | Signed payment-attribution HMAC sign/verify + idempotency — the §IV.4 contract, packaged |
 | `@madfam/ecosystem-banner` | 0.1.4 | Dismissible ecosystem ticker for product landings ([`docs/ECOSYSTEM_BANNER.md`](docs/ECOSYSTEM_BANNER.md)) |
+| `@madfam/tsconfig` | 0.1.0 | Shared TypeScript baseline (`base`, `library`, `react-library`, `next`, `node`, `vite`) — every package here extends it |
+| `@madfam/eslint-config` | 0.1.0 | Shared ESLint baseline (eslintrc shape, ESLint 8) — the root and every package extend it |
+| `@madfam/prettier-config` | 0.1.0 | Shared Prettier baseline; the root `package.json` points `prettier` at it |
+
+**Retired (2026-09-05, Wave 4.5):** `@madfam/ui` is a **tombstone** — `packages/ui/` keeps a
+README and a `private: true` manifest recording the retirement, and no source, build or
+publish path. It is not counted above. The UI system moved to the per-app "incubator" model
+(`@dhanam/ui`); `scripts/publish-ui.sh` and `scripts/link-ecosystem.sh` moved to
+[`scripts/archive/`](scripts/archive/README.md). Full record:
+[`packages/ui/README.md`](packages/ui/README.md).
 
 **Registry reality, checked 2026-08-24:** `@madfam/core@0.1.0` is published on the **public
-npmjs.org** registry (the only one of the set that is). The other twelve return 404 on
-public npm — several declare `publishConfig.access: public` but were apparently never
+npmjs.org** registry (the only one of the set that is). The other packages then in the set
+returned 404 on public npm — several declare `publishConfig.access: public` but were apparently never
 published anywhere queryable. Whether any are present on the private `npm.madfam.io`
 Verdaccio is still unverified from this repo (needs a registry query or a dated operator
 attestation). `publishConfig` targets are inconsistent across the set — some declare the
@@ -650,10 +660,19 @@ drift. The versions above are what `package.json` declares in the working tree.
 reimplemented per repo. As of the 2026-07-08 verification, **no repo had adopted it**;
 Dhanam and routecraft each carry their own byte-identical implementation.
 
-Publishing: `scripts/publish-ui.sh` publishes **`@madfam/ui` only** (which is deprecated).
-`pnpm publish:all` → `scripts/publish-all-sdks.sh` publishes the per-platform client SDKs
-from other repos, not this repo's `@madfam/*` set. The CI path is
+The three config packages (`@madfam/tsconfig`, `@madfam/eslint-config`,
+`@madfam/prettier-config`) are **publishable-shaped and not published** as of 2026-09-05:
+versioned, `private: false`, `files` and `publishConfig` set, each with a README. The foundry
+adopts them itself first — every package extends the shared tsconfig and ESLint config, the
+root points `prettier` at the shared Prettier config, and
+`scripts/check-shared-configs.mjs` fails Package Quality if one stops. The CI contract a
+consuming repo must run is [`templates/ci/README.md`](templates/ci/README.md)
+§ "Consumer CI contract".
+
+Publishing: `pnpm publish:all` → `scripts/publish-all-sdks.sh` publishes the per-platform
+client SDKs from other repos, not this repo's `@madfam/*` set. The CI path is
 `.github/workflows/publish-package.yml` (`workflow_dispatch`, with a `dry_run` input).
+`scripts/publish-ui.sh` was retired with `@madfam/ui` on 2026-09-05.
 
 ---
 

@@ -55,9 +55,13 @@ would settle it. No marketing language, no invented metrics.
 
 ## Shared packages
 
-Thirteen `@madfam/*` packages under `packages/`, published to the private
+Fifteen `@madfam/*` packages under `packages/`, intended for the private
 `npm.madfam.io` Verdaccio registry (which runs from the `enclii` repo, not this
-one). `@madfam/ui` is deprecated. Full table with versions: `AI_CONTEXT.md`.
+one), plus one tombstone — `ls packages | wc -l` returns 16. `@madfam/ui` was
+RETIRED on 2026-09-05 and is a tombstone directory with no source.
+`@madfam/tsconfig`, `@madfam/eslint-config` and `@madfam/prettier-config` are the
+shared configs the repo adopts itself; they are publishable-shaped and not
+published. Full table with versions: `AI_CONTEXT.md`.
 
 - `packages/ecosystem-banner` — `@madfam/ecosystem-banner`, landing-page ticker
 - `docs/ECOSYSTEM_BANNER.md` — banner + footer contract (public-safe)

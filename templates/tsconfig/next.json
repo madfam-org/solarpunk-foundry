@@ -1,47 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "_comment": "TypeScript config for Next.js apps. Copy to your app's tsconfig.json.",
-  "display": "Solarpunk Next.js",
-  "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "jsx": "preserve",
-    "allowJs": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "incremental": true,
-    "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
-  },
+  "_comment": "Template for a Next.js app. The settings are NOT here: they live in @madfam/tsconfig, so a change to the shared baseline reaches every repo instead of stopping at the copy someone took. Run `pnpm add -D @madfam/tsconfig`, copy this file to your repo as tsconfig.json, and add your own compilerOptions (outDir, rootDir, baseUrl, paths) and include/exclude - TypeScript resolves relative paths against the file they are written in, so those four cannot come from the shared config.",
+  "extends": "@madfam/tsconfig/next.json",
+  "compilerOptions": {},
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    ".next",
-    "dist",
-    "build"
+    "dist"
   ]
 }

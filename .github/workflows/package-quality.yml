@@ -11,7 +11,10 @@ on:
       - "scripts/check-package-scripts.test.mjs"
       - "scripts/check-product-projection.mjs"
       - "scripts/check-product-projection.test.mjs"
+      - "scripts/check-shared-configs.mjs"
+      - "scripts/check-shared-configs.test.mjs"
       - "docs/LICENSING_STRATEGY.md"
+      - ".eslintrc.cjs"
       - ".github/workflows/package-quality.yml"
   push:
     branches: [main]
@@ -24,7 +27,10 @@ on:
       - "scripts/check-package-scripts.test.mjs"
       - "scripts/check-product-projection.mjs"
       - "scripts/check-product-projection.test.mjs"
+      - "scripts/check-shared-configs.mjs"
+      - "scripts/check-shared-configs.test.mjs"
       - "docs/LICENSING_STRATEGY.md"
+      - ".eslintrc.cjs"
       - ".github/workflows/package-quality.yml"
 
 permissions:
@@ -63,6 +69,15 @@ jobs:
       - name: Product projection freshness, retired-brand and boundary check
         run: node scripts/check-product-projection.mjs
 
+      # Runs BEFORE the typecheck for the same reason as the projection guard: a
+      # package that stopped extending `@madfam/tsconfig` should be reported by
+      # the guard that knows why it matters, not as a surprising type error.
+      - name: Shared config adoption guard self-test
+        run: node --test scripts/check-shared-configs.test.mjs
+
+      - name: Shared config adoption (tsconfig, eslint, prettier)
+        run: node scripts/check-shared-configs.mjs
+
       - name: Typecheck
         run: pnpm -r typecheck
 
@@ -80,6 +95,11 @@ jobs:
 
       - name: Test
         run: pnpm -r test
+
+      # Check only, never write: a CI job that reformats is a job that hides the
+      # diff it made. The scope is the ratchet described in packages/prettier-config.
+      - name: Format
+        run: pnpm format:check
 
       - name: Build
         run: pnpm -r build

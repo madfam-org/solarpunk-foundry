@@ -56,6 +56,8 @@
     "zod": "^3.22.0"
   },
   "devDependencies": {
+    "@madfam/eslint-config": "workspace:*",
+    "@madfam/tsconfig": "workspace:*",
     "tsup": "^8.0.2",
     "typescript": "^5.7.2",
     "zod": "^3.23.8"

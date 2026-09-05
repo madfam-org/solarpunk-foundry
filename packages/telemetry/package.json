@@ -93,6 +93,8 @@
     }
   },
   "devDependencies": {
+    "@madfam/eslint-config": "workspace:*",
+    "@madfam/tsconfig": "workspace:*",
     "@opentelemetry/auto-instrumentations-node": "^0.55.0",
     "@opentelemetry/core": "^1.30.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.57.0",

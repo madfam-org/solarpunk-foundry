@@ -1,0 +1,39 @@
+{
+  "name": "@madfam/prettier-config",
+  "version": "0.1.0",
+  "description": "Shared Prettier baseline for the MADFAM ecosystem.",
+  "private": false,
+  "license": "MIT",
+  "author": "MADFAM <tech@madfam.io>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madfam-org/solarpunk-foundry.git",
+    "directory": "packages/prettier-config"
+  },
+  "homepage": "https://github.com/madfam-org/solarpunk-foundry/tree/main/packages/prettier-config",
+  "bugs": {
+    "url": "https://github.com/madfam-org/solarpunk-foundry/issues"
+  },
+  "keywords": [
+    "madfam",
+    "prettier",
+    "prettier-config",
+    "config"
+  ],
+  "main": "index.cjs",
+  "files": [
+    "index.cjs",
+    "README.md"
+  ],
+  "scripts": {
+    "lint": "eslint index.cjs --no-eslintrc --parser-options=ecmaVersion:2022 --env node --max-warnings=0",
+    "test": "node --test test/*.test.mjs"
+  },
+  "peerDependencies": {
+    "prettier": "^3.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.madfam.io/",
+    "access": "restricted"
+  }
+}

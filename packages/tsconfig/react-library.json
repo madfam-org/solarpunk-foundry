@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Solarpunk React Library",
+  "_comment": "A library that ships React components: the library baseline plus the DOM libs and the automatic JSX runtime.",
+  "extends": "./library.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx"
+  }
+}

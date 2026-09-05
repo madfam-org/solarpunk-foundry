@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Solarpunk Node.js",
+  "_comment": "A Node.js service or CLI: NodeNext resolution. Set `outDir`, `rootDir` and `include` in your own tsconfig.json - see the note in base.json.",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmit": false
+  }
+}

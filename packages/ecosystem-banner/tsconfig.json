@@ -1,18 +1,26 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@madfam/tsconfig/react-library.json",
   "compilerOptions": {
     "target": "ES2020",
-    "lib": ["DOM", "DOM.Iterable", "ES2020"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "jsx": "react-jsx",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "declaration": true,
-    "declarationMap": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "outDir": "./dist",
-    "rootDir": "./src"
+    // No `rootDir`: `paths` below pulls `@madfam/core`'s source into the
+    // program, which by definition sits outside this package's `src`. Emit is
+    // tsup's job (`dist/`), so the only thing `rootDir` bought here was a
+    // TS6059 against the dependency this package is supposed to have.
+    // The banner derives its membership from `@madfam/core/products`. Inside
+    // this workspace, resolve that to core's SOURCE: `pnpm -r typecheck` and
+    // `pnpm -r test` both run before `pnpm -r build` in Package Quality, so
+    // `packages/core/dist` does not exist yet at those steps, and typechecking
+    // against source catches a core change in the same run that makes it.
+    // Published consumers resolve the dependency normally, through core's
+    // `exports` map.
+    "baseUrl": ".",
+    "paths": {
+      "@madfam/core": ["../core/src/index.ts"],
+      "@madfam/core/*": ["../core/src/*.ts"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "src/__tests__"]

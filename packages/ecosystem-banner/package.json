@@ -33,6 +33,8 @@
     "react": "^18 || ^19"
   },
   "devDependencies": {
+    "@madfam/eslint-config": "workspace:*",
+    "@madfam/tsconfig": "workspace:*",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^16.0.0",
     "@types/react": "^18.3.0",

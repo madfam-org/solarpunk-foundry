@@ -73,9 +73,13 @@ pnpm add @madfam/core
 
 ### TypeScript Configs (`tsconfig/`)
 
-TypeScript configurations for different app types.
+**These are stubs, not the configs.** The settings live in
+[`@madfam/tsconfig`](../packages/tsconfig/README.md); each file here is a
+three-line `extends` you copy.
 
 ```bash
+pnpm add -D @madfam/tsconfig
+
 # For Next.js apps
 cp templates/tsconfig/next.json ~/your-app/tsconfig.json
 
@@ -89,6 +93,26 @@ cp templates/tsconfig/node.json ~/your-app/tsconfig.json
 cp templates/tsconfig/library.json ~/your-package/tsconfig.json
 ```
 
+A compiler baseline is the one thing in this directory that should **not** be
+copied and owned: when a copied `tsconfig.json` drifts, nothing reports it, and
+the estate ends up with as many strictness levels as it has repositories. This
+repo measured exactly that on 2026-09-05 — thirteen packages, thirteen
+hand-written configs, two `target`s and four strictness sets. Same for lint and
+format: see [`@madfam/eslint-config`](../packages/eslint-config/README.md) and
+[`@madfam/prettier-config`](../packages/prettier-config/README.md).
+
+`outDir`, `rootDir`, `baseUrl`, `paths`, `include` and `exclude` stay in your own
+`tsconfig.json`: TypeScript resolves every relative path against the file it was
+written in, so a path set in a shared config resolves inside
+`node_modules/@madfam/tsconfig`.
+
+### CI (`ci/`)
+
+Workflow templates **and** the [consumer CI contract](ci/README.md) — the seven
+checks a repo consuming these packages must run, the exact commands, and the
+exit-code contract (0 pass / 1 findings / 2 UNDETERMINED, which is also a
+failure).
+
 ## When to Use Templates vs @madfam/core
 
 | Need | Use |
@@ -99,12 +123,15 @@ cp templates/tsconfig/library.json ~/your-package/tsconfig.json
 | Legal info, product registry | `@madfam/core` (import) |
 | Analytics implementation | Template (copy) |
 | Tailwind configuration | Template (copy) |
-| TypeScript configuration | Template (copy) |
+| TypeScript configuration | `@madfam/tsconfig` (extend) |
+| ESLint configuration | `@madfam/eslint-config` (extend) |
+| Prettier configuration | `@madfam/prettier-config` (reference) |
 | UI components | Write your own / shadcn |
 
 ## The Rule
 
 **`@madfam/core`** = Organizational decisions (import as dependency)
+**`@madfam/tsconfig` / `@madfam/eslint-config` / `@madfam/prettier-config`** = Toolchain baselines (extend as dependency)
 **Templates** = Reference implementations (copy and own)
 
 This ensures apps can always:

@@ -44,6 +44,8 @@
     "clean": "rm -rf dist .turbo node_modules"
   },
   "devDependencies": {
+    "@madfam/eslint-config": "workspace:*",
+    "@madfam/tsconfig": "workspace:*",
     "tsup": "^8.0.2",
     "typescript": "^5.7.2"
   },

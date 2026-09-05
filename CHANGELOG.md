@@ -58,6 +58,67 @@ a contemporaneous record.
   probing environment (recorded as unverified, not down). Those are registry
   facts, not banner edits.
 
+### 2026-09-05 — foundation hygiene: `@madfam/ui` retired, shared configs adopted (Wave 4.5)
+
+- **`@madfam/ui` is retired.** Deprecated in its README since 2026-05; this is
+  the formal act. `packages/ui/` keeps a tombstone — a README recording the
+  retirement date, the successor (`@dhanam/ui`, the per-app incubator) and where
+  the source went, plus a `private: true` manifest with the same metadata — and
+  no source, no build, no publish path. The directory stays for the reason a
+  retired product keeps a registry tombstone: so a consumer that meets the name
+  recognises it as dead instead of treating a stale copy as current. It is **not
+  counted** in the package set.
+- **`scripts/publish-ui.sh` and `scripts/link-ecosystem.sh` moved to
+  `scripts/archive/`**, each with a "RETIRED — DO NOT RUN" banner and the
+  executable bit removed. `link-ecosystem.sh` existed only to link `@madfam/ui`
+  into other checkouts. `scripts/archive/README.md` states the convention:
+  retired, not deleted; the record of how a thing was released answers questions
+  that deleting it does not.
+- **Three shared config packages, publishable-shaped and NOT published:**
+  `@madfam/tsconfig` (`base`, `library`, `react-library`, `next`, `node`,
+  `vite`), `@madfam/eslint-config` (eslintrc shape, ESLint 8) and
+  `@madfam/prettier-config`. Each is versioned, `private: false`, has `files`,
+  `publishConfig` and a README, and each has its own `node --test` suite.
+- **The foundry adopts them on itself first.** Every package extends
+  `@madfam/tsconfig/*` and `@madfam/eslint-config`; the root `.eslintrc.cjs`
+  extends the shared config it publishes; the root `package.json` points
+  `prettier` at `@madfam/prettier-config`. Thirteen hand-written tsconfigs across
+  two `target`s and four strictness sets became one baseline plus each package's
+  genuine deltas, and the baseline is *stricter* than what most packages carried
+  (`noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`,
+  `noFallthroughCasesInSwitch`, `isolatedModules`) with no source change needed.
+- **New guard, wired into Package Quality:** `scripts/check-shared-configs.mjs`
+  (with a 14-case `node --test` self-test) fails when a package stops extending
+  the shared configs, extends one without declaring it, when the root stops using
+  them, when a second Prettier config appears, or when a package tsconfig carries
+  a **dead override** — a value the shared config already sets, which makes a
+  package look adopted and behave forked. Its exemption list is reasoned and
+  cannot rot: an entry naming a package that does not exist, or one that has
+  since gained the config it is excused from, is itself a failure.
+- **Prettier is a ratchet, deliberately.** `pnpm format:check` gates the paths
+  this change makes conformant (the three config packages, the tombstone,
+  `templates/ci/README.md`). 126 files in the tree do not match the baseline;
+  reformatting them in the PR that introduces the config would produce a diff
+  nobody can review. Widening the scope is a separate PR whose diff is a reformat
+  and nothing else. The baseline values were measured from the existing code, not
+  chosen.
+- **`templates/ci/README.md` carries the consumer CI contract**: the seven checks
+  a consuming repo must run (typecheck, lint, test, format, boundary checkpoint,
+  action pins, projection freshness), the exact commands, what each proves, and
+  the exit-code contract — **0 pass, 1 findings, 2 UNDETERMINED, and 2 is a
+  failure**. It also states that `pnpm -r lint` and `pnpm -r test` skip packages
+  silently and exit 0, so the coverage guard must run before them.
+- **`templates/tsconfig/*.json` are now stubs** that extend `@madfam/tsconfig`
+  rather than copies of the settings. A compiler baseline is the one thing in
+  `templates/` that should not be copied and owned.
+- **The package count is corrected everywhere it is stated** — `README.md`,
+  `AGENTS.md`, `AI_CONTEXT.md`, `llms.txt`, `llms-full.txt`: fifteen packages and
+  one tombstone. `ls packages | wc -l` returns **16**.
+- `scripts/check-package-scripts.mjs` gained its first two reasoned exemptions:
+  the `@madfam/ui` tombstone (no source to lint or test) and `@madfam/tsconfig`'s
+  `lint` (JSON only; its `test` runs and asserts the configs parse, export and
+  stay strict).
+
 ### 2026-08-24 — re-verification pass (recon-driven)
 
 Driven by a same-day full refresh of the private registries: live GitHub

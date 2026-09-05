@@ -83,6 +83,8 @@
     }
   },
   "devDependencies": {
+    "@madfam/eslint-config": "workspace:*",
+    "@madfam/tsconfig": "workspace:*",
     "@sentry/nextjs": "^8.42.0",
     "@sentry/node": "^8.42.0",
     "@sentry/react": "^8.42.0",

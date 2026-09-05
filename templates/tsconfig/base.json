@@ -1,40 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "_comment": "Base TypeScript configuration for MADFAM ecosystem. Copy to your app and extend.",
-  "display": "Solarpunk Base",
-  "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "allowJs": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "isolatedModules": true,
-    "verbatimModuleSyntax": false,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "composite": false,
-    "incremental": true
-  },
+  "_comment": "Template for the shared baseline. The settings are NOT here: they live in @madfam/tsconfig, so a change to the shared baseline reaches every repo instead of stopping at the copy someone took. Run `pnpm add -D @madfam/tsconfig`, copy this file to your repo as tsconfig.json, and add your own compilerOptions (outDir, rootDir, baseUrl, paths) and include/exclude - TypeScript resolves relative paths against the file they are written in, so those four cannot come from the shared config.",
+  "extends": "@madfam/tsconfig/base.json",
+  "compilerOptions": {},
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
     "node_modules",
-    "dist",
-    "build",
-    ".turbo",
-    ".next",
-    "coverage"
+    "dist"
   ]
 }

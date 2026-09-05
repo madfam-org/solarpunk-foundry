@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Solarpunk Library",
+  "_comment": "A publishable TypeScript library. Set `outDir`, `rootDir` and `include` in your own tsconfig.json - see the note in base.json.",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "noEmit": false
+  }
+}
