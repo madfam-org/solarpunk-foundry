@@ -368,6 +368,20 @@ You may edit `.env` and `.env.local` files, but:
 CI on this repo: `doc-lint`, `package-quality`, `production-readiness-ratchet`,
 `public-hygiene`, `repository-hygiene`, `publish-package` (manual dispatch).
 
+### CI runners in a public repo
+
+*Decided 2026-09-23 (coherence audit B-D04).* Every job that runs on
+`pull_request` is **hard-pinned to `runs-on: ubuntu-latest`** (GitHub-hosted).
+This repo is permanently public, so a `pull_request` job executes code from
+fork PRs; that code must never reach MADFAM's private self-hosted runner pool,
+which GitHub advises against for public repositories. GitHub-hosted minutes are
+free for public repositories, so the pin costs nothing.
+
+The org-variable runner arm (`ARC_BOOTSTRAP_COMPLETE`) survives only on
+`publish-package`, which is `workflow_dispatch`-only and runs trusted `main`
+code. Do not add the arm back to a `pull_request` job, and do not add a
+`pull_request_target` trigger.
+
 ### Proof-of-life standard
 
 > No deployment, refactor, or fix is "complete" until you have successfully
