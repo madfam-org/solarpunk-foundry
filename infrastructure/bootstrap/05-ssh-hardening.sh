@@ -50,6 +50,10 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+# The operator account name is maintained privately (internal-devops); it is never
+# published in this public repo (placeholdered 2026-09-23, coherence audit B-C04).
+OPERATOR_USER="${OPERATOR_USER:?set OPERATOR_USER to the operator account name}"
+
 # Backup original SSH config
 log_step "1/6 - Backing up SSH configuration..."
 cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup.$(date +%Y%m%d_%H%M%S)
@@ -67,11 +71,11 @@ cat > /etc/ssh/sshd_config.d/99-hardening.conf << 'EOF'
 # AUTHENTICATION
 # ============================================
 
-# Disable root login (use solarpunk user with sudo)
+# Disable root login (use operator user (<OPERATOR_USER>) with sudo)
 PermitRootLogin no
 
 # Only allow specific users
-AllowUsers solarpunk
+AllowUsers __OPERATOR_USER__
 
 # Disable password authentication (key-only)
 PasswordAuthentication no
@@ -146,29 +150,31 @@ AddressFamily inet
 # Default port (will be closed after Cloudflare Tunnel is active)
 Port 22
 EOF
+# The account name is not published; it is supplied at run time.
+sed -i "s/__OPERATOR_USER__/${OPERATOR_USER}/" /etc/ssh/sshd_config.d/99-hardening.conf
 
 log_info "SSH hardening configuration created"
 
-# Ensure solarpunk user exists and has SSH access
-log_step "3/6 - Configuring solarpunk user..."
+# Ensure operator user (<OPERATOR_USER>) exists and has SSH access
+log_step "3/6 - Configuring operator user (<OPERATOR_USER>)..."
 
-if ! id -u solarpunk &>/dev/null; then
-    log_info "Creating solarpunk user..."
-    useradd -m -s /bin/bash solarpunk
-    usermod -aG sudo solarpunk
-    usermod -aG docker solarpunk
+if ! id -u "${OPERATOR_USER}" &>/dev/null; then
+    log_info "Creating operator user (<OPERATOR_USER>)..."
+    useradd -m -s /bin/bash "${OPERATOR_USER}"
+    usermod -aG sudo "${OPERATOR_USER}"
+    usermod -aG docker "${OPERATOR_USER}"
 fi
 
-# Copy root's authorized_keys to solarpunk
+# Copy root's authorized_keys to ${OPERATOR_USER}
 if [ -f /root/.ssh/authorized_keys ]; then
-    mkdir -p /home/solarpunk/.ssh
-    cp /root/.ssh/authorized_keys /home/solarpunk/.ssh/
-    chown -R solarpunk:solarpunk /home/solarpunk/.ssh
-    chmod 700 /home/solarpunk/.ssh
-    chmod 600 /home/solarpunk/.ssh/authorized_keys
-    log_info "SSH keys copied to solarpunk user"
+    mkdir -p /home/${OPERATOR_USER}/.ssh
+    cp /root/.ssh/authorized_keys /home/${OPERATOR_USER}/.ssh/
+    chown -R "${OPERATOR_USER}:${OPERATOR_USER}" /home/${OPERATOR_USER}/.ssh
+    chmod 700 /home/${OPERATOR_USER}/.ssh
+    chmod 600 /home/${OPERATOR_USER}/.ssh/authorized_keys
+    log_info "SSH keys copied to operator user (<OPERATOR_USER>)"
 else
-    log_warn "No authorized_keys found for root - you'll need to add SSH keys for solarpunk manually"
+    log_warn "No authorized_keys found for root - you'll need to add SSH keys for ${OPERATOR_USER} manually"
 fi
 
 # Configure fail2ban for SSH
@@ -226,16 +232,16 @@ echo "==============================================="
 echo ""
 echo "Changes applied:"
 echo "  ✓ Root login disabled"
-echo "  ✓ Only 'solarpunk' user can SSH"
+echo "  ✓ Only '${OPERATOR_USER}' user can SSH"
 echo "  ✓ Password authentication disabled"
 echo "  ✓ Strong encryption algorithms enforced"
 echo "  ✓ fail2ban configured (3 attempts = 1 hour ban)"
 echo ""
 echo -e "${YELLOW}IMPORTANT:${NC}"
-echo "  1. Test SSH access with solarpunk user BEFORE closing this session:"
-echo "     ssh -i ~/.ssh/id_ed25519 solarpunk@<BOOTSTRAP_HOST>"
+echo "  1. Test SSH access with operator user (<OPERATOR_USER>) BEFORE closing this session:"
+echo "     ssh -i ~/.ssh/id_ed25519 <OPERATOR_USER>@<BOOTSTRAP_HOST>"
 echo ""
-echo "  2. solarpunk user has sudo access - use 'sudo' for admin commands"
+echo "  2. operator user (<OPERATOR_USER>) has sudo access - use 'sudo' for admin commands"
 echo ""
 echo "  3. Once Cloudflare Zero Trust SSH is configured, close port 22:"
 echo "     ufw delete allow 22/tcp"

@@ -66,7 +66,7 @@ from git history; credential rotation is tracked privately in `internal-devops`.
 
 **Changes Applied**:
 1. **Root login disabled** - `PermitRootLogin no`
-2. **Non-root user only** - `AllowUsers solarpunk`
+2. **Non-root user only** - `AllowUsers <OPERATOR_USER>`
 3. **Password auth disabled** - `PasswordAuthentication no`
 4. **Strong ciphers enforced**:
    - KexAlgorithms: curve25519-sha256, ecdh-sha2-nistp521, etc.
@@ -143,9 +143,9 @@ from git history; credential rotation is tracked privately in `internal-devops`.
 # 1. Run SSH hardening (keeps port 22 open initially)
 sudo ./05-ssh-hardening.sh
 
-# 2. Test SSH with solarpunk user (CRITICAL - do this first!)
+# 2. Test SSH with operator user (<OPERATOR_USER>) (CRITICAL - do this first!)
 # From local machine:
-ssh -i ~/.ssh/id_ed25519 solarpunk@<BOOTSTRAP_HOST>
+ssh -i ~/.ssh/id_ed25519 <OPERATOR_USER>@<BOOTSTRAP_HOST>
 
 # 3. Once confirmed working, install cloudflared
 TUNNEL_TOKEN='<token-from-cloudflare>' sudo ./06-cloudflared-setup.sh
@@ -183,7 +183,7 @@ sudo ufw delete allow 22/tcp
 # Solarpunk Foundry Server via Cloudflare Zero Trust
 Host <SSH_HOST>
   ProxyCommand cloudflared access ssh --hostname %h
-  User solarpunk
+  User <OPERATOR_USER>
   IdentityFile ~/.ssh/id_ed25519
 ```
 
@@ -223,7 +223,7 @@ Host <SSH_HOST>
 sudo ufw allow 22/tcp
 
 # Connect via direct SSH
-ssh -i ~/.ssh/id_ed25519 solarpunk@<BOOTSTRAP_HOST>
+ssh -i ~/.ssh/id_ed25519 <OPERATOR_USER>@<BOOTSTRAP_HOST>
 
 # Debug cloudflared
 sudo journalctl -u cloudflared -f

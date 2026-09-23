@@ -85,7 +85,6 @@ Created by `ops/local/init-databases.sql`. *Verified 2026-07-25 by reading the
 | `cotiza_dev` | `cotiza` | Quoting (repo `digifab-quoting`) |
 | `avala_dev` | `avala` | Learning verification |
 | `dhanam_dev` | `dhanam` | Billing and payments |
-| `sim4d_dev` | `sim4d` | CAD/simulation |
 | `forj_dev` | `forj` | Fabrication commerce |
 
 > **Correction.** The previous revision listed `madfam`, `janua_db`,
@@ -161,20 +160,18 @@ cd ~/labspace/solarpunk-foundry/ops/bin
 ./debug_logs.sh [service]
 ```
 
-**Caveat 1 — it declares 10 services, not 18.** *Verified 2026-07-25 by reading
-the service arrays:*
+**Caveat 1 — it declares 8 services.** *Service arrays read 2026-09-23, after the
+retired `sim4d` and the nonexistent `madfam` repo were removed:*
 
 | Group | Services |
 |---|---|
 | Core | `janua`, `forgesight`, `digifab-quoting`, `madfam-site` |
-| Portfolio | `madfam`, `primavera3d` |
-| Platform | `dhanam`, `fortuna`, `sim4d` |
+| Portfolio | `primavera3d` |
+| Platform | `dhanam`, `fortuna` |
 | Utility | `electrochem-sim` |
 
-**Caveat 2 — two of those ten cannot start locally.** `madfam` and
-`electrochem-sim` have no checkout in `~/labspace`, so `./madfam.sh full` will
-not bring them up. (`madfam` is also not a repository name in the organisation;
-see [`LICENSING_STRATEGY.md`](./LICENSING_STRATEGY.md).)
+**Caveat 2 — one of those eight cannot start locally.** `electrochem-sim` has no
+checkout in `~/labspace`, so `./madfam.sh full` will not bring it up.
 
 ### Per-repository compose
 

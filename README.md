@@ -663,17 +663,17 @@ The CLI drives `solarpunk-foundry/ops/local/docker-compose.shared.yml` on the Do
 ```bash
 cd ~/labspace
 ./madfam start   # core: janua, forgesight, digifab-quoting, madfam-site
-./madfam full    # 10 declared services (see caveat)
+./madfam full    # 8 declared services (see caveat)
 ./madfam status
 ./madfam logs janua
 ./madfam stop    # --clean to wipe volumes
 ```
 
-`./madfam` is a symlink to `solarpunk-foundry/ops/bin/madfam.sh`. **`full` declares 10
-services, not 18** (verified against the script's four service arrays on 2026-07-25):
-`janua`, `forgesight`, `digifab-quoting`, `madfam-site`, `madfam`, `primavera3d`, `dhanam`,
-`fortuna`, `sim4d`, `electrochem-sim`. Two of those — `madfam` and `electrochem-sim` — have
-no checkout under `~/labspace`, so `full` cannot start them.
+`./madfam` is a symlink to `solarpunk-foundry/ops/bin/madfam.sh`. **`full` declares 8
+services** (the script's four service arrays, 2026-09-23): `janua`, `forgesight`,
+`digifab-quoting`, `madfam-site`, `primavera3d`, `dhanam`, `fortuna`, `electrochem-sim`. The
+retired `sim4d` and the nonexistent `madfam` repo were removed on 2026-09-23.
+`electrochem-sim` has no checkout under `~/labspace`, so `full` cannot start it.
 
 ### Shared infrastructure (from `ops/local/docker-compose.shared.yml`)
 
@@ -685,10 +685,10 @@ no checkout under `~/labspace`, so `full` cannot start them.
 | MailHog | 1025 (SMTP) / 8025 (UI) |
 
 Databases created by `ops/local/init-databases.sql`: `janua_dev`, `enclii_dev`,
-`forgesight_dev`, `fortuna_dev`, `cotiza_dev`, `avala_dev`, `dhanam_dev`, `sim4d_dev`,
-`forj_dev`. A second, older file — `ops/db/init-shared-dbs.sql` — creates `*_db`-suffixed
-names from a superseded scheme; several public docs still quote those. The `_dev` set is the
-one the CLI provisions.
+`forgesight_dev`, `fortuna_dev`, `cotiza_dev`, `avala_dev`, `dhanam_dev`, `forj_dev`
+(`sim4d_dev` removed 2026-09-23). The older `ops/db/init-shared-dbs.sql` (`*_db`-suffixed
+names) was deleted on 2026-09-23 with the other HISTORICAL `ops/` trees (`ops/docker`,
+`ops/env`, `ops/k8s`, `ops/scripts`); if an older doc quotes a `*_db` name, it is stale.
 
 ### Known-broken local scaffolding (do not trust it yet)
 

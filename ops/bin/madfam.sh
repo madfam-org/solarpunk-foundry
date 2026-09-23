@@ -1,4 +1,8 @@
 #!/bin/bash
+# Boundary checkpoint (2026-09-23, platform ops): local-development orchestration only.
+# Public-safe: no hosts, credentials or production procedures. Production operations
+# are Enclii-first and documented privately in internal-devops. Policy:
+# docs/PUBLIC_REPO_BOUNDARY.md
 
 # ============================================
 # MADFAM ECOSYSTEM - Unified Control Script
@@ -41,15 +45,14 @@ CORE_SERVICES=(
 )
 
 # Extended services (included with 'full' command)
+# `madfam` (no such repo) and the retired Sim4D were removed 2026-09-23.
 PORTFOLIO_SERVICES=(
-    "madfam:docker-compose.yml"
     "primavera3d:docker-compose.yml"
 )
 
 PLATFORM_SERVICES=(
     "dhanam:docker-compose.yml"
     "fortuna:docker-compose.yml"
-    "sim4d:docker-compose.yml"
 )
 
 UTILITY_SERVICES=(
@@ -289,7 +292,6 @@ print_summary() {
     echo ""
     echo -e "${MAGENTA}Platform Apps${NC}"
     echo "  💵 Dhanam:             http://localhost:4700 (4700-4799)"
-    echo "  🔧 Sim4D Studio:       http://localhost:4800 (4800-4899)"
     echo ""
     echo -e "${MAGENTA}Portfolio Sites${NC}"
     echo "  🌱 Primavera3D:        http://localhost:3020"
@@ -420,7 +422,6 @@ cmd_logs() {
         echo "  madfam-site - MADFAM business site"
         echo "  dhanam      - Dhanam finance"
         echo "  fortuna     - Fortuna analytics"
-        echo "  sim4d       - BrepFlow CAD"
         echo "  galvana     - Electrochem simulation"
         return
     fi
@@ -446,9 +447,6 @@ cmd_logs() {
             ;;
         fortuna)
             cd "$LABSPACE_ROOT/fortuna" && docker compose logs -f --tail=100
-            ;;
-        sim4d|brepflow)
-            cd "$LABSPACE_ROOT/sim4d" && docker compose logs -f --tail=100
             ;;
         galvana|electrochem)
             cd "$LABSPACE_ROOT/electrochem-sim" && docker compose logs -f --tail=100
@@ -483,8 +481,8 @@ cmd_help() {
     echo "  - MADFAM Site"
     echo ""
     echo -e "${CYAN}Additional Services with 'full':${NC}"
-    echo "  - Innovaciones MADFAM, Primavera3D (Portfolio)"
-    echo "  - Dhanam, Fortuna, BrepFlow (Platform)"
+    echo "  - Primavera3D (Portfolio)"
+    echo "  - Dhanam, Fortuna (Platform)"
     echo "  - Galvana (Utilities)"
     echo ""
     echo -e "${CYAN}Documentation:${NC}"

@@ -239,8 +239,10 @@ ops/
 - ops/local/ — docker-compose.shared.yml (THE canonical local stack),
   docker-compose.infra.yml, docker-compose.platform.yml,
   docker-compose.observability.yml, init-databases.sql, README.md
-- ops/db/ — init-shared-dbs.sql (older, superseded `*_db` naming)
-- ops/docker/, ops/env/, ops/k8s/network-policies/, ops/scripts/
+- ops/db/, ops/docker/, ops/env/, ops/k8s/network-policies/ and
+  ops/scripts/ecosystem-alignment/ were HISTORICAL and were DELETED on
+  2026-09-23 (the alignment scripts would have pinned Next.js below the
+  2026-09-08 CVE floor).
 
 docs/
 - PORT_ALLOCATION.md, PUBLIC_REPO_BOUNDARY.md, OPERATIONAL_REDIRECTS.md
@@ -302,8 +304,9 @@ State these rather than let an agent trip over them:
   Removing content from HEAD does not remove it from git history, so identifier
   rotation — an operator action — remains owed, tracked in `internal-devops`.
 - `ops/docker/docker-compose.production.yml` and `ops/db/init-shared-dbs.sql`
-  carry DO-NOT-USE banners (added 2026-08-24): there is no Docker-Compose
-  production, and the `*_db` database names are superseded by the `*_dev` set.
+  were DELETED on 2026-09-23 (they had carried DO-NOT-USE banners since
+  2026-08-24): there is no Docker-Compose production, and the `*_db` database
+  names are superseded by the `*_dev` set.
 - `scripts/public-hygiene-check.sh` reads every tracked text file (since
   2026-09-04; it was .md/.mdx/.txt only before that), flags public IPv4
   literals, and checks node identity — hostnames, node IPs and hardware SKUs —
@@ -331,16 +334,15 @@ Docker network `madfam-shared-network`. `enclii local infra` does NOT include
 Verdaccio.
 
 Fallback: `./madfam` at the labspace root, a symlink to ops/bin/madfam.sh.
-`./madfam full` declares 10 services (janua, forgesight, digifab-quoting,
-madfam-site, madfam, primavera3d, dhanam, fortuna, sim4d, electrochem-sim), not
-18. Two of them — madfam and electrochem-sim — have no checkout under
-~/labspace, so `full` cannot start them.
+`./madfam full` declares 8 services (janua, forgesight, digifab-quoting,
+madfam-site, primavera3d, dhanam, fortuna, electrochem-sim) since 2026-09-23,
+when the retired sim4d and the nonexistent madfam repo were removed.
+electrochem-sim has no checkout under ~/labspace, so `full` cannot start it.
 
 Databases created by ops/local/init-databases.sql: janua_dev, enclii_dev,
-forgesight_dev, fortuna_dev, cotiza_dev, avala_dev, dhanam_dev, sim4d_dev,
-forj_dev. The older ops/db/init-shared-dbs.sql creates `*_db`-suffixed names from
-a superseded scheme; several docs still quote those. The `_dev` set is what the
-CLI provisions.
+forgesight_dev, fortuna_dev, cotiza_dev, avala_dev, dhanam_dev, forj_dev
+(sim4d_dev removed 2026-09-23). The older ops/db/init-shared-dbs.sql (`*_db`
+names) was deleted on 2026-09-23; any doc quoting a `*_db` name is stale.
 
 ## Ports
 
