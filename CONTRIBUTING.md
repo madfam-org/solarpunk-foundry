@@ -2,6 +2,10 @@
 
 `solarpunk-foundry` is the public blueprint and shared-package layer for the MADFAM ecosystem.
 
+**Read [`AGENTS.md`](AGENTS.md) first.** It is the canonical operating guide
+for this repository (for people and for agents): the boundary rules, the
+validation each change type needs, and the CI contract.
+
 Before submitting changes:
 
 - Keep public/private boundaries intact.

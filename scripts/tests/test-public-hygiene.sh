@@ -125,5 +125,19 @@ else
   printf 'ok   private literal is not echoed into the log\n'; pass=$((pass + 1))
 fi
 
+# 9. Regression (B-C05, 2026-09-23): two or more marked lines make the IPv4 skip
+#    list multi-line. BSD awk (macOS) rejected that list when it was passed with
+#    `awk -v`, and the guard died rc=2 with no message. Marked lines must be
+#    skipped and the run must stay clean on every awk.
+d="$(new_repo multi-line-skip-list)"
+{
+  printf 'canary one 93.184.216.34 hygiene-self-reference\n' # hygiene-self-reference
+  printf 'canary two 93.184.216.35 hygiene-self-reference\n' # hygiene-self-reference
+  printf 'plain line with no address\n'
+} > "$d/notes.md"
+git -C "$d" add -A
+out="$(run_guard "$d")"; rc=$?
+check 'multi-line IPv4 skip list is honoured (BSD awk safe)' 0 "$rc" "$out" 'files_scanned='
+
 printf '\npublic-hygiene tests: pass=%s fail=%s\n' "$pass" "$fail"
 [[ "$fail" -eq 0 ]]

@@ -139,8 +139,13 @@ check_ipv4() {
   # not visible in it; collect the marked `file:line` keys separately and drop
   # matches that belong to them.
   skip=$(grep -nHF 'hygiene-self-reference' -- "${FILES[@]}" | cut -d: -f1,2 || true)
-  matches=$(printf '%s\n' "$raw" | awk -F: -v skips="$skip" '
-    BEGIN { n = split(skips, a, "\n"); for (i = 1; i <= n; i++) if (a[i] != "") s[a[i]] = 1 }
+  # The skip list is multi-line, so it goes through ENVIRON, not `awk -v`: BSD
+  # awk (macOS) rejects a newline inside a `-v` string ("newline in string") and,
+  # under `set -e`, the whole guard exited rc=2 with no message on every operator
+  # Mac (coherence audit B-C05, 2026-09-23). ENVIRON is POSIX and behaves the
+  # same in gawk, mawk and BSD awk.
+  matches=$(printf '%s\n' "$raw" | HYGIENE_SKIPS="$skip" awk -F: '
+    BEGIN { n = split(ENVIRON["HYGIENE_SKIPS"], a, "\n"); for (i = 1; i <= n; i++) if (a[i] != "") s[a[i]] = 1 }
     { if (!(($1 ":" $2) in s)) print }')
   matches=$(printf '%s\n' "$matches" | grep -Ev ':(10[.]|127[.]|169[.]254[.]|192[.]168[.]|172[.](1[6-9]|2[0-9]|3[01])[.]|192[.]0[.]2[.]|198[.]51[.]100[.]|203[.]0[.]113[.]|0[.]0[.]0[.]0$|255[.])' || true)
   if [[ -n "$matches" ]]; then

@@ -2,7 +2,18 @@
 
 ## Reporting security issues
 
-Report suspected vulnerabilities, leaked credentials, or unsafe operational details through the private MADFAM security channel or the private `internal-devops` repository. Do not open public issues for sensitive reports.
+**Use GitHub private vulnerability reporting:** open this repository's
+**Security** tab and choose **Report a vulnerability**
+(<https://github.com/madfam-org/solarpunk-foundry/security/advisories/new>).
+The report is visible only to the repository's maintainers until an advisory is
+published.
+
+Do not open public issues, discussions or pull requests for sensitive reports.
+If the **Report a vulnerability** button is not shown, private reporting has not
+been switched on for this repository yet (a maintainer settings action, recorded
+2026-09-23). In that case open a public issue titled "Security contact request"
+that contains **no details** of the problem, and a maintainer will reply with a
+private channel.
 
 Include:
 
@@ -13,7 +24,11 @@ Include:
 
 ## Public repository boundary
 
-`solarpunk-foundry` is public. It must not contain live secrets, private IPs, hardware inventory, customer data, kubeconfigs, provider tokens, production hostnames that are not already public, cost ledgers, or sensitive incident details.
+`solarpunk-foundry` is public, permanently (owner decision, 2026-09-04). It must
+not contain live secrets, private IPs, hardware inventory, customer data,
+kubeconfigs, provider tokens, production hostnames that are not already public,
+cost ledgers, or sensitive incident details. Policy:
+[`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md).
 
 Sensitive operational detail belongs in the private `internal-devops` repository. Runtime secret values belong in Vault or the appropriate external secret store, never in this repository.
 
