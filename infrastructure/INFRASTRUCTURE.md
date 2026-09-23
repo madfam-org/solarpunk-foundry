@@ -373,8 +373,8 @@ GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO janua;
 **Superseded — see [`../docs/PORT_ALLOCATION.md`](../docs/PORT_ALLOCATION.md).**
 
 The block table that used to sit here assigned 4300-4399 to Dhanam and
-4400-4499 to Avala. `PORT_ALLOCATION.md` assigns those to Fortuna and ForgeSight,
-and puts Dhanam at 4700-4799 and AVALA at 4600-4699. Two public documents in one
+4400-4499 to Avala. `PORT_ALLOCATION.md` assigns those to Fortuna and Forgesight,
+and puts Dhanam at 4700-4799 and Avala at 4600-4699. Two public documents in one
 repository disagreeing about the same registry is worse than one document, so
 this copy is retired rather than corrected.
 

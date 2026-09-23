@@ -5,15 +5,16 @@
 > a compatibility redirect. The public ecosystem narrative is in
 > [README.md](README.md).
 
-**Last updated:** 2026-08-24
-**Last verified:** 2026-08-24 — package directories, names and versions read
-from `packages/*/package.json`; script and compose paths read from the working
-tree; registry ownership cross-checked against `internal-devops/ecosystem/domain-map.md`
-(*Last Verified 2026-08-24*).
+**Last updated:** 2026-09-23 (boundary-contract date and stamps only; the body was
+last edited on 2026-09-05 for the `@madfam/ui` retirement and the shared configs).
+**Last verified:** package directories, names and versions read from
+`packages/*/package.json` on 2026-09-05; script and compose paths read from the
+working tree on 2026-07-25; registry ownership cross-checked against
+`internal-devops/ecosystem/domain-map.md` (full live probe 2026-08-24).
 
 > **Boundary note.** Public repo, Lane B. No secrets, no node identity, no IPs,
 > no hardware or capacity figures, no costs. Canonical policy:
-> `internal-devops/docs/repo-boundary-contract.md` (2026-06-14); public
+> `internal-devops/docs/repo-boundary-contract.md` (last updated 2026-09-04); public
 > checklist: [docs/PUBLIC_REPO_BOUNDARY.md](docs/PUBLIC_REPO_BOUNDARY.md).
 
 ## Repo purpose

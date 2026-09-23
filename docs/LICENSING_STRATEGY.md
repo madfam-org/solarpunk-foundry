@@ -20,7 +20,7 @@ records which repositories currently comply.
 >
 > A previous revision titled this section "Complete License Matrix". It was not
 > complete, and treating it as complete is how a repository ends up
-> mis-described in public — which is exactly what happened to ForgeSight.
+> mis-described in public — which is exactly what happened to Forgesight.
 
 ---
 
@@ -103,7 +103,7 @@ with it, the `LICENSE` file wins and the other is a defect.
 
 These matter enough to state individually.
 
-### ForgeSight is AGPL-3.0, not Proprietary
+### Forgesight is AGPL-3.0, not Proprietary
 
 The previous revision listed `forgesight` as **Proprietary — "Cost database
 (trade secret)"**, and placed it under "Revenue Engines". `forgesight/LICENSE`
@@ -228,5 +228,5 @@ reference for how the extraction boundary was drawn.
 
 | Date | Change |
 |---|---|
-| 2026-07-25 | Verified matrix against on-disk `LICENSE` files. Corrected ForgeSight (AGPL, not proprietary). Removed the non-existent `madfam` repository. Moved Enclii to dual-licensed. Added the missing-license and mismatch gap list. Retitled the matrix as partial. Added repositories missing from earlier revisions. |
+| 2026-07-25 | Verified matrix against on-disk `LICENSE` files. Corrected Forgesight (AGPL, not proprietary). Removed the non-existent `madfam` repository. Moved Enclii to dual-licensed. Added the missing-license and mismatch gap list. Retitled the matrix as partial. Added repositories missing from earlier revisions. |
 | 2025-11-27 | Initial strategy document; geom-core moved MPL-2.0 → Apache-2.0 for patent protection; missing LICENSE files created; `package.json` mismatches fixed |

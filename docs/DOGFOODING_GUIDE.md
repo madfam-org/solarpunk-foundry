@@ -130,10 +130,10 @@ contain a Redis allocation table — that citation was false and is removed.*
 |---|---|
 | 0 | Janua |
 | 1 | Enclii |
-| 2 | ForgeSight |
+| 2 | Forgesight |
 | 3 | Fortuna |
 | 4 | Cotiza |
-| 5 | AVALA |
+| 5 | Avala |
 | 6 | Dhanam |
 | 7 | Sim4D |
 | 8 | Forj |

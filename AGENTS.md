@@ -6,7 +6,7 @@
 > `kubectl`, `helm`, SSH, provider CLI/API, `docker exec`, and direct container
 > access as platform bootstrap or documented break-glass only, and record any
 > missing Enclii adapter gap.
-> Last Updated: 2026-09-06
+> Last Updated: 2026-09-23
 
 <!-- MADFAM-AGENTS-CANONICAL v1 -->
 
@@ -84,7 +84,7 @@ redirect and should not become the source of truth again.
 - Any public doc carrying ecosystem context must include one short boundary note
   with a canonical link target.
 - Canonical policy: `internal-devops/docs/repo-boundary-contract.md`
-  (last updated 2026-06-14).
+  (last updated 2026-09-04).
 
 **Never publish from this repo:** node hostnames, any public IP, hardware model
 numbers or capacity figures, the Cloudflare tunnel identifier, cost or
@@ -312,7 +312,7 @@ changes.
 | Bank transactions + billing ledger | Dhanam | API read; no local mirror |
 | Mexican law + compliance rules | Tezca | query `/api/v1/laws`; no fork |
 | CFDI / SAT / tax filings | Karafiel | single authority |
-| 3D geometry kernel | geom-core | used by Sim4D + Yantra4D |
+| 3D geometry kernel | geom-core | used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`) |
 
 ### Agent session protocol
 

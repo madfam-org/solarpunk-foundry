@@ -222,9 +222,9 @@ Two code paths.
 | 4100-4199 | Soil — Janua | API (4100), Dashboard (4101), Admin (4102), Docs (4103), Website (4104) |
 | 4200-4299 | Soil — Enclii | Switchyard API (4200), UI (4201), Dispatch (4203), Status (4204) |
 | 4300-4399 | Roots — Fortuna | Fortuna API (4300+), UI, analyzer |
-| 4400-4499 | Roots — ForgeSight | ForgeSight API (4400+), UI, crawler |
-| 4500-4599 | Stem — Cotiza | Cotiza Studio API (4500+), UI, admin |
-| 4600-4699 | Stem — AVALA | AVALA API (4600+), UI, admin, assess |
+| 4400-4499 | Roots — Forgesight | Forgesight API (4400+), UI, crawler |
+| 4500-4599 | Stem — Cotiza | Cotiza API (4500+), UI, admin |
+| 4600-4699 | Stem — Avala | Avala API (4600+), UI, admin, assess |
 | 4700-4799 | Fruit — Dhanam | Dhanam API (4700+), Web, admin |
 | 4800-4899 | Fruit — Sim4D | Sim4D Studio (4800+), Collaboration WS (+20) |
 | 4900-4999 | Fruit — Forj | Forj API, storefront, admin |
@@ -282,8 +282,8 @@ Re-scoped 2026-07-25. Two of the three previous items are closed.
    `enclii local up` for every service rather than Janua and Enclii alone. What
    should not continue is a third state where the scheme is neither followed nor
    withdrawn and gets re-cited downstream as a registry it is not.
-3. ~~**Fix the Fortuna / ForgeSight block swap still living in `ops/`.**~~
-   **CLOSED 2026-09-04.** `ops/bin/madfam.sh` printed "ForgeSight 4300-4399 /
+3. ~~**Fix the Fortuna / Forgesight block swap still living in `ops/`.**~~
+   **CLOSED 2026-09-04.** `ops/bin/madfam.sh` printed "Forgesight 4300-4399 /
    Fortuna 4400-4499" and health-checked Forgesight on 4300; `ops/local/
    init-databases.sql` carried the same swapped comments. Both now match the
    table above — Fortuna 4300-4399, Forgesight 4400-4499 — and the two

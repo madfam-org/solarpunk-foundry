@@ -18,7 +18,8 @@ public ecosystem contract lane for the MADFAM repository set.
 
 The governing policy is `internal-devops/docs/repo-boundary-contract.md`
 (private repository — referenced by name only; the URL 404s without
-organisation access). It carries `Last updated: 2026-06-14`.
+organisation access). It carries `Last Updated: 2026-09-04` (read 2026-09-23); its first
+dated review was 2026-09-05 and the next is due in early October 2026.
 
 ## Belongs here
 

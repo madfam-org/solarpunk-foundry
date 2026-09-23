@@ -1,12 +1,13 @@
 # Solarpunk Foundry — Full LLM Context Map
 
 Generated: 2026-05-13
-Last updated: 2026-08-24
-Last verified: 2026-08-24 — every repository path listed below was confirmed
-present in the working tree on that date. Ecosystem claims carry their own
-source and verification date inline; this file contains no probes of its own —
-route claims inherit the private domain map's 2026-08-24 live-probe
-verification.
+Last updated: 2026-09-23 — coherence re-anchor (retired-host list, Nauta /
+Forgesight / Fortuna facts, boundary-contract date).
+Last verified: repository paths re-checked against the working tree on
+2026-09-23. Ecosystem claims carry their own source and verification date
+inline. Route claims inherit the private domain map's 2026-08-24 live-probe
+verification unless they say they were re-probed on 2026-09-23 (plain HTTPS
+GET).
 
 ## Purpose
 
@@ -75,7 +76,7 @@ the 2026-08-05 date of the private infrastructure records.
   customer-adjacent detail
 
 Canonical policy: `internal-devops/docs/repo-boundary-contract.md`
-(last updated 2026-06-14). Public checklist: `docs/PUBLIC_REPO_BOUNDARY.md`.
+(last updated 2026-09-04). Public checklist: `docs/PUBLIC_REPO_BOUNDARY.md`.
 Any public document carrying ecosystem context must include one short boundary
 note with a canonical link target.
 
@@ -280,7 +281,7 @@ State these rather than let an agent trip over them:
   still not proof a change is boundary-clean; human review against the boundary
   list is the control that matters.
 - `docs/LICENSING_STRATEGY.md` is stale and in at least one case wrong (it lists
-  ForgeSight as Proprietary; its LICENSE file is AGPL-3.0). README.md §V carries
+  Forgesight as Proprietary; its LICENSE file is AGPL-3.0). README.md §V carries
   a table of what the LICENSE files actually say, checked 2026-07-25.
 
 ## Local development
@@ -353,8 +354,26 @@ From internal-devops/ecosystem/domain-map.md, verified 2026-08-24:
   meridian-api answers 502. Advice-class output remains counsel-gated by design.
 - eido.cam is LIVE (probed 2026-08-24: apex 200, api.eido.cam/health 200) —
   the old same-day contradiction is settled.
-- Found down 2026-08-24: api.fortuna.tube (502) and the madfam-site CMS host
-  (404) — recorded as gaps in the private map, not papered over.
+- Found down 2026-08-24: api.fortuna.tube (502 on 2026-08-24; healthy
+  2026-09-23) and the madfam-site CMS host (404) — recorded as gaps in the
+  private map, not papered over.
+
+Retired — never present these as current (re-probed 2026-09-23):
+
+- cto.madfam.io and nauta.madfam.io are RETIRED Nauta cockpit hosts (404).
+  Nauta's public front door is nauta.quest (+ www.); the auth-gated staff
+  cockpit is app.nauta.quest (since the 2026-08-30 cutover).
+- forgesight.quest is RETIRED (a registrar parking page, no redirect).
+  Forgesight lives at forgesight.app since 2026-08-30.
+- penny.onl is RETIRED with no redirect (owner ruling 2026-09-23); PENNY is
+  absorbed by Selva.
+- Sim4D is RETIRED (2026-08-30); the sim4d repo is archived and parametric
+  design lives in Yantra4D. SPARK is retired too.
+- The 36 hyperobjects-commons satellite repos were ARCHIVED on 2026-09-05; the
+  commons is now solid-hyperobjects + soft-hyperobjects, verified by the
+  hyperobjects-spec keystone (all three public).
+- aureo.studio is held for brand protection and does not redirect (parking
+  page on 2026-09-23).
 
 ## Maintenance
 
@@ -372,4 +391,4 @@ work must still read the relevant source documents. Public repo: node hostnames,
 public IPs, hardware models and capacity figures, the Cloudflare tunnel
 identifier, cost and procurement data, Vault paths, raw break-glass procedures,
 and incident evidence trails must never appear here. Canonical policy:
-internal-devops/docs/repo-boundary-contract.md (last updated 2026-06-14).
+internal-devops/docs/repo-boundary-contract.md (last updated 2026-09-04).

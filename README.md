@@ -2,11 +2,14 @@
 
 ### *From Bits to Atoms. High tech, deep roots.*
 
-> **Last updated:** 2026-09-04 — reconciliation edition. No new probes were run; the
-> verification anchors below are unchanged, and every claim was re-checked against them.
+> **Last updated:** 2026-09-23 — coherence re-anchor. Org counts were restated from a live
+> GitHub enumeration run that day, and every host whose status this edition changes (Nauta,
+> Forgesight, Fashion Cabinet, Tlacuilo, Telesia, Angelia, Fortuna's API, `penny.onl`,
+> `aureo.studio`) was probed that day with a plain HTTPS GET. Every other route claim still
+> inherits the 2026-08-24 anchor below and says so.
 > **Verification anchors** — every status claim below inherits one of these dates, and each section says which:
-> - **Repo names, visibility, and roles:** `internal-devops/ecosystem/repo-registry.md`, *Last Verified 2026-08-24* (live GitHub enumeration including forks), *Last Updated 2026-08-29* (one repo added after the enumeration). Org counts restated in §II.7.
-> - **Production routes and domains:** `internal-devops/ecosystem/domain-map.md`, *Last Verified 2026-08-24* — a full **live HTTP probe of every routed domain** run for that refresh (the Cloudflare tunnel ingress API was last re-read 2026-07-01; rows added since carry `enclii.yaml`-sourced service/port values).
+> - **Repo names, visibility, and roles:** `internal-devops/ecosystem/repo-registry.md` (*Last Updated 2026-09-12*; per-row verification 2026-08-24). **Org counts:** live GitHub enumeration of **2026-09-23**, which matches that registry exactly. Restated in §II.7.
+> - **Production routes and domains:** `internal-devops/ecosystem/domain-map.md` (*Last Updated 2026-09-12*); its last **full live HTTP probe of every routed domain** ran 2026-08-24. Hosts re-probed on 2026-09-23 say so inline.
 > - **Funnel / commercial status:** the 2026-07-16 internal launch-readiness audit, **plus the dated events that superseded parts of it** — first completed live charge 2026-08-02 (§VI) — and the 2026-08-14 internal sovereign-pivot audit.
 > - **Cross-repo conventions:** dates stated per convention in §IV.
 >
@@ -24,7 +27,7 @@
 ### This repo IS — Lane B, the public ecosystem contract hub
 
 `solarpunk-foundry` is the designated **public ecosystem contract repo** for MADFAM
-(`internal-devops/docs/repo-boundary-contract.md`, last updated 2026-06-14). It holds:
+(`internal-devops/docs/repo-boundary-contract.md`, last updated 2026-09-04). It holds:
 
 - the **canonical ecosystem map** at a platform-public level (§II);
 - the **cross-repo conventions** a platform implements, or else does not participate (§IV);
@@ -100,13 +103,12 @@ and only then face outward.
 ## ⚙️ II. Platform map
 
 > **Sources and dates.** Repo names, visibility and roles follow
-> `internal-devops/ecosystem/repo-registry.md` (**Last Verified 2026-08-24**, live GitHub
-> enumeration). Domains follow `internal-devops/ecosystem/domain-map.md` (**Last Verified
-> 2026-08-24**, live HTTP probes of every routed domain); rows with a different verification
-> date say so inline.
+> `internal-devops/ecosystem/repo-registry.md` (*Last Updated 2026-09-12*). Domains follow
+> `internal-devops/ecosystem/domain-map.md` (*Last Updated 2026-09-12*; last full live HTTP
+> probe of every routed domain 2026-08-24); rows re-probed on 2026-09-23 say so inline.
 >
 > **Visibility.** 🔒 marks a repo that is **private** — its `github.com/madfam-org/...` link
-> will 404 without org access. Visibility re-checked against the GitHub API on 2026-08-24.
+> will 404 without org access. Visibility re-checked against the GitHub API on 2026-09-23.
 >
 > "Live" below means *the route answered at its last recorded probe on the date given* — not
 > that it is answering now, and not that the product behind it is feature-complete.
@@ -124,7 +126,8 @@ and only then face outward.
 | Platform | Repo | Role | Domains |
 |---|---|---|---|
 | **Fortuna** 🔒 | `fortuna` | Problem intelligence / zeitgeist analysis — discovers and validates market gaps from multilingual signals. | `fortuna.tube`, `api.fortuna.tube` |
-| **ForgeSight** 🔒 | `forgesight` | Manufacturing pricing intelligence; feeds Cotiza. | `forgesight.quest`, `app.`, `api.`, `admin.` |
+| **Forgesight** 🔒 | `forgesight` | Manufacturing pricing intelligence; feeds Cotiza. | `forgesight.app`, `app.`, `api.`, `admin.` — apex 200 on 2026-09-23. Moved off `forgesight.quest` 2026-08-21 → 2026-08-30; **`forgesight.quest` is retired** (a registrar parking page on 2026-09-23, no redirect) — never link it. |
+| **Tlacuilo** | `tlacuilo` | Ecosystem document intelligence / OCR service (AGPL-3.0-only): OCR, layout, typed extraction and validation. Owns extractions, never documents. Consumed in-cluster by Dhanam and Karafiel. Created 2026-09-05. | `tlacuilo.madfam.io` (landing; 200 on 2026-09-23). The API is in-cluster only. |
 | **BlueprintTube** 🔒 | `blueprint-harvester` | 3D-model indexer and printability analyzer. | `blueprint.tube`, `api.`, `app.`, `admin.` (`app.`/`admin.` recorded live 2026-07-09) |
 | **BloomScroll** | `bloom-scroll` | "Slow web" content aggregator. | `almanac.solar` |
 | **madfam-crawler** 🔒 | `madfam-crawler` | Internal scraping-as-a-service (Crawl4AI + ScrapegraphAI). Feeds Tezca's fiscal monitoring and others. | — |
@@ -134,27 +137,27 @@ and only then face outward.
 | Platform | Repo | Role | Domains |
 |---|---|---|---|
 | **geom-core** | `geom-core` | C++17 geometry-analysis library exposed to WASM + Python. Apache-2.0 per its LICENSE. Used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`). A library, not a service — no deployed domain. | — *(none; `geom-core.dev` was never registered)* |
-| **AVALA** 🔒 | `avala` | Learning-verification engine (Mexico EC/CONOCER + DC-3). **Repo flipped private on 2026-07-16.** | `avala.studio` (landing), `app.avala.studio`, `admin.avala.studio`, `api.avala.studio` — landing/app split repointed 2026-07-18; `admin.` recorded live since 2026-07 |
+| **Avala** 🔒 | `avala` | Learning-verification engine (Mexico EC/CONOCER + DC-3). **Repo flipped private on 2026-07-16.** | `avala.studio` (landing), `app.avala.studio`, `admin.avala.studio`, `api.avala.studio` — landing/app split repointed 2026-07-18; `admin.` recorded live since 2026-07 |
 | **routecraft** 🔒 | `routecraft` | Trip-engine SaaS. Today's payment-event emitter (§IV.3), which the ratified target moves to Dhanam. | `routecraft.app` |
 
 ### 🍎 Layer 4 — Fruit (user platforms)
 
 | Platform | Repo | Role | Domains |
 |---|---|---|---|
-| **Sim4D** | `sim4d` | **ARCHIVED** (repo archived by 2026-08-07). Web-first parametric CAD, B-Rep / NURBS via OCCT.wasm; renamed from BrepFlow 2026-04-17. Parametric design continues in Yantra4D. | no service domain |
 | **Forj** 🔒 | `forj` | Decentralized fabrication storefronts. | `forj.design` |
-| **Cotiza Studio** | `digifab-quoting` | Quoting engine connecting design → factory. Product name is Cotiza; repo name is `digifab-quoting`. | `cotiza.studio`, `api.cotiza.studio` |
+| **Cotiza** | `digifab-quoting` | Quoting engine connecting design → factory. Product name is Cotiza; repo name is `digifab-quoting`. | `cotiza.studio`, `api.cotiza.studio` |
 | **Dhanam** 🔒 | `dhanam` | Budgeting, wealth tracking, and the **ecosystem billing ledger**. Hosts `MadfamEventsController` at `POST /v1/billing/madfam-events`. **Repo flipped private between 2026-07-16 and 2026-07-25.** An AGPLv3 open core was published separately as `dhanam-core` (public, created 2026-07-20). | `dhan.am`, `app.dhan.am`, `api.dhan.am`, `admin.dhan.am` |
 | **Coforma Studio** | `coforma-studio` | Customer advisory boards as a growth engine. | `coforma.studio` |
 | **Karafiel** 🔒 | `karafiel` | Operational compliance — CFDI, NOM-151, e.firma, SAT-adjacent. Single authority for CFDI/SAT/tax filings. Absorbed the archived `legal-ops` document generation as `legalgen`. | `karafiel.mx`, `app.`, `api.`, `admin.` |
 | **Tezca** | `tezca` | Mexican law oracle — authoritative source of law, changelog, and compliance rules. Informational; feeds Karafiel. | `tezca.mx`, `api.tezca.mx`, `admin.tezca.mx` |
 | **Yantra4D** | `yantra4d` | Parametric-design platform plus its commons of OpenSCAD/CadQuery projects. | `yantra4d.com`, `app.`, `api.`, `admin.` |
-| **Fashion Cabinet** 🔒 | `fashion-cabinet` | Parametric fashion commons — made-to-measure, seam-verified garment patterns exploded for fabrication (the catalog has grown past the original FC-100 scope); soft-goods sibling of Yantra4D. Repo private during incubation. | `fc.madfam.io` — **live** (re-probed 2026-08-24: catalog + studio + API serving) |
+| **Fashion Cabinet** 🔒 | `fashion-cabinet` | Parametric fashion commons — made-to-measure, seam-verified garment patterns exploded for fabrication (the catalog has grown past the original FC-100 scope); soft-goods sibling of Yantra4D. Pattern cartridges live in the public `soft-hyperobjects` commons (§VI). Repo private during incubation. | **`fashioncabi.net`** (canonical apex, ruled 2026-08-22) + `www.`; `fc.madfam.io` stays served as a non-redirect alias. Both 200 on 2026-09-23. |
 | **Kalya** 🔒 | `kalya` | Booking/scheduling engine ("the scheduling instrument"). Repo private during incubation. | `kalya.app`, `kalya.madfam.io` — **live** (probed 2026-08-24) |
 | **Acervo** 🔒 | `acervo` | Records engine — professional records, immutable versions, derived reports, egress-first. Repo private during incubation. | `acervo.madfam.io` — **live** (probed 2026-08-24) |
 | **Pravara MES** | `pravara-mes` | Manufacturing-execution system — fabrication-node routing and dispatch for physical jobs. | `mes.madfam.io`, `mes-api.madfam.io` |
 | **Rondelio** 🔒 | `rondelio` | Tabletop / TCG game-intelligence cloud. | `rondel.io`, `www.`, `api.`, `play.`, plus `studio.`, `admin.` (operator-gated), `sim.` — all seven re-probed 2026-07-09 |
 | **Voxa** | `voxa` | AAC (augmentative and alternative communication) platform, Apache-2.0. Controlled commercial launch. | `voxa.madfam.io` — **live** (probed 200, 2026-08-24 — this settles the hostname earlier editions carried as documented-but-unverified) |
+| **Telesia** 🔒 | `telesia` | Convergence platform for the gaming completionist (quest log, time-to-beat, achievements, second screen). **Incubating:** first deploy serving since 2026-09-12 (landing, health, API bearer gate) — no product capability yet. Created 2026-09-12. | `telesia.quest` (+ `www.`, `app.`, `api.`) — landing 200 on 2026-09-23. |
 | **Galvana** | — *(no repo; `electrochem-sim` holds the simulator core, recorded stale since 2025-11)* | Roadmap only. Phygital electrochemistry simulation. | — |
 
 ### 🤝 Layer 5 — Glue (cross-platform federation)
@@ -162,7 +165,8 @@ and only then face outward.
 | Platform | Repo | Role | Domains |
 |---|---|---|---|
 | **PhyndCRM** | `phynd-crm` | Client-facing deliverables portal — one pane of glass per engagement, federating data from other MADFAM platforms without duplicating it. Hosts `POST /api/webhooks/routecraft` and `/api/v1/probe/{leads,attribution}`. | **`phynd.app` is registered and live** (probed 2026-08-24 — earlier editions said it was unregistered; that is settled). `crm.madfam.io` also still answers. |
-| **Nauta** 🔒 | `nauta` | Fractional-CTO operating system — internal cockpit plus white-labeled client workspaces served on per-client hosts. The delivery layer through which client engagements exercise the rest of the ecosystem. | `cto.madfam.io` — **live** (probed 2026-08-24); client workspaces are auth-gated. |
+| **Nauta** 🔒 | `nauta` | Fractional-CTO operating system — staff cockpit plus white-labeled client workspaces served on per-client hosts. The delivery layer through which client engagements exercise the rest of the ecosystem. | Public front door **`nauta.quest`** (+ `www.`); auth-gated staff cockpit **`app.nauta.quest`** (since the 2026-08-30 cutover) — both 200 on 2026-09-23. Client workspaces are auth-gated on client-owned hosts. `cto.madfam.io` is **retired** (404) — never cite it. |
+| **Angelia** 🔒 | `angelia` | Messaging platform. Its **Courier** is the only path for third-party messaging (email, chat, SMS, push to people outside the platform) from any MADFAM service — owner ruling, 2026-09-05. **Multi-tenant** per angelia ADR-0011 (ratified 2026-09-21/22, superseding the single-tenant ADR-0009): cluster-per-tenant for external clients, a shared control plane + Courier for MADFAM's own estate. | `angelia.run`, `api.angelia.run` — both 200 on 2026-09-23. |
 | **Selva** | `selva-office` | AI workforce / office simulator; agent orchestration. Owns the ecosystem's LLM inference chokepoint (§IV.3). **The GitHub repo is still named `selva-office`; the rename to `selva` remains pending (re-checked 2026-08-24).** | `selva.town` + `api.`, `app.`, `admin.`, `ws.`, `gw.`, `www.` — all re-probed live 2026-08-24. Plus `inference.selva.town` for the inference gateway (`/health` 200, re-probed 2026-08-24). |
 
 > **Standing route warnings** (`domain-map.md`, verified 2026-07-01):
@@ -174,7 +178,7 @@ and only then face outward.
 
 ### Adjacent / supporting — public
 
-`madfam-site` ([madfam.io](https://madfam.io), `cms.madfam.io`) · `primavera3d`
+`madfam-site` ([madfam.io](https://madfam.io); `cms.madfam.io` answers 404 since 2026-08-24) · `primavera3d`
 ([primavera3d.pro](https://primavera3d.pro), our in-house factory portfolio) · `ceq`
 ([ceq.lol](https://ceq.lol), ComfyUI wrapper) · `nuit-one` ([nuit.one](https://nuit.one))
 · `subtext` (`subtext.live`) · `accionables-madlab` ([madlab.quest](https://madlab.quest))
@@ -185,7 +189,9 @@ intelligence) · `selva-sandbox` · `kinship` (E2E-encrypted community logistics
 extracted from Dhanam, created 2026-07-20) · `coupler` (MADFAM Agent Tool Plane — delegated
 SaaS tools, MCP, sandbox, triggers; AGPL-3.0; registry records Phase 2 and very active) ·
 `eido` (live — see the note below)
-· `meridian` (see below).
+· `meridian` (see below) · the hyperobjects commons — `solid-hyperobjects`,
+`soft-hyperobjects` and the `hyperobjects-spec` keystone (§VI) · `.github` (org profile).
+`tlacuilo` is in the Layer 2 table above.
 
 ### Adjacent / supporting — private 🔒
 
@@ -194,17 +200,18 @@ SaaS tools, MCP, sandbox, triggers; AGPL-3.0; registry records Phase 2 and very 
 plus employees, time-off and recruiting; human-facing surfaces live since 2026-08-04. ONA,
 wellbeing and Shapley compensation are empty package stubs, not shipped features) ·
 `lexidrop` (domain-acquisition intelligence; created 2026-08-25, live at `ld.madfam.io`) ·
+`madfam-js` (shared JavaScript packages built outside this repo, including
+`@madfam/janua-next`; created 2026-09-01) ·
 `tulana` (internal pricing
 intelligence; deployed, Janua-gated) · `converge-dash` (executive metrics layer; rollout
 blocked) · `turnbased-engine` + `stratum-tcg` + `tablaco` family (`tablaco`, `tablaco-v2`,
 `tablaco-tabletop`) + `arcanic-rosetta` + `madfam-baraja` (the games cluster) · `zavlo`
 (financial-ops engine; Karafiel integration path) · `periplo` (route-collector app; **DNS
-still NXDOMAIN — not live**, re-confirmed 2026-08-24) · `hyperobjects-spec` (verification
-keystone for the hyperobjects class — schemas, sandbox, conformance runners consumed by
-Yantra4D and Fashion Cabinet) · `migration-platform` (website-migration platform; first
+still NXDOMAIN — not live**, re-confirmed 2026-08-24) · `migration-platform` (website-migration platform; first
 adapter migrates Wix sites onto Enclii) · `marca` (short-links / QR; onboarding in flight,
-not yet live) · `angelia` (omnichannel messaging; substrate work only — no product yet) ·
-`avala-content` (authored course content, kept separate from the AVALA platform) ·
+not yet live) ·
+`avala-content` (authored course content, kept separate from the Avala platform) ·
+`telesia` and `angelia` are in the tables above ·
 `client-site-starter` + `enclii-onboard-kit` (client-delivery tooling).
 
 **Client-engagement repos are deliberately not mapped here.** A small number of private
@@ -236,31 +243,35 @@ Intended to fold into an existing platform rather than exist standalone: `zavlo`
 ported to Fortuna, IG/YT/TT collectors moved to `madfam-crawler`). `penny` was listed as a
 `selva-office` integration path; the repo is **archived** as of the 2026-07-25 live check.
 
-### II.7 Repo counts — as of 2026-08-29
+### Retired — never present these as current
 
-**116 repos**, of which 3 are forks (`gridfinity_extended_openscad`, `claudecodeui`,
-`Auto-Claude`). Excluding forks: **113 repos = 44 private + 69 public**, with **8 archived**
-(aureo-labs, ecosystem-banner, legal-ops, penny, **sim4d**, slide-holder,
-social-sentiment-monitor, yapp-box) plus the archived `claudecodeui` fork.
+- **Products:** PENNY (absorbed by Selva), SPARK, and **Sim4D** (retired 2026-08-30; the
+  `sim4d` repo was archived by 2026-08-07 and parametric design lives in Yantra4D).
+- **Hosts:** `penny.onl` (retired with **no redirect** — owner ruling 2026-09-23; a registrar
+  parking page on 2026-09-23), `forgesight.quest` (Forgesight moved to `forgesight.app`),
+  `cto.madfam.io` and `nauta.madfam.io` (retired Nauta cockpit hosts, 404 — the cockpit is
+  `app.nauta.quest`), `sim4d.io` (brand protection only).
 
-The base is a live GraphQL enumeration run on **2026-08-24** (115 total; 112 non-fork =
-43 private + 69 public), incremented by one private repo — `lexidrop`, created 2026-08-25,
-after that enumeration, so a genuine new repo rather than an enumeration miss.
+### II.7 Repo counts — as of 2026-09-23
 
-Reconciliation against this document's previous enumeration (2026-07-25: 96 non-fork =
-27 private + 69 public): **+16 non-fork repos, all private**, all created between 2026-08-04
-and 2026-08-22 — the vCTO/client-delivery cluster, new platforms (Kalya, Acervo, Marca,
-Angelia, Fashion Cabinet, hyperobjects-spec, migration-platform), and the games cluster.
-Public count unchanged at 69, with two archive flips inside it: `sim4d` archived (by
-2026-08-07) and `cq-hyperobject-test` **un-archived** (active again since 2026-08-22).
+**122 repos**, of which 3 are forks (`gridfinity_extended_openscad`, `claudecodeui`,
+`Auto-Claude`). Excluding forks: **119 repos = 45 private + 74 public**, with **44 archived**:
+the 8 archived before September (aureo-labs, ecosystem-banner, legal-ops, penny, sim4d,
+slide-holder, social-sentiment-monitor, yapp-box) plus the **36 hyperobjects-commons
+satellites archived 2026-09-05** (§VI), and the archived `claudecodeui` fork on top.
 
-The private `repo-registry.md` was rebuilt from this same enumeration on 2026-08-24, so for
-the first time since 2026-07-04 the registry and the live org agree. The corrections earlier
-editions of this section carried against the registry (fork "deletions", understated archive
-count, missing rows) are now folded into it.
+Source: a live GitHub enumeration run on **2026-09-23**. It matches
+`internal-devops/ecosystem/repo-registry.md` (counts last updated 2026-09-12) exactly.
+
+Reconciliation against this document's previous count (2026-08-29: 116 total; 113 non-fork =
+44 private + 69 public; 8 archived): **+6 non-fork repos** — public `.github` (2026-09-01),
+`solid-hyperobjects` and `soft-hyperobjects` (2026-09-04) and `tlacuilo` (2026-09-05);
+private `madfam-js` (2026-09-01) and `telesia` (2026-09-12). `hyperobjects-spec` moved from
+private to public (it was private at the 2026-08-24 enumeration). **+36 archived**: the
+commons satellites.
 
 This public doc keeps **counts and public-safe roles only**. The authoritative per-repo
-registry lives in `internal-devops/ecosystem/repo-registry.md` (Last Verified 2026-08-24).
+registry lives in `internal-devops/ecosystem/repo-registry.md` (Last Updated 2026-09-12).
 
 ---
 
@@ -276,7 +287,7 @@ contact with us.
 | Finance and runway | **Dhanam** |
 | Strategy validation | **Fortuna** |
 | Factory quoting | **Cotiza** (Primavera3D quotes through it) |
-| Hiring / verification | **AVALA** |
+| Hiring / verification | **Avala** |
 | Compliance | **Karafiel** + **Tezca** |
 | Customer discovery | **Coforma Studio** + **PhyndCRM** |
 | Revenue attribution | payment emitter → **Dhanam** ledger + **PhyndCRM** conversions (§IV.3) |
@@ -423,7 +434,7 @@ not to route around.
 | Bank transactions, wealth, **billing ledger** | Dhanam | API read; no local mirror |
 | Mexican law, changelog, compliance rules | Tezca | query `/api/v1/laws`; no local fork |
 | CFDI / SAT / tax filings | Karafiel | single authority |
-| Fabrication node capacity + pricing | Forj | consume ForgeSight |
+| Fabrication node capacity + pricing | Forj | consume Forgesight |
 | Manufacturing execution telemetry | Pravara MES | feeds PhyndCRM federation |
 | 3D geometry kernel | geom-core | used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`) |
 | Fashion-domain data: parametric pattern blocks + garments (FC-100), grading, fabric cards (physical + digital twin), construction techniques, tech packs | Fashion Cabinet | query the API; hard-goods solids federate to Yantra4D, never re-implemented |
@@ -435,8 +446,8 @@ not to route around.
 > here 2026-09-02) **and** the *generation* pillar that renders derivative work from it
 > (`/v1/render/*`). Consumers do NOT read ceq at runtime: they pull the resolved
 > `/v1/brand-kits/{id}/tokens` document and **vendor** it locally (per the deprecation of a
-> central `@madfam/ui` in favour of per-app tokens — see `@madfam/core` note below). MAP
-> (crea-map) aligns its local `globals.css` tokens + `clinic-identity.ts` + `public/` logos
+> central `@madfam/ui` in favour of per-app tokens — see `@madfam/core` note below). A
+> consuming application aligns its local CSS tokens, identity constants and logo files
 > against that export; it never imports ceq. The DAM stores the truth once; each product
 > keeps its own clean-exit copy.
 
@@ -467,7 +478,7 @@ file wins, per that document's own rule:
 |---|---|
 | `enclii`, `janua` | AGPL-3.0 (`enclii` additionally carries `COMMERCIAL_LICENSE.md` — dual-licensed) |
 | `geom-core` | Apache-2.0 *(LICENSE, `package.json` and `pyproject.toml` all agree; the README badge was corrected to Apache 2.0 on 2026-07-03, so the older MIT-badge contradiction is closed)* |
-| `sim4d` *(archived)*, `bloom-scroll` | MPL-2.0 |
+| `bloom-scroll` (and the retired, archived `sim4d`) | MPL-2.0 |
 | `avala`, `forgesight`, `dhanam`, `karafiel`, `tezca`, `phynd-crm`, `selva-office`, `yantra4d`, `fashion-cabinet` | AGPL-3.0 |
 | `digifab-quoting` (Cotiza), `coforma-studio` | Proprietary, all rights reserved |
 | `voxa` | Apache-2.0 |
@@ -500,29 +511,34 @@ finished matrix.
 Status, with the honest date on each:
 
 - **Commercial loop.** First live charge + CFDI + entitlement completed 2026-08-02 (above).
-  A **fractional-CTO services line (Nauta)** is operating with a live cockpit and an
-  auth-gated client workspace (probed 2026-08-24). The 2026-07-16 audit's sixteen blockers
+  A **fractional-CTO services line (Nauta)** is operating: public front door `nauta.quest`,
+  auth-gated staff cockpit `app.nauta.quest` and auth-gated client workspaces (front door and
+  cockpit probed 200 on 2026-09-23). The 2026-07-16 audit's sixteen blockers
   are tracked privately; this document does not claim how many remain closed.
 - **Routes.** Every platform route in §II was re-probed on **2026-08-24** for the private
   domain map refresh. Live and answering: the full Enclii/Janua/Dhanam/Tezca/Yantra4D/
-  ForgeSight/Karafiel/Avala/Rondelio/Selva/BlueprintTube/Cotiza/Coforma/Pravara/Fortuna-web
+  Forgesight/Karafiel/Avala/Rondelio/Selva/BlueprintTube/Cotiza/Coforma/Pravara/Fortuna-web
   families, plus Fashion Cabinet, Kalya, Acervo, Nauta, Voxa, eido, and 3 of 4 meridian
-  surfaces. **Found down that day:** `api.fortuna.tube` (502), `meridian-api` (502), and the
-  madfam-site CMS host (404) — recorded as gaps in the private map, not papered over.
+  surfaces. **Found down that day:** `api.fortuna.tube` (502 on 2026-08-24; **healthy
+  2026-09-23**), `meridian-api` (502), and the madfam-site CMS host (404) — recorded as gaps
+  in the private map, not papered over. Forgesight has since moved to `forgesight.app`
+  (§II).
 - **Foundation depth.** The 2026-08-14 internal sovereign-pivot audit direction: the house
   topology (bare-metal k3s, single Cloudflare Tunnel) extends toward **single-tenant,
   client-owned clusters** for client-sovereign deployments; the provisioning template is the
   tracked gap. Fleet-wide CVE gating (Trivy) landed 2026-08-21 (§IV.6).
 - **Intelligence depth.** Route-live is not content-healthy: the 2026-07-16 BloomScroll
   remediation (OWID connector broken; 5 of 6 content types real) still stands as the newest
-  depth check recorded here, and Fortuna's API being 502 on 2026-08-24 says its edge needs
-  attention now.
+  depth check recorded here. Fortuna's API answered 502 on 2026-08-24; it was healthy again
+  on 2026-09-23 (`/health` 200).
 - **Engines.** `geom-core`'s mesh-analysis core is real, but neither the npm nor the PyPI
   artefact is published yet and its CI cannot build them, so nothing consumes it today.
-  **Sim4D is archived** (by 2026-08-07) — parametric
-  design consolidated into Yantra4D, whose commons now spans ~36 active public hyperobject
-  repos plus the private Fashion Cabinet soft-goods commons and the `hyperobjects-spec`
-  conformance keystone.
+  **Sim4D is retired** (repo archived by 2026-08-07; retired 2026-08-30) — parametric
+  design consolidated into Yantra4D. **Commons topology (since 2026-09-05):** two public
+  commons repos — `solid-hyperobjects` (every Yantra4D cartridge, with the satellites' full
+  history absorbed; CERN-OHL-W-2.0) and `soft-hyperobjects` (Fashion Cabinet's pattern
+  cartridges) — plus the public `hyperobjects-spec` conformance keystone. The **36 former
+  satellite repos were archived on 2026-09-05**; each README carries a redirect banner.
 - **Frontier.** Galvana still has no repo; `electrochem-sim` recorded stale since 2025-11.
 - **Horizontal integration.** Selva cutover complete (2026-07-01); inference gateway live
   (`/health` 200 re-probed 2026-08-24). The routecraft payment-attribution fan-out remains
@@ -738,8 +754,8 @@ in `packages/*/package.json`. Non-code docs (this README, `docs/*.md`) are CC-BY
 unless otherwise noted.
 
 Predecessor brand: **Aureo Labs** (`aureolabs.dev`), retired 2026-04-17; the `aureo-labs`
-repo is public and archived (2026-04-08). `aureo.studio` is held for brand protection and
-redirects here.
+repo is public and archived (2026-04-08). `aureo.studio` is held for brand protection; it
+does **not** redirect anywhere — on 2026-09-23 it served a registrar parking page.
 
 ---
 
@@ -752,5 +768,5 @@ redirects here.
 This repository is public (Lane B). Live secrets, node identity, IPs, hardware and capacity
 figures, cost ledgers, incident internals, and production break-glass material belong in the
 private `internal-devops` repository or in Vault/ExternalSecrets — never here. Canonical
-policy: `internal-devops/docs/repo-boundary-contract.md` (last updated 2026-06-14).
+policy: `internal-devops/docs/repo-boundary-contract.md` (last updated 2026-09-04).
 Public-repo checklist: [`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md).
