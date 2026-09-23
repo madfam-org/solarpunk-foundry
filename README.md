@@ -62,7 +62,7 @@ Policy: `internal-devops/docs/repo-boundary-contract.md`. Public-repo enforcemen
 ### What a newcomer should read, in order
 
 1. **§0–§II here** — what this repo is, and the platform map.
-2. **§IV here** — the five cross-repo conventions. If you are building a service, these are
+2. **§IV here** — the ten cross-repo conventions. If you are building a service, these are
    the ones that will reject your work if you break them.
 3. [`ECOSYSTEM.md`](ECOSYSTEM.md) — the standalone, agent-oriented ecosystem map + Enclii CLI reference.
 4. [`docs/architecture/SYMBIOSIS.md`](docs/architecture/SYMBIOSIS.md) — the Substrate · Trellis · Membrane platform-relationship contract.
@@ -315,6 +315,17 @@ Janua is **single-issuer per deployment**: the issuer is derived from `JANUA_CUS
 not the request `Host`. A second Janua hostname cannot be served without breaking OIDC
 validation — this is why `auth.selva.town` must never be routed.
 
+**The HS256 ban covers every path that verifies a Janua token** (owner ruling, 2026-09-23).
+An application's *own* session cookie, if it has one, is signed with a secret that belongs to
+that application alone — never the Janua client secret.
+
+**One env contract for Janua clients** (owner ruling, 2026-09-23). The schema of record is
+`@madfam/env`'s `januaOidcSchema`: `AUTH_JANUA_ISSUER`, `AUTH_JANUA_CLIENT_ID`,
+`AUTH_JANUA_CLIENT_SECRET` (server-only). MADFAM Next.js apps use **`@madfam/janua-next`**
+(edge silent-refresh middleware, session-cookie model, magic-link interstitial, logout seam)
+fed from those variables; the **Auth.js `janua` OIDC provider** is the documented alternative
+(Nauta uses it). Wiring for both: [`docs/JANUA_INTEGRATION.md`](docs/JANUA_INTEGRATION.md).
+
 *Convention source: 2026-04-23 audit + `internal-devops/ECOSYSTEM.md`.*
 **Conformance is not uniform.** The 2026-07-16 launch-readiness audit rates the
 janua-SSO-matrix edge YELLOW, not green. Per-surface enforcement is tracked privately; the
@@ -450,6 +461,78 @@ not to route around.
 > consuming application aligns its local CSS tokens, identity constants and logo files
 > against that export; it never imports ceq. The DAM stores the truth once; each product
 > keeps its own clean-exit copy.
+
+### 8. Messaging — third-party messages go through Angelia Courier only
+
+*Owner rulings 2026-09-05 (Courier-only messaging; Enclii customer notification webhooks) and
+2026-09-23 (two carve-outs).*
+
+Every message a MADFAM service sends to a person or system **outside** the platform — email,
+chat, SMS, push, webhooks to third-party messaging APIs — is sent **through Angelia's
+Courier**, never by the service calling a provider (Resend, Telegram, WhatsApp, Slack, …)
+directly. Courier is tenant-scoped (angelia ADR-0011, 2026-09-21/22), so the sender identity,
+the ledger and the provider credentials live in one place. Provider credentials reach Courier
+through Enclii secrets intake and External Secrets; they never live in a calling service.
+
+- **Enclii customer notification webhooks** move onto Courier as well, once the Courier side
+  of that path is provisioned (an operator step; tracked privately).
+- **Carve-outs (ruled 2026-09-23):** (1) Janua's *customer-configured* alert notifier — the
+  customer owns that destination and its credentials; (2) Selva's agent tools, which act on a
+  user's behalf inside an agent run. Nothing else is exempt.
+- **Sender identity** follows the address: a tenant's own verified address, else the product's
+  `noreply@<product-domain>`, else the platform sender `MADFAM <hola@madfam.io>` (owner ruling,
+  2026-09-23). A tenant display name is used only with that tenant's verified address.
+
+*State, not just rule:* several services still send directly as of the 2026-09-23 estate
+sweep; the reroutes are tracked privately. Treat this as the contract, not a verified fleet
+state.
+
+### 9. Account switching — hold many sessions, front one
+
+*Owner directive 2026-09-21; client-portal scope ruled 2026-09-23.*
+
+Every MADFAM platform with a signed-in UI supports **multi-account switching on the Enclii
+model**: the browser can hold sessions for several Janua accounts, and exactly one is in front.
+Porting it is client-only — two buttons and an optional `prompt` on the Janua authorize URL:
+
+| Control | Authorize request | Effect |
+|---|---|---|
+| «Cambiar de cuenta» (switch account) | `prompt=select_account` | Janua shows its account chooser over the sessions it already holds |
+| «Entrar como otra persona» (sign in as someone else) | `prompt=login` | Forces a fresh credential prompt and adds that account |
+| Sign out | RP-initiated logout at Janua's end-session endpoint | Ends the fronted session at Janua, not only the local cookie |
+
+- **Staff consoles** (for example the Nauta cockpit and the Enclii consoles) get all three.
+- **Client portals** get only «Entrar como otra persona» and sign-out — no account chooser,
+  so one client's portal never lists another person's accounts.
+- **Exception:** one client-owned clinical application MADFAM operates under contract never
+  gets switching (recorded privately with the client contract).
+
+Live references: `admin.enclii.dev` and `app.enclii.dev` (switching live since 2026-09-21).
+The Janua side needs no change — `prompt` handling shipped in janua on 2026-09-21.
+
+### 10. Agent surface — an MCP equivalent per service API
+
+*Direction set 2026-09-22 (ecosystem priority P1); the Janua pilot merged and was promoted to
+production on 2026-09-22. This is a pilot, not yet a universal convention — most services have
+no MCP surface as of 2026-09-23.*
+
+Every service's API gets a **Model Context Protocol (MCP) equivalent** so any MCP-speaking agent
+can use it without a hand-rolled HTTP client. The principles:
+
+1. **Generated from the service's own API schema** (its OpenAPI document), with one purpose-
+   named, typed tool per endpoint — never a generic `call(method, path, body)`. A service whose
+   API is not OpenAPI-described (for example tRPC) adds an OpenAPI adapter first.
+2. **One estate generator**, not one per service; where it lives is decided when the second
+   service adopts it.
+3. **Same authorization boundary.** An MCP tool authenticates and authorizes exactly as the
+   HTTP endpoint does — the pilot calls the service's own HTTP endpoint — so it can never be a
+   back door around a gate.
+4. **Drift-guarded.** A per-service coverage test fails when a declared endpoint has neither a
+   tool nor a written exemption.
+5. **Read-only tools first.** Destructive and credentialed operations keep their operator gates;
+   an agent prepares, an operator fires.
+
+Pilot: Janua's transactional-email surface as generated MCP tools (janua, 2026-09-22).
 
 ### Other public-safe contract surfaces
 

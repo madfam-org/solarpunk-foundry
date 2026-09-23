@@ -30,12 +30,31 @@ import type {
 export interface AnalyticsConfig {
   /** Your Plausible domain (e.g., 'dhanam.app') */
   domain: string;
-  /** Plausible API host (default: 'https://plausible.io') */
+  /**
+   * Plausible API host. Default and expected value: the ecosystem's one self-hosted
+   * instance, MADFAM_PLAUSIBLE_HOST. A Plausible Cloud host is refused (owner ruling
+   * 2026-09-23: never fall back to Plausible Cloud) and analytics stays off.
+   */
   apiHost?: string;
   /** Track localhost for development (default: false) */
   trackLocalhost?: boolean;
   /** Your app's product ID from @madfam/core */
   appId: ProductId;
+}
+
+/** The only analytics host in the MADFAM ecosystem (owner ruling, 2026-09-23). */
+export const MADFAM_PLAUSIBLE_HOST = 'https://plausible.madfam.io';
+
+/** Returns the host to send to, or null when it must not be used (fail closed). */
+function resolveApiHost(host: string | undefined): string | null {
+  const candidate = host || MADFAM_PLAUSIBLE_HOST;
+  try {
+    const { hostname } = new URL(candidate);
+    if (hostname === 'plausible.io' || hostname.endsWith('.plausible.io')) return null;
+    return candidate;
+  } catch {
+    return null;
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -70,11 +89,17 @@ class Analytics {
       return;
     }
 
+    const apiHost = resolveApiHost(config.apiHost);
+    if (!apiHost) {
+      console.error('[Analytics] Refusing a non-MADFAM Plausible host; analytics stays off');
+      return;
+    }
+
     this.appId = config.appId;
 
     const options: PlausibleOptions = {
       domain: config.domain,
-      apiHost: config.apiHost || 'https://plausible.io',
+      apiHost,
       trackLocalhost: config.trackLocalhost || false,
     };
 

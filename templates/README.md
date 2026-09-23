@@ -21,6 +21,11 @@ Instead of creating shared npm packages for everything, we provide reference imp
 
 Privacy-first analytics implementation using Plausible.
 
+**One host, no Cloud fallback** (owner ruling, 2026-09-23): the template sends only to the
+ecosystem's self-hosted instance, `https://plausible.madfam.io`, and refuses a Plausible Cloud
+host — it sends nothing rather than fall back. As of 2026-09-23 that host is not provisioned
+yet (an operator action), so no beacon is sent until it is.
+
 ```bash
 # Copy to your app
 cp templates/analytics/analytics.ts ~/your-app/src/lib/analytics.ts
