@@ -66,11 +66,11 @@ Replaced one monolithic compose file with:
 |---|---|---|
 | 0 | Bedrock | Shared infrastructure: PostgreSQL, Redis, MinIO |
 | 1 | Infrastructure | Janua (API, admin, docs) |
-| 2 | Data | ForgeSight (API, crawler, discovery, extractor, normalizer, admin UI) |
+| 2 | Data | Forgesight (API, crawler, discovery, extractor, normalizer, admin UI) |
 | 3 | Business | Cotiza / `digifab-quoting` (API, web, worker) |
 
 > **[Corrected 2026-07-25] Ports.** The original assigned specific ports per
-> phase (ForgeSight admin `4302`, Cotiza worker `4510`, and others). Several
+> phase (Forgesight admin `4302`, Cotiza worker `4510`, and others). Several
 > appear in no registry and none should be treated as current. The authority
 > for a service's port is that repository's own `enclii.yaml` / `.enclii.yml`;
 > the scheme itself, with its honest compliance statement, is in

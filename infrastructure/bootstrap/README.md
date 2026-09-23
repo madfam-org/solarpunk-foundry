@@ -357,9 +357,9 @@ ufw delete allow 22/tcp
 
 5. **Deploy Additional Services**:
    - Fortuna (Problem Intelligence)
-   - ForgeSight (Manufacturing Costs)
+   - Forgesight (Manufacturing Costs)
    - Dhanam (Finance Platform)
-   - AVALA (Learning Platform)
+   - Avala (Learning Platform)
 
 ---
 

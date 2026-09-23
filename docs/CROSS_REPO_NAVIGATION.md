@@ -43,7 +43,7 @@ organisation (count as of 2026-08-29; corrected 2026-09-04). The repository regi
 
 > **This document deliberately does not restate the port block table.**
 > Duplicating it is how three public documents ended up disagreeing with the
-> registry they all cited — two of them swapping the Fortuna and ForgeSight
+> registry they all cited — two of them swapping the Fortuna and Forgesight
 > blocks. One table, one place.
 
 ### Authentication (Janua)
@@ -173,7 +173,7 @@ Recorded so the fixes are auditable rather than silent.
 | `janua/docs/ARCHITECTURE.md` | **Did not exist.** Correct path is `janua/docs/architecture/ARCHITECTURE.md`. |
 | `solarpunk-foundry/ops/postgres/init-databases.sql` | **Did not exist.** Correct paths are `ops/local/init-databases.sql` and `ops/db/init-shared-dbs.sql`. |
 | "PORT_ALLOCATION.md — **single source of truth** for all port assignments" | That document explicitly disclaims the label in its own TL;DR. Described accurately above. |
-| A port-block table listing ForgeSight 4300-4399 and Fortuna 4400-4499 | **Swapped** relative to the registry it cited. Table removed rather than corrected — see the note under "Ports and networking". |
+| A port-block table listing Forgesight 4300-4399 and Fortuna 4400-4499 | **Swapped** relative to the registry it cited. Table removed rather than corrected — see the note under "Ports and networking". |
 | Production domains table (4 rows) | Superseded by the full inventory in `ECOSYSTEM_STATUS.md`, which also lists retired and not-live hostnames. |
 
 **Suggested follow-up (not applied here):** add a link-existence check to this

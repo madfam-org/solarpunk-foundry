@@ -346,8 +346,8 @@ forgesight, tezca, fortuna, digifab-quoting, selva-office, pravara-mes,
 yantra4d, avala, phynd-crm, routecraft, symbiosis-hcm — all verifying via JWKS.
 
 This replaces the previous revision's diagram showing exactly three consumers
-(Cotiza, ForgeSight, MADFAM Site) and its all-unchecked "migration checklist",
-which read as though none of the work had started. ForgeSight's integration is
+(Cotiza, Forgesight, MADFAM Site) and its all-unchecked "migration checklist",
+which read as though none of the work had started. Forgesight's integration is
 old enough to have been *patched* by the 2026-04-23 audit.
 
 **Fleet conformance is nevertheless partial.** The 2026-07-16 internal

@@ -132,9 +132,9 @@ each repo's own `enclii.yaml` is the source of truth. See
 | `tezca.mx`, `api.tezca.mx`, `admin.tezca.mx` | Tezca (Mexican law oracle) |
 | `karafiel.mx`, `app.karafiel.mx`, `api.karafiel.mx`, `admin.karafiel.mx` | Karafiel (operational compliance, CFDI/SAT) |
 | `cotiza.studio`, `api.cotiza.studio` | Cotiza (repo `digifab-quoting`) |
-| `forgesight.quest`, `app.`, `api.`, `admin.` | ForgeSight (fabrication industry intelligence) |
+| `forgesight.quest`, `app.`, `api.`, `admin.` | Forgesight (fabrication industry intelligence) |
 | `fortuna.tube`, `api.fortuna.tube` | Fortuna (problem intelligence) |
-| `avala.studio`, `app.avala.studio`, `api.avala.studio`, `admin.avala.studio` | AVALA (learning verification) — `avala.studio` repointed to the standalone landing **2026-07-18**; `admin.` live since 2026-07 |
+| `avala.studio`, `app.avala.studio`, `api.avala.studio`, `admin.avala.studio` | Avala (learning verification) — `avala.studio` repointed to the standalone landing **2026-07-18**; `admin.` live since 2026-07 |
 | `yantra4d.com`, `app.`, `api.`, `admin.` | Yantra4D |
 | `mes.madfam.io`, `mes-api.madfam.io` | Pravara MES |
 | `crm.madfam.io` | PhyndCRM |
@@ -420,11 +420,11 @@ are linking five URLs that 404 for anyone outside the organisation.
 | Karafiel | `karafiel` | Operational compliance — CFDI, NOM-151, e.firma, SAT | **Private** |
 | Tezca | `tezca` | Mexican law oracle, informational; feeds Karafiel | Public |
 | Cotiza | `digifab-quoting` | Quoting engine for fabrication and services | Public |
-| ForgeSight | `forgesight` | Fabrication industry intelligence; pricing/vendor feed into Cotiza | **Private** |
+| Forgesight | `forgesight` | Fabrication industry intelligence; pricing/vendor feed into Cotiza | **Private** |
 | Pravara MES | `pravara-mes` | Fabrication-node routing and dispatch | Public |
 | PhyndCRM | `phynd-crm` | Client-facing deliverables portal | Public |
 | Fortuna | `fortuna` | Problem intelligence / zeitgeist analysis | **Private** |
-| AVALA | `avala` | Learning verification (EC/CONOCER, DC-3) | **Private** (flipped 2026-07-16) |
+| Avala | `avala` | Learning verification (EC/CONOCER, DC-3) | **Private** (flipped 2026-07-16) |
 | RouteCraft | `routecraft` | Trip-engine SaaS; canonical payment-attribution emitter | **Private** *(corrected 2026-09-04; the registry lists it under private repos, and this repo's own `README.md` §II, `MADFAM.md` and `ECOSYSTEM.md` all mark it private)* |
 
 *Roles from `internal-devops/ecosystem/repo-registry.md` (verified 2026-07-04);

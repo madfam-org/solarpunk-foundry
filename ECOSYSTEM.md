@@ -7,24 +7,25 @@
 > access as platform bootstrap or documented break-glass only, and record any
 > missing Enclii adapter gap.
 
-> **Last updated:** 2026-09-04 — reconciliation edition. No new probes were run; the
-> verification anchors below are unchanged.
+> **Last updated:** 2026-09-23 — coherence re-anchor: Nauta, Forgesight, Angelia and the
+> retired-host list re-probed that day (plain HTTPS GET) and restated; every other anchor
+> below is unchanged.
 > **Verification anchors:**
-> - Repo names / visibility / roles — `internal-devops/ecosystem/repo-registry.md`, *Last Verified 2026-08-24* (live GitHub enumeration).
-> - Routes and domains — `internal-devops/ecosystem/domain-map.md`, *Last Verified 2026-08-24* (live HTTP probes of every routed domain).
+> - Repo names / visibility / roles — `internal-devops/ecosystem/repo-registry.md`, *Last Updated 2026-09-12*; org counts re-enumerated live on 2026-09-23 (`README.md` §II.7).
+> - Routes and domains — `internal-devops/ecosystem/domain-map.md`, *Last Updated 2026-09-12*; last full live HTTP probe of every routed domain 2026-08-24; hosts re-probed 2026-09-23 say so inline.
 > - Topology — `internal-devops/infrastructure/nodes.md` (*Last Updated 2026-08-05*; 4-node cluster since 2026-08-06) and `topology.md` (*refreshed 2026-08-24*).
 > - GitOps app count — live `enclii ops apps status` control-plane read, 2026-08-24.
 > - Enclii CLI surface — read from `enclii/packages/cli/internal/cmd/` on 2026-07-25.
 > - Inference endpoint — `internal-devops` cutover record 2026-07-07; gateway `/health` re-probed 200 on 2026-08-24.
 >
-> This document contains no probes of its own; route claims inherit the private domain map's
-> 2026-08-24 live-probe verification. Where something is documented but unverified, or
+> Route claims inherit the private domain map's 2026-08-24 live-probe verification unless
+> they say they were re-probed on 2026-09-23. Where something is documented but unverified, or
 > contradicted between sources, it says so rather than picking a winner.
 
 > **Boundary note.** This is a public repo (Lane B). Node hostnames, IPs, hardware and
 > capacity figures, costs, the Cloudflare tunnel identifier, Vault paths and break-glass
 > procedures live only in the private `internal-devops` repo. Canonical policy:
-> `internal-devops/docs/repo-boundary-contract.md` (2026-06-14). Public checklist:
+> `internal-devops/docs/repo-boundary-contract.md` (last updated 2026-09-04). Public checklist:
 > [`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md).
 
 This file is intended to stand alone: an agent on a fresh machine can orient in the MADFAM
@@ -78,9 +79,8 @@ size do not match those manifests; treat `.enclii.yml` as unreconciled, not as a
 
 ### The platforms every repo should know about
 
-Roles and repo names follow `internal-devops/ecosystem/repo-registry.md`, **Last Verified
-2026-08-24** — the same anchor as this document's header block above, which the table was
-not re-anchored to when the header moved. Visibility is from that enumeration: five of the
+Roles and repo names follow `internal-devops/ecosystem/repo-registry.md` (*Last Updated
+2026-09-12*). Visibility was re-checked against the GitHub API on 2026-09-23: five of the
 twelve repos below are private, so their `github.com/madfam-org/...` links **404 without org
 access**. That is stated here because an earlier edition of this table linked all twelve as if
 they were public.
@@ -94,13 +94,13 @@ they were public.
 | **Karafiel** | `madfam-org/karafiel` | **private** | Operational compliance — CFDI, NOM-151, e.firma, SAT-adjacent. Single authority for CFDI/SAT/tax filings. Absorbed the archived `legal-ops` document generation as `legalgen`. |
 | **Tezca** | `madfam-org/tezca` | public | Mexican law oracle (informational only; feeds Karafiel). |
 | **Cotiza** | `madfam-org/digifab-quoting` | public | Quoting engine for fabrication and services. Product name Cotiza, repo name `digifab-quoting`. |
-| **Forgesight** | `madfam-org/forgesight` | **private** | Digital-fabrication industry intelligence — pricing/vendor feed into Cotiza. |
+| **Forgesight** | `madfam-org/forgesight` | **private** | Digital-fabrication industry intelligence — pricing/vendor feed into Cotiza. Apex `forgesight.app` (200 on 2026-09-23). |
 | **Pravara MES** | `madfam-org/pravara-mes` | public | Fabrication-node routing and dispatch for physical jobs. |
 | **PhyndCRM** | `madfam-org/phynd-crm` | public | Client-facing deliverables portal — one pane of glass per engagement. Hosts `POST /api/webhooks/routecraft`. |
 | **Fortuna** | `madfam-org/fortuna` | **private** | Problem intelligence / zeitgeist analysis. |
 | **Avala** | `madfam-org/avala` | **private** (flipped 2026-07-16) | Learning-verification platform (EC/CONOCER, DC-3). |
 
-Two platforms other docs in this repo treat as load-bearing but which are missing from the
+Platforms other docs in this repo treat as load-bearing but which are missing from the
 table above by convention rather than by accident:
 
 - **`routecraft`** (private) — today's canonical payment-event producer (§3.4). The ratified
@@ -109,9 +109,23 @@ table above by convention rather than by accident:
 - **`meridian`** (public, AGPL-3.0) — migration law and logistics. **Partially live as of
   the 2026-08-24 probe** (landing/app/admin serve; the API answers 502). No pathway has
   been counsel-reviewed, which blocks all advice-class output by design.
-- **`nauta`** (private, created 2026-08-07) — the fractional-CTO operating system: internal
-  cockpit (`cto.madfam.io`, live 2026-08-24) + white-labeled, auth-gated client workspaces.
-  Client-engagement repos it coordinates are excluded from public maps by policy.
+- **`nauta`** (private, created 2026-08-07) — the fractional-CTO operating system. Public
+  front door **`nauta.quest`**; auth-gated staff cockpit **`app.nauta.quest`** (since the
+  2026-08-30 cutover); white-labeled, auth-gated client workspaces on client-owned hosts.
+  Front door and cockpit both 200 on 2026-09-23. **`cto.madfam.io` is retired (404) — never
+  cite it.** Client-engagement repos it coordinates are excluded from public maps by policy.
+- **`angelia`** (private) — messaging platform. Its **Courier** is the only path for
+  third-party messaging from any MADFAM service (owner ruling, 2026-09-05); multi-tenant per
+  angelia ADR-0011 (ratified 2026-09-21/22). `angelia.run` and `api.angelia.run` 200 on
+  2026-09-23.
+- **`tlacuilo`** (public, AGPL-3.0-only, created 2026-09-05) — ecosystem document
+  intelligence / OCR, consumed in-cluster by Dhanam and Karafiel; landing
+  `tlacuilo.madfam.io` (200 on 2026-09-23).
+
+**Retired — never present as current:** PENNY (absorbed by Selva; `penny.onl` retired with no
+redirect, owner ruling 2026-09-23), SPARK, Sim4D (retired 2026-08-30; design lives in
+Yantra4D), `forgesight.quest` (Forgesight is `forgesight.app` since 2026-08-30), and the
+Nauta cockpit hosts `cto.madfam.io` / `nauta.madfam.io`.
 
 The full public/private repo inventory is in `internal-devops/ecosystem/repo-registry.md`;
 `README.md` §II in this repo carries the public-safe restatement with counts.
@@ -267,7 +281,7 @@ bootstrapped, and CI self-skips green.
 | Bank transactions + billing ledger | Dhanam | API read; no local mirror |
 | Mexican law + compliance rules | Tezca | query `/api/v1/laws`; no fork |
 | CFDI / SAT / tax filings | Karafiel | single authority |
-| Fabrication node capacity + pricing | Forj | consume ForgeSight |
+| Fabrication node capacity + pricing | Forj | consume Forgesight |
 | Manufacturing execution telemetry | Pravara MES | feeds PhyndCRM federation |
 | 3D geometry kernel | geom-core | used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`) |
 
@@ -505,7 +519,7 @@ Stated explicitly so nobody has to rediscover them:
 |---|---|
 | ~~ArgoCD app count contradicted~~ | **SETTLED 2026-08-24:** `enclii ops apps status` → 81 Applications (71 Healthy / 73 Synced) |
 | ~~Service count (~40 / 93 / ~90 across three sources)~~ | **SETTLED enough 2026-08-24:** cite "81 ArgoCD Applications (2026-08-24)" and name the measurement; hostname and K8s-Service counts remain separate measurements |
-| ~~k3s version unverified since 2026-05-04~~ | **RE-ATTESTED 2026-08-06:** builder-03 joined at v1.33.7+k3s3 (`internal-devops/infrastructure/nodes.md`) |
+| ~~k3s version unverified since 2026-05-04~~ | **RE-ATTESTED 2026-08-06:** the fourth node (the dedicated CI builder) joined at v1.33.7+k3s3 (`internal-devops/infrastructure/nodes.md`) |
 | ~~Whether `eido.cam` is live~~ | **SETTLED 2026-08-24:** live — `eido.cam` 200, `api.eido.cam/health` 200 |
 | `cloudflared` replica count unverified since 2026-02 | still open — read the live Deployment via `enclii ops pods`, record the date |
 | Kyverno PolicyException count: 8 vs 13, both dated 2026-05-04 | still open — `enclii ops policy`, or read the exception manifests at a named commit |
