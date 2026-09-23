@@ -3,6 +3,9 @@
 **Last verified: 2026-07-25** — against `janua/apps/api/app/main.py`,
 `janua/apps/api/app/core/jwt_manager.py`, `janua/apps/api/app/routers/v1/auth.py`,
 `janua/packages/`, and `internal-devops/ECOSYSTEM.md`.
+**Updated 2026-09-23** — one env contract (§ "The env contract"), the MADFAM Next.js
+adapter, and account switching, per owner rulings of 2026-09-21 and 2026-09-23. The
+`@madfam/janua-next` facts were read from its source (version 0.3.0) that day.
 
 > ## Read this before copying any code
 >
@@ -68,6 +71,35 @@ The practical consequences:
   emit `issuer=https://auth.madfam.io`, and issuer validation would fail. All
   Selva surfaces use `auth.madfam.io`. See
   [`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md#authselvatown--must-never-be-routed).
+
+---
+
+## The env contract
+
+*Owner ruling, 2026-09-23.* Every MADFAM service that talks to Janua uses the same three
+variables. The schema of record is `januaOidcSchema` in
+[`@madfam/env`](../packages/env/README.md):
+
+| Variable | Value | Secret? |
+|---|---|---|
+| `AUTH_JANUA_ISSUER` | the full issuer URL — `https://auth.madfam.io` in production | No |
+| `AUTH_JANUA_CLIENT_ID` | issued by Janua at client registration | No — a public identifier |
+| `AUTH_JANUA_CLIENT_SECRET` | issued alongside, for **confidential** clients only | **Yes** — Vault → External Secrets only, server-side only |
+
+Everything else is derived, not configured:
+
+- **JWKS URL** — `${AUTH_JANUA_ISSUER}/.well-known/jwks.json` (or read `jwks_uri` from
+  discovery). Do not add a separate JWKS variable.
+- **Expected audience** — your client ID, unless your Janua client registration says
+  otherwise; in that case it is a **code constant** in your app (the way
+  `@madfam/janua-next` takes it), never guessed from the environment, because a wrong
+  audience is a silent authorization hole rather than a crash.
+
+No `NEXT_PUBLIC_JANUA_*` variable is part of the contract: the issuer is not a secret, but a
+browser bundle has no business deciding it. The retired names `JANUA_ISSUER`,
+`JANUA_JWKS_URL`, `JANUA_AUDIENCE`, `NEXT_PUBLIC_JANUA_URL`, `NEXT_PUBLIC_JANUA_API_URL` and
+`NEXT_PUBLIC_JANUA_CLIENT_ID` appear in older services and in earlier revisions of this
+guide; migrate them when you touch the service. **`JANUA_JWT_SECRET` must not exist at all.**
 
 ---
 
@@ -174,9 +206,9 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import jwt, JWTError
 
-JANUA_ISSUER = os.environ["JANUA_ISSUER"]          # e.g. https://auth.madfam.io
-JANUA_JWKS_URL = os.environ["JANUA_JWKS_URL"]      # <issuer>/.well-known/jwks.json
-JANUA_AUDIENCE = os.environ["JANUA_AUDIENCE"]
+JANUA_ISSUER = os.environ["AUTH_JANUA_ISSUER"]     # e.g. https://auth.madfam.io
+JANUA_JWKS_URL = f"{JANUA_ISSUER}/.well-known/jwks.json"
+JANUA_AUDIENCE = os.environ["AUTH_JANUA_CLIENT_ID"]  # or a code constant, see "The env contract"
 
 # RS256 ONLY. Do not add HS256 to this list — it is the 2026-04-23 audit
 # finding H3/H4, and it turns the public JWKS material into a forging key.
@@ -249,7 +281,7 @@ async def get_current_user(
     }
 ```
 
-Required environment: `JANUA_ISSUER`, `JANUA_JWKS_URL`, `JANUA_AUDIENCE`.
+Required environment: `AUTH_JANUA_ISSUER`, `AUTH_JANUA_CLIENT_ID`.
 **Not** `JANUA_JWT_SECRET` — that variable should not exist.
 
 ### NestJS
@@ -273,12 +305,12 @@ export class JanuaJwtStrategy extends PassportStrategy(Strategy, 'janua-jwt') {
         cache: true,
         rateLimit: true,
         jwksRequestsPerMinute: 10,
-        jwksUri: config.getOrThrow('JANUA_JWKS_URL'),
+        jwksUri: `${config.getOrThrow('AUTH_JANUA_ISSUER')}/.well-known/jwks.json`,
       }),
 
-      algorithms: ['RS256'],                       // RS256 only
-      issuer: config.getOrThrow('JANUA_ISSUER'),   // full URL, never 'janua'
-      audience: config.getOrThrow('JANUA_AUDIENCE'),
+      algorithms: ['RS256'],                            // RS256 only
+      issuer: config.getOrThrow('AUTH_JANUA_ISSUER'),   // full URL, never 'janua'
+      audience: config.getOrThrow('AUTH_JANUA_CLIENT_ID'),
     });
   }
 
@@ -293,22 +325,56 @@ export class JanuaJwtStrategy extends PassportStrategy(Strategy, 'janua-jwt') {
 }
 ```
 
-### Next.js
+### Next.js — `@madfam/janua-next` (MADFAM apps) or Auth.js (alternative)
 
-Use the published SDK rather than hand-rolling. `@janua/nextjs` provides
-middleware, a provider, and server-side session helpers; it validates against
-JWKS.
+*Owner ruling, 2026-09-23.* Both paths use the env contract above.
 
-```bash
-pnpm add @janua/nextjs
+**MADFAM Next.js apps: `@madfam/janua-next`.** The ecosystem's own Next 15 auth kit: edge
+silent-refresh middleware, the session-cookie model, the scanner-proof magic-link
+interstitial and the logout seam. Its source lives in the private `madfam-js` repo
+(version 0.3.0 read 2026-09-23); it was extracted from a production app that still consumes
+it. Configure it once from the contract variables — the package itself reads no environment
+on its own:
+
+```ts
+// src/lib/janua.ts
+import type { JanuaConfig } from '@madfam/janua-next';
+
+export const janua: JanuaConfig = {
+  issuerUrl: process.env.AUTH_JANUA_ISSUER!, // validate at boot with @madfam/env
+  audience: 'my-app',                        // a code constant, never read from env
+  loginPath: '/',
+};
 ```
 
-```env
-NEXT_PUBLIC_JANUA_URL=https://auth.madfam.io
-JANUA_ISSUER=https://auth.madfam.io
-JANUA_JWKS_URL=https://auth.madfam.io/.well-known/jwks.json
-JANUA_AUDIENCE=<your-client-audience>
-```
+Known gap (2026-09-23): the package's convenience helper `januaConfigFromEnv()` still reads
+the retired `JANUA_ISSUER_URL`. Build the config explicitly as above until the helper reads
+`AUTH_JANUA_ISSUER`.
+
+**Alternative: the Auth.js (`next-auth`) `janua` OIDC provider.** A confidential OIDC client
+using `AUTH_JANUA_ISSUER`, `AUTH_JANUA_CLIENT_ID` and `AUTH_JANUA_CLIENT_SECRET` — the three
+names follow Auth.js's `AUTH_<PROVIDER>_*` convention, which is why the contract uses them.
+Nauta runs on this path.
+
+`@janua/nextjs` (the SDK in the janua repo, below) still exists; it is not the recommended
+path for MADFAM apps.
+
+### Account switching (every signed-in UI)
+
+*Owner directive 2026-09-21; client-portal scope ruled 2026-09-23. Full rule:
+[`README.md`](../README.md) §IV.9.* Switching is client-only: add a `prompt` to the
+authorize request.
+
+| Control | Authorize request |
+|---|---|
+| «Cambiar de cuenta» | `prompt=select_account` — Janua's chooser over the sessions it holds |
+| «Entrar como otra persona» | `prompt=login` — fresh credentials, adds an account |
+| Sign out | RP-initiated logout at Janua's `end_session_endpoint` (from discovery) |
+
+With Auth.js the prompt is the third argument of `signIn`:
+`signIn('janua', { redirectTo }, { prompt: 'select_account' })`. Staff consoles expose all
+three controls; client portals expose only «Entrar como otra persona» and sign-out; one
+client-owned clinical application is exempt under its contract.
 
 ---
 
@@ -341,9 +407,12 @@ Related packages in the same tree that are not SDKs but are commonly useful:
 
 ## Who verifies Janua tokens today
 
-The current verifier set, per `janua/ECOSYSTEM.md`: dhanam, karafiel,
-forgesight, tezca, fortuna, digifab-quoting, selva-office, pravara-mes,
-yantra4d, avala, phynd-crm, routecraft, symbiosis-hcm — all verifying via JWKS.
+The verifier set as last listed in `janua/ECOSYSTEM.md` (read 2026-07-25): dhanam,
+karafiel, forgesight, tezca, fortuna, digifab-quoting, selva-office, pravara-mes,
+yantra4d, avala, phynd-crm, routecraft, symbiosis-hcm — all verifying via JWKS. **That list
+is incomplete as of 2026-09-23:** it predates services created since August that sign in
+through Janua (for example nauta, kalya and acervo, and enclii's own consoles). It has not
+been re-derived since; re-reading each service's auth configuration would settle it.
 
 This replaces the previous revision's diagram showing exactly three consumers
 (Cotiza, Forgesight, MADFAM Site) and its all-unchecked "migration checklist",
@@ -369,17 +438,9 @@ A previous revision of this document published a
 `docker-compose.production.yml` block fanning a shared `JANUA_JWT_SECRET` into
 four services. It was wrong twice over — wrong mechanism, and wrong idea.
 
-What a service actually needs configured:
-
-| Variable | Value | Secret? |
-|---|---|---|
-| `JANUA_ISSUER` | `https://auth.madfam.io` | No |
-| `JANUA_JWKS_URL` | `https://auth.madfam.io/.well-known/jwks.json` | No |
-| `JANUA_AUDIENCE` | the client audience issued at registration | No |
-| `JANUA_CLIENT_ID` | issued by Janua at client registration | No — a public identifier |
-| `JANUA_CLIENT_SECRET` | issued alongside, for **confidential** clients only | **Yes** — Vault/ESO only |
-
-Only the last row is a secret. Verification needs none of them to be secret,
+What a service actually needs configured is the env contract above
+(`AUTH_JANUA_ISSUER`, `AUTH_JANUA_CLIENT_ID`, and `AUTH_JANUA_CLIENT_SECRET` for confidential
+clients). Only the secret is a secret. Verification needs none of them to be secret,
 which is the whole point of asymmetric verification.
 
 ---
@@ -417,7 +478,10 @@ in several docs. See [`PORT_ALLOCATION.md`](./PORT_ALLOCATION.md).
 
 ## Adoption checklist for a new service
 
-- [ ] Configure `JANUA_ISSUER`, `JANUA_JWKS_URL`, `JANUA_AUDIENCE`.
+- [ ] Configure `AUTH_JANUA_ISSUER` and `AUTH_JANUA_CLIENT_ID` (plus
+      `AUTH_JANUA_CLIENT_SECRET` for a confidential client) and validate them at boot
+      with `@madfam/env`.
+- [ ] Signed-in UI: add account switching (§ "Account switching").
 - [ ] Verify with `algorithms: ["RS256"]` — an explicit allowlist, never
       "whatever the header says".
 - [ ] Reject HS256 explicitly and fail closed if JWKS cannot be fetched.

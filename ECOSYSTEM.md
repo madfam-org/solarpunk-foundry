@@ -145,6 +145,13 @@ Janua is single-issuer per deployment — the issuer is derived from `JANUA_CUST
 the request `Host`. Never route a second Janua hostname (this is why `auth.selva.town` must
 not exist).
 
+The HS256 ban covers every path that verifies a Janua token; an app's own session cookie is
+signed with its own secret, never the Janua client secret (ruled 2026-09-23). **Env contract
+(ruled 2026-09-23):** `AUTH_JANUA_ISSUER`, `AUTH_JANUA_CLIENT_ID`, `AUTH_JANUA_CLIENT_SECRET`
+(schema of record: `@madfam/env`). MADFAM Next.js apps use `@madfam/janua-next`; the Auth.js
+`janua` provider is the documented alternative (Nauta uses it). See
+[`docs/JANUA_INTEGRATION.md`](docs/JANUA_INTEGRATION.md).
+
 *Contract, not a verified fleet state:* the 2026-07-16 launch-readiness audit rates
 per-surface SSO conformance YELLOW. The matrix behind that rating is recorded in
 `internal-devops` as a session artifact that was never committed, so per-surface enforcement
@@ -284,6 +291,37 @@ bootstrapped, and CI self-skips green.
 | Fabrication node capacity + pricing | Forj | consume Forgesight |
 | Manufacturing execution telemetry | Pravara MES | feeds PhyndCRM federation |
 | 3D geometry kernel | geom-core | used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`) |
+
+### 3.10 Messaging — Angelia Courier only
+
+*Rulings 2026-09-05 and 2026-09-23.* Every message to a person or system outside the platform
+(email, chat, SMS, push, third-party messaging webhooks) is sent through **Angelia's Courier**
+(tenant-scoped per angelia ADR-0011), never by calling a provider directly. Provider
+credentials reach Courier via Enclii secrets intake + External Secrets. Enclii customer
+notification webhooks move onto Courier once its side is provisioned. **Carve-outs:** Janua's
+customer-configured alert notifier and Selva's agent tools — nothing else. **Sender:** the
+tenant's verified address, else `noreply@<product-domain>`, else `MADFAM <hola@madfam.io>`.
+Several services still send directly as of 2026-09-23; this is the contract, not the fleet
+state. Full text: `README.md` §IV.8.
+
+### 3.11 Account switching — hold many, front one
+
+*Directive 2026-09-21; portal scope ruled 2026-09-23.* Every platform with a signed-in UI
+supports switching on the Enclii model: «Cambiar de cuenta» = authorize with
+`prompt=select_account`; «Entrar como otra persona» = `prompt=login`; sign-out = RP-initiated
+logout at Janua. Staff consoles get all three; client portals get only «Entrar como otra
+persona» and sign-out; one client-owned clinical application is exempt under its contract.
+Client-only change — live on `admin.enclii.dev` and `app.enclii.dev` since 2026-09-21. Full
+text: `README.md` §IV.9.
+
+### 3.12 Agent surface — MCP per service (pilot)
+
+*Direction 2026-09-22; Janua pilot in production 2026-09-22; not yet universal.* Each service
+API gets an MCP equivalent: generated from the service's own OpenAPI (tRPC services add an
+OpenAPI adapter), one estate generator, one typed purpose-named tool per endpoint, the same
+authorization as the HTTP endpoint, a coverage guard against drift, and read-only tools first
+— destructive or credentialed operations keep their operator gates. Full text: `README.md`
+§IV.10.
 
 ---
 
