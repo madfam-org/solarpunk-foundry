@@ -1,5 +1,13 @@
 # MADFAM Cluster Architecture
 
+> [!CAUTION]
+> **ARCHIVED 2026-09-23 — history, not guidance.** This is a superseded
+> point-in-time document, moved to `docs/archive/` so the repository has one tier
+> of truth. Do not act on it. Current facts: the root [`README.md`](../../README.md)
+> and [`ECOSYSTEM.md`](../../ECOSYSTEM.md); index: [`docs/README.md`](../README.md).
+> Boundary checkpoint: public-safe historical record; operational detail lives in
+> the private `internal-devops` repo (policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md)).
+
 **Last verified: 2026-07-25** — repository paths checked on disk on that date;
 cluster facts carry the verification date of the private source they came from.
 
@@ -12,8 +20,8 @@ published here.
 > **This document describes declared architecture, not observed health.** It
 > cannot report whether anything is currently up. Where a claim can only be
 > settled by a probe, the probe is named. See
-> [`../ECOSYSTEM_STATUS.md`](../ECOSYSTEM_STATUS.md) for the route inventory and
-> [`../INFRASTRUCTURE_STATUS.md`](../INFRASTRUCTURE_STATUS.md) for the
+> [`../ECOSYSTEM_STATUS.md`](ECOSYSTEM_STATUS.md) for the route inventory and
+> [`../INFRASTRUCTURE_STATUS.md`](INFRASTRUCTURE_STATUS.md) for the
 > configuration detail.
 >
 > The previous revision was dated "January 19, 2026" with the status line
@@ -245,11 +253,11 @@ ledger is in `internal-devops`.
 
 ## Related
 
-- [`../INFRASTRUCTURE_STATUS.md`](../INFRASTRUCTURE_STATUS.md) — declared
+- [`../INFRASTRUCTURE_STATUS.md`](INFRASTRUCTURE_STATUS.md) — declared
   configuration, admission policy, secret delivery
-- [`../ECOSYSTEM_STATUS.md`](../ECOSYSTEM_STATUS.md) — routes, including retired
+- [`../ECOSYSTEM_STATUS.md`](ECOSYSTEM_STATUS.md) — routes, including retired
   and not-live
 - [`../JANUA_INTEGRATION.md`](../JANUA_INTEGRATION.md) — auth contract
 - [`../PORT_ALLOCATION.md`](../PORT_ALLOCATION.md) — port registry
 - [`../SSH_ACCESS.md`](../SSH_ACCESS.md) — node access pointer
-- [`SYMBIOSIS.md`](./SYMBIOSIS.md) — the architecture narrative
+- [`SYMBIOSIS.md`](../architecture/SYMBIOSIS.md) — the architecture narrative

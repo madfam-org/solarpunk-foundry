@@ -62,4 +62,4 @@ must be recorded per the Enclii-first recording requirement — see
 The public description of the cluster says *zero exposed node ports*. That
 means **no NodePort application ingress** — all public application traffic
 arrives through the Cloudflare Tunnel. It does not mean nothing listens on the
-nodes. See [`INFRASTRUCTURE_STATUS.md`](./INFRASTRUCTURE_STATUS.md#ingress).
+nodes. See [`INFRASTRUCTURE_STATUS.md`](./archive/INFRASTRUCTURE_STATUS.md#ingress).

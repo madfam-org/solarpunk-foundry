@@ -752,7 +752,7 @@ returned 404 on public npm — several declare `publishConfig.access: public` bu
 published anywhere queryable. Whether any are present on the private `npm.madfam.io`
 Verdaccio is still unverified from this repo (needs a registry query or a dated operator
 attestation). `publishConfig` targets are inconsistent across the set — some declare the
-public registry, some the private one; `docs/MONETIZATION_PATH_READINESS.md` records this
+public registry, some the private one; `docs/archive/MONETIZATION_PATH_READINESS.md` recorded this
 drift. The versions above are what `package.json` declares in the working tree.
 
 `@madfam/webhook-attribution` exists precisely so the §IV.4 signing contract is not

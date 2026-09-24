@@ -246,12 +246,10 @@ solarpunk-foundry/
 │   ├── JANUA_INTEGRATION.md         # Wiring Janua into a service
 │   ├── INTEGRATION_TESTING.md       # Cross-service test patterns
 │   ├── CROSS_REPO_NAVIGATION.md     # Where to find things across the ecosystem
-│   ├── ECOSYSTEM_STATUS.md          # Point-in-time service roster
-│   ├── INFRASTRUCTURE_STATUS.md     # Infra shape (pointer to internal-devops)
 │   ├── ECOSYSTEM_BANNER.md          # Banner + footer contract
-│   ├── MONETIZATION_PATH_READINESS.md
 │   ├── SSH_ACCESS.md                # Pointer to internal-devops
-│   ├── architecture/                # SYMBIOSIS, cluster shape, federated + self-contained services
+│   ├── architecture/                # SYMBIOSIS.md (the platform-relationship narrative)
+│   ├── archive/                     # Superseded point-in-time docs, ARCHIVED 2026-09-23 — history only
 │   └── runbooks/                    # Legacy; under review for removal in favour of internal-devops
 ├── templates/                       # Project + doc templates (incl. HONEST_STATUS_SCORECARD.md)
 ├── scripts/                         # Build, publish, hygiene, ratchet utilities

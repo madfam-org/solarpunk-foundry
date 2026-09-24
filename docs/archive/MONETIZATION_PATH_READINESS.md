@@ -1,5 +1,13 @@
 # Monetization-Path Readiness — ecosystem contracts
 
+> [!CAUTION]
+> **ARCHIVED 2026-09-23 — history, not guidance.** This is a superseded
+> point-in-time document, moved to `docs/archive/` so the repository has one tier
+> of truth. Do not act on it. Current facts: the root [`README.md`](../../README.md)
+> and [`ECOSYSTEM.md`](../../ECOSYSTEM.md); index: [`docs/README.md`](../README.md).
+> Boundary checkpoint: public-safe historical record; operational detail lives in
+> the private `internal-devops` repo (policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md)).
+
 **Last verified: 2026-07-25**
 
 **Scope:** public-safe. This repository owns the cross-service *contracts* and
@@ -34,7 +42,7 @@ in `internal-devops`.
 completed end to end at least once, live. One completed charge is a threshold,
 not traction, and the audit's structural findings about the individual hops are
 not thereby discharged — but the headline claim that no real charge has ever
-completed is retired. [`../README.md`](../README.md) §VI carries the same fact
+completed is retired. [`../README.md`](../../README.md) §VI carries the same fact
 and has since 2026-08-24. The blocker list itself is operator/product material
 and lives in `internal-devops/roadmaps/2026-07-16-launch-remediation-roadmap.md`.
 
@@ -159,12 +167,12 @@ it does not imply momentum it does not have.
   documents, and the aspirational 4700 block is claimed by more than one
   service. Production is unaffected — namespace and hostname routing make
   container ports invisible. Source of truth is `enclii local up` plus each
-  repo's own `enclii.yaml`. See [`PORT_ALLOCATION.md`](./PORT_ALLOCATION.md).
+  repo's own `enclii.yaml`. See [`PORT_ALLOCATION.md`](../PORT_ALLOCATION.md).
 - **Registry drift.** `publishConfig` targets vary across `@madfam/*` packages;
   they should all point at `npm.madfam.io`. Separately,
   `@madfam/ecosystem-banner` declares `"license": "UNLICENSED"` while every
   other package declares `MIT` — see
-  [`LICENSING_STRATEGY.md`](./LICENSING_STRATEGY.md).
+  [`LICENSING_STRATEGY.md`](../LICENSING_STRATEGY.md).
 - **CI coverage.** Most packages lack `test` and `lint` scripts.
   `webhook-attribution` ships both and is the template to follow.
 - **Observability of the money path.** The 2026-07-16 audit recorded alert
@@ -187,6 +195,6 @@ pnpm --filter @madfam/types typecheck
 
 - [`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md) — the four ecosystem-wide
   contracts in full
-- [`JANUA_INTEGRATION.md`](./JANUA_INTEGRATION.md) — the identity contract
-- [`OPERATIONAL_REDIRECTS.md`](./OPERATIONAL_REDIRECTS.md) — where the operator
+- [`JANUA_INTEGRATION.md`](../JANUA_INTEGRATION.md) — the identity contract
+- [`OPERATIONAL_REDIRECTS.md`](../OPERATIONAL_REDIRECTS.md) — where the operator
   sequencing lives

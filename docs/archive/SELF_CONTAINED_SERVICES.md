@@ -1,5 +1,13 @@
 # Self-Contained Services — position paper
 
+> [!CAUTION]
+> **ARCHIVED 2026-09-23 — history, not guidance.** This is a superseded
+> point-in-time document, moved to `docs/archive/` so the repository has one tier
+> of truth. Do not act on it. Current facts: the root [`README.md`](../../README.md)
+> and [`ECOSYSTEM.md`](../../ECOSYSTEM.md); index: [`docs/README.md`](../README.md).
+> Boundary checkpoint: public-safe historical record; operational detail lives in
+> the private `internal-devops` repo (policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md)).
+
 **Status: ASPIRATIONAL / PARTLY SUPERSEDED.**
 **Written: undated (2025 era). Reviewed and labelled: 2026-07-25.**
 
@@ -18,7 +26,7 @@
 > | Don't create shared packages everything depends on | This repository publishes **13** `@madfam/*` packages |
 > | "Don't publish to a private npm registry (Verdaccio)" | `npm.madfam.io` runs Verdaccio in production and is the ecosystem publish target |
 > | Copy auth code into each service | The auth contract is a **shared, audited** verification pattern; divergent per-service implementations produced the 2026-04-23 audit findings H3/H4 |
-> | Copy types rather than share them | [`MONETIZATION_PATH_READINESS.md`](../MONETIZATION_PATH_READINESS.md)'s headline recommendation is to **adopt** the shared `@madfam/webhook-attribution` package, precisely because two independent implementations had already drifted into byte-identical duplication |
+> | Copy types rather than share them | [`MONETIZATION_PATH_READINESS.md`](MONETIZATION_PATH_READINESS.md)'s headline recommendation is to **adopt** the shared `@madfam/webhook-attribution` package, precisely because two independent implementations had already drifted into byte-identical duplication |
 >
 > *All counts verified 2026-07-25 by reading `janua/packages/` and
 > `solarpunk-foundry/packages/`.*
@@ -163,8 +171,8 @@ The paper's anti-pattern list, re-examined:
 
 - [`../JANUA_INTEGRATION.md`](../JANUA_INTEGRATION.md) — the auth contract this
   paper's Tier 2 section gets wrong
-- [`../MONETIZATION_PATH_READINESS.md`](../MONETIZATION_PATH_READINESS.md) — the
+- [`../MONETIZATION_PATH_READINESS.md`](MONETIZATION_PATH_READINESS.md) — the
   shared-package case study
-- [`../ECOSYSTEM_STATUS.md`](../ECOSYSTEM_STATUS.md) — the data-boundary contract
+- [`../ECOSYSTEM_STATUS.md`](ECOSYSTEM_STATUS.md) — the data-boundary contract
 - [`FEDERATED_ARCHITECTURE_README.md`](./FEDERATED_ARCHITECTURE_README.md) — the
   other historical architecture document

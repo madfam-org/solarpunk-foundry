@@ -22,7 +22,7 @@ Enclii, Janua, Dhanam and the shared-package monorepo — plus the ecosystem-wid
 contracts. It is *not* a map of all 113 non-fork repositories in the
 organisation (count as of 2026-08-29; corrected 2026-09-04). The repository registry lives privately at
 `internal-devops/ecosystem/repo-registry.md`; the public platform map is
-[`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md).
+[`ECOSYSTEM_STATUS.md`](./archive/ECOSYSTEM_STATUS.md).
 
 > The previous revision carried "Last Verified: February 3, 2026" — 172 days
 > stale — and four of roughly twenty-five paths were dead. Those are corrected
@@ -65,7 +65,7 @@ organisation (count as of 2026-08-29; corrected 2026-09-04). The repository regi
 | GitOps | `enclii/docs/infrastructure/GITOPS.md` | ArgoCD App-of-Apps pattern |
 | Storage | `enclii/docs/infrastructure/STORAGE.md` | Longhorn persistent volumes |
 | Disaster recovery | `enclii/docs/production/DR_RUNBOOK.md` | Public-safe DR structure |
-| Declared configuration | `solarpunk-foundry/docs/INFRASTRUCTURE_STATUS.md` | Cluster shape, GitOps, admission policy — dated per claim |
+| Declared configuration (archived 2026-09-23; current shape: `ECOSYSTEM.md` §4) | `solarpunk-foundry/docs/archive/INFRASTRUCTURE_STATUS.md` | Cluster shape, GitOps, admission policy — dated per claim |
 
 **Private counterpart:** the operational source of truth for node inventory,
 capacity, incident history, secret custody and break-glass is `internal-devops`.
@@ -77,10 +77,10 @@ Nothing in the public tree substitutes for it. See
 | Document | Location | Status |
 |---|---|---|
 | Symbiosis | `solarpunk-foundry/docs/architecture/SYMBIOSIS.md` | Current — Substrate/Trellis/Membrane narrative |
-| Cluster architecture | `solarpunk-foundry/docs/architecture/CLUSTER_ARCHITECTURE.md` | Current, with dated caveats |
-| Service and route inventory | `solarpunk-foundry/docs/ECOSYSTEM_STATUS.md` | Current — includes retired and not-live endpoints |
-| Federated architecture | `solarpunk-foundry/docs/architecture/FEDERATED_ARCHITECTURE_README.md` | **Historical record (2025-11-24), superseded** |
-| Self-contained services | `solarpunk-foundry/docs/architecture/SELF_CONTAINED_SERVICES.md` | **Position paper, partly superseded** — labelled in place |
+| Cluster architecture | `solarpunk-foundry/ECOSYSTEM.md` §4 | Current. The older `docs/archive/CLUSTER_ARCHITECTURE.md` (3-node) is archived |
+| Service and route inventory | `solarpunk-foundry/README.md` §II | Current, with the retired list. The 2026-07-25 inventory is archived at `docs/archive/ECOSYSTEM_STATUS.md` |
+| Federated architecture | `solarpunk-foundry/docs/archive/FEDERATED_ARCHITECTURE_README.md` | **Historical record (2025-11-24), superseded** |
+| Self-contained services | `solarpunk-foundry/docs/archive/SELF_CONTAINED_SERVICES.md` | **Position paper, partly superseded** — labelled in place |
 
 ### Local development
 
@@ -98,7 +98,7 @@ Nothing in the public tree substitutes for it. See
 |---|---|---|
 | Dhanam README | `dhanam/README.md` | Platform overview (**private repo** as of 2026-07-25) |
 | Production manifests | `dhanam/infra/k8s/production/` | Deployment |
-| Payment-attribution contract | `solarpunk-foundry/docs/MONETIZATION_PATH_READINESS.md` | The signed fan-out contract and its current standing |
+| Payment-attribution contract | `solarpunk-foundry/README.md` §IV.4 (history: `docs/archive/MONETIZATION_PATH_READINESS.md`) | The signed fan-out contract and its current standing |
 
 ---
 
@@ -156,7 +156,7 @@ here, and not in the platform repos.
 | Token rejected / auth failing | `docs/JANUA_INTEGRATION.md` troubleshooting table |
 | Local stack will not start | `docs/DOGFOODING_GUIDE.md` |
 | Deployment or rollback question | `docs/runbooks/rollback.md`, then `enclii ops apps` |
-| "Is this hostname live?" | `docs/ECOSYSTEM_STATUS.md` — including the retired and not-live lists |
+| "Is this hostname live?" | `status.madfam.io`; for what is retired, README §II "Retired" |
 | Anything requiring production access | `internal-devops`; see `docs/OPERATIONAL_REDIRECTS.md` |
 
 ---

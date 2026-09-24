@@ -10,7 +10,7 @@
 > reverted by ArgoCD anyway.
 >
 > Removed under [`../PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md) and
-> `internal-devops/docs/repo-boundary-contract.md` (2026-06-14), which place raw
+> `internal-devops/docs/repo-boundary-contract.md` (last updated 2026-09-04), which place raw
 > break-glass, secret paths and capacity data in Lane A. The operational procedure
 > lives in the private `internal-devops` repo; ask an operator if you need it.
 

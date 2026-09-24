@@ -57,7 +57,7 @@ Two constraints that apply to anything the banner links to:
 - **Never link a retired hostname.** `agents-*.madfam.io`, `selva.madfam.io`,
   `metrics.enclii.dev` and `dashboard.madfam.io` are retired or were never
   MADFAM routes. `auth.selva.town` must never be routed at all. See
-  [`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md#retired-never-route-and-not-live).
+  [`ECOSYSTEM_STATUS.md`](./archive/ECOSYSTEM_STATUS.md#retired-never-route-and-not-live).
 - **Never link `innovacionesmadfam.dev`.** That domain was never acquired
   (owner confirmation recorded 2026-07-09). The canonical company domain is
   `madfam.io`.
@@ -134,4 +134,4 @@ audit and record the date.
 
 - [`PORT_ALLOCATION.md`](./PORT_ALLOCATION.md)
 - [`PUBLIC_REPO_BOUNDARY.md`](./PUBLIC_REPO_BOUNDARY.md)
-- [`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md)
+- [`ECOSYSTEM_STATUS.md`](./archive/ECOSYSTEM_STATUS.md)

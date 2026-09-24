@@ -6,7 +6,7 @@ the `internal-devops` working tree on that date)
 > **This directory does not contain runnable production procedures, and should
 > not.** Production break-glass — raw `kubectl`, SSH, `docker exec`, provider
 > CLI calls, secret paths, node identifiers — is Lane A material under
-> `internal-devops/docs/repo-boundary-contract.md` (last updated 2026-06-14) and
+> `internal-devops/docs/repo-boundary-contract.md` (last updated 2026-09-04) and
 > under this repo's own [`../PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md),
 > which bans "exact production break-glass commands that expose private
 > infrastructure details".
@@ -101,7 +101,7 @@ Source: `internal-devops/infrastructure/nodes.md` and
 `internal-devops/infrastructure/topology.md`, both **last verified 2026-05-04**;
 ingress chain from `internal-devops/ecosystem/domain-map.md`, **last verified
 2026-07-01**. No production probe was performed for this page — see
-[`../ECOSYSTEM_STATUS.md`](../ECOSYSTEM_STATUS.md) for what that means for
+[`../ECOSYSTEM_STATUS.md`](../archive/ECOSYSTEM_STATUS.md) for what that means for
 status claims.
 
 ## Contact
