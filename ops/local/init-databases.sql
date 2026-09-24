@@ -1,3 +1,6 @@
+-- Boundary checkpoint (2026-09-23, platform ops): local-development scaffolding only.
+-- Public-safe: dev-only placeholder credentials, no production hosts or procedures;
+-- production detail lives privately in internal-devops. Policy: docs/PUBLIC_REPO_BOUNDARY.md
 -- ============================================
 -- MADFAM ECOSYSTEM - Database Initialization
 -- ============================================
@@ -44,7 +47,7 @@ CREATE USER cotiza WITH PASSWORD 'cotiza_dev';
 CREATE DATABASE cotiza_dev OWNER cotiza;
 GRANT ALL PRIVILEGES ON DATABASE cotiza_dev TO cotiza;
 
--- AVALA - Learning Verification (Port Block: 4600-4699)
+-- Avala - Learning Verification (Port Block: 4600-4699)
 CREATE USER avala WITH PASSWORD 'avala_dev';
 CREATE DATABASE avala_dev OWNER avala;
 GRANT ALL PRIVILEGES ON DATABASE avala_dev TO avala;
@@ -57,11 +60,6 @@ GRANT ALL PRIVILEGES ON DATABASE avala_dev TO avala;
 CREATE USER dhanam WITH PASSWORD 'dhanam_dev';
 CREATE DATABASE dhanam_dev OWNER dhanam;
 GRANT ALL PRIVILEGES ON DATABASE dhanam_dev TO dhanam;
-
--- Sim4D - CAD Platform (Port Block: 4800-4899)
-CREATE USER sim4d WITH PASSWORD 'sim4d_dev';
-CREATE DATABASE sim4d_dev OWNER sim4d;
-GRANT ALL PRIVILEGES ON DATABASE sim4d_dev TO sim4d;
 
 -- Forj - Fabrication (Port Block: 4900-4999)
 CREATE USER forj WITH PASSWORD 'forj_dev';
@@ -92,9 +90,6 @@ GRANT ALL ON SCHEMA public TO cotiza;
 \c dhanam_dev
 GRANT ALL ON SCHEMA public TO dhanam;
 
-\c sim4d_dev
-GRANT ALL ON SCHEMA public TO sim4d;
-
 \c forj_dev
 GRANT ALL ON SCHEMA public TO forj;
 
@@ -113,6 +108,5 @@ GRANT ALL ON SCHEMA public TO forj;
 \echo '  cotiza_dev            (cotiza:cotiza_dev)'
 \echo '  avala_dev             (avala:avala_dev)'
 \echo '  dhanam_dev            (dhanam:dhanam_dev)'
-\echo '  sim4d_dev             (sim4d:sim4d_dev)'
 \echo '  forj_dev              (forj:forj_dev)'
 \echo '============================================'

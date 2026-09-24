@@ -27,7 +27,7 @@ npm install @madfam/ecosystem-banner @madfam/core --registry=https://npm.madfam.
 `@madfam/core` is a **runtime dependency**, not an optional peer: the ticker's
 membership is a filter over that package's product registry (see below).
 
-You'll need a valid `~/.npmrc` with a token for `npm.madfam.io` — see the operator registry notes in `internal-devops/access/npm-registry.md`.
+You'll need a valid `~/.npmrc` with a token for `npm.madfam.io` — see the operator registry notes in the private `internal-devops` repository (`access/npm-registry.md`; pointer only, not reachable without organisation access).
 
 ## Usage
 
@@ -137,4 +137,4 @@ gh workflow run publish-package.yml \
   -f dry_run=false
 ```
 
-The CI workflow uses the `NPM_MADFAM_TOKEN` org Actions secret; rotation and smoke-test procedure lives in `internal-devops/access/npm-registry.md`.
+The CI workflow uses the `NPM_MADFAM_TOKEN` org Actions secret; rotation and smoke-test procedure lives in the private `internal-devops` repository (`access/npm-registry.md`; pointer only).

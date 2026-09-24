@@ -1,4 +1,7 @@
 #!/bin/bash
+# Boundary checkpoint (2026-09-23, platform ops): local-development scaffolding only.
+# Public-safe: dev-only placeholder credentials, no production hosts or procedures;
+# production detail lives privately in internal-devops. Policy: docs/PUBLIC_REPO_BOUNDARY.md
 
 echo "=== Port Conflict Verification ==="
 echo ""

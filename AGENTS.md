@@ -183,7 +183,7 @@ enclii local down
 # Fallback: the legacy orchestration script (symlink → ops/bin/madfam.sh)
 cd ~/labspace
 ./madfam start          # core: janua, forgesight, digifab-quoting, madfam-site
-./madfam full           # 10 declared services; 2 of them have no local checkout
+./madfam full           # 8 declared services; 1 of them has no local checkout
 ./madfam status
 ./madfam stop --clean
 ```
@@ -192,11 +192,11 @@ Two corrections worth carrying, because earlier editions of this file got both w
 
 - `enclii local infra` starts PostgreSQL, Redis, MinIO and MailHog. **It does not
   include Verdaccio.**
-- `./madfam full` declares **10** services (`janua`, `forgesight`,
-  `digifab-quoting`, `madfam-site`, `madfam`, `primavera3d`, `dhanam`, `fortuna`,
-  `sim4d`, `electrochem-sim`), not 18. Two of them — `madfam` and
-  `electrochem-sim` — have no checkout under `~/labspace`, so `full` cannot start
-  them.
+- `./madfam full` declares **8** services (`janua`, `forgesight`,
+  `digifab-quoting`, `madfam-site`, `primavera3d`, `dhanam`, `fortuna`,
+  `electrochem-sim`) as of 2026-09-23, when the retired `sim4d` and the
+  nonexistent `madfam` repo were removed from it. `electrochem-sim` has no
+  checkout under `~/labspace`, so `full` cannot start it.
 
 The **root `docker-compose.yml` is currently broken** and is not the canonical
 local path: its `janua` service targets a build stage that does not exist, its
@@ -236,8 +236,7 @@ solarpunk-foundry/
 ├── ops/
 │   ├── bin/                         # madfam.sh orchestration + debug scripts
 │   ├── local/                       # docker-compose.shared.yml (the canonical local stack), init-databases.sql
-│   ├── db/                          # init-shared-dbs.sql (older, superseded naming)
-│   ├── docker/ · env/ · k8s/ · scripts/
+│   │                                # (ops/db, docker, env, k8s, scripts: HISTORICAL, deleted 2026-09-23)
 ├── docs/
 │   ├── PORT_ALLOCATION.md           # Port scheme — aspirational, honestly labelled
 │   ├── PUBLIC_REPO_BOUNDARY.md      # Public-repo boundary checklist

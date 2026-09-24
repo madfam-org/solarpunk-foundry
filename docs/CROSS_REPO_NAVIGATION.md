@@ -90,8 +90,7 @@ Nothing in the public tree substitutes for it. See
 | CLI implementation | `enclii/packages/cli/internal/cmd/local.go` | What `enclii local` actually does |
 | Shared infra compose | `solarpunk-foundry/ops/local/docker-compose.shared.yml` | Postgres, Redis, MinIO, MailHog |
 | Local database init | `solarpunk-foundry/ops/local/init-databases.sql` | The nine `*_dev` databases |
-| Alternative DB init | `solarpunk-foundry/ops/db/init-shared-dbs.sql` | Second init script; check which one your path uses |
-| Legacy control script | `solarpunk-foundry/ops/bin/madfam.sh` | Predates `enclii local`; declares 10 services |
+| Legacy control script | `solarpunk-foundry/ops/bin/madfam.sh` | Predates `enclii local`; declares 8 services (2026-09-23) |
 
 ### Billing and payments (Dhanam)
 

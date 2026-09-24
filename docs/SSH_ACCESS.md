@@ -1,14 +1,12 @@
 # SSH Access — pointer
 
-**Last verified: 2026-07-25**
+**Last verified: 2026-07-25** · security-posture section reduced 2026-09-23
 
 > **This public repository does not document production SSH targets, IP
 > addresses, hostnames, hardware, or access rosters.** Those are Lane A and
 > live in the private `internal-devops` repository.
 
 This document is deliberately a pointer, and that is the correct shape for it.
-What changed in this revision is the security-posture section at the bottom,
-which previously stated four absolutes that the private runbook contradicts.
 
 ## If you have operator access
 
@@ -19,7 +17,7 @@ See `internal-devops/access/ssh-runbook.md` for:
 - The `authorized_keys` onboarding procedure
 - Cloudflare Access troubleshooting
 - Audit-log expectations
-- Which access paths are MFA-gated and which are not
+- Break-glass alternatives and their controls
 
 ## The public-facing connection method
 
@@ -51,36 +49,13 @@ produces sporadic failures. Re-running `cloudflared access login` resolves it.
 This is a client-side condition, not an infrastructure fault.
 *(Recorded in the private domain map, 2026-07-01.)*
 
-## Security posture — corrected 2026-07-25
+## Security posture
 
-The previous revision of this page stated four absolutes:
-
-> ~~"No direct IP access — all SSH flows through the Cloudflare Tunnel."~~
-> ~~"MFA enforced via Cloudflare Access policy."~~
-> ~~"No root SSH."~~
-> ~~"All connections audit-logged by Cloudflare."~~
-
-**Each of those is contradicted as an absolute** by
-`internal-devops/access/ssh-runbook.md` (last updated 2026-05-04), which
-documents additional access paths that are key-only, not MFA-gated, and not
-Cloudflare-audited — including at least one node whose documented access
-account is privileged.
-
-Accurate statement:
-
-- **Cloudflare Access with MFA is the supported operator path**, and connections
-  over it are audit-logged by Cloudflare.
-- **Additional direct paths exist.** They are documented privately, they are
-  SSH-key-only, they are **not** MFA-gated, and they are **not** covered by
-  Cloudflare audit logging. They are not enumerated here.
-- Use the Cloudflare Access path. If you find yourself needing a direct path,
-  that is a break-glass event and must be recorded per the Enclii-first
-  recording requirement — see [`runbooks/README.md`](./runbooks/README.md).
-
-**Why the distinction matters:** publishing an aspirational posture as if it
-were enforced is worse than publishing nothing, because it discourages the
-audit that would find the gap. The gap itself is an operator item, not a
-documentation one.
+*Reduced 2026-09-23 (coherence audit B-C04).* **The supported path for operator SSH is
+Cloudflare Access** (MFA-gated, audit-logged by Cloudflare). Any alternative path is a
+break-glass event: it is documented privately in `internal-devops`, not here, and its use
+must be recorded per the Enclii-first recording requirement — see
+[`runbooks/README.md`](./runbooks/README.md).
 
 ## Related note on "zero exposed ports"
 

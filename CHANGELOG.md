@@ -14,6 +14,23 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-09-23 — ops/ and infrastructure/ boundary clean-up (coherence audit)
+
+- **Deleted the HISTORICAL `ops/` trees:** `ops/docker/` (Compose "production"),
+  `ops/env/` (its env templates), `ops/k8s/network-policies/` (policies for
+  foreign namespaces), `ops/db/` (superseded `*_db` init) and
+  `ops/scripts/ecosystem-alignment/` (would have pinned Next.js 15.1.6, below the
+  2026-09-08 CVE floor). Git history keeps them.
+- **Every remaining `ops/` surface carries a boundary checkpoint**, so a whole-tree
+  run of `scripts/boundary-checkpoint-check.sh` no longer reports 30 missing markers.
+- **Sim4D** (retired 2026-08-30) and the nonexistent `madfam` repo removed from
+  `ops/bin/madfam.sh`; `sim4d_dev` removed from `ops/local/init-databases.sql`.
+- **Placeholders for the production SSH account and Zero-Trust host literals** in
+  `infrastructure/bootstrap/05-*`, `06-*` and `infrastructure/docs/SSH_SECURITY_EVOLUTION.md`;
+  `docs/SSH_ACCESS.md` states only the supported path (Cloudflare Access).
+- **`@madfam/analytics` 0.1.1:** peer `next` is `>=15.5.24 <16 || >=16.3.4` (the fleet
+  CVE floor), was `>=14.0.0`. The dev resolution moved to 16.3.6.
+
 ### 2026-09-05 — one product filter, no second copy (Wave 2.7)
 
 - **`@madfam/ecosystem-banner` consumes `@madfam/core/products`.**

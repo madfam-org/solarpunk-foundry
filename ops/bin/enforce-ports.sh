@@ -1,4 +1,7 @@
 #!/bin/bash
+# Boundary checkpoint (2026-09-23, platform ops): local-development scaffolding only.
+# Public-safe: dev-only placeholder credentials, no production hosts or procedures;
+# production detail lives privately in internal-devops. Policy: docs/PUBLIC_REPO_BOUNDARY.md
 set -e
 
 echo "🚀 Enforcing Solarpunk Zoning Law - Port Configuration Update"
@@ -87,12 +90,12 @@ echo ""
 echo "📡 Updating Data Zone (8100-8199)..."
 echo "-------------------------------------"
 
-# Forge Sight API (8000 → 8100)
+# Forgesight API (8000 → 8100)
 update_env_file "forgesight/.env.example" "API_PORT" "8000" "8100"
 update_env_file "forgesight/services/api/.env.example" "PORT" "8000" "8100"
 update_docker_compose "forgesight/docker-compose.yml" "api" "8000" "8100"
 
-# Forge Sight Frontends
+# Forgesight Frontends
 update_env_file "forgesight/apps/www/.env.example" "PORT" "3000" "3010"
 update_env_file "forgesight/apps/www/.env.example" "NEXT_PUBLIC_API_URL" "8000" "8100"
 update_env_file "forgesight/apps/app/.env.example" "PORT" "3001" "3011"
@@ -132,7 +135,7 @@ update_env_file "electrochem-sim/.env.example" "API_PORT" "8080" "8240"
 update_env_file "electrochem-sim/apps/web/.env.example" "NEXT_PUBLIC_API_URL" "8080" "8240"
 update_env_file "electrochem-sim/apps/web/.env.example" "PORT" "3000" "3060"
 
-# AVALA API (4000 → 8250)
+# Avala API (4000 → 8250)
 update_env_file "avala/.env.example" "PORT" "4000" "8250"
 update_env_file "avala/apps/web/.env.example" "NEXT_PUBLIC_API_URL" "4000" "8250"
 update_env_file "avala/apps/web/.env.example" "PORT" "3000" "3070"
