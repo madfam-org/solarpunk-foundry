@@ -11,17 +11,19 @@ Public contract for the shared bottom marquee across MADFAM product landings.
 |---|---|
 | npm package | `@madfam/ecosystem-banner` |
 | Source | `packages/ecosystem-banner/` in this repository |
-| Version in the source tree | **0.1.4** (verified 2026-08-24) |
+| Version in the source tree | **0.2.0** (2026-09-23; depends on `@madfam/core` 0.2.0) |
 | Publish target | `npm.madfam.io` |
 
 ```bash
-pnpm add @madfam/ecosystem-banner@0.1.4
+pnpm add @madfam/ecosystem-banner@0.2.0
 ```
 
-> **Publication is not verified here.** `0.1.4` is what the package manifest in
-> this repository declares; whether that version is actually published to
-> `npm.madfam.io` needs a registry query. If `pnpm add` fails, that is the first
-> thing to check — not a version bump.
+> **Not published yet (2026-09-23).** 0.2.0 exists in this source tree only.
+> Publishing is blocked until the private-registry credential rotation (operator
+> row O1) is done. The last published banner, 0.1.4 (2026-07-17), still carries
+> the July hand-kept list — consumers pinned to it show that list, not the
+> registry. `0.1.4` in this tree was re-used after that publish for different
+> content, which is why the derived list ships as 0.2.0.
 
 > **License field mismatch — resolved 2026-09-04.** This package declared
 > `"license": "UNLICENSED"` while the repository `LICENSE` is MIT and every
@@ -94,9 +96,13 @@ Order is the registry's `site.order`. "Public surface" is deliberately *not*
 `repo.visibility`: Dhanam and Forgesight are private repositories with live
 public products, and filtering on the repository would have deleted them.
 
-**19 platforms at registry version 4.** Against the hand-kept list this repo
-carried until 2026-09-05 (the list #46 first generated, and 2.7 turned into a
-derivation — the membership is unchanged by 2.7):
+**21 platforms at the 2026-09-23 projection (registry version 4).** Changes since the
+2026-09-05 projection: `fortuna` returns (lifecycle live again) and `routecraft` is
+added (now in the registry); Nauta links `nauta.quest` and Forgesight
+`forgesight.app`.
+
+The 2026-09-05 change against the hand-kept list this repo carried until then (the
+list #46 first generated, and 2.7 turned into a derivation):
 
 | Change | Slugs |
 |---|---|
@@ -110,13 +116,12 @@ until the registry gained one on 2026-09-05, and the only safe answers are "add
 it to the registry" or "fail" — never "invent a keyword in a public repo". A
 shorter ticker that renders cleanly is indistinguishable from a correct one.
 
-**Probe, 2026-09-05 (HEAD, following no redirects).** The 19 primary domains
-answered: 17 × `200`, 1 × `307` (`dhan.am`), 1 × `404` (`cto.madfam.io`, Nauta).
-`forgesight.quest` returned no status at all from the probing environment (the
-connection was reset before any response), so it is **unverified here, not down**.
-Neither the 404 nor the unverified host is fixed by editing this list: the
-lifecycle and domain claims are registry facts, and `cto.madfam.io` answering 404
-while Nauta is `lifecycle: live` is a registry question.
+**Probe, 2026-09-23 (HEAD, following no redirects).** The 21 primary domains
+answered: 20 × `200`, 1 × `307` (`dhan.am`, its locale redirect). The two
+problems the 2026-09-05 probe found — `cto.madfam.io` answering 404 for Nauta and
+`forgesight.quest` unverified — were fixed in the registry, not in this list: the
+registry now names Nauta's public front door `nauta.quest` and Forgesight's apex
+`forgesight.app` (`forgesight.quest` is a retired, parked domain).
 
 ## Rollout status
 

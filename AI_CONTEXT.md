@@ -21,8 +21,10 @@ working tree on 2026-07-25; registry ownership cross-checked against
 
 - The **public ecosystem contract hub** for MADFAM (Lane B). See [README.md](README.md) §0
   for what that means and what it excludes.
-- Home of the `@madfam/*` shared package set, **published to** the private
-  `npm.madfam.io` Verdaccio registry.
+- Home of the fifteen `@madfam/*` shared packages in `packages/`. Registry of record
+  (ruling 2026-09-23): `@madfam/core` → public npmjs; the rest → the private
+  `npm.madfam.io` Verdaccio registry. Other `@madfam/*` packages are built in other
+  repos — scope map in [README.md](README.md) §VIII.
 - Holds the local-dev `madfam` orchestration script and the shared docker-compose stack.
 - Ships **no application deployable**.
 
@@ -35,7 +37,7 @@ this; the manifests are the ground truth.
 ## Architecture
 
 - **Stack:** TypeScript monorepo (pnpm workspace).
-- **Pattern:** shared packages published to `npm.madfam.io`, consumed by ecosystem apps.
+- **Pattern:** shared packages published per their `publishConfig.registry`, consumed by ecosystem apps.
 - **Design tokens:** φ-ratio scale and glassmorphism surfaces, originally carried by
   `@madfam/ui` — **retired 2026-09-05** in favour of the per-app "incubator" model
   (`@dhanam/ui`). Organizational tokens (brand colours, typography, spacing) are in
@@ -77,19 +79,17 @@ Two caveats on that table:
 
 ## `@madfam/*` packages
 
-Fifteen packages, intended for `https://npm.madfam.io`, plus one tombstone —
-`ls packages | wc -l` returns 16. Versions are what `package.json` declares in
-the working tree as of 2026-09-05. **Registry reality (checked 2026-08-24): only
-`@madfam/core@0.1.0` is published on public npmjs.org; the others 404 there**,
-and their presence on the private `npm.madfam.io` is still unverified (needs a
-registry query or a dated operator attestation). The three config packages have
-never been published at all. `publishConfig` targets are inconsistent across the
-set.
+Fifteen packages plus one tombstone — `ls packages | wc -l` returns 16. Versions
+are what `package.json` declares in the working tree as of 2026-09-23. Nothing has
+been published since 2026-07-17 and nothing will be until the operator credential
+rotation (O1) is done; `@madfam/core` targets public npmjs (its npmjs `1.0.0` /
+`0.1.0` from 2025-11-26 predate the generated registry), everything else
+`npm.madfam.io`. `packages/core/dist/` is no longer tracked (2026-09-23).
 
 | Package | Version | Purpose |
 |---|---|---|
-| `@madfam/core` | 0.1.0 | Brand, locales, currencies, event taxonomy, product registry (generated from the vendored projection; see `scripts/check-product-projection.mjs`) |
-| `@madfam/analytics` | 0.1.0 | PostHog instrumentation + event schema |
+| `@madfam/core` | 0.2.0 | Brand, locales, currencies, event taxonomy, product registry (generated from the vendored projection; see `scripts/check-product-projection.mjs`), legal constants |
+| `@madfam/analytics` | 0.1.1 | PostHog instrumentation + event schema |
 | `@madfam/auth-resilience` | 0.1.0 | Janua circuit breaker + retry |
 | `@madfam/sentry` | 0.1.0 | Sentry init + context enrichment |
 | `@madfam/logging` | 0.1.0 | Pino structured logger config |
@@ -99,7 +99,7 @@ set.
 | `@madfam/types` | 0.1.0 | Cross-repo shared types (events, webhooks, attribution) |
 | `@madfam/telemetry` | 0.1.0 | OpenTelemetry tracing + W3C trace-context propagation |
 | `@madfam/webhook-attribution` | 0.1.0 | Signed payment-attribution HMAC sign/verify + idempotency |
-| `@madfam/ecosystem-banner` | 0.1.4 | Bottom ticker for ecosystem offers/links on product landings — **not** a footer; product footers exclude platform links ([docs/ECOSYSTEM_BANNER.md](docs/ECOSYSTEM_BANNER.md)) |
+| `@madfam/ecosystem-banner` | 0.2.0 | Bottom ticker for ecosystem offers/links on product landings — **not** a footer; product footers exclude platform links ([docs/ECOSYSTEM_BANNER.md](docs/ECOSYSTEM_BANNER.md)) |
 | `@madfam/tsconfig` | 0.1.0 | Shared TypeScript baseline; every package here extends it |
 | `@madfam/eslint-config` | 0.1.0 | Shared ESLint baseline (eslintrc shape, ESLint 8) |
 | `@madfam/prettier-config` | 0.1.0 | Shared Prettier baseline; referenced from the root `package.json` |

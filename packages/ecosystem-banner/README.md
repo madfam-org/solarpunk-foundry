@@ -88,7 +88,7 @@ projection vendored in `@madfam/core` — one JSON, one committed hash.
 The filter (stated and implemented in `@madfam/core`): a routed primary domain
 that is **not** one of the product's own infra hosts, AND `lifecycle` `live` or
 `beta`, AND not a tombstone, AND `site.showInBanner` — ordered by the registry's
-`site.order`. **19 platforms at registry version 4** (2026-09-05).
+`site.order`. **21 platforms** at the 2026-09-23 projection (registry version 4); version 0.2.0.
 
 To add, remove or rename a platform, change the private product registry and
 re-vendor the projection into `@madfam/core`; do not edit this package. Two
@@ -108,7 +108,7 @@ generated file; Wave 2.7 removed that second copy in favour of the shared filter
 
 1. `pnpm add @madfam/ecosystem-banner` (with the registry configured)
 2. Mount `<EcosystemBanner />` at the bottom of your root layout — outside provider trees if you have any client-side state, since the banner has its own SSR-safe local state
-3. If you want a subset of platforms, pass `platforms={...}` (the default list has 19 entries at registry version 4)
+3. If you want a subset of platforms, pass `platforms={...}` (the default list has 21 entries at the 2026-09-23 projection)
 
 That's it. No CSS to import, no provider to wrap, no theme to extend, and no Tailwind content scanning required.
 

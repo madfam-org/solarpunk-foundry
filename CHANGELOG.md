@@ -14,6 +14,29 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-09-23 — `@madfam/core` 0.2.0 and `@madfam/ecosystem-banner` 0.2.0 (coherence audit)
+
+- **Re-vendored the product projection** from the private registry at its
+  2026-09-23 revision: 32 public products (+`routecraft`, `tlacuilo`, `telesia`,
+  `marca`, `lexidrop`; client-owned products excluded), Nauta's public link
+  `nauta.quest`, Forgesight on `forgesight.app`, Fortuna live. The banner now
+  derives **21** platforms (was 19).
+- **Legal constants (owner ruling 2026-09-23):** legal name "Innovaciones MADFAM
+  S.A.S. de C.V."; domicile Cuernavaca, Morelos; `taxId` and `foundedYear` are
+  `null` with the `Unpublished` type (the placeholder RFC, the 2023 year and the
+  CDMX address are gone). `getCopyrightNotice()` without a start year prints the
+  current year. Pinned by `packages/core/src/__tests__/legal.test.ts`.
+- **Versions:** `@madfam/core` 0.1.0 → **0.2.0** (breaking shape since the
+  2026-09-05 generated registry, which had re-used 0.1.0 — already taken on
+  npmjs by a 2025-11-26 artefact); `@madfam/ecosystem-banner` 0.1.4 → **0.2.0**
+  (0.1.4 was published 2026-07-17 with the hand-kept list). **Not published** —
+  waits on operator row O1.
+- **`packages/core/dist/` is no longer tracked** (owner ruling 2026-09-23):
+  `.gitignore` already listed `dist/`; `prepublishOnly` builds it.
+- **Publish workflow follows each package's `publishConfig.registry`** —
+  `@madfam/core` → public npmjs (`--access public`, `NPMJS_TOKEN`), the rest →
+  `npm.madfam.io` — and uses `pnpm publish` so `workspace:` ranges are rewritten.
+
 ### 2026-09-23 — ops/ and infrastructure/ boundary clean-up (coherence audit)
 
 - **Deleted the HISTORICAL `ops/` trees:** `ops/docker/` (Compose "production"),

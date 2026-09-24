@@ -5,7 +5,20 @@
  * These values MUST be used consistently across all applications.
  *
  * Changes to this file require governance approval.
+ *
+ * 2026-09-23 (owner ruling, coherence audit B-A03): the legal name is punctuated
+ * as registered, the domicile is Cuernavaca, Morelos, and the tax id and the
+ * founding year are deliberately NOT published in this public package. They are
+ * typed as `null` so a consumer cannot render them without handling the absence
+ * (a fiscal id belongs on a CFDI issued through Karafiel, not in UI constants).
  */
+
+/**
+ * A fact this public package deliberately does not publish. Typed as `null`, not
+ * `string | undefined`, so rendering it is a type error until the caller handles
+ * the absence explicitly.
+ */
+export type Unpublished = null;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // COMPANY INFORMATION
@@ -13,7 +26,7 @@
 
 export const company = {
   /** Legal entity name */
-  legalName: 'Innovaciones MADFAM SAS de CV',
+  legalName: 'Innovaciones MADFAM S.A.S. de C.V.',
 
   /** Trade name / DBA */
   tradeName: 'MADFAM',
@@ -21,18 +34,16 @@ export const company = {
   /** Country of incorporation */
   country: 'Mexico',
 
-  /** Tax ID (RFC in Mexico) */
-  taxId: 'IMA230101XXX', // Placeholder - replace with actual
+  /** Tax ID (RFC). Not published here - see the header note. */
+  taxId: null as Unpublished,
 
-  /** Year of incorporation */
-  foundedYear: 2023,
+  /** Year of incorporation. Not published here - see the header note. */
+  foundedYear: null as Unpublished,
 
-  /** Registered address */
+  /** Domicile (city and state only; street and postal code are not published). */
   address: {
-    street: '', // To be filled
-    city: 'Ciudad de México',
-    state: 'CDMX',
-    postalCode: '',
+    city: 'Cuernavaca',
+    state: 'Morelos',
     country: 'Mexico',
   },
 } as const;
@@ -107,7 +118,7 @@ export const compliance = {
     'CNBV',    // Comisión Nacional Bancaria y de Valores guidelines
   ],
 
-  /** Education/certification regulations (for AVALA) */
+  /** Education/certification regulations (for Avala) */
   education: [
     'CONOCER', // Consejo Nacional de Normalización y Certificación
     'SEP',     // Secretaría de Educación Pública recognition
@@ -122,10 +133,14 @@ export const compliance = {
  * Generate copyright notice for a given year range
  */
 export function getCopyrightNotice(startYear?: number): string {
-  const start = startYear ?? company.foundedYear;
   const currentYear = new Date().getFullYear();
+  // The founding year is not published (`company.foundedYear` is null), so
+  // without an explicit start year the notice carries the current year only.
+  const start = startYear ?? company.foundedYear ?? currentYear;
   const yearRange = start === currentYear ? `${currentYear}` : `${start}-${currentYear}`;
-  return `© ${yearRange} ${company.legalName}. All rights reserved.`;
+  // The legal name already ends in a period ("C.V."); do not add a second one.
+  const name = company.legalName.endsWith('.') ? company.legalName : `${company.legalName}.`;
+  return `© ${yearRange} ${name} All rights reserved.`;
 }
 
 /**
