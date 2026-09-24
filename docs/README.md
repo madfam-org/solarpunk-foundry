@@ -72,7 +72,7 @@ Cluster shape: [`ECOSYSTEM.md`](../ECOSYSTEM.md) §4 (the maintained statement).
 | [`PUBLIC_REPO_BOUNDARY.md`](./PUBLIC_REPO_BOUNDARY.md) | What may and may not appear in this repository, and what the CI guard actually catches | 2026-07-25 |
 | [`OPERATIONAL_REDIRECTS.md`](./OPERATIONAL_REDIRECTS.md) | Where private operational execution lives | 2026-07-25 |
 | [`SSH_ACCESS.md`](./SSH_ACCESS.md) | Node access — pointer only; the supported path | 2026-07-25 (posture 2026-09-23) |
-| [`runbooks/`](./runbooks) | Public-safe summaries of five production procedures, plus pointers | 2026-07-25 |
+| [`runbooks/`](./runbooks/) | Public-safe summaries of five production procedures, plus pointers | 2026-07-25 |
 
 ### Archive — superseded, kept as history
 

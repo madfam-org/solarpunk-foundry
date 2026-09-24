@@ -19,7 +19,7 @@ these redirects instead of copying sensitive runbook content here.
 ## Production runbooks
 
 Added 2026-07-25, when the five procedural runbooks in
-[`runbooks/`](./runbooks) were reduced to public-safe summaries. Each stub
+[`runbooks/`](./runbooks/) were reduced to public-safe summaries. Each stub
 carries its own pointer; this table is the index.
 
 | Need | Public summary | Canonical private source |
