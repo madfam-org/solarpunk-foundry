@@ -233,7 +233,7 @@ import { PRODUCT_PROJECTION, registryVersion } from '@madfam/core/products';
 
 PRODUCT_PROJECTION.schema;          // "madfam-product-projection/v1"
 PRODUCT_PROJECTION.registryVersion; // 4  — also exported as `registryVersion`
-PRODUCT_PROJECTION.lastUpdated;     // "2026-09-05"
+PRODUCT_PROJECTION.lastUpdated;     // "2026-09-23"
 PRODUCT_PROJECTION.sourceSha256;    // sha256 of the projection this build was rendered from
 PRODUCT_PROJECTION.exportPrivateRepoNames; // whether `repo` fields are present at all
 ```
@@ -287,6 +287,24 @@ function Footer() {
   );
 }
 ```
+
+Since 0.2.0 (owner ruling 2026-09-23): `company.legalName` is
+"Innovaciones MADFAM S.A.S. de C.V.", the domicile is Cuernavaca, Morelos, Mexico,
+and `company.taxId` / `company.foundedYear` are **`null` by design** (type
+`Unpublished`) — this public package does not publish the RFC or the founding year,
+so a footer or template must handle their absence rather than render a
+placeholder. `getCopyrightNotice()` without a start year prints the current year
+only.
+
+## Versions and registry
+
+`@madfam/core` publishes to the **public npmjs registry** (owner ruling
+2026-09-23; `publishConfig.registry`). 0.2.0 carries the generated product
+registry, `getBannerProducts()` and the legal constants above; it is **not
+published yet** — publishing waits on the operator credential rotation (O1).
+The versions already on npmjs, `1.0.0` and `0.1.0` (both 2025-11-26), predate the
+generated registry; deprecating them is an operator action. `dist/` is build
+output and is no longer tracked in git — `prepublishOnly` builds it.
 
 ## What's Included
 

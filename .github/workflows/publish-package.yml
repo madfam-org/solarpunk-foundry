@@ -46,6 +46,28 @@ jobs:
           esac
           test -f "${PACKAGE_PATH}/package.json"
 
+      # One registry of record per package (owner ruling 2026-09-23, R38): the
+      # package's own `publishConfig.registry` decides. `@madfam/core` publishes to
+      # public npmjs; the rest of the set to the private npm.madfam.io. Anything
+      # else is refused rather than guessed.
+      - name: Resolve target registry from publishConfig
+        id: target
+        shell: bash
+        run: |
+          set -euo pipefail
+          REG=$(node -p "(require('./${PACKAGE_PATH}/package.json').publishConfig || {}).registry || ''")
+          case "${REG}" in
+            https://registry.npmjs.org|https://registry.npmjs.org/)
+              echo "registry=https://registry.npmjs.org/" >> "$GITHUB_OUTPUT"
+              echo "access=public" >> "$GITHUB_OUTPUT" ;;
+            https://npm.madfam.io|https://npm.madfam.io/)
+              echo "registry=https://npm.madfam.io/" >> "$GITHUB_OUTPUT"
+              echo "access=restricted" >> "$GITHUB_OUTPUT" ;;
+            *)
+              echo "::error::${PACKAGE_PATH}/package.json publishConfig.registry must be registry.npmjs.org or npm.madfam.io (got '${REG}')"
+              exit 1 ;;
+          esac
+
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
@@ -55,11 +77,30 @@ jobs:
         run: corepack enable
 
       - name: Configure npm.madfam.io auth
+        if: ${{ steps.target.outputs.registry == 'https://npm.madfam.io/' }}
         uses: ./.github/actions/npm-madfam-auth
         env:
           NPM_MADFAM_TOKEN: ${{ secrets.NPM_MADFAM_TOKEN }}
         with:
           require-publish-capable: "true"
+
+      - name: Configure registry.npmjs.org auth
+        if: ${{ steps.target.outputs.registry == 'https://registry.npmjs.org/' }}
+        shell: bash
+        env:
+          NPMJS_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${NPMJS_TOKEN:-}" ]; then
+            if [ "${DRY_RUN}" = "true" ]; then
+              echo "::warning::NPMJS_TOKEN is not set; continuing because this is a dry run"
+              exit 0
+            fi
+            echo "::error::NPMJS_TOKEN is empty - an operator must provision the npmjs publish token before a real publish"
+            exit 1
+          fi
+          printf '\n//registry.npmjs.org/:_authToken=%s\n' "${NPMJS_TOKEN}" >> .npmrc
+          chmod 600 .npmrc
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -73,14 +114,22 @@ jobs:
       - name: Build package
         run: pnpm -C "${PACKAGE_PATH}" build
 
-      - name: Pack dry-run
+      # `pnpm publish` (not `npm publish`) so `workspace:` dependency ranges are
+      # rewritten to real versions in the published manifest.
+      - name: Publish dry-run
         working-directory: ${{ inputs.package_path }}
-        run: npm pack --dry-run
+        run: >-
+          pnpm publish --dry-run --no-git-checks
+          --access "${{ steps.target.outputs.access }}"
+          --registry "${{ steps.target.outputs.registry }}"
 
       - name: Publish package
         if: ${{ inputs.dry_run == false }}
         working-directory: ${{ inputs.package_path }}
-        run: npm publish --access restricted --registry https://npm.madfam.io/
+        run: >-
+          pnpm publish --no-git-checks
+          --access "${{ steps.target.outputs.access }}"
+          --registry "${{ steps.target.outputs.registry }}"
 
       - name: Dry-run complete
         if: ${{ inputs.dry_run == true }}

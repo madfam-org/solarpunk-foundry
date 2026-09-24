@@ -717,14 +717,16 @@ presents as a rendering or timeout bug rather than a network one.
 
 ## 📦 VIII. Shared packages (`@madfam/*`)
 
-**Fifteen** packages under `packages/`, intended for the private `npm.madfam.io` Verdaccio
-registry, plus **one tombstone**. `ls packages | wc -l` returns **16**: the fifteen below and
-retired `ui/`. Directory listing and versions re-verified 2026-09-05.
+**Fifteen** packages under `packages/`, plus **one tombstone**. `ls packages | wc -l` returns
+**16**: the fifteen below and retired `ui/`. Versions re-read 2026-09-23. **Registry of record
+(owner ruling 2026-09-23):** `@madfam/core` publishes to the **public npmjs registry**; the
+rest publish to the private `npm.madfam.io` Verdaccio registry. Each package's
+`publishConfig.registry` decides, and `.github/workflows/publish-package.yml` follows it.
 
 | Package | Version | Purpose |
 |---|---|---|
-| `@madfam/core` | 0.1.0 | Brand, locales, currencies, event taxonomy, product registry — decisions, not implementations. The product half is **generated** from the vendored registry projection (`packages/core/src/products/projection.public.json`), guarded by `scripts/check-product-projection.mjs` |
-| `@madfam/analytics` | 0.1.0 | PostHog instrumentation + event-schema enforcement |
+| `@madfam/core` | 0.2.0 | Brand, locales, currencies, event taxonomy, product registry, legal constants — decisions, not implementations. The product half is **generated** from the vendored registry projection (`packages/core/src/products/projection.public.json`, 2026-09-23), guarded by `scripts/check-product-projection.mjs` |
+| `@madfam/analytics` | 0.1.1 | PostHog instrumentation + event-schema enforcement |
 | `@madfam/auth-resilience` | 0.1.0 | Circuit breaker + retry for Janua calls |
 | `@madfam/sentry` | 0.1.0 | Standardised Sentry init + context enrichment |
 | `@madfam/logging` | 0.1.0 | Structured pino logger config |
@@ -734,7 +736,7 @@ retired `ui/`. Directory listing and versions re-verified 2026-09-05.
 | `@madfam/types` | 0.1.0 | Cross-repo shared types (events, webhook schemas, attribution) |
 | `@madfam/telemetry` | 0.1.0 | Shared OpenTelemetry tracing + W3C trace-context propagation |
 | `@madfam/webhook-attribution` | 0.1.0 | Signed payment-attribution HMAC sign/verify + idempotency — the §IV.4 contract, packaged |
-| `@madfam/ecosystem-banner` | 0.1.4 | Dismissible ecosystem ticker for product landings ([`docs/ECOSYSTEM_BANNER.md`](docs/ECOSYSTEM_BANNER.md)) |
+| `@madfam/ecosystem-banner` | 0.2.0 | Dismissible ecosystem ticker for product landings ([`docs/ECOSYSTEM_BANNER.md`](docs/ECOSYSTEM_BANNER.md)) |
 | `@madfam/tsconfig` | 0.1.0 | Shared TypeScript baseline (`base`, `library`, `react-library`, `next`, `node`, `vite`) — every package here extends it |
 | `@madfam/eslint-config` | 0.1.0 | Shared ESLint baseline (eslintrc shape, ESLint 8) — the root and every package extend it |
 | `@madfam/prettier-config` | 0.1.0 | Shared Prettier baseline; the root `package.json` points `prettier` at it |
@@ -746,14 +748,27 @@ publish path. It is not counted above. The UI system moved to the per-app "incub
 [`scripts/archive/`](scripts/archive/README.md). Full record:
 [`packages/ui/README.md`](packages/ui/README.md).
 
-**Registry reality, checked 2026-08-24:** `@madfam/core@0.1.0` is published on the **public
-npmjs.org** registry (the only one of the set that is). The other packages then in the set
-returned 404 on public npm — several declare `publishConfig.access: public` but were apparently never
-published anywhere queryable. Whether any are present on the private `npm.madfam.io`
-Verdaccio is still unverified from this repo (needs a registry query or a dated operator
-attestation). `publishConfig` targets are inconsistent across the set — some declare the
-public registry, some the private one; `docs/archive/MONETIZATION_PATH_READINESS.md` recorded this
-drift. The versions above are what `package.json` declares in the working tree.
+**Registry reality, 2026-09-23:** nothing from this repo has been published since
+2026-07-17. On public npmjs, `@madfam/core` has `1.0.0` and `0.1.0` (both 2025-11-26), which
+predate the generated registry — the 0.2.0 in this tree is the first version that carries
+it. Banner `0.1.4` was published to `npm.madfam.io` on 2026-07-17 with the old hand-kept list.
+**No publish happens until the private-registry credential rotation (operator row O1) is
+done**; deprecating the old npmjs `@madfam/core` versions is also an operator action.
+`packages/core/dist/` is build output and is no longer tracked in git (2026-09-23);
+`prepublishOnly` builds it. Whether the other packages are present on `npm.madfam.io` is
+unverified from this repo (the registry needs authentication to read).
+
+**Scope map — `@madfam/*` packages built outside this repo** (manifests read 2026-09-23):
+
+| Package | Source repo | Registry |
+|---|---|---|
+| `@madfam/janua-next` (0.3.0), `@madfam/forms-progress`, `@madfam/pendientes`, `@madfam/resultado` | `madfam-js` 🔒 | `npm.madfam.io` |
+| `@madfam/pmf-widget` | `tulana` 🔒 | `npm.madfam.io` |
+| `@madfam/migration-core`, `-loaders`, `-parity`, `-sources` | `migration-platform` 🔒 | `npm.madfam.io` |
+| `@madfam/enclii-sdk` | `enclii` | none declared |
+| `@madfam/geom-core` | `geom-core` | none declared; not published (§VI) |
+
+This repo is the home of the fifteen packages above, not of the whole `@madfam` scope.
 
 `@madfam/webhook-attribution` exists precisely so the §IV.4 signing contract is not
 reimplemented per repo. As of the 2026-07-08 verification, **no repo had adopted it**;

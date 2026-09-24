@@ -1,6 +1,6 @@
 {
   "name": "@madfam/core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Authoritative organizational constants for the MADFAM/Solarpunk ecosystem",
   "author": "MADFAM <tech@madfam.io>",
   "license": "MIT",

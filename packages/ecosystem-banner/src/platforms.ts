@@ -27,11 +27,12 @@
  * clause is why Janua links `janua.dev` and not an auth endpoint; the retired
  * clause is why no Sim4D, PENNY or SPARK entry can come back.
  *
- * URLs were re-probed on 2026-09-05 (HEAD, no redirects followed): 17 of the 19
- * answered 200, `dhan.am` answered 307 and `cto.madfam.io` answered 404.
- * `forgesight.quest` returned no status at all from the probing environment, so
- * it is recorded as unverified rather than down. The 404 and the unverified host
- * are registry facts to fix in the registry, not entries to drop here.
+ * URLs re-probed on 2026-09-23 (HEAD, no redirects followed) after re-vendoring
+ * the 2026-09-23 projection: 20 of the 21 answered 200 and `dhan.am` answered 307
+ * (its locale redirect). The 2026-09-05 problems were fixed in the registry, not
+ * here: Nauta now links its public front door `nauta.quest` (the retired
+ * `cto.madfam.io` answered 404), and Forgesight links `forgesight.app`
+ * (`forgesight.quest` is a retired, parked apex).
  */
 import { getBannerProducts } from '@madfam/core/products';
 

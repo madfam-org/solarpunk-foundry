@@ -1,5 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
+import { getBannerProducts } from '@madfam/core/products';
+
 import { DEFAULT_ECOSYSTEM_PLATFORMS, EcosystemBanner } from '../index';
 
 const STORAGE_KEY = 'madfam_ecosystem_banner';
@@ -93,7 +95,7 @@ describe('EcosystemBanner', () => {
     // what a diff cannot: the properties a banner entry must have whatever the
     // registry says.
     it('keeps the default live platform count explicit', () => {
-      expect(DEFAULT_ECOSYSTEM_PLATFORMS).toHaveLength(19);
+      expect(DEFAULT_ECOSYSTEM_PLATFORMS).toHaveLength(21);
     });
 
     it('gives every entry a keyword, a name and an apex https url', () => {
@@ -122,7 +124,20 @@ describe('EcosystemBanner', () => {
 
     it('uses the canonical Forgesight name and landing domain', () => {
       const forgesight = DEFAULT_ECOSYSTEM_PLATFORMS.find((p) => p.name === 'Forgesight');
-      expect(forgesight?.url).toBe('https://forgesight.quest');
+      expect(forgesight?.url).toBe('https://forgesight.app');
+    });
+
+    it('links Nauta to its public front door, never a retired or auth-gated host', () => {
+      const nauta = DEFAULT_ECOSYSTEM_PLATFORMS.find((p) => p.name === 'Nauta');
+      expect(nauta?.url).toBe('https://nauta.quest');
+      const urls = DEFAULT_ECOSYSTEM_PLATFORMS.map((p) => p.url);
+      for (const retired of [
+        'https://cto.madfam.io',
+        'https://app.nauta.quest',
+        'https://forgesight.quest',
+      ]) {
+        expect(urls).not.toContain(retired);
+      }
     });
 
     it('links Janua to its product domain, not the infra endpoint', () => {
@@ -142,12 +157,14 @@ describe('EcosystemBanner', () => {
       }
     });
 
-    it('carries no product that has no registry entry', () => {
-      // RouteCraft was hand-added to this list and has no entry in the product
-      // registry at all (recorded as O25). Generation removed it; this asserts
-      // it cannot be typed back in.
+    it('carries exactly the products the registry selects, and nothing typed in', () => {
+      // RouteCraft was once hand-added here without a registry entry (O25) and
+      // generation removed it. It was registered in the private product
+      // registry in 2026-09, so it now arrives through the registry - which is
+      // the only way any entry may arrive.
       const names = DEFAULT_ECOSYSTEM_PLATFORMS.map((p) => p.name);
-      expect(names).not.toContain('RouteCraft');
+      expect(names).toContain('RouteCraft');
+      expect(names).toEqual(getBannerProducts().map((p) => p.name));
     });
   });
 

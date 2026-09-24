@@ -16,7 +16,7 @@ export const brand = {
   name: 'MADFAM',
 
   /** Full legal entity name */
-  legalName: 'Innovaciones MADFAM SAS de CV',
+  legalName: 'Innovaciones MADFAM S.A.S. de C.V.',
 
   /** Brand tagline */
   tagline: 'From Bits to Atoms. High Tech, Deep Roots.',

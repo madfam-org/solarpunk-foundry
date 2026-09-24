@@ -155,7 +155,8 @@ checkouts are refused as `agent_doc_skip=`. Read the dry-run diff first.
 
 Solarpunk Foundry is the **public ecosystem contract hub** (Lane B) for MADFAM:
 
-- **Shared packages** (`packages/`) — the `@madfam/*` set, published to `npm.madfam.io`
+- **Shared packages** (`packages/`) — the `@madfam/*` set: `@madfam/core` publishes to
+  public npmjs, the rest to `npm.madfam.io` (ruling 2026-09-23; publishing waits on O1)
 - **Port registry** (`docs/PORT_ALLOCATION.md`) — the 100-port-block scheme and an
   honest account of how little of it is followed
 - **Local dogfooding scaffolds** (`ops/`) — shared docker-compose infra, boot scripts
