@@ -1,16 +1,24 @@
 # MADFAM Infrastructure — declared configuration
 
+> [!CAUTION]
+> **ARCHIVED 2026-09-23 — history, not guidance.** This is a superseded
+> point-in-time document, moved to `docs/archive/` so the repository has one tier
+> of truth. Do not act on it. Current facts: the root [`README.md`](../../README.md)
+> and [`ECOSYSTEM.md`](../../ECOSYSTEM.md); index: [`docs/README.md`](../README.md).
+> Boundary checkpoint: public-safe historical record; operational detail lives in
+> the private `internal-devops` repo (policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md)).
+
 **Last verified: 2026-07-25**
 
 > [!WARNING]
 > **SUPERSEDED — stamped 2026-09-04.** This document is a point-in-time record
 > from **2026-07-25** and has not been re-verified since. Newer sources in this
 > repository contradict parts of it. For current facts read
-> [`README.md`](../README.md) §II (platform map and repo counts) and
-> [`ECOSYSTEM.md`](../ECOSYSTEM.md) §4 (cluster and infrastructure shape), both
+> [`README.md`](../../README.md) §II (platform map and repo counts) and
+> [`ECOSYSTEM.md`](../../ECOSYSTEM.md) §4 (cluster and infrastructure shape), both
 > anchored to the **2026-08-24** live enumeration and probe set. Where this
 > document and those disagree, the newer source wins — that is this repo's own
-> evidence rule ([`../llms.txt`](../llms.txt)). Individual rows corrected on
+> evidence rule ([`../llms.txt`](../../llms.txt)). Individual rows corrected on
 > 2026-09-04 say so inline; everything else is unrefreshed.
 
 > **Read the framing before the tables.** This document describes **declared
@@ -111,7 +119,7 @@ is using a superseded scheme — those databases are created nowhere.
 This document deliberately does **not** restate the port scheme. It has drifted
 in three separate places in the past. The registry, including its own honest
 statement about how much of the scheme is actually followed, is
-[`PORT_ALLOCATION.md`](./PORT_ALLOCATION.md); each repo's `enclii.yaml` /
+[`PORT_ALLOCATION.md`](../PORT_ALLOCATION.md); each repo's `enclii.yaml` /
 `.enclii.yml` is the per-service source.
 
 ---
@@ -161,7 +169,7 @@ capacity figures, costs and tunnel identifiers are Lane A and are not here.
 
 > **"Zero exposed node ports" means no NodePort application ingress.** It does
 > not mean nothing listens on the nodes; operator access paths exist and are
-> documented privately. See [`SSH_ACCESS.md`](./SSH_ACCESS.md).
+> documented privately. See [`SSH_ACCESS.md`](../SSH_ACCESS.md).
 
 > **cloudflared replica count is the clearest open item in this section.**
 > **What would settle it:** read the live Deployment's replica count via
@@ -288,7 +296,7 @@ reason, target, commands, result, and an adapter-gap or incident link.
 carrying Last Updated **2026-07-25**.*
 
 SSH targets, kubeconfig handling and break-glass procedure are documented only
-in `internal-devops`. See [`SSH_ACCESS.md`](./SSH_ACCESS.md) for the public
+in `internal-devops`. See [`SSH_ACCESS.md`](../SSH_ACCESS.md) for the public
 pointer.
 
 ---
@@ -313,8 +321,8 @@ Recorded so this is a rewrite and not a quiet deletion.
 
 - [`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md) — service and route inventory,
   including retired and broken endpoints
-- [`PORT_ALLOCATION.md`](./PORT_ALLOCATION.md) — port registry, with its own
+- [`PORT_ALLOCATION.md`](../PORT_ALLOCATION.md) — port registry, with its own
   honest compliance statement
-- [`PUBLIC_REPO_BOUNDARY.md`](./PUBLIC_REPO_BOUNDARY.md) — what may and may not
+- [`PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md) — what may and may not
   appear in this repo
-- [`runbooks/`](./runbooks/) — public-safe summaries plus pointers
+- [`runbooks/`](../runbooks) — public-safe summaries plus pointers

@@ -7,7 +7,7 @@
 > `sudo journalctl`) against a host-Docker architecture that no longer exists.
 > That content was removed on 2026-07-25 under
 > [`../PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md) and
-> `internal-devops/docs/repo-boundary-contract.md` (2026-06-14).
+> `internal-devops/docs/repo-boundary-contract.md` (last updated 2026-09-04).
 
 ## What is public
 

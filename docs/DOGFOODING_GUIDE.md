@@ -280,4 +280,4 @@ port exposure and local ports have no production meaning.
 > The Janua dashboard is `app.janua.dev`.
 
 The full inventory, including retired and not-live hostnames, is in
-[`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md).
+[`ECOSYSTEM_STATUS.md`](./archive/ECOSYSTEM_STATUS.md).

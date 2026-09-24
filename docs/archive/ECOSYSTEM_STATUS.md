@@ -1,16 +1,24 @@
 # MADFAM Ecosystem — service and route inventory
 
+> [!CAUTION]
+> **ARCHIVED 2026-09-23 — history, not guidance.** This is a superseded
+> point-in-time document, moved to `docs/archive/` so the repository has one tier
+> of truth. Do not act on it. Current facts: the root [`README.md`](../../README.md)
+> and [`ECOSYSTEM.md`](../../ECOSYSTEM.md); index: [`docs/README.md`](../README.md).
+> Boundary checkpoint: public-safe historical record; operational detail lives in
+> the private `internal-devops` repo (policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md)).
+
 **Last verified: 2026-07-25**
 
 > [!WARNING]
 > **SUPERSEDED — stamped 2026-09-04.** This document is a point-in-time record
 > from **2026-07-25** and has not been re-verified since. Newer sources in this
 > repository contradict parts of it. For current facts read
-> [`README.md`](../README.md) §II (platform map and repo counts) and
-> [`ECOSYSTEM.md`](../ECOSYSTEM.md) §4 (cluster and infrastructure shape), both
+> [`README.md`](../../README.md) §II (platform map and repo counts) and
+> [`ECOSYSTEM.md`](../../ECOSYSTEM.md) §4 (cluster and infrastructure shape), both
 > anchored to the **2026-08-24** live enumeration and probe set. Where this
 > document and those disagree, the newer source wins — that is this repo's own
-> evidence rule ([`../llms.txt`](../llms.txt)). Individual rows corrected on
+> evidence rule ([`../llms.txt`](../../llms.txt)). Individual rows corrected on
 > 2026-09-04 say so inline; everything else is unrefreshed.
 
 > **This is a point-in-time inventory, not a live status page.** It records what
@@ -81,7 +89,7 @@ All rows below were **last verified 2026-07-01** unless a later date is given.
 Container ports are deliberately omitted — they are namespace-internal, they
 have drifted from what the owning repos declare in at least a dozen cases, and
 each repo's own `enclii.yaml` is the source of truth. See
-[`PORT_ALLOCATION.md`](./PORT_ALLOCATION.md).
+[`PORT_ALLOCATION.md`](../PORT_ALLOCATION.md).
 
 ### Platform (Enclii)
 
@@ -300,7 +308,7 @@ claims: `sub`, `email`, `roles`, `org_id`, and `rfc` (fiscal services only).
 than green, and the private SSO uniformity matrix that would resolve per-surface
 enforcement is recorded as unavailable (a session artifact, not committed).*
 
-Integration detail: [`JANUA_INTEGRATION.md`](./JANUA_INTEGRATION.md).
+Integration detail: [`JANUA_INTEGRATION.md`](../JANUA_INTEGRATION.md).
 
 ### Inference
 
@@ -385,7 +393,7 @@ is kept so the movement is auditable; only the 2026-08-29 column is current.*
 
 The current figures come from the 2026-08-24 live GraphQL enumeration (115
 total; 112 non-fork = 43 private + 69 public) plus one private repo created
-after it, `lexidrop` (2026-08-25). See [`../README.md`](../README.md) §II.7.
+after it, `lexidrop` (2026-08-25). See [`../README.md`](../../README.md) §II.7.
 
 This reconciles cleanly against the private registry's own headline of
 22 private + 69 public = 91 (that registry's figure carries `Last Verified:
@@ -452,8 +460,8 @@ visibility from a live query 2026-07-25.*
 
 - [`INFRASTRUCTURE_STATUS.md`](./INFRASTRUCTURE_STATUS.md) — declared
   configuration, local dev, GitOps, admission policy
-- [`JANUA_INTEGRATION.md`](./JANUA_INTEGRATION.md) — the auth contract
-- [`PORT_ALLOCATION.md`](./PORT_ALLOCATION.md) — port registry
+- [`JANUA_INTEGRATION.md`](../JANUA_INTEGRATION.md) — the auth contract
+- [`PORT_ALLOCATION.md`](../PORT_ALLOCATION.md) — port registry
 - [`MONETIZATION_PATH_READINESS.md`](./MONETIZATION_PATH_READINESS.md) — payment
   contract status
-- [`PUBLIC_REPO_BOUNDARY.md`](./PUBLIC_REPO_BOUNDARY.md) — Lane B rules
+- [`PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md) — Lane B rules

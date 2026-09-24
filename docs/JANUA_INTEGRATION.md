@@ -70,7 +70,7 @@ The practical consequences:
   why `auth.selva.town` must never be routed: Janua reached there would still
   emit `issuer=https://auth.madfam.io`, and issuer validation would fail. All
   Selva surfaces use `auth.madfam.io`. See
-  [`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md#authselvatown--must-never-be-routed).
+  [`ECOSYSTEM_STATUS.md`](./archive/ECOSYSTEM_STATUS.md#authselvatown--must-never-be-routed).
 
 ---
 
@@ -512,7 +512,7 @@ in several docs. See [`PORT_ALLOCATION.md`](./PORT_ALLOCATION.md).
 
 ## Related
 
-- [`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md) — routes, retired endpoints,
+- [`ECOSYSTEM_STATUS.md`](./archive/ECOSYSTEM_STATUS.md) — routes, retired endpoints,
   and the other three ecosystem-wide contracts
 - [`INTEGRATION_TESTING.md`](./INTEGRATION_TESTING.md) — Janua ↔ Enclii
   integration test procedures

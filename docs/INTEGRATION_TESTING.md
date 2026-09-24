@@ -287,4 +287,4 @@ checked-in result is a claim that ages. Run them and read the answer.
 
 - [`JANUA_INTEGRATION.md`](./JANUA_INTEGRATION.md) — the verification contract
 - [`DOGFOODING_GUIDE.md`](./DOGFOODING_GUIDE.md) — local environment
-- [`ECOSYSTEM_STATUS.md`](./ECOSYSTEM_STATUS.md) — what is routed and what is retired
+- [`ECOSYSTEM_STATUS.md`](./archive/ECOSYSTEM_STATUS.md) — what is routed and what is retired

@@ -1,5 +1,13 @@
 # Federated local-development architecture — historical record
 
+> [!CAUTION]
+> **ARCHIVED 2026-09-23 — history, not guidance.** This is a superseded
+> point-in-time document, moved to `docs/archive/` so the repository has one tier
+> of truth. Do not act on it. Current facts: the root [`README.md`](../../README.md)
+> and [`ECOSYSTEM.md`](../../ECOSYSTEM.md); index: [`docs/README.md`](../README.md).
+> Boundary checkpoint: public-safe historical record; operational detail lives in
+> the private `internal-devops` repo (policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md)).
+
 **Status: HISTORICAL. Superseded.**
 **Describes: 2025-11-24. Reviewed and labelled: 2026-07-25.**
 
@@ -124,4 +132,4 @@ it manages.
 | Database names and shared infra | same document; source is `ops/local/init-databases.sql` |
 | Ports | [`../PORT_ALLOCATION.md`](../PORT_ALLOCATION.md) |
 | Production architecture | [`CLUSTER_ARCHITECTURE.md`](./CLUSTER_ARCHITECTURE.md) |
-| Ecosystem narrative | [`SYMBIOSIS.md`](./SYMBIOSIS.md) |
+| Ecosystem narrative | [`SYMBIOSIS.md`](../architecture/SYMBIOSIS.md) |

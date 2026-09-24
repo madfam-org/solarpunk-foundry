@@ -6,8 +6,8 @@ that date.
 
 > This is the **narrative** document: how the three core platform organs relate
 > to each other and why. It is intentionally conceptual. For inventory, routes
-> and dated status see [`../ECOSYSTEM_STATUS.md`](../ECOSYSTEM_STATUS.md); for
-> cluster configuration see [`CLUSTER_ARCHITECTURE.md`](./CLUSTER_ARCHITECTURE.md).
+> and dated status see [`../ECOSYSTEM_STATUS.md`](../archive/ECOSYSTEM_STATUS.md); for
+> cluster configuration see [`CLUSTER_ARCHITECTURE.md`](../archive/CLUSTER_ARCHITECTURE.md).
 
 ## Cultivating the stack
 
@@ -58,7 +58,7 @@ What it provides:
   operability set (`logging`, `env`, `sentry`, `telemetry`).
   *Count verified 2026-07-25.*
 - **Ecosystem contracts** — identity, inference, payment attribution, data
-  boundaries. See [`../ECOSYSTEM_STATUS.md`](../ECOSYSTEM_STATUS.md).
+  boundaries. See [`../ECOSYSTEM_STATUS.md`](../archive/ECOSYSTEM_STATUS.md).
 - **Documentation standards** and the public/private boundary policy.
 - **The port registry** — [`../PORT_ALLOCATION.md`](../PORT_ALLOCATION.md),
   which is honest about how aspirational it is.
@@ -211,7 +211,7 @@ Testing each phase: [`../INTEGRATION_TESTING.md`](../INTEGRATION_TESTING.md).
 > another namespace-wide exception was still open at that date. Of the three
 > image-tag policies, only one fail-closes and it covers a narrow case. Digest
 > pinning is real but is enforced mostly in CI rather than at admission. See
-> [`../INFRASTRUCTURE_STATUS.md`](../INFRASTRUCTURE_STATUS.md#admission-policy-image-tags).
+> [`../INFRASTRUCTURE_STATUS.md`](../archive/INFRASTRUCTURE_STATUS.md#admission-policy-image-tags).
 
 ### Authentication flow
 
@@ -246,14 +246,14 @@ rather than green dots.
 
 ## Related
 
-- [`CLUSTER_ARCHITECTURE.md`](./CLUSTER_ARCHITECTURE.md) — the physical layer
-- [`../ECOSYSTEM_STATUS.md`](../ECOSYSTEM_STATUS.md) — inventory, routes,
+- [`CLUSTER_ARCHITECTURE.md`](../archive/CLUSTER_ARCHITECTURE.md) — the physical layer
+- [`../ECOSYSTEM_STATUS.md`](../archive/ECOSYSTEM_STATUS.md) — inventory, routes,
   retired endpoints, contracts
 - [`../JANUA_INTEGRATION.md`](../JANUA_INTEGRATION.md) — the Membrane's contract
 - [`../PORT_ALLOCATION.md`](../PORT_ALLOCATION.md) — the addressing scheme
-- [`FEDERATED_ARCHITECTURE_README.md`](./FEDERATED_ARCHITECTURE_README.md) —
+- [`FEDERATED_ARCHITECTURE_README.md`](../archive/FEDERATED_ARCHITECTURE_README.md) —
   historical local-dev architecture
-- [`SELF_CONTAINED_SERVICES.md`](./SELF_CONTAINED_SERVICES.md) — a superseded
+- [`SELF_CONTAINED_SERVICES.md`](../archive/SELF_CONTAINED_SERVICES.md) — a superseded
   position paper, labelled in place
 
 ---
