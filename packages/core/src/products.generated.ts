@@ -20,7 +20,7 @@ export const PRODUCT_PROJECTION = {
   lastUpdated: "2026-09-23",
   exportPrivateRepoNames: true,
   /** sha256 of the vendored projection.public.json this module was rendered from. */
-  sourceSha256: "2700b6ea3dfa0c1ff03c294b0e63c309acc937d4dbdd8ecc44d1984ba7615906",
+  sourceSha256: "8620a26656aeee0eede5baa15f14d9f06c54306224eac39c90955f1695336d30",
 } as const;
 
 /**
@@ -252,6 +252,7 @@ export const generatedProducts = {
       track: "self-serve",
       order: 6,
       icon: "🔮",
+      bannerKeyword: "PROBLEM INTELLIGENCE",
       showInBanner: true,
     },
     commerce: {
@@ -577,7 +578,7 @@ export const generatedProducts = {
       track: "self-serve",
       order: 15,
       icon: "🤝",
-      bannerKeyword: "CLIENT PORTAL & CRM",
+      bannerKeyword: "CRM & CAMPAIGNS",
       showInBanner: true,
     },
     commerce: {
