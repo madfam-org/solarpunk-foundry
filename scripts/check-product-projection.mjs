@@ -106,6 +106,9 @@ const PRIVATE_FIELDS = [
   'registry_notes',
   'hub',
   'dhanam_plan_prefix',
+  // A client's workspace hosts on a MADFAM product (2026-09-23). The private
+  // projector strips the key; if it ever arrives here, the engagement is named.
+  'client_hosts',
   'client_facing',
   'client_surface_url',
   'functional_name',

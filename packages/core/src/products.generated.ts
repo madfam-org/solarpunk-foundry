@@ -20,7 +20,7 @@ export const PRODUCT_PROJECTION = {
   lastUpdated: "2026-09-23",
   exportPrivateRepoNames: true,
   /** sha256 of the vendored projection.public.json this module was rendered from. */
-  sourceSha256: "8620a26656aeee0eede5baa15f14d9f06c54306224eac39c90955f1695336d30",
+  sourceSha256: "db2c4ed38fac5dbe86e860929d271d9ca3d7fa85bf2ffba63672ba0e1998d5b0",
 } as const;
 
 /**
@@ -748,10 +748,7 @@ export const generatedProducts = {
     hosts: [
       "app.nauta.quest",
       "www.nauta.quest",
-      "erp.creatumundo.mx",
-      "crea.madfam.io",
       "ensayo.madfam.io",
-      "crea-erp.madfam.io",
     ],
     infraHosts: [],
     site: {
