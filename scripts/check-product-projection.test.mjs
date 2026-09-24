@@ -177,6 +177,14 @@ test('a private-only field fails', () => {
   assert.ok(r.findings.some((f) => f.includes('private-only field `notes`')));
 });
 
+test('a client_hosts block reaching the projection fails', () => {
+  const projection = baseProjection();
+  projection.products[0].domains.client_hosts = ['erp.client.test'];
+  const root = fixture(projection);
+  const r = check(root);
+  assert.ok(r.findings.some((f) => f.includes('private-only field `client_hosts`')));
+});
+
 test('repo names present while export_private_repo_names is false fails', () => {
   const projection = baseProjection({ export_private_repo_names: false });
   const root = fixture(projection);

@@ -21,6 +21,15 @@ a contemporaneous record.
   `marca`, `lexidrop`; client-owned products excluded), Nauta's public link
   `nauta.quest`, Forgesight on `forgesight.app`, Fortuna live. The banner now
   derives **21** platforms (was 19).
+- **Client workspace hosts removed from the projection** (re-vendored again on
+  2026-09-23, source sha256 `db2c4ed3…`). The private registry now keeps a
+  client's own workspace hosts under a private `domains.client_hosts` key that
+  the projector strips. Nauta therefore lists only its own surfaces:
+  `nauta.quest`, `www.`, `app.` and a staff rehearsal host. The package no
+  longer names a client engagement, which is the README's policy that
+  client-engagement repos are counted but not mapped. `check-product-projection.mjs`
+  now treats `client_hosts` as a private-only field, so a vendored copy that
+  carried one would fail.
 - **Legal constants (owner ruling 2026-09-23):** legal name "Innovaciones MADFAM
   S.A.S. de C.V."; domicile Cuernavaca, Morelos; `taxId` and `foundedYear` are
   `null` with the `Unpublished` type (the placeholder RFC, the 2023 year and the
