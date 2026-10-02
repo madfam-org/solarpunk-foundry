@@ -246,9 +246,6 @@ export function createDefaultTags(): Record<string, string> {
     if (process.env.NEXT_PUBLIC_REGION) {
       tags.region = process.env.NEXT_PUBLIC_REGION;
     }
-    if (process.env.VERCEL_ENV) {
-      tags.vercel_env = process.env.VERCEL_ENV;
-    }
   }
 
   return tags;

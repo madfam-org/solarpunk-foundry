@@ -134,7 +134,7 @@ contain a Redis allocation table — that citation was false and is removed.*
 | 4 | Cotiza |
 | 5 | Avala |
 | 6 | Dhanam |
-| 7 | Sim4D |
+| 7 | — unassigned (its previous holder was retired 2026-08-30) |
 | 8 | Forj |
 | 9 | Coforma |
 | 10–15 | claimed by earlier platform names (Galvana, BloomScroll, Compendium, Blueprint, CEQ, Furnace) — several of these names are retired |

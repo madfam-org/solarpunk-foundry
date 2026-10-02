@@ -77,7 +77,7 @@ Nothing in the public tree substitutes for it. See
 | Document | Location | Status |
 |---|---|---|
 | Symbiosis | `solarpunk-foundry/docs/architecture/SYMBIOSIS.md` | Current — Substrate/Trellis/Membrane narrative |
-| Cluster architecture | `solarpunk-foundry/ECOSYSTEM.md` §4 | Current. The older `docs/archive/CLUSTER_ARCHITECTURE.md` (3-node) is archived |
+| Cluster architecture | `solarpunk-foundry/ECOSYSTEM.md` §4 | Current. The older `docs/archive/CLUSTER_ARCHITECTURE.md` (the three-node shape before 2026-08-06) is archived |
 | Service and route inventory | `solarpunk-foundry/README.md` §II | Current, with the retired list. The 2026-07-25 inventory is archived at `docs/archive/ECOSYSTEM_STATUS.md` |
 | Federated architecture | `solarpunk-foundry/docs/archive/FEDERATED_ARCHITECTURE_README.md` | **Historical record (2025-11-24), superseded** |
 | Self-contained services | `solarpunk-foundry/docs/archive/SELF_CONTAINED_SERVICES.md` | **Position paper, partly superseded** — labelled in place |
@@ -117,7 +117,7 @@ Nothing in the public tree substitutes for it. See
 ├── tezca/                 # Mexican law oracle
 ├── karafiel/              # operational compliance (private repo)
 ├── pravara-mes/           # manufacturing execution
-├── phynd-crm/             # client deliverables portal
+├── phynd-crm/             # CRM — consent, campaigns, attribution
 ├── routecraft/            # trip engine; payment-attribution emitter (private repo)
 └── … 30 further repos cloned locally, of 113 non-fork in the organisation
 ```

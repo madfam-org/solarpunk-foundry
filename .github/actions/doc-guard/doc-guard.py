@@ -38,7 +38,7 @@ DEFAULT_BANNED_TERMS = {
 
     # Brand protection (suggest MADFAM alternatives to competitor services)
     "auth0": "identity provider (or Janua)",
-    "vercel": "deployment platform (or Enclii)",
+    "vercel": "Enclii",
     "railway": "PaaS (or Enclii)",
     "heroku": "PaaS (or Enclii)",
 }

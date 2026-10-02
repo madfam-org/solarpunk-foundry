@@ -120,18 +120,5 @@ if [ -f "madfam-site/apps/web/package.json" ]; then
     rm madfam-site/apps/web/package.json.bak 2>/dev/null || true
 fi
 
-# Sim4D apps
-if [ -f "sim4d/apps/studio/package.json" ]; then
-    sed -i.bak 's/"dev": "next dev"/"dev": "next dev -p 3080"/g' sim4d/apps/studio/package.json
-    echo "✓ Updated sim4d/apps/studio/package.json"
-    rm sim4d/apps/studio/package.json.bak 2>/dev/null || true
-fi
-
-if [ -f "sim4d/apps/marketing/package.json" ]; then
-    sed -i.bak 's/"dev": "next dev"/"dev": "next dev -p 3081"/g' sim4d/apps/marketing/package.json
-    echo "✓ Updated sim4d/apps/marketing/package.json"
-    rm sim4d/apps/marketing/package.json.bak 2>/dev/null || true
-fi
-
 echo ""
 echo "✅ Phase 2 complete!"

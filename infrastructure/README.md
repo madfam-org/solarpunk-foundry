@@ -34,7 +34,7 @@ Stated here so that nothing in this directory is mistaken for the current model:
 | Concern | Reality | Where it lives |
 |---|---|---|
 | Control plane | **Enclii** is the mandatory control plane for routine production operations — provisioning, deploys, secrets, domains, scaling, rollback | `madfam-org/enclii` |
-| Orchestration | Bare-metal **k3s**, 3 nodes | inventory in `internal-devops/infrastructure/nodes.md` |
+| Orchestration | Bare-metal **k3s**, 4 nodes (since 2026-08-06) | inventory in `internal-devops/infrastructure/nodes.md` |
 | Deployment | **GitOps**: CI builds → GHCR → digest pinned into `kustomization.yaml` → **ArgoCD** App-of-Apps syncs. Nothing pushes to the cluster; ArgoCD pulls. `selfHeal` is on, so a live `kubectl patch` gets reverted | `enclii/infra/argocd/` |
 | App manifests | Each app owns its own, in **its own repo** under `infra/k8s/production/` | the app's repo, never here |
 | Ingress | **Cloudflare Tunnel** → `cloudflared` pods → K8s Service:80 → container port. TLS terminates at the Cloudflare edge. No NodePort application ingress | `internal-devops/ecosystem/domain-map.md` |

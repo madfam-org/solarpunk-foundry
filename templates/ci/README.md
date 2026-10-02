@@ -254,7 +254,7 @@ DocGuard enforces these terms by default:
 | Banned | Replacement |
 |--------|-------------|
 | auth0 | identity provider (or Janua) |
-| vercel | deployment platform (or Enclii) |
+| vercel | Enclii |
 | railway | PaaS (or Enclii) |
 | heroku | PaaS (or Enclii) |
 

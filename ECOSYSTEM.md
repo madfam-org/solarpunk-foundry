@@ -96,7 +96,7 @@ they were public.
 | **Cotiza** | `madfam-org/digifab-quoting` | public | Quoting engine for fabrication and services. Product name Cotiza, repo name `digifab-quoting`. |
 | **Forgesight** | `madfam-org/forgesight` | **private** | Digital-fabrication industry intelligence — pricing/vendor feed into Cotiza. Apex `forgesight.app` (200 on 2026-09-23). |
 | **Pravara MES** | `madfam-org/pravara-mes` | public | Fabrication-node routing and dispatch for physical jobs. |
-| **PhyndCRM** | `madfam-org/phynd-crm` | public | Client-facing deliverables portal — one pane of glass per engagement. Hosts `POST /api/webhooks/routecraft`. |
+| **PhyndCRM** | `madfam-org/phynd-crm` | public | CRM — consent, campaigns, attribution. Hosts `POST /api/webhooks/routecraft`. |
 | **Fortuna** | `madfam-org/fortuna` | **private** | Problem intelligence / zeitgeist analysis. |
 | **Avala** | `madfam-org/avala` | **private** (flipped 2026-07-16) | Learning-verification platform (EC/CONOCER, DC-3). |
 
@@ -421,8 +421,9 @@ service-scoped context.
 # macOS
 brew install enclii/tap/enclii
 
-# Linux
-curl -sSL https://get.enclii.dev | bash
+# Linux — the hosted installer (get.enclii.dev) answered HTTP 525 when
+# checked 2026-10-01, so its one-line install is withdrawn from this page until
+# the host serves again. Build from source instead (below).
 
 # From source (in the enclii repo)
 make build-cli && ./bin/enclii --version

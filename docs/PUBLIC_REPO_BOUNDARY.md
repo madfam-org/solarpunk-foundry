@@ -52,10 +52,16 @@ dated review was 2026-09-05 and the next is due in early October 2026.
 Stated positively, so the boundary is a line rather than a fog. The following
 shape is already public and stays public:
 
-> A 3-node bare-metal k3s cluster on Hetzner — two dedicated servers plus one
-> cloud VPS builder — with ingress via a single Cloudflare Tunnel and zero
-> exposed node ports for application traffic. Block storage is Longhorn CSI;
-> object storage is Cloudflare R2. GitOps is ArgoCD in an App-of-Apps pattern.
+> A 4-node bare-metal k3s cluster on Hetzner — one control-plane node, one
+> worker and two CI builders — with ingress via a single Cloudflare Tunnel and
+> zero exposed node ports for application traffic. Block storage is Longhorn
+> CSI; object storage is Cloudflare R2. GitOps is ArgoCD in an App-of-Apps
+> pattern.
+
+*Updated 2026-10-01: the cluster has had four nodes since 2026-08-06, when a
+second CI builder joined (source: the private node inventory in
+`internal-devops`, as summarised in `AGENTS.md`). The previous edition of this
+paragraph described the earlier three-node shape.*
 
 Anything more specific than that paragraph needs a deliberate decision, not a
 default.

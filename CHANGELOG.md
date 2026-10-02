@@ -14,6 +14,28 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-10-01 — Front-door wording fixes (stability audit F1-004, F1-014, F1-020, F1-022, F1-023)
+
+- **PhyndCRM role line** is now "CRM — consent, campaigns, attribution." in
+  `README.md`, `MADFAM.md`, `ECOSYSTEM.md` and `docs/CROSS_REPO_NAVIGATION.md`,
+  matching the ruled wording madfam.io already uses. The webhook and probe
+  route facts are kept.
+- **Cluster shape is 4 nodes** (since 2026-08-06) in the public boundary
+  paragraph (`docs/PUBLIC_REPO_BOUNDARY.md`), `docs/runbooks/README.md` and the
+  infrastructure docs, stated at role level only; the builder taint and the
+  storage replica mode are no longer published in the runbook index.
+- **Section references:** payment emission is §IV.4, not §IV.3.
+- **`get.enclii.dev` one-line installer withdrawn** from `ECOSYSTEM.md`: the
+  host answered HTTP 525 on 2026-10-01.
+- **Sim4D residue removed** from the three `ops/bin` port scripts and the
+  Redis DB table; its port range 4800-4899 is marked retired 2026-08-30 in
+  `docs/PORT_ALLOCATION.md`.
+- **Vercel residue:** `@madfam/sentry` no longer adds a `vercel_env` tag
+  (source only; ships with the next `@madfam/sentry` publish). DocGuard now
+  suggests "Enclii" for "vercel".
+- **Legal name punctuation** "S.A.S. de C.V." in the `core`, `eslint-config`,
+  `prettier-config` and `tsconfig` READMEs.
+
 ### 2026-09-23 — `@madfam/core` 0.2.0 and `@madfam/ecosystem-banner` 0.2.0 (coherence audit)
 
 - **Re-vendored the product projection** from the private registry at its

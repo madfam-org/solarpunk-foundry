@@ -70,11 +70,6 @@ echo "📜 BLOOM SCROLL"
 update_env_var "bloom-scroll/backend/.env.example" "PORT" "3095"
 update_env_var "bloom-scroll/infrastructure/.env.example" "APP_PORT" "3095"
 
-# SIM4D - Frontend/Business Zone (3080, 3081, 8260)
-echo "🎮 SIM4D"
-update_env_var "sim4d/apps/studio/.env.example" "PORT" "3080"
-update_env_var "sim4d/apps/studio/.env.example" "NEXT_PUBLIC_API_URL" "http://localhost:8260"
-
 # Clean up backup files
 echo ""
 echo "🧹 Cleaning up backup files..."

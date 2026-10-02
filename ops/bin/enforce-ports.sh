@@ -140,10 +140,6 @@ update_env_file "avala/.env.example" "PORT" "4000" "8250"
 update_env_file "avala/apps/web/.env.example" "NEXT_PUBLIC_API_URL" "4000" "8250"
 update_env_file "avala/apps/web/.env.example" "PORT" "3000" "3070"
 
-# Sim4D (8080 → 8260)
-update_env_file "sim4d/.env.example" "COLLAB_PORT" "8080" "8260"
-update_docker_compose "sim4d/docker-compose.yml" "collab" "8080" "8260"
-
 echo ""
 echo "🌐 Updating Frontend Zone (3000-3099)..."
 echo "-----------------------------------------"

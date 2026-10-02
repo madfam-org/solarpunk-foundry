@@ -33,7 +33,7 @@ labelled in place:
 
 | Section | Status |
 |---|---|
-| §1 Cluster Topology | **Current in shape.** 3-node cluster. Node identity, IPs, hardware and cost are deliberately absent; see `internal-devops/infrastructure/nodes.md` (last verified 2026-05-04). |
+| §1 Cluster Topology | **Current in shape.** 4-node cluster since 2026-08-06 (one control plane, one worker, two CI builders; updated 2026-10-01). Node identity, IPs, hardware and cost are deliberately absent; see `internal-devops/infrastructure/nodes.md` (last verified 2026-05-04). |
 | §2 OS & Storage | **Current for the host OS/ZFS layer.** Note that *workload* block storage is Longhorn CSI on Kubernetes, not these ZFS datasets. |
 | §3 Container Engine | **HISTORICAL — superseded.** Orchestration is bare-metal k3s + ArgoCD, not Docker Compose. The `172.18.x.x` Docker bridge subnets are not a network model the cluster uses. |
 | §4 Application Layer | **HISTORICAL — superseded.** Services run as Kubernetes Deployments in per-app namespaces, not as named containers on host ports. |
@@ -61,7 +61,7 @@ actually ships today, see the table in [`README.md`](./README.md).
 
 ## 1. Cluster Topology ("The Bedrock")
 
-Production runs as a 3-node cluster. Concrete node names, IP addresses,
+Production runs as a 4-node cluster (since 2026-08-06; updated here 2026-10-01). Concrete node names, IP addresses,
 SSH targets, provider inventory, hardware specs, and cost data are not
 published in this repository; see `internal-devops/infrastructure/nodes.md`.
 
@@ -71,7 +71,7 @@ published in this repository; see `internal-devops/infrastructure/nodes.md`.
 |------|---------|
 | Control plane | Kubernetes control plane and core platform workloads |
 | Worker | Application workloads and shared services |
-| Builder | CI/CD build jobs and artifact generation |
+| Builders (two) | CI/CD build jobs and artifact generation |
 
 ---
 
