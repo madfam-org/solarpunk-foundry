@@ -81,7 +81,7 @@ Internet
 Cloudflare Edge
    │
    ▼  single named Cloudflare Tunnel, all ingress
-cloudflared pods  (Deployment `cloudflared`, namespace `cloudflare-tunnel`)
+cloudflared pods
    │
    ▼  plain HTTP on port 80
 Kubernetes Service :80
@@ -96,7 +96,7 @@ Container port (per service)
   statement of this shape.
 - Zero exposed node ports for application ingress — all public application
   traffic arrives through the tunnel.
-- Block storage: Longhorn CSI, 2-replica, `longhorn` StorageClass.
+- Block storage: Longhorn CSI.
 - Object storage: Cloudflare R2.
 
 Source: `internal-devops/infrastructure/nodes.md` and

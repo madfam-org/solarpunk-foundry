@@ -22,8 +22,9 @@ a contemporaneous record.
   route facts are kept.
 - **Cluster shape is 4 nodes** (since 2026-08-06) in the public boundary
   paragraph (`docs/PUBLIC_REPO_BOUNDARY.md`), `docs/runbooks/README.md` and the
-  infrastructure docs, stated at role level only; the builder taint and the
-  storage replica mode are no longer published in the runbook index.
+  infrastructure docs, stated at role level only; the builder taint, the
+  storage replica mode and the tunnel controller's deployment and namespace
+  names are no longer published in the runbook index.
 - **Section references:** payment emission is §IV.4, not §IV.3.
 - **`get.enclii.dev` one-line installer withdrawn** from `ECOSYSTEM.md`: the
   host answered HTTP 525 on 2026-10-01.
