@@ -23,9 +23,8 @@ This document describes the public-safe SSH access pattern for Solarpunk Foundry
 Earlier revisions of this document named two separate Cloudflare tunnels
 (a product tunnel and an SSH tunnel) and published one tunnel's ID.
 Per `internal-devops/ecosystem/domain-map.md` (last verified 2026-07-01),
-**there is a single production Cloudflare Tunnel** carrying all ingress —
-every HTTP product route *and* the SSH jumphost. The split this document
-described never existed in the live infrastructure.
+**there is a single production Cloudflare Tunnel** carrying all ingress.
+The split this document described never existed in the live infrastructure.
 
 The tunnel identifiers, the SSH hostname, and the authorized-user roster have
 been removed from this file. Deleting them from `HEAD` does not remove them
@@ -108,7 +107,7 @@ from git history; credential rotation is tracked privately in `internal-devops`.
 > alternatives are documented privately in `internal-devops`.
 
 **Components**:
-1. **Cloudflare Tunnel**: a single production tunnel carries all ingress (HTTP routes and the SSH jumphost). Name and ID are maintained in `internal-devops`.
+1. **Cloudflare Tunnel**: a single production tunnel carries all ingress. Name, ID and routing are maintained in `internal-devops`.
 2. **DNS**: SSH hostname CNAME -> `<tunnel-id>.cfargotunnel.com`
 3. **Access Application**: Zero Trust SSH app with GitHub IdP
 4. **Access Policy**: Email whitelist for authorized team members (roster in `internal-devops`)
