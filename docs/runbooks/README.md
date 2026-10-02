@@ -81,7 +81,7 @@ Internet
 Cloudflare Edge
    │
    ▼  single named Cloudflare Tunnel, all ingress
-cloudflared pods  (Deployment `cloudflared`, namespace `cloudflare-tunnel`)
+cloudflared pods
    │
    ▼  plain HTTP on port 80
 Kubernetes Service :80
@@ -90,11 +90,13 @@ Kubernetes Service :80
 Container port (per service)
 ```
 
-- 3-node bare-metal k3s cluster on Hetzner: 2 dedicated servers plus 1 cloud
-  VPS used solely as a CI builder, isolated by the taint `builder=true:NoSchedule`.
+- 4-node bare-metal k3s cluster on Hetzner: one control-plane node, one worker
+  and two CI builders (four nodes since 2026-08-06). Per-node detail is private;
+  see [`../PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md) for the public
+  statement of this shape.
 - Zero exposed node ports for application ingress — all public application
   traffic arrives through the tunnel.
-- Block storage: Longhorn CSI, 2-replica, `longhorn` StorageClass.
+- Block storage: Longhorn CSI.
 - Object storage: Cloudflare R2.
 
 Source: `internal-devops/infrastructure/nodes.md` and

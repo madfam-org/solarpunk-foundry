@@ -138,7 +138,7 @@ and only then face outward.
 |---|---|---|---|
 | **geom-core** | `geom-core` | C++17 geometry-analysis library exposed to WASM + Python. Apache-2.0 per its LICENSE. Used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`). A library, not a service — no deployed domain. | — *(none; `geom-core.dev` was never registered)* |
 | **Avala** 🔒 | `avala` | Learning-verification engine (Mexico EC/CONOCER + DC-3). **Repo flipped private on 2026-07-16.** | `avala.studio` (landing), `app.avala.studio`, `admin.avala.studio`, `api.avala.studio` — landing/app split repointed 2026-07-18; `admin.` recorded live since 2026-07 |
-| **routecraft** 🔒 | `routecraft` | Trip-engine SaaS. Today's payment-event emitter (§IV.3), which the ratified target moves to Dhanam. | `routecraft.app` |
+| **routecraft** 🔒 | `routecraft` | Trip-engine SaaS. Today's payment-event emitter (§IV.4), which the ratified target moves to Dhanam. | `routecraft.app` |
 
 ### 🍎 Layer 4 — Fruit (user platforms)
 
@@ -164,10 +164,10 @@ and only then face outward.
 
 | Platform | Repo | Role | Domains |
 |---|---|---|---|
-| **PhyndCRM** | `phynd-crm` | Client-facing deliverables portal — one pane of glass per engagement, federating data from other MADFAM platforms without duplicating it. Hosts `POST /api/webhooks/routecraft` and `/api/v1/probe/{leads,attribution}`. | **`phynd.app` is registered and live** (probed 2026-08-24 — earlier editions said it was unregistered; that is settled). `crm.madfam.io` also still answers. |
+| **PhyndCRM** | `phynd-crm` | CRM — consent, campaigns, attribution. Hosts `POST /api/webhooks/routecraft` and `/api/v1/probe/{leads,attribution}`. | **`phynd.app` is registered and live** (probed 2026-08-24 — earlier editions said it was unregistered; that is settled). `crm.madfam.io` also still answers. |
 | **Nauta** 🔒 | `nauta` | Fractional-CTO operating system — staff cockpit plus white-labeled client workspaces served on per-client hosts. The delivery layer through which client engagements exercise the rest of the ecosystem. | Public front door **`nauta.quest`** (+ `www.`); auth-gated staff cockpit **`app.nauta.quest`** (since the 2026-08-30 cutover) — both 200 on 2026-09-23. Client workspaces are auth-gated on client-owned hosts. `cto.madfam.io` is **retired** (404) — never cite it. |
 | **Angelia** 🔒 | `angelia` | Messaging platform. Its **Courier** is the only path for third-party messaging (email, chat, SMS, push to people outside the platform) from any MADFAM service — owner ruling, 2026-09-05. **Multi-tenant** per angelia ADR-0011 (ratified 2026-09-21/22, superseding the single-tenant ADR-0009): cluster-per-tenant for external clients, a shared control plane + Courier for MADFAM's own estate. | `angelia.run`, `api.angelia.run` — both 200 on 2026-09-23. |
-| **Selva** | `selva-office` | AI workforce / office simulator; agent orchestration. Owns the ecosystem's LLM inference chokepoint (§IV.3). **The GitHub repo is still named `selva-office`; the rename to `selva` remains pending (re-checked 2026-08-24).** | `selva.town` + `api.`, `app.`, `admin.`, `ws.`, `gw.`, `www.` — all re-probed live 2026-08-24. Plus `inference.selva.town` for the inference gateway (`/health` 200, re-probed 2026-08-24). |
+| **Selva** | `selva-office` | AI workforce / office simulator; agent orchestration. Owns the ecosystem's LLM inference chokepoint (§IV.3, LLM inference). **The GitHub repo is still named `selva-office`; the rename to `selva` remains pending (re-checked 2026-08-24).** | `selva.town` + `api.`, `app.`, `admin.`, `ws.`, `gw.`, `www.` — all re-probed live 2026-08-24. Plus `inference.selva.town` for the inference gateway (`/health` 200, re-probed 2026-08-24). |
 
 > **Standing route warnings** (`domain-map.md`, verified 2026-07-01):
 > - `agents-*.madfam.io` and `selva.madfam.io` are **retired** — no tunnel ingress rules, they return 502. Do not resurrect them.
@@ -290,7 +290,7 @@ contact with us.
 | Hiring / verification | **Avala** |
 | Compliance | **Karafiel** + **Tezca** |
 | Customer discovery | **Coforma Studio** + **PhyndCRM** |
-| Revenue attribution | payment emitter → **Dhanam** ledger + **PhyndCRM** conversions (§IV.3) |
+| Revenue attribution | payment emitter → **Dhanam** ledger + **PhyndCRM** conversions (§IV.4) |
 
 *This is the mandate, i.e. intent. It is not a claim that each row is currently exercised in
 production; §VI records where the commercial loop actually stands.*

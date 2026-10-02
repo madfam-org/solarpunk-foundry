@@ -113,7 +113,7 @@ counted here.
 | `routecraft` | `enclii.yaml` + `.enclii.yml` | dashboard `3000`; admin `3002`; bff `8081` *(from `.enclii.yml` only)* | — none — | — |
 | `selva-office` | `enclii.yaml` | nexus-api `4300`; colyseus `4303`; gateway `4304`; inference-gateway `4306`; office-ui `3000`; admin `3000` | — none — | — |
 | `server-auction-tracker` | `enclii.yaml` | deal-sniper `4205` | — none — | — |
-| `sim4d` | `.enclii.yml` | sim4d `3000` | 4800-4899 | no |
+| `sim4d` | `.enclii.yml` | sim4d `3000` | 4800-4899 — **retired 2026-08-30** | no |
 | `solarpunk-foundry` | `.enclii.yml` | npm-registry `4873` | — none — | — |
 | `subtext` | `.enclii.yml` | api `8000`; realtime `8001`; web `3000` | — none — | — |
 | `symbiosis-hcm` | `enclii.yaml` + `.enclii.yml` | symbiosis-hcm `8000` | — none — | — |
@@ -226,7 +226,7 @@ Two code paths.
 | 4500-4599 | Stem — Cotiza | Cotiza API (4500+), UI, admin |
 | 4600-4699 | Stem — Avala | Avala API (4600+), UI, admin, assess |
 | 4700-4799 | Fruit — Dhanam | Dhanam API (4700+), Web, admin |
-| 4800-4899 | Fruit — Sim4D | Sim4D Studio (4800+), Collaboration WS (+20) |
+| 4800-4899 | **Retired 2026-08-30** (was Fruit — Sim4D) | Unallocated; the product was retired 2026-08-30. Do not reuse without a registry entry |
 | 4900-4999 | Fruit — Forj | Forj API, storefront, admin |
 | 5050-5149 | Fruit — Coforma | Coforma Studio (skips 5000 to avoid Flask default) |
 | 5150-5249 | Fruit — Galvana | Galvana API (5150+), UI, +60 compute |

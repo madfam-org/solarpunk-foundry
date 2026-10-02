@@ -345,4 +345,4 @@ Changes to this package require governance approval because they affect the enti
 
 ## License
 
-MIT © Innovaciones MADFAM SAS de CV
+MIT © Innovaciones MADFAM S.A.S. de C.V.

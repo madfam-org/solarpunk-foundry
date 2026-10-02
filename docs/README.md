@@ -81,7 +81,7 @@ Cluster shape: [`ECOSYSTEM.md`](../ECOSYSTEM.md) §4 (the maintained statement).
 | [`archive/ECOSYSTEM_STATUS.md`](./archive/ECOSYSTEM_STATUS.md) | 2026-07-25 route inventory; superseded by README §II and ECOSYSTEM.md |
 | [`archive/INFRASTRUCTURE_STATUS.md`](./archive/INFRASTRUCTURE_STATUS.md) | 2026-07-25 declared configuration; superseded by ECOSYSTEM.md §4 |
 | [`archive/MONETIZATION_PATH_READINESS.md`](./archive/MONETIZATION_PATH_READINESS.md) | Pre-first-charge readiness; overtaken on 2026-08-02; contract text lives in README §IV.4 |
-| [`archive/CLUSTER_ARCHITECTURE.md`](./archive/CLUSTER_ARCHITECTURE.md) | Describes a 3-node cluster; it has been 4 nodes since 2026-08-06 |
+| [`archive/CLUSTER_ARCHITECTURE.md`](./archive/CLUSTER_ARCHITECTURE.md) | Describes the earlier three-node cluster; it has been 4 nodes since 2026-08-06 |
 | [`archive/FEDERATED_ARCHITECTURE_README.md`](./archive/FEDERATED_ARCHITECTURE_README.md) | Historical 2025-11-24 local-dev refactor |
 | [`archive/SELF_CONTAINED_SERVICES.md`](./archive/SELF_CONTAINED_SERVICES.md) | Position paper the ecosystem partly did not follow |
 

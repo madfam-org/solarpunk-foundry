@@ -52,4 +52,4 @@ Publishable-shaped (`private: false`, versioned, `files`, `publishConfig`) and
 
 ## License
 
-MIT © Innovaciones MADFAM SAS de CV
+MIT © Innovaciones MADFAM S.A.S. de C.V.
