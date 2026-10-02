@@ -30,9 +30,10 @@ a contemporaneous record.
 - **Sim4D residue removed** from the three `ops/bin` port scripts and the
   Redis DB table; its port range 4800-4899 is marked retired 2026-08-30 in
   `docs/PORT_ALLOCATION.md`.
-- **Vercel residue:** `@madfam/sentry` no longer adds a `vercel_env` tag
-  (source only; ships with the next `@madfam/sentry` publish). DocGuard now
-  suggests "Enclii" for "vercel".
+- **Retired deploy-platform residue:** `@madfam/sentry` no longer adds the
+  former third-party hosting platform's environment tag (source only; ships
+  with the next `@madfam/sentry` publish). DocGuard's terminology map now
+  suggests "Enclii", the only deploy path, as that platform's replacement.
 - **Legal name punctuation** "S.A.S. de C.V." in the `core`, `eslint-config`,
   `prettier-config` and `tsconfig` READMEs.
 
