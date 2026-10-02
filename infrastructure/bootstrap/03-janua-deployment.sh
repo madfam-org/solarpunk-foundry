@@ -92,7 +92,7 @@ API_PORT=8000
 LOG_LEVEL=info
 
 # Database - CRITICAL: Using ZFS-backed PostgreSQL
-DATABASE_URL=postgresql://janua:JANUA_DB_PASSWORD@postgres-shared:5432/janua_prod
+DATABASE_URL=postgresql://janua:<SECRET_FROM_VAULT>@postgres-shared:5432/janua_prod
 DATABASE_POOL_MIN=2
 DATABASE_POOL_MAX=10
 
@@ -100,12 +100,10 @@ DATABASE_POOL_MAX=10
 REDIS_URL=redis://redis-shared:6379/0
 REDIS_SESSION_TTL=86400
 
-# Security - CRITICAL: Generate strong secrets
-JWT_SECRET=JANUA_JWT_SECRET
-JWT_ALGORITHM=HS256
-JWT_EXPIRATION=3600
-COOKIE_SECRET=JANUA_COOKIE_SECRET
-ENCRYPTION_KEY=JANUA_ENCRYPTION_KEY
+# Security: signing keys, cookie and encryption secrets were removed from this
+# historical template on 2026-10-01. Janua signs RS256 and is verified through
+# its public JWKS; a shared symmetric JWT secret is not part of the contract.
+# Production secrets are issued through Enclii into the secret store.
 
 # OAuth Providers (configure as needed)
 GOOGLE_CLIENT_ID=
@@ -120,7 +118,7 @@ SMTP_HOST=smtp.madfam.io
 SMTP_PORT=587
 SMTP_SECURE=false
 SMTP_USER=janua@madfam.io
-SMTP_PASS=JANUA_SMTP_PASSWORD
+SMTP_PASS=<SECRET_FROM_VAULT>
 SMTP_FROM=Janua <noreply@janua.dev>
 
 # Feature Flags
@@ -251,7 +249,7 @@ services:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=POSTGRES_ROOT_PASSWORD
+      - POSTGRES_PASSWORD=<SECRET_FROM_VAULT>
       - POSTGRES_DB=postgres
       - POSTGRES_INITDB_ARGS=--encoding=UTF8 --data-checksums
       - POSTGRES_HOST_AUTH_METHOD=md5
@@ -402,75 +400,12 @@ CREATE INDEX idx_sessions_token ON auth.sessions(token);
 CREATE INDEX idx_organizations_slug ON auth.organizations(slug);
 EOF
 
-# 6. Generate secrets
-log_info "Generating secure secrets..."
-
-cat > "$JANUA_DIR/generate-secrets.sh" << 'EOF'
-#!/bin/bash
-# Generate secure secrets for Janua
-
-generate_secret() {
-    openssl rand -hex 32
-}
-
-generate_password() {
-    openssl rand -base64 24
-}
-
-echo "Generating Janua secrets..."
-
-# Generate secrets
-JANUA_DB_PASSWORD=$(generate_password)
-JANUA_JWT_SECRET=$(generate_secret)
-JANUA_COOKIE_SECRET=$(generate_secret)
-JANUA_ENCRYPTION_KEY=$(generate_secret)
-JANUA_SMTP_PASSWORD=$(generate_password)
-POSTGRES_ROOT_PASSWORD=$(generate_password)
-ENCLII_DB_PASSWORD=$(generate_password)
-
-# Update .env.production file
-sed -i "s/JANUA_DB_PASSWORD/${JANUA_DB_PASSWORD}/g" .env.production
-sed -i "s/JANUA_JWT_SECRET/${JANUA_JWT_SECRET}/g" .env.production
-sed -i "s/JANUA_COOKIE_SECRET/${JANUA_COOKIE_SECRET}/g" .env.production
-sed -i "s/JANUA_ENCRYPTION_KEY/${JANUA_ENCRYPTION_KEY}/g" .env.production
-sed -i "s/JANUA_SMTP_PASSWORD/${JANUA_SMTP_PASSWORD}/g" .env.production
-
-# Update docker-compose file
-sed -i "s/POSTGRES_ROOT_PASSWORD/${POSTGRES_ROOT_PASSWORD}/g" docker-compose.production.yml
-
-# Save secrets to secure location
-cat > /opt/solarpunk/secrets/janua-secrets.env << EOL
-# Janua Secrets - Generated $(date)
-JANUA_DB_PASSWORD=${JANUA_DB_PASSWORD}
-JANUA_JWT_SECRET=${JANUA_JWT_SECRET}
-JANUA_COOKIE_SECRET=${JANUA_COOKIE_SECRET}
-JANUA_ENCRYPTION_KEY=${JANUA_ENCRYPTION_KEY}
-JANUA_SMTP_PASSWORD=${JANUA_SMTP_PASSWORD}
-POSTGRES_ROOT_PASSWORD=${POSTGRES_ROOT_PASSWORD}
-ENCLII_DB_PASSWORD=${ENCLII_DB_PASSWORD}
-EOL
-
-chmod 600 /opt/solarpunk/secrets/janua-secrets.env
-echo "Secrets generated and saved to /opt/solarpunk/secrets/janua-secrets.env"
-
-# Create variables file for database init
-cat > init-vars.sh << EOL
-export janua_password='${JANUA_DB_PASSWORD}'
-export enclii_password='${ENCLII_DB_PASSWORD}'
-EOL
-EOF
-
-chmod +x "$JANUA_DIR/generate-secrets.sh"
-"$JANUA_DIR/generate-secrets.sh"
-
-# 7. Generate JWT keys for production
-log_info "Generating JWT keys..."
-
-mkdir -p "$JANUA_DIR/keys"
-openssl genrsa -out "$JANUA_DIR/keys/private.pem" 4096
-openssl rsa -in "$JANUA_DIR/keys/private.pem" -pubout -out "$JANUA_DIR/keys/public.pem"
-chmod 600 "$JANUA_DIR/keys/private.pem"
-chmod 644 "$JANUA_DIR/keys/public.pem"
+# 6-7. Secret and signing-key generation — REMOVED 2026-10-01.
+# This historical script used to generate database passwords, a symmetric JWT
+# secret and an RSA signing key on the host, substitute them into the files
+# above and store them on disk. That procedure is not published here: secret
+# handling is private (internal-devops) and production secrets are issued
+# through Enclii (`enclii secrets intake`). See docs/PUBLIC_REPO_BOUNDARY.md.
 
 # 8. Build Janua images
 log_info "Building Janua Docker images..."
@@ -575,5 +510,3 @@ echo "Admin Port: 8011"
 echo "PostgreSQL Port: 5432 (ZFS-backed at /data/postgres)"
 echo "Redis Port: 6379"
 echo ""
-echo "Secrets saved to: /opt/solarpunk/secrets/janua-secrets.env"
-echo "JWT keys saved to: $JANUA_DIR/keys/"

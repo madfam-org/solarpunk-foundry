@@ -14,7 +14,6 @@
 > - Repo names / visibility / roles — `internal-devops/ecosystem/repo-registry.md`, *Last Updated 2026-09-12*; org counts re-enumerated live on 2026-09-23 (`README.md` §II.7).
 > - Routes and domains — `internal-devops/ecosystem/domain-map.md`, *Last Updated 2026-09-12*; last full live HTTP probe of every routed domain 2026-08-24; hosts re-probed 2026-09-23 say so inline.
 > - Topology — `internal-devops/infrastructure/nodes.md` (*Last Updated 2026-08-05*; 4-node cluster since 2026-08-06) and `topology.md` (*refreshed 2026-08-24*).
-> - GitOps app count — live `enclii ops apps status` control-plane read, 2026-08-24.
 > - Enclii CLI surface — read from `enclii/packages/cli/internal/cmd/` on 2026-07-25.
 > - Inference endpoint — `internal-devops` cutover record 2026-07-07; gateway `/health` re-probed 200 on 2026-08-24.
 >
@@ -327,70 +326,27 @@ authorization as the HTTP endpoint, a coverage guard against drift, and read-onl
 
 ## 4. Production topology — shape only
 
-> Boundary checkpoint: node hostnames, IPs, hardware models, capacity figures, costs and the
-> Cloudflare tunnel identifier are documented **only** in `internal-devops`. This section
-> keeps shape.
->
-> **Figures below carry the date of their source:** node shape from
-> `internal-devops/infrastructure/nodes.md` (*Last Updated 2026-08-05*, 4-node cluster since
-> 2026-08-06); GitOps app counts from a live `enclii ops apps status` read on **2026-08-24**;
-> anything still dated 2026-05-04 says so inline and has not been re-verified since.
+> Boundary checkpoint (revised 2026-10-01): this section states only the public
+> shape that [`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md)
+> defines. Node identity, per-node scheduling and placement, controller and
+> namespace names, storage replication, application counts, hardware,
+> capacity, costs and the Cloudflare tunnel identifier are documented **only**
+> in `internal-devops`.
 
-**Cluster.** Bare-metal k3s (v1.33.7+k3s3 — re-attested 2026-08-06 when the fourth node
-joined at that version), **4 nodes**, all at Hetzner:
+> A 4-node bare-metal k3s cluster on Hetzner — one control-plane node, one
+> worker and two CI builders — with ingress via a single Cloudflare Tunnel and
+> zero exposed node ports for application traffic. Block storage is Longhorn
+> CSI; object storage is Cloudflare R2. GitOps is ArgoCD in an App-of-Apps
+> pattern.
 
-- one control-plane node — control plane + primary workload
-- one worker node — workloads + the Longhorn second replica
-- two CI builder nodes — one a Hetzner **Cloud** instance, one dedicated hardware (added
-  2026-08-06, removing the single-builder SPOF); both tainted `builder=true:NoSchedule` and
-  labelled `role=builder`, so only ARC GitHub Actions runners schedule there
-
-**Ingress.** Internet → Cloudflare edge → cloudflared pods → K8s Service:80 → container port.
-TLS terminates at the Cloudflare edge, which also handles DDoS mitigation; the origin leg from
-cloudflared to the Service is plain HTTP on port 80.
-
-A **single** named Cloudflare Tunnel carries all ingress — every HTTP product route plus the
-SSH jumphost. Earlier docs describing separate product/SSH tunnels described a split that
-never existed in the live infrastructure (`domain-map.md`, verified 2026-07-01).
-
-`cloudflared` runs as a Deployment named `cloudflared` in a dedicated `cloudflare-tunnel`
-namespace. **Replica count: documented as 2, but not verified since the 2026-02 ecosystem
-audit** — no 2026-05-or-later document restates it. Treat "2 replicas" as documented-but-unverified.
-
-**Zero exposed node ports** for application ingress — all public application traffic arrives
-through the tunnel. Read precisely: this means no NodePort application ingress. It does not
-mean nothing listens publicly on the nodes; the k3s API server and node SSH paths are
-documented privately.
-
-**Storage.** Longhorn CSI in 2-replica mode across the two non-tainted nodes, exposed as the
-`longhorn` StorageClass. Corroborated independently by a 2026-04 platform audit and by
-manifests requesting `storageClass: longhorn`. The Longhorn **version** appears in exactly one
-place, undated — treat the version as **unverified**. Object storage is Cloudflare R2, chosen
-for zero egress cost; it is the destination for PostgreSQL logical backups, WAL archiving,
-repo backups, and per-product asset buckets.
-
-**GitOps.** ArgoCD App-of-Apps plus ApplicationSets, self-heal on (§3.8). **App count is
-now settled the way earlier editions asked for:** a live `enclii ops apps status` read on
-**2026-08-24** returned **81 Applications** (71 Healthy / 7 Degraded / 2 Progressing /
-1 Missing; 73 Synced). The old "28 apps across 22 namespaces" was the 2026-05-04 snapshot;
-the namespace count has **not** been re-read and should be treated as stale.
-
-**Service count.** "81 ArgoCD Applications (2026-08-24)" is the one dated control-plane
-measurement this document can now cite. It is an *Application* count, not a per-container
-"service" count — routed hostnames (the private domain map's route table, re-verified
-2026-08-24) and K8s Services are different measurements again. Name the measurement when
-quoting a number.
+Node count from the private node inventory (four nodes since 2026-08-06);
+re-stated here 2026-10-01. Anything more specific than that paragraph needs a
+deliberate decision, not a default.
 
 **Secrets path — mechanism only.** HashiCorp Vault (KV v2) is the home; External Secrets
 Operator reads it through a ClusterSecretStore; a per-app ExternalSecret materializes a native
-K8s Secret in the app namespace; the Deployment consumes it via `envFrom`/`secretRef`. ESO
-refresh interval is 15 minutes; Stakater Reloader rolls consumers when the Secret changes.
+K8s Secret in the app namespace; the Deployment consumes it via `envFrom`/`secretRef`.
 Human-supplied production secrets go through `enclii secrets intake` rather than chat or git.
-
-*Important qualifier:* **not all services are Vault-backed.** At least two recent go-lives
-provision plain K8s Secrets out-of-band because the platform has no CLI surface to write Vault
-after onboarding — an Enclii adapter gap recorded 2026-07-10 and re-verified 2026-07-25. Those
-secrets sit outside the ESO refresh loop.
 
 Access policy: no credentials in chat, commits, logs, docs or agent memories. Human access is
 `enclii login` (browser SSO via Janua) creating an audited, revocable session; non-interactive
@@ -555,18 +511,13 @@ Stated explicitly so nobody has to rediscover them:
 
 | Gap | Status |
 |---|---|
-| ~~ArgoCD app count contradicted~~ | **SETTLED 2026-08-24:** `enclii ops apps status` → 81 Applications (71 Healthy / 73 Synced) |
-| ~~Service count (~40 / 93 / ~90 across three sources)~~ | **SETTLED enough 2026-08-24:** cite "81 ArgoCD Applications (2026-08-24)" and name the measurement; hostname and K8s-Service counts remain separate measurements |
-| ~~k3s version unverified since 2026-05-04~~ | **RE-ATTESTED 2026-08-06:** the fourth node (the dedicated CI builder) joined at v1.33.7+k3s3 (`internal-devops/infrastructure/nodes.md`) |
+| Cluster detail — application and namespace counts, component versions, controller replica counts | **Moved out 2026-10-01:** §4 now carries only the public shape; these measurements are tracked in `internal-devops` |
 | ~~Whether `eido.cam` is live~~ | **SETTLED 2026-08-24:** live — `eido.cam` 200, `api.eido.cam/health` 200 |
-| `cloudflared` replica count unverified since 2026-02 | still open — read the live Deployment via `enclii ops pods`, record the date |
 | Kyverno PolicyException count: 8 vs 13, both dated 2026-05-04 | still open — `enclii ops policy`, or read the exception manifests at a named commit |
 | Whether `require-image-digest` is Audit or Enforce today | still open — read the ClusterPolicy `validationFailureAction` in the enclii repo at HEAD |
-| Longhorn version (`v1.7+`, single undated mention) | still open — `enclii ops storage` version output, or the Helm chart pin in GitOps |
 | Whether the auto-digest pipeline is healthy fleet-wide | still open — most recent digest-commit date per repo's production `kustomization.yaml` |
 | Per-surface Janua SSO enforcement | still open — commit the SSO uniformity matrix to `internal-devops` and cite it by path |
 | Whether the `@madfam/*` versions are on `npm.madfam.io` | still open for the private registry; **public npm checked 2026-08-24:** only `@madfam/core@0.1.0` is published there |
-| Cluster namespace count | newly listed — the "22 namespaces" figure is the 2026-05-04 snapshot and predates the 2026-08 onboarding wave; one `enclii ops pods` namespace read would settle it |
 
 ---
 
@@ -578,7 +529,9 @@ header, and was **re-verified on 2026-08-24** against a same-day live refresh of
 registries (repo enumeration, HTTP probes of every routed domain, and an `enclii ops apps
 status` control-plane read) — which settled the ArgoCD-count, service-count, k3s-version and
 eido gaps §6 had carried, corrected the topology to 4 nodes, and updated meridian to
-partially-live.
+partially-live. On **2026-10-01** §4 was cut to the public shape defined in
+`docs/PUBLIC_REPO_BOUNDARY.md`; the cluster measurements it used to carry moved to
+`internal-devops`.
 The corrections it needed included: a Selva inference endpoint that had moved (2026-07-07), a
 platform table that linked private repos as public, a claim that this repo hosts the Verdaccio
 registry, a secret-store path that should never have been public, and an unsubstituted

@@ -50,16 +50,16 @@ detail lives in the private `internal-devops` repo, pointed to by name only.
   hosts `leyes-como-codigo-mx`.
 - **Primary canonical domain:** [`madfam.io`](https://madfam.io). Status board at
   [`status.madfam.io`](https://status.madfam.io) — the only surface reporting live state.
-- **Infrastructure shape** *(per `internal-devops/infrastructure/nodes.md`, Last Updated
-  2026-08-05)*: **4-node** bare-metal k3s cluster — one control-plane node, one worker, and
-  **two CI builders** (one cloud instance, one dedicated box added 2026-08-06, which removed
-  the single-builder SPOF), both tainted so only ARC runners schedule on them.
-  Ingress is a **single** Cloudflare Tunnel with zero exposed node ports and TLS terminated at
-  the Cloudflare edge. GitOps via ArgoCD with self-heal on. Longhorn CSI 2-replica block
-  storage; Cloudflare R2 object storage. Prometheus + Grafana + Alertmanager. Kyverno, mostly
-  in Audit mode (see [`ECOSYSTEM.md`](ECOSYSTEM.md) §3.6 for what actually fail-closes).
-  **All specifics — IPs, hardware, hostnames, capacity, costs, SSH targets, tunnel identifier
-  — live in `internal-devops/infrastructure/` and never in a public repo.**
+- **Infrastructure shape** *(the public paragraph in
+  [`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md); four nodes since
+  2026-08-06, re-stated 2026-10-01)*: **4-node** bare-metal k3s cluster on Hetzner — one
+  control-plane node, one worker and two CI builders — with ingress via a single Cloudflare
+  Tunnel and zero exposed node ports for application traffic. Longhorn CSI block storage;
+  Cloudflare R2 object storage; ArgoCD GitOps in an App-of-Apps pattern. Kyverno policy
+  posture: see [`ECOSYSTEM.md`](ECOSYSTEM.md) §3.6.
+  **All specifics — IPs, hardware, hostnames, per-node scheduling, capacity, costs, SSH
+  targets, tunnel identifier — live in `internal-devops/infrastructure/` and never in a
+  public repo.**
 
 ---
 

@@ -104,17 +104,8 @@ from git history; credential rotation is tracked privately in `internal-devops`.
 - **Access policies** — restrict by email, IP, device posture
 - **Session recording** (optional) for compliance
 
-> **Do not read this as an absolute posture.** Cloudflare Access with MFA is the
-> *supported operator path*, not the only path that exists. `internal-devops/access/`
-> (last updated 2026-05-04) documents additional key-only direct paths per node
-> that are **not** MFA-gated and **not** Cloudflare-audited. Earlier revisions of
-> this file asserted "no direct IP access", "MFA enforced", "no root SSH" and
-> "all connections audit-logged" as blanket facts; each is contradicted as an
-> absolute by that private record. The specific paths are deliberately not
-> enumerated here.
->
-> Separately: "zero exposed node ports" in the ecosystem docs means **no NodePort
-> application ingress**. It does not mean nothing listens publicly on the nodes.
+> **Scope (revised 2026-10-01):** the supported path is Cloudflare Access;
+> alternatives are documented privately in `internal-devops`.
 
 **Components**:
 1. **Cloudflare Tunnel**: a single production tunnel carries all ingress (HTTP routes and the SSH jumphost). Name and ID are maintained in `internal-devops`.
