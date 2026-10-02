@@ -17,7 +17,7 @@
 ## What is public
 
 **Where data lives.** PostgreSQL and Redis run as in-cluster workloads on
-Longhorn-backed persistent volumes (`longhorn` StorageClass, 2-replica).
+Longhorn-backed persistent volumes.
 Object storage — including backup destinations — is Cloudflare R2, chosen for
 zero egress cost.
 *Source: `internal-devops/ECOSYSTEM.md` and
@@ -49,6 +49,7 @@ record.
 - `internal-devops/runbooks/disaster-recovery.md`
 - `internal-devops/runbooks/postgres-wal-archiving.md`
 - `internal-devops/access/storage-box-runbook.md` (off-site target)
+- `internal-devops/scripts/backup-registry.sh` — the package-registry backup script, moved there from this repo's `scripts/` on 2026-10-01
 
 ## What would settle the open items
 

@@ -23,9 +23,8 @@ This document describes the public-safe SSH access pattern for Solarpunk Foundry
 Earlier revisions of this document named two separate Cloudflare tunnels
 (a product tunnel and an SSH tunnel) and published one tunnel's ID.
 Per `internal-devops/ecosystem/domain-map.md` (last verified 2026-07-01),
-**there is a single production Cloudflare Tunnel** carrying all ingress —
-every HTTP product route *and* the SSH jumphost. The split this document
-described never existed in the live infrastructure.
+**there is a single production Cloudflare Tunnel** carrying all ingress.
+The split this document described never existed in the live infrastructure.
 
 The tunnel identifiers, the SSH hostname, and the authorized-user roster have
 been removed from this file. Deleting them from `HEAD` does not remove them
@@ -104,20 +103,11 @@ from git history; credential rotation is tracked privately in `internal-devops`.
 - **Access policies** — restrict by email, IP, device posture
 - **Session recording** (optional) for compliance
 
-> **Do not read this as an absolute posture.** Cloudflare Access with MFA is the
-> *supported operator path*, not the only path that exists. `internal-devops/access/`
-> (last updated 2026-05-04) documents additional key-only direct paths per node
-> that are **not** MFA-gated and **not** Cloudflare-audited. Earlier revisions of
-> this file asserted "no direct IP access", "MFA enforced", "no root SSH" and
-> "all connections audit-logged" as blanket facts; each is contradicted as an
-> absolute by that private record. The specific paths are deliberately not
-> enumerated here.
->
-> Separately: "zero exposed node ports" in the ecosystem docs means **no NodePort
-> application ingress**. It does not mean nothing listens publicly on the nodes.
+> **Scope (revised 2026-10-01):** the supported path is Cloudflare Access;
+> alternatives are documented privately in `internal-devops`.
 
 **Components**:
-1. **Cloudflare Tunnel**: a single production tunnel carries all ingress (HTTP routes and the SSH jumphost). Name and ID are maintained in `internal-devops`.
+1. **Cloudflare Tunnel**: a single production tunnel carries all ingress. Name, ID and routing are maintained in `internal-devops`.
 2. **DNS**: SSH hostname CNAME -> `<tunnel-id>.cfargotunnel.com`
 3. **Access Application**: Zero Trust SSH app with GitHub IdP
 4. **Access Policy**: Email whitelist for authorized team members (roster in `internal-devops`)

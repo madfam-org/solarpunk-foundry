@@ -58,13 +58,13 @@ spread across 18 public repositories. Lane A is the only allowed home for:
 - raw break-glass `kubectl` / SSH procedures
 - the authoritative domain map and repo registry
 
-Topology SHAPE is public and stays public: a 4-node bare-metal k3s cluster on
-Hetzner (two dedicated workload nodes plus two CI builders — one cloud, one
-dedicated, the latter added 2026-08-06), ingress via a single Cloudflare Tunnel
-with zero exposed node ports, TLS terminated at the Cloudflare edge, Longhorn
-CSI block storage, Cloudflare R2 object storage, ArgoCD GitOps with self-heal
-on (81 Applications at the 2026-08-24 control-plane read). Node shape carries
-the 2026-08-05 date of the private infrastructure records.
+Topology SHAPE is public and stays public, exactly as
+docs/PUBLIC_REPO_BOUNDARY.md defines it: a 4-node bare-metal k3s cluster on
+Hetzner (one control-plane node, one worker and two CI builders), ingress via a
+single Cloudflare Tunnel with zero exposed node ports for application traffic,
+Longhorn CSI block storage, Cloudflare R2 object storage, ArgoCD GitOps in an
+App-of-Apps pattern. Four nodes since 2026-08-06 (re-stated 2026-10-01). Anything
+more specific is private.
 
 ## Lane map
 
@@ -214,7 +214,7 @@ Root documents:
 - package.json, pnpm-workspace.yaml, pnpm-lock.yaml, .npmrc
 - .enclii.yml (unreconciled with the live Verdaccio manifests — see below)
 - docker-compose.yml (currently broken — see below)
-- .env.example, playwright.config.ts, .eslintrc.cjs
+- .env.example, .eslintrc.cjs
 
 packages/ — 16 directories: 15 packages and one tombstone. analytics,
 auth-resilience, constants, core, ecosystem-banner, env, error-boundary,
@@ -256,10 +256,11 @@ docs/
   FEDERATED_ARCHITECTURE_README.md, SELF_CONTAINED_SERVICES.md
 - docs/runbooks/ — UNDER REVIEW, see caveats below
 
-scripts/ — backup-registry.sh, boundary-checkpoint-check.sh, build-and-tag.sh,
+scripts/ — boundary-checkpoint-check.sh, build-and-tag.sh,
 check-action-pins.sh, check-package-scripts.mjs, check-product-projection.mjs,
 check-production-readiness-ratchet.py, check-shared-configs.mjs,
 cleanup-legacy-deployments.sh, public-hygiene-check.sh, publish-all-sdks.sh.
+(backup-registry.sh moved to the private internal-devops repo on 2026-10-01.)
 Each guard has a self-test beside it (check-*.test.mjs, scripts/tests/*.sh) that
 CI runs BEFORE the guard. scripts/archive/ holds retired scripts — record only,
 never run: publish-ui.sh and link-ecosystem.sh, both retired with @madfam/ui on

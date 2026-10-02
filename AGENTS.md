@@ -91,13 +91,14 @@ numbers or capacity figures, the Cloudflare tunnel identifier, cost or
 procurement data, Vault paths or secret names with retrieval detail, raw
 break-glass `kubectl`/SSH procedures, incident evidence trails.
 
-**Already public and stays public:** the topology *shape* — a **4-node** bare-metal
-k3s cluster on Hetzner (one control-plane node, one worker and two CI builders —
-one cloud instance, one dedicated box added 2026-08-06, which removed the
-single-builder SPOF), ingress via a single Cloudflare Tunnel with zero exposed
-node ports, Longhorn CSI block storage, Cloudflare R2 object storage, ArgoCD
-GitOps with self-heal. See [`MADFAM.md`](MADFAM.md) §1.2 and
-[`ECOSYSTEM.md`](ECOSYSTEM.md) §4 for the maintained statement of this shape.
+**Already public and stays public:** the topology *shape*, exactly as
+[`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md) defines it — a
+**4-node** bare-metal k3s cluster on Hetzner (one control-plane node, one worker
+and two CI builders), ingress via a single Cloudflare Tunnel with zero exposed
+node ports for application traffic, Longhorn CSI block storage, Cloudflare R2
+object storage, ArgoCD GitOps in an App-of-Apps pattern. Anything more specific
+needs a deliberate decision; [`ECOSYSTEM.md`](ECOSYSTEM.md) §4 restates the same
+paragraph and nothing more (trimmed 2026-10-01).
 
 CI covers part of this for you, but not all of it. As of 2026-09-04
 (`scripts/public-hygiene-check.sh`, read 2026-09-05):

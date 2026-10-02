@@ -89,19 +89,19 @@ wait_for_service "Redis" "docker exec redis-shared redis-cli ping"
 # 2. Initialize databases
 log_step "Initializing databases..."
 
-# Source the init variables
-source ./init-vars.sh
+# Database passwords: supplied from the secret store at run time; the
+# historical secret-generation step was removed 2026-10-01.
 
 # Initialize databases using psql
 docker exec -i postgres-shared psql -U postgres << EOF
 -- Create Janua database and user
 CREATE DATABASE IF NOT EXISTS janua_prod;
-CREATE USER IF NOT EXISTS janua WITH ENCRYPTED PASSWORD '${janua_password}';
+CREATE USER IF NOT EXISTS janua WITH ENCRYPTED PASSWORD '<SECRET_FROM_VAULT>';
 GRANT ALL PRIVILEGES ON DATABASE janua_prod TO janua;
 
 -- Create Enclii database and user
 CREATE DATABASE IF NOT EXISTS enclii_prod;
-CREATE USER IF NOT EXISTS enclii WITH ENCRYPTED PASSWORD '${enclii_password}';
+CREATE USER IF NOT EXISTS enclii WITH ENCRYPTED PASSWORD '<SECRET_FROM_VAULT>';
 GRANT ALL PRIVILEGES ON DATABASE enclii_prod TO enclii;
 
 -- Enable extensions in Janua database
@@ -130,9 +130,10 @@ cd /opt/solarpunk/enclii
 # Update Enclii's environment with Janua's actual URL
 sed -i "s|JANUA_URL=.*|JANUA_URL=http://janua-api:8000|g" .env.production
 
-# Load Janua client secret from saved secrets
-source /opt/solarpunk/secrets/janua-secrets.env
-sed -i "s|JANUA_CLIENT_SECRET=.*|JANUA_CLIENT_SECRET=${JANUA_JWT_SECRET}|g" .env.production
+# Janua client credentials: REMOVED 2026-10-01. This historical step copied a
+# signing secret into a client secret, which is the wrong architecture: an
+# OAuth client secret is issued by Janua per client and is never a signing key.
+# Client credentials are issued through Enclii into the secret store.
 
 # 5. Start Enclii services
 log_step "Starting Enclii services..."
@@ -266,51 +267,9 @@ EOF
 
 chmod +x /opt/solarpunk/scripts/*.sh
 
-# 9. Create first admin user in Janua
-log_step "Creating first admin user..."
-
-cat > /tmp/create-admin.sh << 'EOF'
-#!/bin/bash
-# Create initial admin user
-
-docker exec -i janua-api python << PYTHON
-import os
-import sys
-sys.path.insert(0, '/app')
-
-from app.models.user import User
-from app.core.database import SessionLocal
-from app.core.security import get_password_hash
-
-db = SessionLocal()
-
-admin_email = "<ADMIN_EMAIL>"   # supply at run time; not published in this repo
-admin_password = "ChangeMeImmediately!"
-
-# Check if admin exists
-existing = db.query(User).filter(User.email == admin_email).first()
-if not existing:
-    admin = User(
-        email=admin_email,
-        hashed_password=get_password_hash(admin_password),
-        is_active=True,
-        is_superuser=True,
-        email_verified=True
-    )
-    db.add(admin)
-    db.commit()
-    print(f"Admin user created: {admin_email}")
-    print(f"Temporary password: {admin_password}")
-    print("IMPORTANT: Change this password immediately!")
-else:
-    print("Admin user already exists")
-
-db.close()
-PYTHON
-EOF
-
-# Note: This will fail if the API isn't Python-based, adjust as needed
-bash /tmp/create-admin.sh 2>/dev/null || log_warn "Could not auto-create admin user, please create manually"
+# 9. First admin user — REMOVED 2026-10-01. This historical step created a
+# superuser with a fixed temporary password. Admin bootstrap is a Janua
+# operation and is documented privately, not in this public repository.
 
 # 10. Save deployment summary
 cat > /opt/solarpunk/DEPLOYMENT_SUMMARY.md << 'EOF'
@@ -318,7 +277,7 @@ cat > /opt/solarpunk/DEPLOYMENT_SUMMARY.md << 'EOF'
 
 ## Server Information
 - **Inventory**: See `internal-devops` for node IPs, hostnames, provider metadata, and SSH targets
-- **Topology**: 3-node cluster
+- **Topology**: 4-node cluster since 2026-08-06 (inventory in internal-devops)
 - **OS**: Ubuntu 24.04 LTS
 
 ## ZFS Configuration
@@ -348,7 +307,6 @@ cat > /opt/solarpunk/DEPLOYMENT_SUMMARY.md << 'EOF'
 ## Security
 - **Firewall**: UFW configured
 - **Docker**: ZFS storage driver
-- **Secrets**: `/opt/solarpunk/secrets/`
 
 ## Management Commands
 ```bash
