@@ -155,9 +155,11 @@ Full statements with sources and dates: `README.md` §IV.
 
 7. DATA BOUNDARIES — own once, query everywhere. Identity and sessions: Janua.
    Bank transactions and the billing ledger: Dhanam. Mexican law and compliance
-   rules: Tezca. CFDI/SAT/tax filings: Karafiel. Fabrication node capacity and
-   pricing: Forj. Manufacturing execution telemetry: Pravara MES. 3D geometry
-   kernel: geom-core.
+   rules: Tezca. CFDI/SAT/tax filings: Karafiel. MADFAM-operated fabrication
+   nodes (dispatch, execution, product passports): Pravara MES.
+   Partner-marketplace fabrication nodes: Forj, which consumes Forgesight.
+   Fabrication quoting and pricing: Cotiza. Manufacturing execution telemetry:
+   Pravara MES. 3D geometry kernel: geom-core.
 
 8. MESSAGING — Angelia Courier only (rulings 2026-09-05, 2026-09-23). Every
    message to a person or system outside the platform (email, chat, SMS, push,

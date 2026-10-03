@@ -287,7 +287,9 @@ bootstrapped, and CI self-skips green.
 | Bank transactions + billing ledger | Dhanam | API read; no local mirror |
 | Mexican law + compliance rules | Tezca | query `/api/v1/laws`; no fork |
 | CFDI / SAT / tax filings | Karafiel | single authority |
-| Fabrication node capacity + pricing | Forj | consume Forgesight |
+| MADFAM-operated fabrication nodes: dispatch, execution, product passports | Pravara MES | route jobs through Pravara; no direct dispatch |
+| Partner-marketplace fabrication nodes (listing) | Forj | consume Forgesight |
+| Fabrication quoting + pricing | Cotiza | request quotes; never price locally |
 | Manufacturing execution telemetry | Pravara MES | feeds PhyndCRM federation |
 | 3D geometry kernel | geom-core | used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`) |
 

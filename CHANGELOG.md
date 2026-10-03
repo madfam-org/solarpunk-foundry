@@ -14,6 +14,16 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-10-03 — Fabrication node ownership split by purpose
+
+- The "own once, query everywhere" row "Fabrication node capacity + pricing →
+  Forj" is replaced by three rows in `README.md` §IV.7, `ECOSYSTEM.md` §3.9,
+  `MADFAM.md` §3.4 and `llms-full.txt`: MADFAM-operated fabrication nodes
+  (dispatch, execution, product passports) → Pravara MES; partner-marketplace
+  fabrication nodes → Forj, which consumes Forgesight; fabrication quoting and
+  pricing → Cotiza. Owner decision 2026-10-03: two node registries, one per
+  purpose. `README.md` §IV.7 carries a short note under the table.
+
 ### 2026-10-01 — Front-door wording fixes (stability audit F1-004, F1-014, F1-020, F1-022, F1-023)
 
 - **PhyndCRM role line** is now "CRM — consent, campaigns, attribution." in
