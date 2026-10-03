@@ -350,7 +350,9 @@ each carry their own, byte-identical, implementation.
 | Bank transactions, wealth, **billing ledger** | Dhanam | reads via API; never stores |
 | Legal text, changelog, compliance rules | Tezca | queries `/api/v1/laws/...`; never forks |
 | CFDI / SAT / tax filings | Karafiel | single authority; consumes Dhanam + Tezca |
-| Fabrication node capacity + pricing | Forj | consumes Forgesight |
+| MADFAM-operated fabrication nodes: dispatch, execution, product passports | Pravara MES | routes jobs through Pravara; never dispatches directly |
+| Partner-marketplace fabrication nodes (listing) | Forj | consumes Forgesight |
+| Fabrication quoting + pricing | Cotiza | requests quotes from Cotiza; never prices locally |
 | Manufacturing execution telemetry | Pravara MES | feeds PhyndCRM federation |
 | 3D geometry kernel | geom-core | used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`) |
 

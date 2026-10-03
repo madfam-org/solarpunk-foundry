@@ -445,11 +445,19 @@ not to route around.
 | Bank transactions, wealth, **billing ledger** | Dhanam | API read; no local mirror |
 | Mexican law, changelog, compliance rules | Tezca | query `/api/v1/laws`; no local fork |
 | CFDI / SAT / tax filings | Karafiel | single authority |
-| Fabrication node capacity + pricing | Forj | consume Forgesight |
+| MADFAM-operated fabrication nodes: dispatch, execution, product passports | Pravara MES | route jobs through Pravara; never dispatch to a MADFAM machine directly |
+| Partner-marketplace fabrication nodes (listing) | Forj | consume Forgesight |
+| Fabrication quoting + pricing | Cotiza | request quotes from Cotiza; never price locally |
 | Manufacturing execution telemetry | Pravara MES | feeds PhyndCRM federation |
 | 3D geometry kernel | geom-core | used by Yantra4D (and Fashion Cabinet via `hyperobjects-spec`) |
 | Fashion-domain data: parametric pattern blocks + garments (FC-100), grading, fabric cards (physical + digital twin), construction techniques, tech packs | Fashion Cabinet | query the API; hard-goods solids federate to Yantra4D, never re-implemented |
 | Client brand assets: brand books, palettes, typography, logo variants, guidelines (multi-tenant DAM) | ceq | consume the `/v1/brand-kits/{id}/tokens` export; vendor into the app, never fork the source-of-truth |
+
+> **Fabrication nodes are registered by purpose** (owner decision 2026-10-03). Pravara MES
+> registers the fabrication machines MADFAM operates, for routing, the job lifecycle,
+> telemetry and product passports. Forj keeps a separate list of partner nodes for its
+> marketplace. Quoting and pricing belong to Cotiza: Pravara MES does not price, and a job
+> for a MADFAM-operated machine is dispatched only through Pravara MES.
 
 > **Brand DAM ↔ generation ↔ consumption — the three-way split.** ceq is both the
 > **system-of-record** for a client's *source* brand book (the curated, tenant-scoped
