@@ -176,9 +176,8 @@ Full statements with sources and dates: `README.md` §IV.
    portal scope ruled 2026-09-23). «Cambiar de cuenta» = authorize with
    prompt=select_account; «Entrar como otra persona» = prompt=login; sign-out
    = RP-initiated logout at Janua. Staff consoles get all three; client
-   portals get only «Entrar como otra persona» and sign-out; one client-owned
-   clinical application is exempt under its contract. Client-only change;
-   live on admin.enclii.dev and app.enclii.dev since 2026-09-21.
+   portals get only «Entrar como otra persona» and sign-out. Client-only
+   change; live on admin.enclii.dev and app.enclii.dev since 2026-09-21.
 
 10. AGENT SURFACE — an MCP equivalent per service API (direction 2026-09-22;
    Janua pilot in production 2026-09-22; NOT yet universal). Generated from
@@ -381,8 +380,9 @@ From internal-devops/ecosystem/domain-map.md, verified 2026-08-24:
   complete; the LLM gateway is inference.selva.town (NOT selva.town/v1).
 - auth.selva.town must NEVER be routed. Janua is single-issuer, so serving it
   there would emit issuer=auth.madfam.io and break OIDC validation.
-- metrics.enclii.dev is a retired alias with no DNS or tunnel route; the
-  canonical endpoint is prometheus.enclii.dev.
+- metrics.enclii.dev is a retired alias with no DNS or tunnel route. Metrics
+  endpoints are private: metrics are read through Grafana, which requires a
+  login (2026-10-04).
 - phynd.app IS registered and live (probed 2026-08-24); crm.madfam.io also
   still answers. Earlier editions said "not registered" — superseded.
 - innovacionesmadfam.dev was NEVER owned (owner confirmation 2026-07-09). Do not

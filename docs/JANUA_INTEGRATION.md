@@ -373,8 +373,7 @@ authorize request.
 
 With Auth.js the prompt is the third argument of `signIn`:
 `signIn('janua', { redirectTo }, { prompt: 'select_account' })`. Staff consoles expose all
-three controls; client portals expose only «Entrar como otra persona» and sign-out; one
-client-owned clinical application is exempt under its contract.
+three controls; client portals expose only «Entrar como otra persona» and sign-out.
 
 ---
 

@@ -311,9 +311,8 @@ state. Full text: `README.md` §IV.8.
 supports switching on the Enclii model: «Cambiar de cuenta» = authorize with
 `prompt=select_account`; «Entrar como otra persona» = `prompt=login`; sign-out = RP-initiated
 logout at Janua. Staff consoles get all three; client portals get only «Entrar como otra
-persona» and sign-out; one client-owned clinical application is exempt under its contract.
-Client-only change — live on `admin.enclii.dev` and `app.enclii.dev` since 2026-09-21. Full
-text: `README.md` §IV.9.
+persona» and sign-out. Client-only change — live on `admin.enclii.dev` and `app.enclii.dev`
+since 2026-09-21. Full text: `README.md` §IV.9.
 
 ### 3.12 Agent surface — MCP per service (pilot)
 
