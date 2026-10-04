@@ -172,7 +172,7 @@ and only then face outward.
 > **Standing route warnings** (`domain-map.md`, verified 2026-07-01):
 > - `agents-*.madfam.io` and `selva.madfam.io` are **retired** — no tunnel ingress rules, they return 502. Do not resurrect them.
 > - `auth.selva.town` must **never** be routed. Janua is single-issuer per deployment (the issuer is derived from `JANUA_CUSTOM_DOMAIN`, not the request `Host`), so serving Janua there would emit `issuer=auth.madfam.io` and break OIDC validation. Selva SSO uses `auth.madfam.io` (selva-office#195).
-> - `metrics.enclii.dev` is a **retired alias** with no DNS or tunnel route. The canonical endpoint is `prometheus.enclii.dev`.
+> - `metrics.enclii.dev` is a **retired alias** with no DNS or tunnel route. Metrics endpoints are private: metrics are read through Grafana, which requires a login (2026-10-04).
 > - `innovacionesmadfam.dev` was **never owned** (owner confirmation 2026-07-09). Do not reference it — including any `security@` address on it. The company domain is `madfam.io`.
 > - `madfam.academy` and `madfam.info` are **expired**.
 
@@ -204,8 +204,8 @@ wellbeing and Shapley compensation are empty package stubs, not shipped features
 `@madfam/janua-next`; created 2026-09-01) ·
 `tulana` (internal pricing
 intelligence; deployed, Janua-gated) · `converge-dash` (executive metrics layer; rollout
-blocked) · `turnbased-engine` + `stratum-tcg` + `tablaco` family (`tablaco`, `tablaco-v2`,
-`tablaco-tabletop`) + `arcanic-rosetta` + `madfam-baraja` (the games cluster) · `zavlo`
+blocked) · `turnbased-engine` + `stratum-tcg` + `arcanic-rosetta` + `madfam-baraja` (the
+games cluster) · `zavlo`
 (financial-ops engine; Karafiel integration path) · `periplo` (route-collector app; **DNS
 still NXDOMAIN — not live**, re-confirmed 2026-08-24) · `migration-platform` (website-migration platform; first
 adapter migrates Wix sites onto Enclii) · `marca` (short-links / QR; onboarding in flight,
@@ -512,8 +512,8 @@ Porting it is client-only — two buttons and an optional `prompt` on the Janua 
 - **Staff consoles** (for example the Nauta cockpit and the Enclii consoles) get all three.
 - **Client portals** get only «Entrar como otra persona» and sign-out — no account chooser,
   so one client's portal never lists another person's accounts.
-- **Exception:** one client-owned clinical application MADFAM operates under contract never
-  gets switching (recorded privately with the client contract).
+- **Client deployments MADFAM operates** follow their contract where it sets a different
+  rule.
 
 Live references: `admin.enclii.dev` and `app.enclii.dev` (switching live since 2026-09-21).
 The Janua side needs no change — `prompt` handling shipped in janua on 2026-09-21.

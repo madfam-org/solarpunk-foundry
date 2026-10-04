@@ -188,7 +188,7 @@ each repo's own `enclii.yaml` is the source of truth. See
 | Hostname | Service | Status published here |
 |---|---|---|
 | `grafana.enclii.dev` | Grafana | **Not asserted.** Internal operator surface. |
-| `prometheus.enclii.dev` | Prometheus — **canonical metrics endpoint** | **Not asserted.** |
+| *(none published)* | Prometheus | Metrics endpoints are private: metrics are read through Grafana, which requires a login *(corrected 2026-10-04)*. |
 | `alertmanager.enclii.dev` | Alertmanager | **Known gap at the last internal probe (2026-07-01).** Do not assume alerting is delivering. |
 | `<SSH_ZERO_TRUST_HOST>` | SSH via Cloudflare Access | Intermittent client-side token expiry; re-login resolves. Not an infrastructure fault. |
 
@@ -217,7 +217,7 @@ wasted or, in two cases, how something gets actively broken.
 |---|---|---|
 | `agents.madfam.io`, `agents-*.madfam.io` | **Retired.** No tunnel ingress rules; returns 502. | The Selva cutover to `selva.town` executed. Verified 2026-07-01. |
 | `selva.madfam.io` | **Never use.** | Superseded by the same cutover. |
-| `metrics.enclii.dev` | **Retired alias**, orphaned. No DNS or tunnel route; falls through to a registrar parking record. | Canonical endpoint is `prometheus.enclii.dev`. Verified 2026-07-01. |
+| `metrics.enclii.dev` | **Retired alias**, orphaned. No DNS or tunnel route; falls through to a registrar parking record. | Verified 2026-07-01. Metrics endpoints are private: metrics are read through Grafana, which requires a login *(corrected 2026-10-04)*. |
 | `dashboard.madfam.io` | **Not a MADFAM route.** Appears in no route table, no domain inventory, no tunnel rule. | The Janua dashboard is `app.janua.dev`. A previous revision of `DOGFOODING_GUIDE.md` published this hostname; it was wrong. |
 | `agents-api.madfam.io` | **Retired** along with the rest of `agents-*`. | — |
 

@@ -315,9 +315,9 @@ changes.
 
 **8–10. Messaging, account switching, agent surface** (ruled/decided 2026-09-05 →
 2026-09-23): third-party messages go only through Angelia Courier (two carve-outs);
-every signed-in UI supports multi-account switching on the Enclii model (one client-owned
-exception); each service API gets a generated, authZ-preserving, drift-guarded MCP
-equivalent, read-only first (pilot: Janua). Full text: `README.md` §IV.8–§IV.10.
+every signed-in UI supports multi-account switching on the Enclii model; each service API
+gets a generated, authZ-preserving, drift-guarded MCP equivalent, read-only first (pilot:
+Janua). Full text: `README.md` §IV.8–§IV.10.
 
 ### Agent session protocol
 

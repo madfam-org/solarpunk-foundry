@@ -140,7 +140,7 @@ history lives in `solid-hyperobjects`. One of them, `ultimate-box`, was archived
 absorption because it restored an upstream non-commercial licence. The licence review the
 2026-07-04 audit opened on the satellites is closed by that clean-room re-creation (private
 record: `internal-devops/ecosystem/repo-registry.md`). `gridfinity_extended_openscad` is a
-**fork**, not a MADFAM commons repo. Private within the class: the `tablaco` family.
+**fork**, not a MADFAM commons repo.
 
 ### 1.2 Other repos
 
@@ -163,9 +163,8 @@ wellbeing and Shapley compensation remain empty package stubs, not shipped featu
 `lexidrop` (domain-acquisition intelligence; created 2026-08-25, live at `ld.madfam.io`) ·
 `tulana` (internal pricing
 intelligence; deployed, Janua-gated) · `converge-dash` (executive metrics; rollout blocked) ·
-the games cluster: `turnbased-engine` + `stratum-tcg` + `tablaco`/`tablaco-v2`/
-`tablaco-tabletop` + `arcanic-rosetta` + `madfam-baraja` · `zavlo` (→ Karafiel integration
-path) · `periplo` (**DNS still NXDOMAIN — not live**, re-confirmed 2026-08-24) ·
+the games cluster: `turnbased-engine` + `stratum-tcg` + `arcanic-rosetta` + `madfam-baraja`
+· `zavlo` (→ Karafiel integration path) · `periplo` (**DNS still NXDOMAIN — not live**, re-confirmed 2026-08-24) ·
 `migration-platform` (website migration; Wix→Enclii first adapter) · `marca` (short-links /
 QR — onboarding in flight, not live) · `avala-content` · `client-site-starter` + `enclii-onboard-kit` (client-delivery tooling).
 A small number of **client-engagement repos** holding client-owned IP are counted in §1.3's
@@ -240,7 +239,8 @@ state comes from.
   `issuer=auth.madfam.io` and break OIDC validation. Selva SSO uses `auth.madfam.io`
   (selva-office#195).
 - **`metrics.enclii.dev` is a retired alias** with no DNS or tunnel route (525, falls through
-  to a registrar parking CNAME). Canonical is `prometheus.enclii.dev`.
+  to a registrar parking CNAME). Metrics endpoints are private: metrics are read through
+  Grafana, which requires a login (2026-10-04).
 - **`phynd.app` is registered and live** (probed 200, 2026-08-24) — earlier editions'
   "not registered" is settled. `crm.madfam.io` also still answers.
 - **`innovacionesmadfam.dev` was never owned** (owner confirmation 2026-07-09). Do not
