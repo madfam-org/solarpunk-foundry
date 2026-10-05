@@ -375,12 +375,9 @@ service-scoped context.
 ### Install
 
 ```bash
-# macOS
-brew install enclii/tap/enclii
-
-# Linux — the hosted installer (get.enclii.dev) answered HTTP 525 when
-# checked 2026-10-01, so its one-line install is withdrawn from this page until
-# the host serves again. Build from source instead (below).
+# No one-line install is published today: there is no MADFAM Homebrew tap, and the
+# hosted installer (get.enclii.dev) answered HTTP 525 when checked on 2026-10-01 and
+# 2026-10-05. Build from source instead (below).
 
 # From source (in the enclii repo)
 make build-cli && ./bin/enclii --version
