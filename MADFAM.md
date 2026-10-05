@@ -100,7 +100,7 @@ repo whose GitHub link 404s without org access — visibility re-checked 2026-09
 | Platform | Repo | Domains | Role |
 |---|---|---|---|
 | **Forj** 🔒 | `forj` | `forj.design` | Decentralized fabrication storefronts; 3D-first scroller, NFT-capable minting. |
-| **Cotiza** | [`digifab-quoting`](https://github.com/madfam-org/digifab-quoting) | `cotiza.studio`, `api.cotiza.studio` | Quoting engine. Emits billing events into Dhanam. Proprietary LICENSE. |
+| **Cotiza** 🔒 | `digifab-quoting` | `cotiza.studio`, `api.cotiza.studio` | Quoting engine. Emits billing events into Dhanam. Proprietary LICENSE. |
 | **Dhanam** 🔒 | `dhanam` | `dhan.am`, `app.`, `api.`, `admin.` | Budget + wealth tracking + the **ecosystem billing ledger**. Receiver for signed MADFAM payment events. **Repo flipped private between 2026-07-16 and 2026-07-25.** An AGPLv3 open core was published as `dhanam-core` (public, created 2026-07-20). |
 | **Coforma Studio** | [`coforma-studio`](https://github.com/madfam-org/coforma-studio) | `coforma.studio` | Customer advisory boards as a growth engine. Proprietary LICENSE. |
 | **Karafiel** 🔒 | `karafiel` | `karafiel.mx`, `app.`, `api.`, `admin.` | Operational compliance — CFDI, NOM-151, e.firma, SAT-adjacent. Single authority for CFDI/SAT/tax filings. Absorbed the archived `legal-ops` contract/document generation as `legalgen`. Consumes Tezca + Dhanam; never duplicates either. |
