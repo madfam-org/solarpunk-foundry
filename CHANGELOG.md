@@ -14,6 +14,16 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-10-04 — Product projection re-vendored
+
+- **Re-vendored the product projection** from the private registry (source
+  sha256 `df253f61…`) and regenerated `products.generated.ts`:
+  - Enclii's `infraHosts` no longer list a retired monitoring host.
+  - Voxa lists its app host `voxa-app.madfam.io` and its API host
+    `voxa-api.madfam.io`, and carries no `checkoutSlug` until a checkout
+    exists.
+- Source only; ships with the next `@madfam/core` publish.
+
 ### 2026-10-03 — Fabrication node ownership split by purpose
 
 - The "own once, query everywhere" row "Fabrication node capacity + pricing →

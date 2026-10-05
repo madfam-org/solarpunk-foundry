@@ -20,7 +20,7 @@ export const PRODUCT_PROJECTION = {
   lastUpdated: "2026-09-23",
   exportPrivateRepoNames: true,
   /** sha256 of the vendored projection.public.json this module was rendered from. */
-  sourceSha256: "db2c4ed38fac5dbe86e860929d271d9ca3d7fa85bf2ffba63672ba0e1998d5b0",
+  sourceSha256: "df253f61cb880447bf9965ca059816b0edae4495770032b4eab763694cbb6d15",
 } as const;
 
 /**
@@ -51,7 +51,6 @@ export const generatedProducts = {
       "npm.madfam.io",
       "status.madfam.io",
       "grafana.enclii.dev",
-      "prometheus.enclii.dev",
       "alertmanager.enclii.dev",
     ],
     site: {
@@ -537,8 +536,12 @@ export const generatedProducts = {
     repoVisibility: "public",
     isPublic: true,
     domain: "voxa.madfam.io",
-    hosts: [],
-    infraHosts: [],
+    hosts: [
+      "voxa-app.madfam.io",
+    ],
+    infraHosts: [
+      "voxa-api.madfam.io",
+    ],
     site: {
       category: "Applications",
       track: "self-serve",
@@ -554,7 +557,6 @@ export const generatedProducts = {
         "clinic",
       ],
       adminTier: "admin",
-      checkoutSlug: "voxa",
     },
   },
   "phynd-crm": {
