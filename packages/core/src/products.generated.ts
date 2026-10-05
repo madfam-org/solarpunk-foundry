@@ -20,7 +20,7 @@ export const PRODUCT_PROJECTION = {
   lastUpdated: "2026-09-23",
   exportPrivateRepoNames: true,
   /** sha256 of the vendored projection.public.json this module was rendered from. */
-  sourceSha256: "df253f61cb880447bf9965ca059816b0edae4495770032b4eab763694cbb6d15",
+  sourceSha256: "b60cbcbe42306345db81f402d6fc7507afcebc27c65341e4962a178b2711a507",
 } as const;
 
 /**
@@ -51,7 +51,6 @@ export const generatedProducts = {
       "npm.madfam.io",
       "status.madfam.io",
       "grafana.enclii.dev",
-      "alertmanager.enclii.dev",
     ],
     site: {
       category: "Infrastructure",

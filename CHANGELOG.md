@@ -14,6 +14,13 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-10-05 — Product projection re-vendored
+
+- **Re-vendored the product projection** from the private registry (source
+  sha256 `b60cbcbe…`) and regenerated `products.generated.ts`: Enclii's
+  `infraHosts` no longer list a monitoring host that is no longer published.
+- Source only; ships with the next `@madfam/core` publish.
+
 ### 2026-10-04 — Product projection re-vendored
 
 - **Re-vendored the product projection** from the private registry (source
