@@ -113,6 +113,8 @@ and only then face outward.
 > "Live" below means *the route answered at its last recorded probe on the date given* — not
 > that it is answering now, and not that the product behind it is feature-complete.
 
+**3D chart (built 2026-10-08):** [`docs/archipelago/index.html`](docs/archipelago/index.html) draws every product in the vendored public projection as an island, in four seas by public category; open the file in a browser, and rebuild it with `node scripts/build-archipelago.mjs`.
+
 ### 🪨 Layer 1 — Soil (infrastructure)
 
 | Platform | Repo | Role | Domains (last verified 2026-07-01) |
