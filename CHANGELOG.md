@@ -14,6 +14,14 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-10-09 — Product projection re-vendored
+
+- **Re-vendored the product projection** from the private registry (source
+  sha256 `6c5f625e…`) and regenerated `products.generated.ts`: Cotiza's
+  repository is private, so its entry records `repoVisibility: "private"` and
+  `isPublic: false`.
+- Source only; ships with the next `@madfam/core` publish.
+
 ### 2026-10-05 — Product projection re-vendored
 
 - **Re-vendored the product projection** from the private registry (source
