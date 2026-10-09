@@ -498,4 +498,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, .lbl:focus-visible, 
 </script>
 <script type="module">
 /*__ARCH_MODULE__*/
+
+// Host side: hand the engine its JSON model and this page's hooks.
+const hooks = await mountArchipelago(window.ARCH, {
+  stage: document.getElementById('stage'),
+  state: window.ARCH_STATE,
+  ui: window.ARCH_UI,
+  options: { aa: window.__ARCH_AA, preserve: window.__ARCH_PRESERVE, test: !!window.__ARCH_TEST },
+});
+window.__ARCH_OK = true;
+if (window.__ARCH_TEST) window.__ARCH_HOOKS = hooks;
 </script>
