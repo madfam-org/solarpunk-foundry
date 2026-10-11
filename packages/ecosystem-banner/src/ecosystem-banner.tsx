@@ -2,7 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'react';
 
-import { DEFAULT_ECOSYSTEM_PLATFORMS, type EcosystemPlatform } from './platforms';
+import { ecosystemLink } from './links';
+import {
+  DEFAULT_ECOSYSTEM_PLATFORMS,
+  MADFAM_OWNED_DOMAINS,
+  type EcosystemPlatform,
+} from './platforms';
 
 /**
  * Schema-versioned dismissal record. Bump `BANNER_VERSION` when the platform
@@ -236,6 +241,11 @@ export interface EcosystemBannerProps {
   testId?: string;
   /** Force-render even if dismissed — useful for previews/Storybook. */
   forceVisible?: boolean;
+  /**
+   * Host the banner is mounted on, used as `utm_source` on links to other
+   * MADFAM sites. Defaults to `window.location.hostname` after mount.
+   */
+  originHost?: string;
 }
 
 /**
@@ -252,6 +262,7 @@ export function EcosystemBanner({
   label = 'MADFAM ECOSYSTEM',
   testId,
   forceVisible = false,
+  originHost,
 }: EcosystemBannerProps) {
   const list = useMemo(() => platforms.filter((p) => p.keyword && p.name && p.url), [platforms]);
   const track = useMemo(() => [...list, ...list], [list]);
@@ -259,10 +270,12 @@ export function EcosystemBanner({
     marqueeDurationSec ?? Math.max(30, list.length * MARQUEE_SECONDS_PER_PLATFORM);
 
   const [mounted, setMounted] = useState(false);
+  const [pageHost, setPageHost] = useState<string | undefined>(originHost);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    setPageHost(originHost ?? window.location.hostname);
     if (forceVisible) {
       setVisible(true);
       return;
@@ -270,7 +283,7 @@ export function EcosystemBanner({
     if (list.length === 0) return;
     const dismissed = isStillDismissed(readDismissal());
     setVisible(!dismissed);
-  }, [forceVisible, list.length]);
+  }, [forceVisible, list.length, originHost]);
 
   const handleDismiss = useCallback(() => {
     setVisible(false);
@@ -313,12 +326,17 @@ export function EcosystemBanner({
             {track.map((platform, index) => {
               const fullPair = `${platform.keyword}: ${platform.name}`;
               const isDuplicate = index >= list.length;
+              const link = ecosystemLink(platform.url, {
+                surface: 'banner',
+                originHost: pageHost,
+                ownedDomains: MADFAM_OWNED_DOMAINS,
+              });
               return (
                 <a
                   key={`${platform.name}-${index}`}
-                  href={platform.url}
+                  href={link.href}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel={link.rel}
                   title={fullPair}
                   className="madfam-eco-banner__item"
                   aria-hidden={isDuplicate ? true : undefined}

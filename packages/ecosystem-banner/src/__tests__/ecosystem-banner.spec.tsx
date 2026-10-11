@@ -19,13 +19,50 @@ describe('EcosystemBanner', () => {
       }
     });
 
-    it('renders links with target=_blank + rel=noopener and platform urls', () => {
+    it('renders own-site links with target=_blank + rel=noopener and untagged urls off a public host', () => {
+      // happy-dom's page host is not a public MADFAM host, so no UTM is added.
       render(<EcosystemBanner />);
       const first = DEFAULT_ECOSYSTEM_PLATFORMS[0]!;
       const link = screen.getAllByRole('link', { name: new RegExp(first.name) })[0]!;
       expect(link).toHaveAttribute('target', '_blank');
-      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(link).toHaveAttribute('rel', 'noopener');
       expect(link).toHaveAttribute('href', first.url);
+    });
+
+    it('tags every own-site link with the origin host, ecosystem medium and banner campaign', () => {
+      render(<EcosystemBanner originHost="karafiel.mx" />);
+      const links = screen.getAllByRole('link');
+      expect(links.length).toBeGreaterThan(0);
+      for (const link of links) {
+        const href = new URL(link.getAttribute('href')!);
+        expect(link).toHaveAttribute('rel', 'noopener');
+        if (href.hostname === 'karafiel.mx') {
+          expect(href.searchParams.has('utm_source')).toBe(false);
+          continue;
+        }
+        expect(href.searchParams.get('utm_source')).toBe('karafiel.mx');
+        expect(href.searchParams.get('utm_medium')).toBe('ecosystem');
+        expect(href.searchParams.get('utm_campaign')).toBe('banner');
+      }
+    });
+
+    it('links Forgesight to forgesight.app, never the retired forgesight.quest', () => {
+      render(<EcosystemBanner originHost="karafiel.mx" />);
+      const hrefs = screen.getAllByRole('link').map((link) => link.getAttribute('href')!);
+      expect(hrefs.some((href) => new URL(href).hostname === 'forgesight.app')).toBe(true);
+      expect(hrefs.some((href) => href.includes('forgesight.quest'))).toBe(false);
+    });
+
+    it('keeps noreferrer and adds no UTM on a third-party override link', () => {
+      render(
+        <EcosystemBanner
+          originHost="karafiel.mx"
+          platforms={[{ keyword: 'PARTNER', name: 'Partner', url: 'https://partner.example.com' }]}
+        />
+      );
+      const link = screen.getAllByRole('link', { name: /Partner/ })[0]!;
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(link).toHaveAttribute('href', 'https://partner.example.com');
     });
 
     it('duplicates the track for seamless marquee looping', () => {

@@ -34,7 +34,7 @@
  * `cto.madfam.io` answered 404), and Forgesight links `forgesight.app`
  * (`forgesight.quest` is a retired, parked apex).
  */
-import { getBannerProducts } from '@madfam/core/products';
+import { getActiveProducts, getBannerProducts } from '@madfam/core/products';
 
 export interface EcosystemPlatform {
   /** Short uppercase keyword shown before the colon, e.g. "BUDGETING & WEALTH". */
@@ -63,3 +63,20 @@ export const DEFAULT_ECOSYSTEM_PLATFORMS: readonly EcosystemPlatform[] = getBann
     name: product.name,
     url: `https://${product.domain as string}`,
   }));
+
+/**
+ * The registrable domains a cross-property link treats as MADFAM-owned
+ * (`links.ts`): every routed primary domain and product host in the same
+ * projection, plus the company apex `madfam.io` (which covers every
+ * `*.madfam.io` product host). Derived, like the ticker list, so a product the
+ * registry adds is an own site with no edit here.
+ */
+export const MADFAM_OWNED_DOMAINS: readonly string[] = Array.from(
+  new Set([
+    'madfam.io',
+    ...getActiveProducts().flatMap((product) => [
+      ...(product.domain ? [product.domain] : []),
+      ...product.hosts,
+    ]),
+  ])
+);
