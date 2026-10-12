@@ -14,6 +14,22 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-10-11 — `@madfam/ecosystem-banner` 0.3.0: own-site links keep their origin
+
+- **Banner links to MADFAM-owned hosts use `rel="noopener"`** (no `noreferrer`)
+  and carry `utm_source=<page host>&utm_medium=ecosystem&utm_campaign=banner`.
+  Links to any other host keep `rel="noopener noreferrer"` and no UTM. No UTM on
+  SSR, from a non-public host, on a same-host link, or over an existing
+  `utm_source`. Query parameters only: no cookie, storage or tracker (R41).
+  Closes the banner half of the money-engine journeys finding that
+  cross-property visits arrived as "direct" (J3c).
+- **New exports:** `ecosystemLink`, `isOwnHost`, `isPublicHost`,
+  `normalizeHost`, `MADFAM_OWNED_DOMAINS` (derived from the projection plus
+  `madfam.io`), and the `originHost` prop.
+- **Version:** 0.2.0 → **0.3.0**. Not published: like 0.2.0 it waits on the
+  private-registry credential (operator row O1) and on `@madfam/core` 0.2.0
+  reaching npmjs.
+
 ### 2026-10-09 — Product projection re-vendored
 
 - **Re-vendored the product projection** from the private registry (source

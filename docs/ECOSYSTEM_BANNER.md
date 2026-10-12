@@ -1,6 +1,6 @@
 # Ecosystem banner and footer contract
 
-**Last verified: 2026-07-25** — package name, version and source path checked
+**Last verified: 2026-10-11** — package name, version and source path checked
 against `packages/ecosystem-banner/package.json` on that date.
 
 Public contract for the shared bottom marquee across MADFAM product landings.
@@ -11,14 +11,14 @@ Public contract for the shared bottom marquee across MADFAM product landings.
 |---|---|
 | npm package | `@madfam/ecosystem-banner` |
 | Source | `packages/ecosystem-banner/` in this repository |
-| Version in the source tree | **0.2.0** (2026-09-23; depends on `@madfam/core` 0.2.0) |
+| Version in the source tree | **0.3.0** (2026-10-11; own-site links keep their origin; depends on `@madfam/core` 0.2.0) |
 | Publish target | `npm.madfam.io` |
 
 ```bash
-pnpm add @madfam/ecosystem-banner@0.2.0
+pnpm add @madfam/ecosystem-banner@0.3.0
 ```
 
-> **Not published yet (2026-09-23).** 0.2.0 exists in this source tree only.
+> **Not published yet (2026-10-11).** 0.2.0 and 0.3.0 exist in this source tree only.
 > Publishing is blocked until the private-registry credential rotation (operator
 > row O1) is done. The last published banner, 0.1.4 (2026-07-17), still carries
 > the July hand-kept list — consumers pinned to it show that list, not the
