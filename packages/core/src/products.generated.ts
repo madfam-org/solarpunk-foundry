@@ -20,7 +20,7 @@ export const PRODUCT_PROJECTION = {
   lastUpdated: "2026-09-23",
   exportPrivateRepoNames: true,
   /** sha256 of the vendored projection.public.json this module was rendered from. */
-  sourceSha256: "6c5f625efa74b3c3b0419dca1aee8c8f532a940778316271eec280565273fbe1",
+  sourceSha256: "4d46353b4b5ef330b49b76b953638360efac45241c530d14f4499ce0cea11c97",
 } as const;
 
 /**
@@ -1142,6 +1142,61 @@ export const generatedProducts = {
     },
     commerce: {
       tiers: [],
+    },
+  },
+  pliego: {
+    id: "pliego",
+    name: "Pliego",
+    lifecycle: "incubating",
+    lifecycleVerified: "2026-10-10",
+    license: "AGPL-3.0",
+    layer: "stem",
+    repo: "pliego",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "pliego.madfam.io",
+    hosts: [
+      "pliego-app.madfam.io",
+      "pliego-api.madfam.io",
+    ],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "ecosystem",
+      order: 35,
+      icon: "📃",
+      showInBanner: false,
+    },
+    commerce: {
+      tiers: [],
+      adminTier: "admin",
+    },
+  },
+  primavera3d: {
+    id: "primavera3d",
+    name: "Primavera3D",
+    lifecycle: "live",
+    lifecycleVerified: "2026-10-18",
+    license: "Proprietary",
+    layer: "fruit",
+    repo: "primavera3d",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "primavera3d.pro",
+    hosts: [],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "ecosystem",
+      order: 37,
+      icon: "🌱",
+      showInBanner: false,
+    },
+    commerce: {
+      tiers: [],
+      adminTier: "admin",
     },
   },
 } as const;
