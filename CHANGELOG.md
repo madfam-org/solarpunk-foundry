@@ -14,6 +14,18 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-10-18 — Product projection re-vendored: Pliego and Primavera3D
+
+- **Re-vendored the product projection** from the private registry (source
+  sha256 `4d46353b…`) and regenerated `products.generated.ts` with
+  `node scripts/check-product-projection.mjs --write`. Two products are added,
+  none removed or changed: `pliego` (incubating, AGPL-3.0, `pliego.madfam.io`)
+  and `primavera3d` (live, `primavera3d.pro`). Neither is in the ecosystem
+  banner (`show_in_banner: false`), so the ticker's membership is unchanged
+  (21 products). The registry keeps `blueprint-harvester` out of the public
+  projection.
+- Source only; ships with the next `@madfam/core` publish.
+
 ### 2026-10-11 — `@madfam/ecosystem-banner` 0.3.0: own-site links keep their origin
 
 - **Banner links to MADFAM-owned hosts use `rel="noopener"`** (no `noreferrer`)
