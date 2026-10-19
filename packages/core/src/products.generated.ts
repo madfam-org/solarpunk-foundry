@@ -20,7 +20,7 @@ export const PRODUCT_PROJECTION = {
   lastUpdated: "2026-09-23",
   exportPrivateRepoNames: true,
   /** sha256 of the vendored projection.public.json this module was rendered from. */
-  sourceSha256: "4d46353b4b5ef330b49b76b953638360efac45241c530d14f4499ce0cea11c97",
+  sourceSha256: "0cd8120be8c7f262105766af1945859cf5678fd07db5783cda2ff34f17daf38e",
 } as const;
 
 /**
@@ -685,7 +685,6 @@ export const generatedProducts = {
         "biz",
       ],
       adminTier: "admin",
-      checkoutSlug: "kalya",
       tierLabels: {
         free: "Gratis",
         solo: "Solo",
@@ -726,7 +725,6 @@ export const generatedProducts = {
         "biz",
       ],
       adminTier: "admin",
-      checkoutSlug: "symbiosis",
       tierLabels: {
         free: "Gratis",
         team: "Equipo",

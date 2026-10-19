@@ -14,6 +14,16 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-10-18 — Product projection re-vendored: commerce prefixes follow the Dhanam catalog
+
+- **Re-vendored the product projection** from the private registry (source
+  sha256 `0cd8120be8c7…`, after internal-devops#849) and regenerated
+  `products.generated.ts` with `node scripts/check-product-projection.mjs
+  --write`. No product is added or removed: `kalya` and `symbiosis` lose a
+  `checkout_slug` they never honoured, and three plan prefixes now match the
+  Dhanam catalog slugs. The banner's membership is unchanged (21 products).
+- Source only; ships with the next `@madfam/core` publish.
+
 ### 2026-10-18 — Product projection re-vendored: Pliego and Primavera3D
 
 - **Re-vendored the product projection** from the private registry (source
