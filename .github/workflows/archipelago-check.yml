@@ -5,6 +5,7 @@ on:
     paths:
       - "docs/archipelago/**"
       - "scripts/build-archipelago.mjs"
+      - "tests/archipelago-browser.cjs"
       - "packages/core/src/products/projection.public.json*"
       - ".github/workflows/archipelago-check.yml"
   push:
@@ -12,6 +13,7 @@ on:
     paths:
       - "docs/archipelago/**"
       - "scripts/build-archipelago.mjs"
+      - "tests/archipelago-browser.cjs"
       - "packages/core/src/products/projection.public.json*"
       - ".github/workflows/archipelago-check.yml"
 
@@ -20,7 +22,8 @@ permissions:
 
 jobs:
   archipelago:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -30,7 +33,24 @@ jobs:
         run: |
           node --check docs/archipelago/src/archipelago.mjs
           node --check scripts/build-archipelago.mjs
+          node --check tests/archipelago-browser.cjs
       - name: Check public projection and generated chart
         run: |
           node scripts/check-product-projection.mjs
           node scripts/build-archipelago.mjs --check
+      - name: Install isolated browser proof dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/archipelago-browser" --ignore-scripts --no-audit --no-fund playwright@1.56.1 three@0.169.0
+          "$RUNNER_TEMP/archipelago-browser/node_modules/.bin/playwright" install --with-deps --only-shell chromium
+      - name: Verify WebGL, public cards, mobile controls and fallback
+        env:
+          ARCHIPELAGO_TEST_DEPS: ${{ runner.temp }}/archipelago-browser
+        run: node tests/archipelago-browser.cjs
+      - name: Preserve browser screenshots
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: archipelago-browser-proof
+          path: artifacts/archipelago/
+          if-no-files-found: warn
+          retention-days: 7
