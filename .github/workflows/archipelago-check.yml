@@ -40,7 +40,7 @@ jobs:
           node scripts/build-archipelago.mjs --check
       - name: Install isolated browser proof dependencies
         run: |
-          npm install --prefix "$RUNNER_TEMP/archipelago-browser" --ignore-scripts --no-audit --no-fund playwright@1.56.1 three@0.169.0
+          npm install --prefix "$RUNNER_TEMP/archipelago-browser" --ignore-scripts --no-audit --no-fund playwright@1.64.1 three@0.169.0
           "$RUNNER_TEMP/archipelago-browser/node_modules/.bin/playwright" install --with-deps --only-shell chromium
       - name: Verify WebGL, public cards, mobile controls and fallback
         env:
