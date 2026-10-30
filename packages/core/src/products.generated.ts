@@ -20,7 +20,7 @@ export const PRODUCT_PROJECTION = {
   lastUpdated: "2026-09-23",
   exportPrivateRepoNames: true,
   /** sha256 of the vendored projection.public.json this module was rendered from. */
-  sourceSha256: "b60cbcbe42306345db81f402d6fc7507afcebc27c65341e4962a178b2711a507",
+  sourceSha256: "0cd8120be8c7f262105766af1945859cf5678fd07db5783cda2ff34f17daf38e",
 } as const;
 
 /**
@@ -461,8 +461,8 @@ export const generatedProducts = {
     layer: "fruit",
     repo: "digifab-quoting",
     githubOrg: "madfam-org",
-    repoVisibility: "public",
-    isPublic: true,
+    repoVisibility: "private",
+    isPublic: false,
     domain: "cotiza.studio",
     hosts: [
       "api.cotiza.studio",
@@ -685,7 +685,6 @@ export const generatedProducts = {
         "biz",
       ],
       adminTier: "admin",
-      checkoutSlug: "kalya",
       tierLabels: {
         free: "Gratis",
         solo: "Solo",
@@ -726,7 +725,6 @@ export const generatedProducts = {
         "biz",
       ],
       adminTier: "admin",
-      checkoutSlug: "symbiosis",
       tierLabels: {
         free: "Gratis",
         team: "Equipo",
@@ -1142,6 +1140,61 @@ export const generatedProducts = {
     },
     commerce: {
       tiers: [],
+    },
+  },
+  pliego: {
+    id: "pliego",
+    name: "Pliego",
+    lifecycle: "incubating",
+    lifecycleVerified: "2026-10-10",
+    license: "AGPL-3.0",
+    layer: "stem",
+    repo: "pliego",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "pliego.madfam.io",
+    hosts: [
+      "pliego-app.madfam.io",
+      "pliego-api.madfam.io",
+    ],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "ecosystem",
+      order: 35,
+      icon: "📃",
+      showInBanner: false,
+    },
+    commerce: {
+      tiers: [],
+      adminTier: "admin",
+    },
+  },
+  primavera3d: {
+    id: "primavera3d",
+    name: "Primavera3D",
+    lifecycle: "live",
+    lifecycleVerified: "2026-10-18",
+    license: "Proprietary",
+    layer: "fruit",
+    repo: "primavera3d",
+    githubOrg: "madfam-org",
+    repoVisibility: "public",
+    isPublic: true,
+    domain: "primavera3d.pro",
+    hosts: [],
+    infraHosts: [],
+    site: {
+      category: "Applications",
+      track: "ecosystem",
+      order: 37,
+      icon: "🌱",
+      showInBanner: false,
+    },
+    commerce: {
+      tiers: [],
+      adminTier: "admin",
     },
   },
 } as const;

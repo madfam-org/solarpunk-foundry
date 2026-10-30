@@ -14,6 +14,52 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-10-18 — Product projection re-vendored: commerce prefixes follow the Dhanam catalog
+
+- **Re-vendored the product projection** from the private registry (source
+  sha256 `0cd8120be8c7…`, after internal-devops#849) and regenerated
+  `products.generated.ts` with `node scripts/check-product-projection.mjs
+  --write`. No product is added or removed: `kalya` and `symbiosis` lose a
+  `checkout_slug` they never honoured, and three plan prefixes now match the
+  Dhanam catalog slugs. The banner's membership is unchanged (21 products).
+- Source only; ships with the next `@madfam/core` publish.
+
+### 2026-10-18 — Product projection re-vendored: Pliego and Primavera3D
+
+- **Re-vendored the product projection** from the private registry (source
+  sha256 `4d46353b…`) and regenerated `products.generated.ts` with
+  `node scripts/check-product-projection.mjs --write`. Two products are added,
+  none removed or changed: `pliego` (incubating, AGPL-3.0, `pliego.madfam.io`)
+  and `primavera3d` (live, `primavera3d.pro`). Neither is in the ecosystem
+  banner (`show_in_banner: false`), so the ticker's membership is unchanged
+  (21 products). The registry keeps `blueprint-harvester` out of the public
+  projection.
+- Source only; ships with the next `@madfam/core` publish.
+
+### 2026-10-11 — `@madfam/ecosystem-banner` 0.3.0: own-site links keep their origin
+
+- **Banner links to MADFAM-owned hosts use `rel="noopener"`** (no `noreferrer`)
+  and carry `utm_source=<page host>&utm_medium=ecosystem&utm_campaign=banner`.
+  Links to any other host keep `rel="noopener noreferrer"` and no UTM. No UTM on
+  SSR, from a non-public host, on a same-host link, or over an existing
+  `utm_source`. Query parameters only: no cookie, storage or tracker (R41).
+  Closes the banner half of the money-engine journeys finding that
+  cross-property visits arrived as "direct" (J3c).
+- **New exports:** `ecosystemLink`, `isOwnHost`, `isPublicHost`,
+  `normalizeHost`, `MADFAM_OWNED_DOMAINS` (derived from the projection plus
+  `madfam.io`), and the `originHost` prop.
+- **Version:** 0.2.0 → **0.3.0**. Not published: like 0.2.0 it waits on the
+  private-registry credential (operator row O1) and on `@madfam/core` 0.2.0
+  reaching npmjs.
+
+### 2026-10-09 — Product projection re-vendored
+
+- **Re-vendored the product projection** from the private registry (source
+  sha256 `6c5f625e…`) and regenerated `products.generated.ts`: Cotiza's
+  repository is private, so its entry records `repoVisibility: "private"` and
+  `isPublic: false`.
+- Source only; ships with the next `@madfam/core` publish.
+
 ### 2026-10-05 — Product projection re-vendored
 
 - **Re-vendored the product projection** from the private registry (source

@@ -1,0 +1,36 @@
+name: Public Archipelago
+
+on:
+  pull_request:
+    paths:
+      - "docs/archipelago/**"
+      - "scripts/build-archipelago.mjs"
+      - "packages/core/src/products/projection.public.json*"
+      - ".github/workflows/archipelago-check.yml"
+  push:
+    branches: [main]
+    paths:
+      - "docs/archipelago/**"
+      - "scripts/build-archipelago.mjs"
+      - "packages/core/src/products/projection.public.json*"
+      - ".github/workflows/archipelago-check.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  archipelago:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "20"
+      - name: Check renderer and builder syntax
+        run: |
+          node --check docs/archipelago/src/archipelago.mjs
+          node --check scripts/build-archipelago.mjs
+      - name: Check public projection and generated chart
+        run: |
+          node scripts/check-product-projection.mjs
+          node scripts/build-archipelago.mjs --check

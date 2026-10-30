@@ -10,15 +10,13 @@
  * standalone three.js chart in which every product of the public product
  * registry is an island, placed in one of four seas by its public category.
  *
- * SOURCES (read 2026-10-08):
+ * SOURCES (projection reverified 2026-10-29; copy read 2026-10-08):
  *   products  packages/core/src/products/projection.public.json, the vendored
  *             copy of internal-devops `ecosystem/registry/projection.public.json`.
- *             Byte-identical to that file at internal-devops commit
- *             3cfbbfde30784ac2641f2ba14de8c861bd971f24 (2026-10-05, the last
- *             commit that touched it; internal-devops main was
- *             435bc2682bf187fe085eca64b230d5f68f125f2f when it was compared).
- *             The build refuses to run unless the file still hashes to the
- *             committed `.sha256`.
+ *             Reverified from this public checkout on 2026-10-29. The build
+ *             refuses to run unless the file still hashes to the committed
+ *             `.sha256`; the generated page records that exact hash and the
+ *             projection's own registry date. This does not verify live routes.
  *   taglines  the `tagline` field only, from internal-devops
  *             `ecosystem/registry/copy/en.yaml` at commit
  *             21b02ca6637d497de2d723b3f76ba2647bb5ee7d (2026-10-04), copied into
@@ -139,6 +137,8 @@ const LAYOUT = {
   telesia: [184, 565, 'hill', 'trophy'],
   marca: [206, 560, 'hill', 'qr'],
   periplo: [228, 555, 'hill', 'flags'],
+  pliego: [175, 715, 'cliff', 'quote'],
+  primavera3d: [205, 715, 'hill', 'factory'],
 };
 // Retired products: wrecks beside their successor, or in open water without one.
 const WRECKS = { penny: [0, 470], sim4d: [118, 505], spark: [330, 565] };

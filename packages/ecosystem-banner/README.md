@@ -57,6 +57,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 | `className` | `string` | `''` | Optional className appended to the outer fixed wrapper. |
 | `testId` | `string` | `undefined` | Optional `data-testid` for host-app E2E selectors. |
 | `forceVisible` | `boolean` | `false` | Force-render even if the user dismissed the current banner version. Useful for previews. |
+| `originHost` | `string` | `window.location.hostname` | Host used as `utm_source` on own-site links. |
+
+### Own-site link builder
+
+`ecosystemLink(url, { surface, originHost, ownedDomains })` returns `{ href, rel }` under the policy above, for any MADFAM surface (`'banner' | 'ladder' | 'footer' | 'cta'`). It is exported with `isOwnHost`, `isPublicHost`, `normalizeHost` and `MADFAM_OWNED_DOMAINS`, so a host app can tag its own cross-property links the same way.
 
 ### Subset for a specific landing
 
@@ -73,7 +78,7 @@ const compliancePlatforms = DEFAULT_ECOSYSTEM_PLATFORMS.filter((p) =>
 ## Behavior
 
 - **Dismissible.** A 44×44 hit-area `×` button on the right writes a `{ v, dismissed_at }` record to `localStorage.madfam_ecosystem_banner` and hides the banner for 30 days. Bumping `BANNER_VERSION` in source resets dismissals so users see new platform lineups.
-- **Linked.** Each platform name is a real `<a target="_blank" rel="noopener noreferrer">` to its apex domain. `title=` exposes the full pair on hover for users who scrolled mid-read.
+- **Linked, origin kept (0.3.0).** Each platform name is a real `<a target="_blank">` to its apex domain. A link to a MADFAM-owned host (`MADFAM_OWNED_DOMAINS`, derived from the same projection plus `madfam.io`) carries `rel="noopener"`, so the destination receives the normal Referer, and `utm_source=<page host>&utm_medium=ecosystem&utm_campaign=banner`. Any other host keeps `rel="noopener noreferrer"` and no UTM. No UTM is added on SSR, from a non-public host (localhost, an IP, a preview), on a same-host link, or when the URL already names a `utm_source`. These are query parameters only: no cookie, no storage, no tracker. `title=` exposes the full pair on hover for users who scrolled mid-read.
 - **Accessible.** The banner is a `role="complementary"` landmark whose `aria-label` lists every platform in the ticker, so a screen reader gets the full lineup once, in one place, rather than being interrupted by a scrolling region. There is deliberately **no** `aria-live` on the ticker: the content never changes, it only moves. Under `prefers-reduced-motion` the marquee animation is switched off entirely and the track wraps to a static, fully readable list — there is no cross-fade (it was removed in 0.1.3).
 - **Mobile-friendly.** Collapses to single-line ≤640px viewports; the brand chip hides on small screens to keep the ticker readable.
 
