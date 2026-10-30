@@ -76,6 +76,7 @@ async function main() {
         const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
         assert.equal(overflow, false, 'mobile/desktop UI must not overflow horizontally');
         if (mobile) {
+          assert.equal(await page.locator('#fallback').isVisible(), false, 'failure notice must not cover the selected product');
           assert.equal(await page.locator('#btn-book').getAttribute('aria-expanded'), 'false');
           await page.screenshot({ path: path.join(out, 'mobile-fallback-card.png') });
           assert(errors.length > 0, 'fallback proof must actually reject WebGL');

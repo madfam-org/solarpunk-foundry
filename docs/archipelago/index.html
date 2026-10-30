@@ -48,7 +48,7 @@
 html, body { height: 100%; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 var(--f-body); overflow: hidden; -webkit-font-smoothing: antialiased; }
 #app { position: fixed; inset: 0; }
-#stage { position: absolute; inset: 0; outline: none; }
+#stage { position: absolute; inset: 0; outline: none; z-index: 0; }
 #stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 .labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .labels > div { will-change: transform; }
@@ -408,10 +408,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, .lbl:focus-visible, 
   /* ---------- card ---------- */
   var card = document.getElementById("card");
   var cardIsland = null;
+  var renderingUnavailable = false;
   function link(href, text) { return '<a href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">' + esc(text) + "</a>"; }
   function showIsland(id) {
     var i = byId.get(id); if (!i) return;
     cardIsland = id;
+    document.getElementById("fallback").hidden = true;
     var L = LIFE[lifeOf(i)] || LIFE.live, cat = catOf(i), facts = "";
     var lightChip = '<span class="chip ' + L.cls + '"><i></i>' + esc(L.t) + " · " + esc(L.code) + "</span>";
     var catChip = cat ? '<span class="chip"><i style="background:' + esc(cat.color) + '"></i>' + esc(cat.label) + "</span>" : "";
@@ -438,7 +440,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, .lbl:focus-visible, 
       "<dl>" + facts + "</dl>" + actions;
     card.hidden = false;
   }
-  function hideCard() { card.hidden = true; cardIsland = null; }
+  function hideCard() {
+    card.hidden = true; cardIsland = null;
+    if (renderingUnavailable) { document.getElementById("fallback").hidden = false; setBook(true); }
+  }
   card.addEventListener("click", function (e) {
     var b = e.target.closest("[data-act]"); if (!b) return;
     var act = b.getAttribute("data-act");
@@ -486,9 +491,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, .lbl:focus-visible, 
     setBook: setBook, announce: announce, renderList: renderList, setPerf: setPerf,
     cardOpen: function () { return !card.hidden; }, cardIsland: function () { return cardIsland; },
     fail: function (msg) {
-      document.getElementById("fallback").hidden = false;
+      renderingUnavailable = true;
+      document.getElementById("fallback").hidden = cardIsland !== null;
       if (msg) document.getElementById("fallback-msg").textContent = msg;
-      setBook(true);
+      if (cardIsland === null) { card.hidden = true; setBook(true); }
     }
   };
   renderList();
