@@ -13,7 +13,7 @@
 > **Verification anchors:**
 > - Repo names / visibility / roles — `internal-devops/ecosystem/repo-registry.md`, *Last Updated 2026-09-12*; org counts re-enumerated live on 2026-09-23 (`README.md` §II.7).
 > - Routes and domains — `internal-devops/ecosystem/domain-map.md`, *Last Updated 2026-09-12*; last full live HTTP probe of every routed domain 2026-08-24; hosts re-probed 2026-09-23 say so inline.
-> - Topology — `internal-devops/infrastructure/nodes.md` (*Last Updated 2026-08-05*; 4-node cluster since 2026-08-06) and `topology.md` (*refreshed 2026-08-24*).
+> - Topology — `internal-devops/infrastructure/nodes.md` (*Last Updated 2026-11-04*; 5-node cluster since 2026-11-04) and `topology.md` (*refreshed 2026-11-04*).
 > - Enclii CLI surface — read from `enclii/packages/cli/internal/cmd/` on 2026-07-25.
 > - Inference endpoint — `internal-devops` cutover record 2026-07-07; gateway `/health` re-probed 200 on 2026-08-24.
 >
@@ -334,14 +334,14 @@ authorization as the HTTP endpoint, a coverage guard against drift, and read-onl
 > capacity, costs and the Cloudflare tunnel identifier are documented **only**
 > in `internal-devops`.
 
-> A 4-node bare-metal k3s cluster on Hetzner — one control-plane node, one
-> worker and two CI builders — with ingress via a single Cloudflare Tunnel and
+> A 5-node bare-metal k3s cluster on Hetzner — one control-plane node, two
+> workers and two CI builders — with ingress via a single Cloudflare Tunnel and
 > zero exposed node ports for application traffic. Block storage is Longhorn
 > CSI; object storage is Cloudflare R2. GitOps is ArgoCD in an App-of-Apps
 > pattern.
 
-Node count from the private node inventory (four nodes since 2026-08-06);
-re-stated here 2026-10-01. Anything more specific than that paragraph needs a
+Node count from the private node inventory (five nodes since 2026-11-04);
+re-stated here 2026-11-04. Anything more specific than that paragraph needs a
 deliberate decision, not a default.
 
 **Secrets path — mechanism only.** HashiCorp Vault (KV v2) is the home; External Secrets

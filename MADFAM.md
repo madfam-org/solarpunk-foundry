@@ -18,7 +18,7 @@ plain HTTPS GET and says so inline. Everything else keeps the anchors below.
 | Repo names, visibility, roles | `internal-devops/ecosystem/repo-registry.md` | Last Updated **2026-09-12**; per-row verification 2026-08-24 |
 | Live org counts and archive flags | GitHub enumeration run for this edit | **2026-09-23** (matches the registry exactly) |
 | Domains and routes | `internal-devops/ecosystem/domain-map.md` | Last Updated **2026-09-12**; last full live probe of every routed domain **2026-08-24**; changed hosts re-probed **2026-09-23** |
-| Infrastructure shape | `internal-devops/infrastructure/nodes.md` (4-node since 2026-08-06), `topology.md` | **2026-08-05 / 2026-08-24** |
+| Infrastructure shape | `internal-devops/infrastructure/nodes.md` (5-node since 2026-11-04), `topology.md` | **2026-11-04 / 2026-11-04** |
 | Commercial / funnel status | internal launch-readiness audit (2026-07-16) **plus** the 2026-08-03 first-charge evidence record | **2026-08-02 event, recorded 2026-08-03** |
 | Payment-emission state | internal payment-emission SoC execution plan | **2026-07-08** (unchanged; the 2026-08-02 charge used Dhanam's own PSP path) |
 | Inference endpoint | internal Selva gateway cutover record; `/health` re-probed | **2026-07-07 / 2026-08-24** |
@@ -51,9 +51,9 @@ detail lives in the private `internal-devops` repo, pointed to by name only.
 - **Primary canonical domain:** [`madfam.io`](https://madfam.io). Status board at
   [`status.madfam.io`](https://status.madfam.io) — the only surface reporting live state.
 - **Infrastructure shape** *(the public paragraph in
-  [`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md); four nodes since
-  2026-08-06, re-stated 2026-10-01)*: **4-node** bare-metal k3s cluster on Hetzner — one
-  control-plane node, one worker and two CI builders — with ingress via a single Cloudflare
+  [`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md); five nodes since
+  2026-11-04, re-stated 2026-11-04)*: **5-node** bare-metal k3s cluster on Hetzner — one
+  control-plane node, two workers and two CI builders — with ingress via a single Cloudflare
   Tunnel and zero exposed node ports for application traffic. Longhorn CSI block storage;
   Cloudflare R2 object storage; ArgoCD GitOps in an App-of-Apps pattern. Kyverno policy
   posture: see [`ECOSYSTEM.md`](ECOSYSTEM.md) §3.6.

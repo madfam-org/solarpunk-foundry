@@ -90,8 +90,8 @@ Kubernetes Service :80
 Container port (per service)
 ```
 
-- 4-node bare-metal k3s cluster on Hetzner: one control-plane node, one worker
-  and two CI builders (four nodes since 2026-08-06). Per-node detail is private;
+- 5-node bare-metal k3s cluster on Hetzner: one control-plane node, two workers
+  and two CI builders (five nodes since 2026-11-04). Per-node detail is private;
   see [`../PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md) for the public
   statement of this shape.
 - Zero exposed node ports for application ingress — all public application

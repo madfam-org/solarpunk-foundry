@@ -41,7 +41,7 @@ live in the private `internal-devops` repo.
 
 ## Prerequisites
 
-- **Topology**: 4-node cluster since 2026-08-06; node inventory is maintained in `internal-devops`
+- **Topology**: 5-node cluster since 2026-11-04; node inventory is maintained in `internal-devops`
 - **OS**: Ubuntu 24.04 LTS
 - **Storage**: ZFS Mirror (rpool) already configured
 - **Access**: Root SSH access with id_ed25519

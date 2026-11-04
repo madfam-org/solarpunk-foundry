@@ -6,7 +6,7 @@
 > `kubectl`, `helm`, SSH, provider CLI/API, `docker exec`, and direct container
 > access as platform bootstrap or documented break-glass only, and record any
 > missing Enclii adapter gap.
-> Last Updated: 2026-09-23
+> Last Updated: 2026-11-04
 
 <!-- MADFAM-AGENTS-CANONICAL v1 -->
 
@@ -93,7 +93,7 @@ break-glass `kubectl`/SSH procedures, incident evidence trails.
 
 **Already public and stays public:** the topology *shape*, exactly as
 [`docs/PUBLIC_REPO_BOUNDARY.md`](docs/PUBLIC_REPO_BOUNDARY.md) defines it — a
-**4-node** bare-metal k3s cluster on Hetzner (one control-plane node, one worker
+**5-node** bare-metal k3s cluster on Hetzner (one control-plane node, two workers
 and two CI builders), ingress via a single Cloudflare Tunnel with zero exposed
 node ports for application traffic, Longhorn CSI block storage, Cloudflare R2
 object storage, ArgoCD GitOps in an App-of-Apps pattern. Anything more specific
