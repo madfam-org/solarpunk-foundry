@@ -277,7 +277,7 @@ cat > /opt/solarpunk/DEPLOYMENT_SUMMARY.md << 'EOF'
 
 ## Server Information
 - **Inventory**: See `internal-devops` for node IPs, hostnames, provider metadata, and SSH targets
-- **Topology**: 4-node cluster since 2026-08-06 (inventory in internal-devops)
+- **Topology**: 5-node cluster since 2026-11-04 (inventory in internal-devops)
 - **OS**: Ubuntu 24.04 LTS
 
 ## ZFS Configuration

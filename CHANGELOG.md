@@ -14,6 +14,16 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-11-04 — Cluster shape re-stated: five nodes
+
+- **The public topology paragraph now reads five nodes**: one control-plane node,
+  two workers and two CI builders, since 2026-11-04. A new CI builder joined and
+  one of the two earlier builders moved to production work. Updated wherever the
+  shape is stated (`docs/PUBLIC_REPO_BOUNDARY.md`, `AGENTS.md`, `ECOSYSTEM.md`,
+  `MADFAM.md`, `llms-full.txt`, `infrastructure/`, `docs/runbooks/README.md`).
+- Node identity, hardware, addresses and cost stay in `internal-devops`.
+- Docs only.
+
 ### 2026-10-18 — Product projection re-vendored: commerce prefixes follow the Dhanam catalog
 
 - **Re-vendored the product projection** from the private registry (source
