@@ -34,7 +34,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "posthog-js": "^1.96.0"
+    "posthog-js": "^1.447.2"
   },
   "peerDependencies": {
     "next": ">=15.5.28 <16 || >=16.4.1",
