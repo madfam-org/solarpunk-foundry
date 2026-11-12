@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://madfam.io/contracts/telemetry-event.v1.json",
   "title": "telemetry.event/v1",
-  "description": "Product telemetry events (RFC 0057). Two shapes. ClientBatch is what a browser posts to its own product's origin. GateBatch is what the product's server forwards to the telemetry gate after validating each event against the product's catalogue (telemetry-catalog.v1.json) and stamping identity. Every object is closed (additionalProperties false): a field that is not here is never sent. Semantics a schema cannot express: (1) `screen` and `from` are route templates from the catalogue, never a concrete URL, query string or title; (2) `name`, `target` and `props` values must be declared in the catalogue, and the reserved action names listed in $defs/reservedActionName are accepted for every product; (3) on a `restricted` screen the server drops `props`, and drops `pos` unless the catalogue allows positions for that screen; (4) `actor` and `session` are HMACs computed by the product's server under a key only that product holds, never sent by a browser; (5) no event ever carries an IP address, user-agent string, cookie, account id, name, e-mail, record id, page content, form value or free text.",
+  "description": "Product telemetry events. Two shapes. ClientBatch is what a browser posts to its own product's origin. GateBatch is what the product's server forwards to the telemetry gate after validating each event against the product's catalogue (telemetry-catalog.v1.json) and stamping identity. Every object is closed (additionalProperties false): a field that is not here is never sent. Semantics a schema cannot express: (1) `screen` and `from` are route templates from the catalogue, never a concrete URL, query string or title; (2) `name`, `target` and `props` values must be declared in the catalogue, and the reserved action names listed in $defs/reservedActionName are accepted for every product; (3) on a `restricted` screen the server drops `props`, and drops `pos` unless the catalogue allows positions for that screen; (4) `actor` and `session` are HMACs computed by the product's server under a key only that product holds, never sent by a browser; (5) no event ever carries an IP address, user-agent string, cookie, account id, name, e-mail, record id, page content, form value or free text.",
   "oneOf": [
     { "$ref": "#/$defs/ClientBatch" },
     { "$ref": "#/$defs/GateBatch" }
@@ -10,13 +10,13 @@
   "$defs": {
     "routeTemplate": {
       "type": "string",
-      "description": "A route template such as /expediente/[id]. Lowercase path segments, dynamic segments in brackets, no query string.",
+      "description": "A route template such as /records/[id]. Lowercase path segments, dynamic segments in brackets, no query string.",
       "pattern": "^/([a-z0-9][a-z0-9_.-]*|\\[{1,2}(\\.\\.\\.)?[a-zA-Z0-9_]+\\]{1,2})?(/([a-z0-9][a-z0-9_.-]*|\\[{1,2}(\\.\\.\\.)?[a-zA-Z0-9_]+\\]{1,2}))*$",
       "maxLength": 160
     },
     "catalogueName": {
       "type": "string",
-      "description": "A dotted lowercase name declared in the catalogue, such as sesion.guardar.",
+      "description": "A dotted lowercase name declared in the catalogue, such as session.save.",
       "pattern": "^[a-z][a-z0-9_]{0,31}(\\.[a-z0-9_]{1,32}){0,3}$",
       "maxLength": 64
     },

@@ -74,7 +74,7 @@
       "case": "an extra field (free text)",
       "shape": "ClientBatch",
       "reason": "schema",
-      "doc": { "v": 1, "events": [ { "kind": "view", "ts": "2026-11-12T18:00:00.000Z", "screen": "/", "title": "Ana's record", "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+      "doc": { "v": 1, "events": [ { "kind": "view", "ts": "2026-11-12T18:00:00.000Z", "screen": "/", "title": "visible page text", "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
     },
     {
       "case": "a browser trying to send identity",
@@ -86,7 +86,7 @@
       "case": "a prop value with spaces (free text)",
       "shape": "ClientBatch",
       "reason": "schema",
-      "doc": { "v": 1, "events": [ { "kind": "action", "ts": "2026-11-12T18:00:00.000Z", "screen": "/settings", "name": "search.run", "props": { "term": "maria lopez" }, "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+      "doc": { "v": 1, "events": [ { "kind": "action", "ts": "2026-11-12T18:00:00.000Z", "screen": "/settings", "name": "search.run", "props": { "term": "free text here" }, "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
     },
     {
       "case": "a vital with an unknown name",
@@ -122,7 +122,7 @@
       "case": "an undeclared target",
       "shape": "ClientBatch",
       "reason": "catalog:target",
-      "doc": { "v": 1, "events": [ { "kind": "action", "ts": "2026-11-12T18:00:00.000Z", "screen": "/settings", "name": "search.run", "target": "patient.name", "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+      "doc": { "v": 1, "events": [ { "kind": "action", "ts": "2026-11-12T18:00:00.000Z", "screen": "/settings", "name": "search.run", "target": "unknown.element", "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
     },
     {
       "case": "gate batch: props on a restricted screen",

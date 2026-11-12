@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://madfam.io/contracts/telemetry-catalog.v1.json",
   "title": "telemetry-catalog/v1",
-  "description": "A product's telemetry catalogue (RFC 0057): the only screens, actions, targets, props and roles its events may name. It lives in the product's repo as telemetry.catalog.json, is reviewed in the product's own PRs, and is applied by the product's server before forwarding and again by the gate. Semantics a schema cannot express: (1) a screen missing from `screens` is dropped, never defaulted; (2) `class` defaults to `restricted` when a tool generates the file, and only a reviewer changes it; (3) `positions: true` lets click positions inside declared targets through on that screen; (4) the reserved action names of telemetry-event.v1.json are accepted without being listed; (5) a surface that must carry no telemetry (for example a page reached by a person who has not received the privacy notice) is listed under `excluded` so the server refuses it even if a client sends it.",
+  "description": "A product's telemetry catalogue: the only screens, actions, targets, props and roles its events may name. It lives in the product's repo as telemetry.catalog.json, is reviewed in the product's own PRs, and is applied by the product's server before forwarding and again by the gate. Semantics a schema cannot express: (1) a screen missing from `screens` is dropped, never defaulted; (2) `class` defaults to `restricted` when a tool generates the file, and only a reviewer changes it; (3) `positions: true` lets click positions inside declared targets through on that screen; (4) the reserved action names of telemetry-event.v1.json are accepted without being listed; (5) a surface that must carry no telemetry (for example a page reached by a person who has not received the privacy notice) is listed under `excluded` so the server refuses it even if a client sends it.",
   "type": "object",
   "additionalProperties": false,
   "required": ["contract", "product", "roles", "screens", "actions", "targets"],
@@ -10,7 +10,7 @@
     "contract": { "const": "telemetry-catalog/v1" },
     "product": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$" },
     "roles": {
-      "description": "The closed list of role classes the server may stamp. Reports show a class only when at least three people share it (RFC 0057 rule 8).",
+      "description": "The closed list of role classes the server may stamp. Reports show a class only when at least three people share it.",
       "type": "array",
       "uniqueItems": true,
       "maxItems": 12,
