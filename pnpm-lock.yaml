@@ -253,6 +253,27 @@ importers:
         specifier: ^3.0.0
         version: 3.8.0
 
+  packages/product-telemetry:
+    devDependencies:
+      '@madfam/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@madfam/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.17
+      tsup:
+        specifier: ^8.5.0
+        version: 8.5.1(postcss@8.5.23)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.17)(happy-dom@15.11.7)(terser@5.46.0)
+
   packages/sentry:
     devDependencies:
       '@madfam/eslint-config':

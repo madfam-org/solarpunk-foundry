@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://madfam.io/contracts/telemetry-catalog.v1.json",
+  "title": "telemetry-catalog/v1",
+  "description": "A product's telemetry catalogue (RFC 0057): the only screens, actions, targets, props and roles its events may name. It lives in the product's repo as telemetry.catalog.json, is reviewed in the product's own PRs, and is applied by the product's server before forwarding and again by the gate. Semantics a schema cannot express: (1) a screen missing from `screens` is dropped, never defaulted; (2) `class` defaults to `restricted` when a tool generates the file, and only a reviewer changes it; (3) `positions: true` lets click positions inside declared targets through on that screen; (4) the reserved action names of telemetry-event.v1.json are accepted without being listed; (5) a surface that must carry no telemetry (for example a page reached by a person who has not received the privacy notice) is listed under `excluded` so the server refuses it even if a client sends it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract", "product", "roles", "screens", "actions", "targets"],
+  "properties": {
+    "contract": { "const": "telemetry-catalog/v1" },
+    "product": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$" },
+    "roles": {
+      "description": "The closed list of role classes the server may stamp. Reports show a class only when at least three people share it (RFC 0057 rule 8).",
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 12,
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,31}$" }
+    },
+    "excluded": {
+      "description": "Route-template prefixes on which no event is accepted at all.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^/[a-z0-9/_.-]*$", "maxLength": 160 }
+    },
+    "screens": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["template", "class"],
+        "properties": {
+          "template": { "$ref": "telemetry-event.v1.json#/$defs/routeTemplate" },
+          "class": { "type": "string", "enum": ["public", "standard", "restricted"] },
+          "positions": { "type": "boolean", "default": false }
+        }
+      }
+    },
+    "actions": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name"],
+        "properties": {
+          "name": { "$ref": "telemetry-event.v1.json#/$defs/catalogueName" },
+          "props": {
+            "type": "object",
+            "maxProperties": 6,
+            "propertyNames": { "pattern": "^[a-z][a-z0-9_]{0,31}$" },
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["enum"],
+                  "properties": {
+                    "enum": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 50,
+                      "uniqueItems": true,
+                      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$" }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["type"],
+                  "properties": {
+                    "type": { "const": "number" },
+                    "min": { "type": "number" },
+                    "max": { "type": "number" }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["type"],
+                  "properties": { "type": { "const": "boolean" } }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "targets": {
+      "description": "Declared element names (the data-tm attribute). Click positions are only ever relative to one of these.",
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 2000,
+      "items": { "$ref": "telemetry-event.v1.json#/$defs/catalogueName" }
+    }
+  }
+}

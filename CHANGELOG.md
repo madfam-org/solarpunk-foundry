@@ -14,6 +14,21 @@ a contemporaneous record.
 
 ## Unreleased
 
+### 2026-11-12 — New package: `@madfam/product-telemetry` 0.1.0 (unpublished)
+
+- **Added `packages/product-telemetry`**, the shared implementation of the
+  `telemetry.event/v1` and `telemetry-catalog/v1` contracts: a zero-dependency
+  validator, catalogue rules, route-template matching and HMAC pseudonyms
+  (root), a browser client (`/browser`), a same-origin route handler for a
+  product (`/server`) and the gate's ingest handler (`/gate`).
+- The three contract files are vendored byte-identical under
+  `packages/product-telemetry/contracts/` and ship with the package; the tests
+  run the shared fixtures against the validator.
+- Distinct from `@madfam/telemetry` (OpenTelemetry tracing), which is unchanged.
+- Package count is now sixteen plus one tombstone (`ls packages | wc -l` returns
+  17); `README.md`, `AGENTS.md`, `AI_CONTEXT.md`, `llms.txt` and `llms-full.txt`
+  updated. Not published; publishing is the manual `publish-package.yml` dispatch.
+
 ### 2026-11-04 — Cluster shape re-stated: five nodes
 
 - **The public topology paragraph now reads five nodes**: one control-plane node,

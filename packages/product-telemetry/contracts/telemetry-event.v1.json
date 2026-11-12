@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://madfam.io/contracts/telemetry-event.v1.json",
+  "title": "telemetry.event/v1",
+  "description": "Product telemetry events (RFC 0057). Two shapes. ClientBatch is what a browser posts to its own product's origin. GateBatch is what the product's server forwards to the telemetry gate after validating each event against the product's catalogue (telemetry-catalog.v1.json) and stamping identity. Every object is closed (additionalProperties false): a field that is not here is never sent. Semantics a schema cannot express: (1) `screen` and `from` are route templates from the catalogue, never a concrete URL, query string or title; (2) `name`, `target` and `props` values must be declared in the catalogue, and the reserved action names listed in $defs/reservedActionName are accepted for every product; (3) on a `restricted` screen the server drops `props`, and drops `pos` unless the catalogue allows positions for that screen; (4) `actor` and `session` are HMACs computed by the product's server under a key only that product holds, never sent by a browser; (5) no event ever carries an IP address, user-agent string, cookie, account id, name, e-mail, record id, page content, form value or free text.",
+  "oneOf": [
+    { "$ref": "#/$defs/ClientBatch" },
+    { "$ref": "#/$defs/GateBatch" }
+  ],
+  "$defs": {
+    "routeTemplate": {
+      "type": "string",
+      "description": "A route template such as /expediente/[id]. Lowercase path segments, dynamic segments in brackets, no query string.",
+      "pattern": "^/([a-z0-9][a-z0-9_.-]*|\\[{1,2}(\\.\\.\\.)?[a-zA-Z0-9_]+\\]{1,2})?(/([a-z0-9][a-z0-9_.-]*|\\[{1,2}(\\.\\.\\.)?[a-zA-Z0-9_]+\\]{1,2}))*$",
+      "maxLength": 160
+    },
+    "catalogueName": {
+      "type": "string",
+      "description": "A dotted lowercase name declared in the catalogue, such as sesion.guardar.",
+      "pattern": "^[a-z][a-z0-9_]{0,31}(\\.[a-z0-9_]{1,32}){0,3}$",
+      "maxLength": 64
+    },
+    "reservedActionName": {
+      "type": "string",
+      "enum": [
+        "ui.rage",
+        "ui.dead",
+        "nav.back_quick",
+        "nav.not_found",
+        "access.denied",
+        "search.empty",
+        "help.opened",
+        "form.abandon"
+      ]
+    },
+    "vitalName": {
+      "type": "string",
+      "enum": ["LCP", "INP", "CLS", "TTFB", "FCP", "nav"]
+    },
+    "errorClass": {
+      "type": "string",
+      "enum": ["hydration", "chunk_load", "unhandled", "boundary", "server_action", "http_4xx", "http_5xx"]
+    },
+    "propValue": {
+      "oneOf": [
+        { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$" },
+        { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+        { "type": "boolean" }
+      ]
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,40}$"
+    },
+    "pseudonym": {
+      "type": "string",
+      "description": "Lowercase hex HMAC-SHA-256, truncated to 32 characters.",
+      "pattern": "^[a-f0-9]{32}$"
+    },
+    "ClientEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "ts", "screen", "ctx", "release", "page", "seq"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["view", "action", "error", "vital"] },
+        "ts": { "type": "string", "format": "date-time", "maxLength": 32 },
+        "screen": { "$ref": "#/$defs/routeTemplate" },
+        "from": { "$ref": "#/$defs/routeTemplate" },
+        "name": { "type": "string", "maxLength": 64 },
+        "target": { "$ref": "#/$defs/catalogueName" },
+        "value": { "type": "number", "minimum": 0, "maximum": 3600000 },
+        "outcome": { "type": "string", "enum": ["ok", "error", "cancelled", "denied", "empty"] },
+        "pos": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["rx", "ry"],
+          "properties": {
+            "rx": { "type": "number", "minimum": 0, "maximum": 1 },
+            "ry": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "scroll": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "props": {
+          "type": "object",
+          "maxProperties": 6,
+          "propertyNames": { "pattern": "^[a-z][a-z0-9_]{0,31}$" },
+          "additionalProperties": { "$ref": "#/$defs/propValue" }
+        },
+        "ctx": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["viewport", "input"],
+          "properties": {
+            "viewport": { "type": "string", "enum": ["xs", "sm", "md", "lg", "xl"] },
+            "input": { "type": "string", "enum": ["mouse", "touch", "key", "unknown"] }
+          }
+        },
+        "release": { "type": "string", "pattern": "^[A-Za-z0-9._-]{1,64}$" },
+        "page": { "type": "string", "pattern": "^[A-Za-z0-9_-]{8,32}$" },
+        "seq": { "type": "integer", "minimum": 0, "maximum": 100000 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "view" } } },
+          "then": { "not": { "required": ["name"] } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "action" } } },
+          "then": {
+            "required": ["name"],
+            "properties": { "name": { "anyOf": [{ "$ref": "#/$defs/catalogueName" }, { "$ref": "#/$defs/reservedActionName" }] } }
+          }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "vital" } } },
+          "then": { "required": ["name", "value"], "properties": { "name": { "$ref": "#/$defs/vitalName" } } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "error" } } },
+          "then": { "required": ["name"], "properties": { "name": { "$ref": "#/$defs/errorClass" } } }
+        }
+      ]
+    },
+    "ClientBatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["v", "events"],
+      "properties": {
+        "v": { "const": 1 },
+        "events": { "type": "array", "minItems": 1, "maxItems": 50, "items": { "$ref": "#/$defs/ClientEvent" } }
+      }
+    },
+    "StampedFields": {
+      "type": "object",
+      "required": ["product", "surface", "env", "screen_class", "received_at"],
+      "properties": {
+        "product": { "$ref": "#/$defs/slug" },
+        "surface": { "type": "string", "enum": ["app", "public", "portal", "admin"] },
+        "env": { "type": "string", "enum": ["production", "staging", "sim", "development"] },
+        "screen_class": { "type": "string", "enum": ["public", "standard", "restricted"] },
+        "actor": { "$ref": "#/$defs/pseudonym" },
+        "session": { "$ref": "#/$defs/pseudonym" },
+        "role": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,31}$" },
+        "tenant": { "$ref": "#/$defs/slug" },
+        "received_at": { "type": "string", "format": "date-time", "maxLength": 32 }
+      }
+    },
+    "GateEvent": {
+      "description": "A ClientEvent after the product's server validated it and stamped the fields below.",
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/$defs/StampedFields" },
+        {
+          "properties": {
+            "kind": true, "ts": true, "screen": true, "from": true, "name": true, "target": true,
+            "value": true, "outcome": true, "pos": true, "scroll": true, "props": true, "ctx": true,
+            "release": true, "page": true, "seq": true,
+            "product": true, "surface": true, "env": true, "screen_class": true, "actor": true,
+            "session": true, "role": true, "tenant": true, "received_at": true
+          },
+          "additionalProperties": false
+        },
+        {
+          "description": "The client part, checked by the same rules as ClientEvent.",
+          "$ref": "#/$defs/ClientEventOpen"
+        },
+        {
+          "if": { "properties": { "screen_class": { "const": "restricted" } } },
+          "then": { "not": { "required": ["props"] } }
+        }
+      ]
+    },
+    "ClientEventOpen": {
+      "description": "ClientEvent without the closed-object rule, so it can be combined with the stamped fields.",
+      "type": "object",
+      "required": ["kind", "ts", "screen", "ctx", "release", "page", "seq"],
+      "properties": {
+        "kind": { "$ref": "#/$defs/ClientEvent/properties/kind" },
+        "ts": { "$ref": "#/$defs/ClientEvent/properties/ts" },
+        "screen": { "$ref": "#/$defs/routeTemplate" },
+        "from": { "$ref": "#/$defs/routeTemplate" },
+        "name": { "$ref": "#/$defs/ClientEvent/properties/name" },
+        "target": { "$ref": "#/$defs/catalogueName" },
+        "value": { "$ref": "#/$defs/ClientEvent/properties/value" },
+        "outcome": { "$ref": "#/$defs/ClientEvent/properties/outcome" },
+        "pos": { "$ref": "#/$defs/ClientEvent/properties/pos" },
+        "scroll": { "$ref": "#/$defs/ClientEvent/properties/scroll" },
+        "props": { "$ref": "#/$defs/ClientEvent/properties/props" },
+        "ctx": { "$ref": "#/$defs/ClientEvent/properties/ctx" },
+        "release": { "$ref": "#/$defs/ClientEvent/properties/release" },
+        "page": { "$ref": "#/$defs/ClientEvent/properties/page" },
+        "seq": { "$ref": "#/$defs/ClientEvent/properties/seq" }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/ClientEvent/allOf/0" },
+        { "$ref": "#/$defs/ClientEvent/allOf/1" },
+        { "$ref": "#/$defs/ClientEvent/allOf/2" },
+        { "$ref": "#/$defs/ClientEvent/allOf/3" }
+      ]
+    },
+    "GateBatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["v", "product", "events"],
+      "properties": {
+        "v": { "const": 1 },
+        "product": { "$ref": "#/$defs/slug" },
+        "events": { "type": "array", "minItems": 1, "maxItems": 200, "items": { "$ref": "#/$defs/GateEvent" } }
+      }
+    }
+  }
+}
