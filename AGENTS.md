@@ -47,8 +47,8 @@ redirect and should not become the source of truth again.
   conventions, sanitized production topology, and the Enclii CLI reference.
 - `MADFAM.md` — the fuller per-platform master reference.
 - `docs/` — port registry, licensing, integration and architecture material.
-- `packages/` — the `@madfam/*` shared package set: 15 packages and one tombstone
-  (`ui/`, retired 2026-09-05). `ls packages | wc -l` returns 16. Every package
+- `packages/` — the `@madfam/*` shared package set: 16 packages and one tombstone
+  (`ui/`, retired 2026-09-05). `ls packages | wc -l` returns 17 (2026-11-12). Every package
   extends `@madfam/tsconfig` and `@madfam/eslint-config`, and
   `scripts/check-shared-configs.mjs` fails CI if one stops.
 - `.github/workflows/` — CI: doc lint, package quality, production-readiness
@@ -218,7 +218,7 @@ solarpunk-foundry/
 ├── MADFAM.md                        # Per-platform master reference
 ├── AI_CONTEXT.md                    # Package/registry quick reference
 ├── llms.txt / llms-full.txt         # LLM context index + durable map
-├── packages/                        # 16 directories: 15 packages + 1 tombstone
+├── packages/                        # 17 directories: 16 packages + 1 tombstone
 │   ├── core/                        # @madfam/core — brand, locales, currencies, events, product registry
 │   ├── ui/                          # @madfam/ui — RETIRED 2026-09-05, tombstone only (packages/ui/README.md)
 │   ├── analytics/                   # @madfam/analytics — PostHog + event schema
@@ -230,6 +230,7 @@ solarpunk-foundry/
 │   ├── error-boundary/              # @madfam/error-boundary — Next.js route boundaries
 │   ├── types/                       # @madfam/types — cross-repo shared types
 │   ├── telemetry/                   # @madfam/telemetry — OTel tracing + W3C trace context
+│   ├── product-telemetry/           # @madfam/product-telemetry — telemetry.event/v1 client, route handler, gate
 │   ├── webhook-attribution/         # @madfam/webhook-attribution — the signed-fan-out contract, packaged
 │   ├── ecosystem-banner/            # @madfam/ecosystem-banner — landing-page ticker
 │   ├── tsconfig/                    # @madfam/tsconfig — shared TypeScript baseline

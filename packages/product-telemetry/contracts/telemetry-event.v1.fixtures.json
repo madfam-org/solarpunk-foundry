@@ -1,0 +1,151 @@
+{
+  "contract": "telemetry.event/v1 fixtures",
+  "description": "Shared samples for every implementation of telemetry-event.v1.json and telemetry-catalog.v1.json. `catalog` is a valid catalogue. Each `valid` item must pass both the schema and the catalogue rules; each `invalid` item must be refused, for the `reason` given. Consumers vendor this file byte-identical and test against it.",
+  "catalog": {
+    "contract": "telemetry-catalog/v1",
+    "product": "example-app",
+    "roles": ["leadership", "staff", "admin"],
+    "excluded": ["/invite"],
+    "screens": [
+      { "template": "/", "class": "standard" },
+      { "template": "/records/[id]", "class": "restricted" },
+      { "template": "/records/[id]/sessions", "class": "restricted", "positions": true },
+      { "template": "/settings", "class": "standard", "positions": true }
+    ],
+    "actions": [
+      { "name": "session.save", "props": { "mode": { "enum": ["new", "edit"] }, "items": { "type": "number", "min": 0, "max": 100 } } },
+      { "name": "search.run" }
+    ],
+    "targets": ["session.save_button", "settings.optout"]
+  },
+  "valid": [
+    {
+      "case": "client batch: a view with a previous screen",
+      "shape": "ClientBatch",
+      "doc": {
+        "v": 1,
+        "events": [
+          { "kind": "view", "ts": "2026-11-12T18:00:00.000Z", "screen": "/records/[id]", "from": "/", "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 }
+        ]
+      }
+    },
+    {
+      "case": "client batch: a declared action with declared props, on a standard screen",
+      "shape": "ClientBatch",
+      "doc": {
+        "v": 1,
+        "events": [
+          { "kind": "action", "ts": "2026-11-12T18:00:01.000Z", "screen": "/settings", "name": "session.save", "target": "session.save_button", "outcome": "ok", "value": 412, "props": { "mode": "edit", "items": 3 }, "pos": { "rx": 0.42, "ry": 0.5 }, "ctx": { "viewport": "md", "input": "touch" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 1 }
+        ]
+      }
+    },
+    {
+      "case": "client batch: a reserved action, a vital and an error class",
+      "shape": "ClientBatch",
+      "doc": {
+        "v": 1,
+        "events": [
+          { "kind": "action", "ts": "2026-11-12T18:00:02.000Z", "screen": "/records/[id]", "name": "nav.back_quick", "ctx": { "viewport": "sm", "input": "touch" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 2 },
+          { "kind": "vital", "ts": "2026-11-12T18:00:03.000Z", "screen": "/records/[id]", "name": "LCP", "value": 1840, "ctx": { "viewport": "sm", "input": "touch" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 3 },
+          { "kind": "error", "ts": "2026-11-12T18:00:04.000Z", "screen": "/records/[id]", "name": "chunk_load", "ctx": { "viewport": "sm", "input": "touch" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 4 }
+        ]
+      }
+    },
+    {
+      "case": "gate batch: stamped event on a restricted screen with a position allowed by the catalogue",
+      "shape": "GateBatch",
+      "doc": {
+        "v": 1,
+        "product": "example-app",
+        "events": [
+          { "kind": "action", "ts": "2026-11-12T18:00:05.000Z", "screen": "/records/[id]/sessions", "name": "session.save", "target": "session.save_button", "outcome": "ok", "pos": { "rx": 0.1, "ry": 0.9 }, "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_02", "seq": 0, "product": "example-app", "surface": "app", "env": "staging", "screen_class": "restricted", "actor": "0123456789abcdef0123456789abcdef", "session": "fedcba9876543210fedcba9876543210", "role": "staff", "received_at": "2026-11-12T18:00:05.120Z" }
+        ]
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "case": "a concrete URL instead of a route template",
+      "shape": "ClientBatch",
+      "reason": "schema",
+      "doc": { "v": 1, "events": [ { "kind": "view", "ts": "2026-11-12T18:00:00.000Z", "screen": "/records/123?tab=notes", "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+    },
+    {
+      "case": "an extra field (free text)",
+      "shape": "ClientBatch",
+      "reason": "schema",
+      "doc": { "v": 1, "events": [ { "kind": "view", "ts": "2026-11-12T18:00:00.000Z", "screen": "/", "title": "visible page text", "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+    },
+    {
+      "case": "a browser trying to send identity",
+      "shape": "ClientBatch",
+      "reason": "schema",
+      "doc": { "v": 1, "events": [ { "kind": "view", "ts": "2026-11-12T18:00:00.000Z", "screen": "/", "actor": "0123456789abcdef0123456789abcdef", "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+    },
+    {
+      "case": "a prop value with spaces (free text)",
+      "shape": "ClientBatch",
+      "reason": "schema",
+      "doc": { "v": 1, "events": [ { "kind": "action", "ts": "2026-11-12T18:00:00.000Z", "screen": "/settings", "name": "search.run", "props": { "term": "free text here" }, "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+    },
+    {
+      "case": "a vital with an unknown name",
+      "shape": "ClientBatch",
+      "reason": "schema",
+      "doc": { "v": 1, "events": [ { "kind": "vital", "ts": "2026-11-12T18:00:00.000Z", "screen": "/", "name": "FID", "value": 10, "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+    },
+    {
+      "case": "a screen that is not in the catalogue",
+      "shape": "ClientBatch",
+      "reason": "catalog:screen",
+      "doc": { "v": 1, "events": [ { "kind": "view", "ts": "2026-11-12T18:00:00.000Z", "screen": "/reports", "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+    },
+    {
+      "case": "a screen under an excluded prefix",
+      "shape": "ClientBatch",
+      "reason": "catalog:excluded",
+      "doc": { "v": 1, "events": [ { "kind": "view", "ts": "2026-11-12T18:00:00.000Z", "screen": "/invite/[token]", "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+    },
+    {
+      "case": "an action that is neither declared nor reserved",
+      "shape": "ClientBatch",
+      "reason": "catalog:action",
+      "doc": { "v": 1, "events": [ { "kind": "action", "ts": "2026-11-12T18:00:00.000Z", "screen": "/settings", "name": "record.export", "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+    },
+    {
+      "case": "a prop value outside the declared enum",
+      "shape": "ClientBatch",
+      "reason": "catalog:props",
+      "doc": { "v": 1, "events": [ { "kind": "action", "ts": "2026-11-12T18:00:00.000Z", "screen": "/settings", "name": "session.save", "props": { "mode": "bulk" }, "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+    },
+    {
+      "case": "an undeclared target",
+      "shape": "ClientBatch",
+      "reason": "catalog:target",
+      "doc": { "v": 1, "events": [ { "kind": "action", "ts": "2026-11-12T18:00:00.000Z", "screen": "/settings", "name": "search.run", "target": "unknown.element", "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 } ] }
+    },
+    {
+      "case": "gate batch: props on a restricted screen",
+      "shape": "GateBatch",
+      "reason": "schema",
+      "doc": { "v": 1, "product": "example-app", "events": [ { "kind": "action", "ts": "2026-11-12T18:00:05.000Z", "screen": "/records/[id]", "name": "session.save", "props": { "mode": "new" }, "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_02", "seq": 0, "product": "example-app", "surface": "app", "env": "staging", "screen_class": "restricted", "received_at": "2026-11-12T18:00:05.120Z" } ] }
+    }
+  ],
+  "server_rules": [
+    {
+      "case": "restricted screen: props are dropped, the event is kept",
+      "input": { "kind": "action", "ts": "2026-11-12T18:00:00.000Z", "screen": "/records/[id]", "name": "session.save", "props": { "mode": "new" }, "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 },
+      "expect": { "kept": true, "screen_class": "restricted", "has_props": false, "has_pos": false }
+    },
+    {
+      "case": "restricted screen without positions: pos is dropped",
+      "input": { "kind": "action", "ts": "2026-11-12T18:00:00.000Z", "screen": "/records/[id]", "name": "nav.back_quick", "pos": { "rx": 0.5, "ry": 0.5 }, "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 },
+      "expect": { "kept": true, "screen_class": "restricted", "has_props": false, "has_pos": false }
+    },
+    {
+      "case": "restricted screen with positions: pos is kept",
+      "input": { "kind": "action", "ts": "2026-11-12T18:00:00.000Z", "screen": "/records/[id]/sessions", "name": "session.save", "target": "session.save_button", "pos": { "rx": 0.5, "ry": 0.5 }, "ctx": { "viewport": "lg", "input": "mouse" }, "release": "1462c33", "page": "pAg3Id_01", "seq": 0 },
+      "expect": { "kept": true, "screen_class": "restricted", "has_props": false, "has_pos": true }
+    }
+  ]
+}

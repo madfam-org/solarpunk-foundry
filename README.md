@@ -727,8 +727,9 @@ presents as a rendering or timeout bug rather than a network one.
 
 ## 📦 VIII. Shared packages (`@madfam/*`)
 
-**Fifteen** packages under `packages/`, plus **one tombstone**. `ls packages | wc -l` returns
-**16**: the fifteen below and retired `ui/`. Versions re-read 2026-09-23. **Registry of record
+**Sixteen** packages under `packages/`, plus **one tombstone**. `ls packages | wc -l` returns
+**17**: the sixteen below and retired `ui/`. Versions re-read 2026-09-23; `@madfam/product-telemetry`
+added 2026-11-12 (unpublished). **Registry of record
 (owner ruling 2026-09-23):** `@madfam/core` publishes to the **public npmjs registry**; the
 rest publish to the private `npm.madfam.io` Verdaccio registry. Each package's
 `publishConfig.registry` decides, and `.github/workflows/publish-package.yml` follows it.
@@ -745,6 +746,7 @@ rest publish to the private `npm.madfam.io` Verdaccio registry. Each package's
 | `@madfam/error-boundary` | 0.1.0 | Next.js route boundary components |
 | `@madfam/types` | 0.1.0 | Cross-repo shared types (events, webhook schemas, attribution) |
 | `@madfam/telemetry` | 0.1.0 | Shared OpenTelemetry tracing + W3C trace-context propagation |
+| `@madfam/product-telemetry` | 0.1.0 | Privacy-first product telemetry: the `telemetry.event/v1` contract, browser client, same-origin route handler and gate handler. Not `@madfam/telemetry` (tracing) |
 | `@madfam/webhook-attribution` | 0.1.0 | Signed payment-attribution HMAC sign/verify + idempotency — the §IV.4 contract, packaged |
 | `@madfam/ecosystem-banner` | 0.2.0 | Dismissible ecosystem ticker for product landings ([`docs/ECOSYSTEM_BANNER.md`](docs/ECOSYSTEM_BANNER.md)) |
 | `@madfam/tsconfig` | 0.1.0 | Shared TypeScript baseline (`base`, `library`, `react-library`, `next`, `node`, `vite`) — every package here extends it |
@@ -778,7 +780,7 @@ unverified from this repo (the registry needs authentication to read).
 | `@madfam/enclii-sdk` | `enclii` | none declared |
 | `@madfam/geom-core` | `geom-core` | none declared; not published (§VI) |
 
-This repo is the home of the fifteen packages above, not of the whole `@madfam` scope.
+This repo is the home of the sixteen packages above, not of the whole `@madfam` scope.
 
 `@madfam/webhook-attribution` exists precisely so the §IV.4 signing contract is not
 reimplemented per repo. As of the 2026-07-08 verification, **no repo had adopted it**;

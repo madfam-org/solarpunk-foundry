@@ -1,0 +1,86 @@
+{
+  "name": "@madfam/product-telemetry",
+  "version": "0.1.0",
+  "description": "Privacy-first product telemetry for the MADFAM/Solarpunk ecosystem: the telemetry.event/v1 contract, a browser client, a same-origin server handler and the gate handler",
+  "author": "MADFAM <tech@madfam.io>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madfam-org/solarpunk-foundry.git",
+    "directory": "packages/product-telemetry"
+  },
+  "homepage": "https://madfam.io",
+  "bugs": {
+    "url": "https://github.com/madfam-org/solarpunk-foundry/issues"
+  },
+  "keywords": [
+    "madfam",
+    "solarpunk",
+    "telemetry",
+    "product-analytics",
+    "privacy",
+    "web-vitals",
+    "json-schema"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.js",
+      "require": "./dist/browser.cjs"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js",
+      "require": "./dist/server.cjs"
+    },
+    "./gate": {
+      "types": "./dist/gate.d.ts",
+      "import": "./dist/gate.js",
+      "require": "./dist/gate.cjs"
+    },
+    "./contracts/telemetry-event.v1.json": "./contracts/telemetry-event.v1.json",
+    "./contracts/telemetry-catalog.v1.json": "./contracts/telemetry-catalog.v1.json",
+    "./contracts/telemetry-event.v1.fixtures.json": "./contracts/telemetry-event.v1.fixtures.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "contracts",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src --max-warnings=0",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo node_modules",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "@madfam/eslint-config": "workspace:*",
+    "@madfam/tsconfig": "workspace:*",
+    "@types/node": "^22.0.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "publishConfig": {
+    "access": "restricted",
+    "registry": "https://npm.madfam.io/"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

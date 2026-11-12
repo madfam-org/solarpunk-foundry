@@ -21,7 +21,7 @@ working tree on 2026-07-25; registry ownership cross-checked against
 
 - The **public ecosystem contract hub** for MADFAM (Lane B). See [README.md](README.md) §0
   for what that means and what it excludes.
-- Home of the fifteen `@madfam/*` shared packages in `packages/`. Registry of record
+- Home of the sixteen `@madfam/*` shared packages in `packages/`. Registry of record
   (ruling 2026-09-23): `@madfam/core` → public npmjs; the rest → the private
   `npm.madfam.io` Verdaccio registry. Other `@madfam/*` packages are built in other
   repos — scope map in [README.md](README.md) §VIII.
@@ -79,8 +79,9 @@ Two caveats on that table:
 
 ## `@madfam/*` packages
 
-Fifteen packages plus one tombstone — `ls packages | wc -l` returns 16. Versions
-are what `package.json` declares in the working tree as of 2026-09-23. Nothing has
+Sixteen packages plus one tombstone — `ls packages | wc -l` returns 17. Versions
+are what `package.json` declares in the working tree as of 2026-09-23
+(`@madfam/product-telemetry` added 2026-11-12). Nothing has
 been published since 2026-07-17 and nothing will be until the operator credential
 rotation (O1) is done; `@madfam/core` targets public npmjs (its npmjs `1.0.0` /
 `0.1.0` from 2025-11-26 predate the generated registry), everything else
@@ -98,6 +99,7 @@ rotation (O1) is done; `@madfam/core` targets public npmjs (its npmjs `1.0.0` /
 | `@madfam/error-boundary` | 0.1.0 | Next.js route boundary components |
 | `@madfam/types` | 0.1.0 | Cross-repo shared types (events, webhooks, attribution) |
 | `@madfam/telemetry` | 0.1.0 | OpenTelemetry tracing + W3C trace-context propagation |
+| `@madfam/product-telemetry` | 0.1.0 | Product telemetry (`telemetry.event/v1`): browser client, same-origin route handler, gate handler; zero dependencies |
 | `@madfam/webhook-attribution` | 0.1.0 | Signed payment-attribution HMAC sign/verify + idempotency |
 | `@madfam/ecosystem-banner` | 0.2.0 | Bottom ticker for ecosystem offers/links on product landings — **not** a footer; product footers exclude platform links ([docs/ECOSYSTEM_BANNER.md](docs/ECOSYSTEM_BANNER.md)) |
 | `@madfam/tsconfig` | 0.1.0 | Shared TypeScript baseline; every package here extends it |
