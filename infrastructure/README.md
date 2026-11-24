@@ -41,7 +41,7 @@ Stated here so that nothing in this directory is mistaken for the current model:
 | Block storage | **Longhorn** CSI | — |
 | Object storage | **Cloudflare R2** | — |
 | Secrets | Vault → External Secrets Operator → K8s Secret → `envFrom`. Operator surface is `enclii secrets` | `internal-devops/runbooks/vault-bootstrap.md` |
-| Onboarding | `enclii onboard --repo madfam-org/<name>` creates namespace, ArgoCD app, tunnel route, DNS, Janua client and NetworkPolicies in one call | RFC 0014, zero-touch |
+| Onboarding | `enclii onboard`, given the app's repository as `--repo`, creates namespace, ArgoCD app, tunnel route, DNS, Janua client and NetworkPolicies in one call | RFC 0014, zero-touch |
 
 Sources: `internal-devops/ECOSYSTEM.md`, `ecosystem/deployment-conventions.md`,
 `ecosystem/domain-map.md` (routes last verified 2026-07-01),
