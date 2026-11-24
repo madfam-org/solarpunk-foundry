@@ -7,6 +7,10 @@
 > and [`ECOSYSTEM.md`](../../ECOSYSTEM.md); index: [`docs/README.md`](../README.md).
 > Boundary checkpoint: public-safe historical record; operational detail lives in
 > the private `internal-devops` repo (policy: [`docs/PUBLIC_REPO_BOUNDARY.md`](../PUBLIC_REPO_BOUNDARY.md)).
+>
+> **2026-11-24:** some `enclii` commands quoted below do not exist in the
+> current CLI. This record is not rewritten; the CLI's own help lists the
+> commands that exist.
 
 **Last verified: 2026-07-25**
 
