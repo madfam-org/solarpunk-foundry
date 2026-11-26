@@ -173,8 +173,8 @@ the private `internal-devops` repo.
 
 > **Boundary note.** A public summary only. The canonical cross-repo record is
 > the audit in the private `internal-devops` repository:
-> [`audits/2026-11-26-business-pipeline/README.md`](https://github.com/madfam-org/internal-devops/blob/main/audits/2026-11-26-business-pipeline/README.md)
-> (private; not readable from this public repository).
+> `madfam-org/internal-devops` → `audits/2026-11-26-business-pipeline/README.md`
+> (private; not linked because it is not readable from this public repository).
 
 - This repo ships no application and has no public front door, so no
   discovery, sales or support stage applies to it directly.
