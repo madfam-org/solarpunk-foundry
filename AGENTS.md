@@ -169,6 +169,22 @@ decision, 2026-09-04) and deliberately holds no production identity, secrets,
 costs, hostnames, competitive intelligence, or sensitive audits — those live in
 the private `internal-devops` repo.
 
+### Commercial pipeline state (2026-11-26)
+
+> **Boundary note.** A public summary only. The canonical cross-repo record is
+> the audit in the private `internal-devops` repository:
+> `madfam-org/internal-devops` → `audits/2026-11-26-business-pipeline/README.md`
+> (private; not linked because it is not readable from this public repository).
+
+- This repo ships no application and has no public front door, so no
+  discovery, sales or support stage applies to it directly.
+- Two of its packages sit on the product landings' path. `@madfam/ecosystem-banner`
+  is 0.3.0 in source but was not published as of its 2026-10-11 check, and the
+  landings still pin 0.1.x, so they show the older hand-kept list
+  ([`docs/ECOSYSTEM_BANNER.md`](docs/ECOSYSTEM_BANNER.md), README §VIII).
+  `@madfam/analytics` (PostHog) and the unpublished `@madfam/product-telemetry`
+  exist, but on 2026-11-26 no product front door loaded any visitor analytics.
+
 ### Quick start
 
 *Verified against `enclii/packages/cli/internal/cmd/local.go` and this repo's

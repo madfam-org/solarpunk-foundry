@@ -5,8 +5,9 @@
 > a compatibility redirect. The public ecosystem narrative is in
 > [README.md](README.md).
 
-**Last updated:** 2026-09-23 (boundary-contract date and stamps only; the body was
-last edited on 2026-09-05 for the `@madfam/ui` retirement and the shared configs).
+**Last updated:** 2026-11-26 (the `@madfam/ecosystem-banner` version row only; before
+that 2026-09-23 for the boundary-contract date and stamps, and the body was last
+edited on 2026-09-05 for the `@madfam/ui` retirement and the shared configs).
 **Last verified:** package directories, names and versions read from
 `packages/*/package.json` on 2026-09-05; script and compose paths read from the
 working tree on 2026-07-25; registry ownership cross-checked against
@@ -101,7 +102,7 @@ rotation (O1) is done; `@madfam/core` targets public npmjs (its npmjs `1.0.0` /
 | `@madfam/telemetry` | 0.1.0 | OpenTelemetry tracing + W3C trace-context propagation |
 | `@madfam/product-telemetry` | 0.1.0 | Product telemetry (`telemetry.event/v1`): browser client, same-origin route handler, gate handler; zero dependencies |
 | `@madfam/webhook-attribution` | 0.1.0 | Signed payment-attribution HMAC sign/verify + idempotency |
-| `@madfam/ecosystem-banner` | 0.2.0 | Bottom ticker for ecosystem offers/links on product landings — **not** a footer; product footers exclude platform links ([docs/ECOSYSTEM_BANNER.md](docs/ECOSYSTEM_BANNER.md)) |
+| `@madfam/ecosystem-banner` | 0.3.0 (source, 2026-11-26; not published as of 2026-10-11, product landings pin 0.1.x) | Bottom ticker for ecosystem offers/links on product landings — **not** a footer; product footers exclude platform links ([docs/ECOSYSTEM_BANNER.md](docs/ECOSYSTEM_BANNER.md)) |
 | `@madfam/tsconfig` | 0.1.0 | Shared TypeScript baseline; every package here extends it |
 | `@madfam/eslint-config` | 0.1.0 | Shared ESLint baseline (eslintrc shape, ESLint 8) |
 | `@madfam/prettier-config` | 0.1.0 | Shared Prettier baseline; referenced from the root `package.json` |

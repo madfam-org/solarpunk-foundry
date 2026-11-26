@@ -2,7 +2,8 @@
 
 ### *From Bits to Atoms. High tech, deep roots.*
 
-> **Last updated:** 2026-09-23 — coherence re-anchor. Org counts were restated from a live
+> **Last updated:** 2026-11-26 — one row only: the `@madfam/ecosystem-banner` version in §VIII.
+> **Previous edition:** 2026-09-23 — coherence re-anchor. Org counts were restated from a live
 > GitHub enumeration run that day, and every host whose status this edition changes (Nauta,
 > Forgesight, Fashion Cabinet, Tlacuilo, Telesia, Angelia, Fortuna's API, `penny.onl`,
 > `aureo.studio`) was probed that day with a plain HTTPS GET. Every other route claim still
@@ -748,7 +749,7 @@ rest publish to the private `npm.madfam.io` Verdaccio registry. Each package's
 | `@madfam/telemetry` | 0.1.0 | Shared OpenTelemetry tracing + W3C trace-context propagation |
 | `@madfam/product-telemetry` | 0.1.0 | Privacy-first product telemetry: the `telemetry.event/v1` contract, browser client, same-origin route handler and gate handler. Not `@madfam/telemetry` (tracing) |
 | `@madfam/webhook-attribution` | 0.1.0 | Signed payment-attribution HMAC sign/verify + idempotency — the §IV.4 contract, packaged |
-| `@madfam/ecosystem-banner` | 0.2.0 | Dismissible ecosystem ticker for product landings ([`docs/ECOSYSTEM_BANNER.md`](docs/ECOSYSTEM_BANNER.md)) |
+| `@madfam/ecosystem-banner` | 0.3.0 | Dismissible ecosystem ticker for product landings ([`docs/ECOSYSTEM_BANNER.md`](docs/ECOSYSTEM_BANNER.md)). 0.3.0 is the source version (re-read 2026-11-26); it was not published as of the doc's 2026-10-11 check, and product landings still pin 0.1.x (Dhanam 0.1.3, Tezca 0.1.4) |
 | `@madfam/tsconfig` | 0.1.0 | Shared TypeScript baseline (`base`, `library`, `react-library`, `next`, `node`, `vite`) — every package here extends it |
 | `@madfam/eslint-config` | 0.1.0 | Shared ESLint baseline (eslintrc shape, ESLint 8) — the root and every package extend it |
 | `@madfam/prettier-config` | 0.1.0 | Shared Prettier baseline; the root `package.json` points `prettier` at it |
